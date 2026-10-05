@@ -8,3 +8,4 @@ app/build/
 captures/
 tools/
 *.apk
+**/.DS_Store
