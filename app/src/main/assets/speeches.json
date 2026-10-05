@@ -1,47 +1,4129 @@
 [
   {
-    "id": "small-words",
-    "title": "The Power of Small Words",
-    "titleZh": "小词的力量",
-    "paragraphs": [
+    "id": "1-01",
+    "level": 1,
+    "unit": 1,
+    "title": "Hello, I'm Amy",
+    "titleZh": "你好，我是艾米",
+    "lines": [
       {
-        "en": "Good morning, my friends. Today I am going to say something about small words. When I was a child, I took a book from my father's shelf. The words were long and hard, and I stopped reading after one page.",
-        "zh": "朋友们，早上好。今天我想谈谈小词。小时候，我从父亲的书架上拿了一本书。书里的词又长又难，我读了一页就停下了。"
+        "en": "Hello, friends!",
+        "zh": "你好，朋友们！"
       },
       {
-        "en": "Then my mother gave me a different book. It had only simple words, but the stories were full of light. I went on reading till the sun went down, and I was happier than ever before.",
-        "zh": "后来，母亲给了我另一本书。书里只有简单的词，但故事里满是光亮。我一直读到太阳落山，比以往任何时候都快乐。"
+        "en": "I'm Amy.",
+        "zh": "我是艾米。"
       },
       {
-        "en": "Simple words are like boxes. They are small, but you may put great things into them: love, hope, and the way to a new country.",
-        "zh": "简单的词就像盒子。它们很小，却能装下伟大的东西：爱、希望，以及通往新国度的道路。"
+        "en": "I'm seven.",
+        "zh": "我七岁。"
       },
       {
-        "en": "So do not be afraid of simple language. Say what you see, and say it clearly. Every word you learn today is a step on the road to tomorrow. Thank you.",
-        "zh": "所以，不要害怕简单的语言。把你看到的说出来，说清楚。今天学会的每一个词，都是通往明天之路上的一步。谢谢大家。"
+        "en": "I'm a girl.",
+        "zh": "我是一个女孩。"
+      },
+      {
+        "en": "I like books.",
+        "zh": "我喜欢书。"
+      },
+      {
+        "en": "What is your name?",
+        "zh": "你叫什么名字？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I'm Amy. I'm a girl.",
+        "zh": "我是艾米。我是女孩。"
+      },
+      {
+        "en": "I'm Tom. I'm a boy.",
+        "zh": "我是汤姆。我是男孩。"
+      },
+      {
+        "en": "I'm Amy. I'm seven.",
+        "zh": "我是艾米。我七岁。"
+      },
+      {
+        "en": "I'm Tom. I'm eight.",
+        "zh": "我是汤姆。我八岁。"
       }
     ]
   },
   {
-    "id": "keep-learning",
-    "title": "Why We Keep Learning",
-    "titleZh": "我们为何持续学习",
-    "paragraphs": [
+    "id": "1-02",
+    "level": 1,
+    "unit": 2,
+    "title": "My Family",
+    "titleZh": "我的家人",
+    "lines": [
       {
-        "en": "Dear teachers and friends, I have a question for you. Why do we keep learning when we are no longer in school?",
-        "zh": "亲爱的老师和朋友们，我想问大家一个问题：当我们不再上学时，为什么还要继续学习？"
+        "en": "This is my family.",
+        "zh": "这是我的家人。"
       },
       {
-        "en": "My answer is simple. Learning keeps the mind awake. When we read, we see the world through other people's eyes. When we listen, we make a bridge between two hearts.",
-        "zh": "我的答案很简单。学习让头脑保持清醒。阅读时，我们透过别人的眼睛看世界；聆听时，我们在两颗心之间架起一座桥。"
+        "en": "This is my father.",
+        "zh": "这是我的爸爸。"
       },
       {
-        "en": "Last year I made a small rule: ten new words every day. Some days were hard, and some days I got tired. But little by little, the words came together, and now I'm able to read a newspaper in English.",
-        "zh": "去年我给自己定了一条小规矩：每天学十个新词。有些日子很难，有些日子我很累。但一点一点地，这些词连成了一片，现在我已经能读英文报纸了。"
+        "en": "This is my mother.",
+        "zh": "这是我的妈妈。"
       },
       {
-        "en": "Learning is not a race. It is a long, quiet walk. Go slowly, but go every day, and you will be surprised how far you have come.",
-        "zh": "学习不是赛跑，而是一段漫长而安静的步行。慢慢走，但每天都走，你会惊讶自己已经走了多远。"
+        "en": "This is my sister.",
+        "zh": "这是我的姐姐。"
+      },
+      {
+        "en": "I love my family.",
+        "zh": "我爱我的家人。"
+      },
+      {
+        "en": "Who is in your family?",
+        "zh": "你家里有谁？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "This is my father.",
+        "zh": "这是我的爸爸。"
+      },
+      {
+        "en": "This is my mother.",
+        "zh": "这是我的妈妈。"
+      },
+      {
+        "en": "This is my brother.",
+        "zh": "这是我的哥哥。"
+      },
+      {
+        "en": "This is my sister.",
+        "zh": "这是我的姐姐。"
+      }
+    ]
+  },
+  {
+    "id": "1-03",
+    "level": 1,
+    "unit": 3,
+    "title": "My Mom",
+    "titleZh": "我的妈妈",
+    "lines": [
+      {
+        "en": "This is my mom.",
+        "zh": "这是我的妈妈。"
+      },
+      {
+        "en": "She is tall.",
+        "zh": "她个子高高的。"
+      },
+      {
+        "en": "She is kind.",
+        "zh": "她很和蔼。"
+      },
+      {
+        "en": "She can cook.",
+        "zh": "她会做饭。"
+      },
+      {
+        "en": "I love my mom.",
+        "zh": "我爱我的妈妈。"
+      },
+      {
+        "en": "Is your mom kind?",
+        "zh": "你的妈妈和蔼吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "My mom is kind.",
+        "zh": "我的妈妈很和蔼。"
+      },
+      {
+        "en": "My mom is tall.",
+        "zh": "我的妈妈个子高。"
+      },
+      {
+        "en": "My mom is happy.",
+        "zh": "我的妈妈很开心。"
+      },
+      {
+        "en": "My mom is beautiful.",
+        "zh": "我的妈妈很漂亮。"
+      }
+    ]
+  },
+  {
+    "id": "1-04",
+    "level": 1,
+    "unit": 4,
+    "title": "My Pet",
+    "titleZh": "我的宠物",
+    "lines": [
+      {
+        "en": "I have a pet.",
+        "zh": "我有一只宠物。"
+      },
+      {
+        "en": "It is a cat.",
+        "zh": "它是一只猫。"
+      },
+      {
+        "en": "It is white.",
+        "zh": "它是白色的。"
+      },
+      {
+        "en": "It is small.",
+        "zh": "它小小的。"
+      },
+      {
+        "en": "I love my cat.",
+        "zh": "我爱我的猫。"
+      },
+      {
+        "en": "Do you have a pet?",
+        "zh": "你有宠物吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I have a cat. It's white.",
+        "zh": "我有一只猫。它是白色的。"
+      },
+      {
+        "en": "I have a dog. It's brown.",
+        "zh": "我有一只狗。它是棕色的。"
+      },
+      {
+        "en": "I have a fish. It's red.",
+        "zh": "我有一条鱼。它是红色的。"
+      },
+      {
+        "en": "I have a bird. It's yellow.",
+        "zh": "我有一只鸟。它是黄色的。"
+      }
+    ]
+  },
+  {
+    "id": "1-05",
+    "level": 1,
+    "unit": 5,
+    "title": "Colors I Like",
+    "titleZh": "我喜欢的颜色",
+    "lines": [
+      {
+        "en": "I like red.",
+        "zh": "我喜欢红色。"
+      },
+      {
+        "en": "Apples are red.",
+        "zh": "苹果是红色的。"
+      },
+      {
+        "en": "I like blue, too.",
+        "zh": "我也喜欢蓝色。"
+      },
+      {
+        "en": "The sky is blue.",
+        "zh": "天空是蓝色的。"
+      },
+      {
+        "en": "I like red and blue!",
+        "zh": "我喜欢红色和蓝色！"
+      },
+      {
+        "en": "What color do you like?",
+        "zh": "你喜欢什么颜色？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I like red. Apples are red.",
+        "zh": "我喜欢红色。苹果是红色的。"
+      },
+      {
+        "en": "I like green. Grass is green.",
+        "zh": "我喜欢绿色。草是绿色的。"
+      },
+      {
+        "en": "I like yellow. The sun is yellow.",
+        "zh": "我喜欢黄色。太阳是黄色的。"
+      },
+      {
+        "en": "I like white. Snow is white.",
+        "zh": "我喜欢白色。雪是白色的。"
+      }
+    ]
+  },
+  {
+    "id": "1-06",
+    "level": 1,
+    "unit": 6,
+    "title": "My Toys",
+    "titleZh": "我的玩具",
+    "lines": [
+      {
+        "en": "I have some toys.",
+        "zh": "我有一些玩具。"
+      },
+      {
+        "en": "This is my ball.",
+        "zh": "这是我的球。"
+      },
+      {
+        "en": "It is red and round.",
+        "zh": "它是红色的，圆圆的。"
+      },
+      {
+        "en": "This is my train.",
+        "zh": "这是我的小火车。"
+      },
+      {
+        "en": "It is long.",
+        "zh": "它长长的。"
+      },
+      {
+        "en": "I like my toys.",
+        "zh": "我喜欢我的玩具。"
+      },
+      {
+        "en": "What toys do you have?",
+        "zh": "你有什么玩具？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "This is my ball. It's round.",
+        "zh": "这是我的球。它圆圆的。"
+      },
+      {
+        "en": "This is my train. It's long.",
+        "zh": "这是我的小火车。它长长的。"
+      },
+      {
+        "en": "This is my boat. It's small.",
+        "zh": "这是我的小船。它小小的。"
+      },
+      {
+        "en": "This is my doll. It's beautiful.",
+        "zh": "这是我的娃娃。它很漂亮。"
+      }
+    ]
+  },
+  {
+    "id": "1-07",
+    "level": 1,
+    "unit": 7,
+    "title": "Fruit I Like",
+    "titleZh": "我喜欢的水果",
+    "lines": [
+      {
+        "en": "I like fruit.",
+        "zh": "我喜欢水果。"
+      },
+      {
+        "en": "I like apples.",
+        "zh": "我喜欢苹果。"
+      },
+      {
+        "en": "Apples are red and sweet.",
+        "zh": "苹果又红又甜。"
+      },
+      {
+        "en": "I like oranges, too.",
+        "zh": "我也喜欢橙子。"
+      },
+      {
+        "en": "Oranges are round.",
+        "zh": "橙子圆圆的。"
+      },
+      {
+        "en": "Fruit is good for me.",
+        "zh": "水果对我有好处。"
+      },
+      {
+        "en": "Do you like fruit?",
+        "zh": "你喜欢水果吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I like apples. They're sweet.",
+        "zh": "我喜欢苹果。它们很甜。"
+      },
+      {
+        "en": "I like oranges. They're round.",
+        "zh": "我喜欢橙子。它们圆圆的。"
+      },
+      {
+        "en": "I like berries. They're small.",
+        "zh": "我喜欢浆果。它们小小的。"
+      },
+      {
+        "en": "I like bananas. They're yellow.",
+        "zh": "我喜欢香蕉。它们是黄色的。"
+      }
+    ]
+  },
+  {
+    "id": "1-08",
+    "level": 1,
+    "unit": 8,
+    "title": "My Breakfast",
+    "titleZh": "我的早餐",
+    "lines": [
+      {
+        "en": "This is my breakfast.",
+        "zh": "这是我的早餐。"
+      },
+      {
+        "en": "I have an egg.",
+        "zh": "我吃一个鸡蛋。"
+      },
+      {
+        "en": "I have some bread.",
+        "zh": "我吃一些面包。"
+      },
+      {
+        "en": "I have a cup of milk.",
+        "zh": "我喝一杯牛奶。"
+      },
+      {
+        "en": "It is good food.",
+        "zh": "这是很好的食物。"
+      },
+      {
+        "en": "I like breakfast.",
+        "zh": "我喜欢早餐。"
+      },
+      {
+        "en": "What do you have for breakfast?",
+        "zh": "你早餐吃什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I have an egg.",
+        "zh": "我吃一个鸡蛋。"
+      },
+      {
+        "en": "I have some bread.",
+        "zh": "我吃一些面包。"
+      },
+      {
+        "en": "I have some rice.",
+        "zh": "我吃一些米饭。"
+      },
+      {
+        "en": "I have some milk.",
+        "zh": "我喝一些牛奶。"
+      }
+    ]
+  },
+  {
+    "id": "1-09",
+    "level": 1,
+    "unit": 9,
+    "title": "My Body",
+    "titleZh": "我的身体",
+    "lines": [
+      {
+        "en": "This is my body.",
+        "zh": "这是我的身体。"
+      },
+      {
+        "en": "I have two eyes.",
+        "zh": "我有两只眼睛。"
+      },
+      {
+        "en": "I see with my eyes.",
+        "zh": "我用眼睛看。"
+      },
+      {
+        "en": "I have two ears.",
+        "zh": "我有两只耳朵。"
+      },
+      {
+        "en": "I have two hands.",
+        "zh": "我有两只手。"
+      },
+      {
+        "en": "I can touch my toes.",
+        "zh": "我能摸到我的脚趾。"
+      },
+      {
+        "en": "Can you touch your toes?",
+        "zh": "你能摸到你的脚趾吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "This is my nose.",
+        "zh": "这是我的鼻子。"
+      },
+      {
+        "en": "These are my eyes.",
+        "zh": "这是我的眼睛。"
+      },
+      {
+        "en": "These are my ears.",
+        "zh": "这是我的耳朵。"
+      },
+      {
+        "en": "These are my hands.",
+        "zh": "这是我的手。"
+      }
+    ]
+  },
+  {
+    "id": "1-10",
+    "level": 1,
+    "unit": 10,
+    "title": "My Room",
+    "titleZh": "我的房间",
+    "lines": [
+      {
+        "en": "This is my room.",
+        "zh": "这是我的房间。"
+      },
+      {
+        "en": "It is small.",
+        "zh": "它小小的。"
+      },
+      {
+        "en": "I have a bed.",
+        "zh": "我有一张床。"
+      },
+      {
+        "en": "My bed is soft.",
+        "zh": "我的床软软的。"
+      },
+      {
+        "en": "I have a table, too.",
+        "zh": "我还有一张桌子。"
+      },
+      {
+        "en": "My books are on the table.",
+        "zh": "我的书在桌子上。"
+      },
+      {
+        "en": "Do you like your room?",
+        "zh": "你喜欢你的房间吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "The book is on the table.",
+        "zh": "书在桌子上。"
+      },
+      {
+        "en": "The ball is under the bed.",
+        "zh": "球在床底下。"
+      },
+      {
+        "en": "The cat is on the bed.",
+        "zh": "猫在床上。"
+      },
+      {
+        "en": "The bag is under the table.",
+        "zh": "书包在桌子下面。"
+      }
+    ]
+  },
+  {
+    "id": "1-11",
+    "level": 1,
+    "unit": 11,
+    "title": "My School Bag",
+    "titleZh": "我的书包",
+    "lines": [
+      {
+        "en": "This is my school bag.",
+        "zh": "这是我的书包。"
+      },
+      {
+        "en": "It is blue.",
+        "zh": "它是蓝色的。"
+      },
+      {
+        "en": "I have books in my bag.",
+        "zh": "我的书包里有书。"
+      },
+      {
+        "en": "I have a pen and a pencil.",
+        "zh": "我有一支钢笔和一支铅笔。"
+      },
+      {
+        "en": "I have some paper, too.",
+        "zh": "我还有一些纸。"
+      },
+      {
+        "en": "I take it to school.",
+        "zh": "我背着它去上学。"
+      },
+      {
+        "en": "What is in your bag?",
+        "zh": "你的书包里有什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I have a pen in my bag.",
+        "zh": "我的书包里有一支钢笔。"
+      },
+      {
+        "en": "I have a pencil in my bag.",
+        "zh": "我的书包里有一支铅笔。"
+      },
+      {
+        "en": "I have a book in my bag.",
+        "zh": "我的书包里有一本书。"
+      },
+      {
+        "en": "I have a map in my bag.",
+        "zh": "我的书包里有一张地图。"
+      }
+    ]
+  },
+  {
+    "id": "1-12",
+    "level": 1,
+    "unit": 12,
+    "title": "My Teacher",
+    "titleZh": "我的老师",
+    "lines": [
+      {
+        "en": "This is my teacher.",
+        "zh": "这是我的老师。"
+      },
+      {
+        "en": "Her name is Miss Lee.",
+        "zh": "她叫李老师。"
+      },
+      {
+        "en": "She is tall and kind.",
+        "zh": "她个子高，很和蔼。"
+      },
+      {
+        "en": "She has long black hair.",
+        "zh": "她有一头黑色的长发。"
+      },
+      {
+        "en": "She has a sweet smile.",
+        "zh": "她的笑容很甜。"
+      },
+      {
+        "en": "She can play music.",
+        "zh": "她会演奏音乐。"
+      },
+      {
+        "en": "I like my teacher.",
+        "zh": "我喜欢我的老师。"
+      },
+      {
+        "en": "Do you like your teacher?",
+        "zh": "你喜欢你的老师吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "My teacher is kind.",
+        "zh": "我的老师很和蔼。"
+      },
+      {
+        "en": "My teacher is tall.",
+        "zh": "我的老师个子高。"
+      },
+      {
+        "en": "My teacher is young.",
+        "zh": "我的老师很年轻。"
+      },
+      {
+        "en": "My teacher is happy.",
+        "zh": "我的老师很开心。"
+      }
+    ]
+  },
+  {
+    "id": "1-13",
+    "level": 1,
+    "unit": 13,
+    "title": "My Friend",
+    "titleZh": "我的朋友",
+    "lines": [
+      {
+        "en": "This is my friend Tom.",
+        "zh": "这是我的朋友汤姆。"
+      },
+      {
+        "en": "He is eight.",
+        "zh": "他八岁。"
+      },
+      {
+        "en": "He is tall and strong.",
+        "zh": "他又高又壮。"
+      },
+      {
+        "en": "He likes to play ball.",
+        "zh": "他喜欢玩球。"
+      },
+      {
+        "en": "We play together after school.",
+        "zh": "放学后我们一起玩。"
+      },
+      {
+        "en": "We are good friends.",
+        "zh": "我们是好朋友。"
+      },
+      {
+        "en": "I am happy with him.",
+        "zh": "和他在一起我很开心。"
+      },
+      {
+        "en": "Who is your friend?",
+        "zh": "谁是你的朋友？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "He likes to play ball.",
+        "zh": "他喜欢玩球。"
+      },
+      {
+        "en": "He likes to swim.",
+        "zh": "他喜欢游泳。"
+      },
+      {
+        "en": "He likes to run.",
+        "zh": "他喜欢跑步。"
+      },
+      {
+        "en": "He likes to jump.",
+        "zh": "他喜欢跳。"
+      }
+    ]
+  },
+  {
+    "id": "1-14",
+    "level": 1,
+    "unit": 14,
+    "title": "At the Zoo",
+    "titleZh": "在动物园",
+    "lines": [
+      {
+        "en": "I am at the zoo.",
+        "zh": "我在动物园。"
+      },
+      {
+        "en": "I can see a monkey.",
+        "zh": "我能看到一只猴子。"
+      },
+      {
+        "en": "It has a long tail.",
+        "zh": "它有一条长尾巴。"
+      },
+      {
+        "en": "I can see a snake.",
+        "zh": "我能看到一条蛇。"
+      },
+      {
+        "en": "It is long and thin.",
+        "zh": "它又长又细。"
+      },
+      {
+        "en": "I can see a tiger, too.",
+        "zh": "我还能看到一只老虎。"
+      },
+      {
+        "en": "It is very strong.",
+        "zh": "它非常强壮。"
+      },
+      {
+        "en": "What animal do you like?",
+        "zh": "你喜欢什么动物？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I can see a monkey. It has a long tail.",
+        "zh": "我能看到一只猴子。它有一条长尾巴。"
+      },
+      {
+        "en": "I can see a snake. It is long.",
+        "zh": "我能看到一条蛇。它长长的。"
+      },
+      {
+        "en": "I can see a tiger. It is strong.",
+        "zh": "我能看到一只老虎。它很强壮。"
+      },
+      {
+        "en": "I can see a bird. It has wings.",
+        "zh": "我能看到一只鸟。它有翅膀。"
+      }
+    ]
+  },
+  {
+    "id": "1-15",
+    "level": 1,
+    "unit": 15,
+    "title": "The Weather",
+    "titleZh": "天气",
+    "lines": [
+      {
+        "en": "The sun is out.",
+        "zh": "太阳出来了。"
+      },
+      {
+        "en": "The sky is blue.",
+        "zh": "天空是蓝色的。"
+      },
+      {
+        "en": "It is a warm day.",
+        "zh": "今天很暖和。"
+      },
+      {
+        "en": "I like warm weather.",
+        "zh": "我喜欢暖和的天气。"
+      },
+      {
+        "en": "I go out to play.",
+        "zh": "我出去玩。"
+      },
+      {
+        "en": "I do not like rain.",
+        "zh": "我不喜欢下雨。"
+      },
+      {
+        "en": "Rain is cold and wet.",
+        "zh": "雨又冷又湿。"
+      },
+      {
+        "en": "What weather do you like?",
+        "zh": "你喜欢什么天气？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "It is a sunny day. I go out to play.",
+        "zh": "今天是晴天。我出去玩。"
+      },
+      {
+        "en": "It is a rainy day. I take my umbrella.",
+        "zh": "今天是雨天。我带上雨伞。"
+      },
+      {
+        "en": "It is a windy day. I fly my kite.",
+        "zh": "今天刮风。我放风筝。"
+      },
+      {
+        "en": "It is a snowy day. I play in the snow.",
+        "zh": "今天下雪了。我在雪地里玩。"
+      }
+    ]
+  },
+  {
+    "id": "1-16",
+    "level": 1,
+    "unit": 16,
+    "title": "I Like Summer",
+    "titleZh": "我爱夏天",
+    "lines": [
+      {
+        "en": "I like summer.",
+        "zh": "我爱夏天。"
+      },
+      {
+        "en": "It is hot.",
+        "zh": "天气很热。"
+      },
+      {
+        "en": "I go swimming in summer.",
+        "zh": "我在夏天去游泳。"
+      },
+      {
+        "en": "I like to swim.",
+        "zh": "我喜欢游泳。"
+      },
+      {
+        "en": "The water is cool.",
+        "zh": "水是凉的。"
+      },
+      {
+        "en": "I eat ice cream, too.",
+        "zh": "我也吃冰淇淋。"
+      },
+      {
+        "en": "Summer is a happy time!",
+        "zh": "夏天是快乐的时光！"
+      },
+      {
+        "en": "Do you like summer?",
+        "zh": "你喜欢夏天吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I like fall. It's cool.",
+        "zh": "我喜欢秋天。天气凉爽。"
+      },
+      {
+        "en": "I like spring. It's warm.",
+        "zh": "我喜欢春天。天气暖和。"
+      },
+      {
+        "en": "I like summer. It's hot.",
+        "zh": "我喜欢夏天。天气很热。"
+      },
+      {
+        "en": "I like winter. It's cold.",
+        "zh": "我喜欢冬天。天气很冷。"
+      }
+    ]
+  },
+  {
+    "id": "1-17",
+    "level": 1,
+    "unit": 17,
+    "title": "My Birthday",
+    "titleZh": "我的生日",
+    "lines": [
+      {
+        "en": "Today is my birthday.",
+        "zh": "今天是我的生日。"
+      },
+      {
+        "en": "I am eight.",
+        "zh": "我八岁了。"
+      },
+      {
+        "en": "I have a birthday cake.",
+        "zh": "我有一个生日蛋糕。"
+      },
+      {
+        "en": "It is sweet and good.",
+        "zh": "它又甜又好吃。"
+      },
+      {
+        "en": "My friends come to see me.",
+        "zh": "我的朋友们来看我。"
+      },
+      {
+        "en": "They give me presents.",
+        "zh": "他们送我礼物。"
+      },
+      {
+        "en": "I am very happy.",
+        "zh": "我非常开心。"
+      },
+      {
+        "en": "When is your birthday?",
+        "zh": "你的生日是什么时候？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Today is my birthday. I'm six.",
+        "zh": "今天是我的生日。我六岁了。"
+      },
+      {
+        "en": "Today is my birthday. I'm seven.",
+        "zh": "今天是我的生日。我七岁了。"
+      },
+      {
+        "en": "Today is my birthday. I'm eight.",
+        "zh": "今天是我的生日。我八岁了。"
+      },
+      {
+        "en": "Today is my birthday. I'm nine.",
+        "zh": "今天是我的生日。我九岁了。"
+      }
+    ]
+  },
+  {
+    "id": "1-18",
+    "level": 1,
+    "unit": 18,
+    "title": "How Many?",
+    "titleZh": "有多少？",
+    "lines": [
+      {
+        "en": "I have some apples.",
+        "zh": "我有一些苹果。"
+      },
+      {
+        "en": "How many apples?",
+        "zh": "有多少个苹果？"
+      },
+      {
+        "en": "One, two, three.",
+        "zh": "一，二，三。"
+      },
+      {
+        "en": "I have three apples.",
+        "zh": "我有三个苹果。"
+      },
+      {
+        "en": "I have some pens, too.",
+        "zh": "我还有一些钢笔。"
+      },
+      {
+        "en": "One, two, three, four, five!",
+        "zh": "一，二，三，四，五！"
+      },
+      {
+        "en": "I have five pens.",
+        "zh": "我有五支钢笔。"
+      },
+      {
+        "en": "How many pens do you have?",
+        "zh": "你有多少支钢笔？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "How many cats? I have one cat.",
+        "zh": "有几只猫？我有一只猫。"
+      },
+      {
+        "en": "How many books? I have two books.",
+        "zh": "有几本书？我有两本书。"
+      },
+      {
+        "en": "How many apples? I have three apples.",
+        "zh": "有几个苹果？我有三个苹果。"
+      },
+      {
+        "en": "How many pens? I have four pens.",
+        "zh": "有几支钢笔？我有四支钢笔。"
+      }
+    ]
+  },
+  {
+    "id": "1-19",
+    "level": 1,
+    "unit": 19,
+    "title": "My Clothes",
+    "titleZh": "我的衣服",
+    "lines": [
+      {
+        "en": "These are my clothes.",
+        "zh": "这些是我的衣服。"
+      },
+      {
+        "en": "This is my coat.",
+        "zh": "这是我的外套。"
+      },
+      {
+        "en": "It is red and warm.",
+        "zh": "它是红色的，很暖和。"
+      },
+      {
+        "en": "These are my trousers.",
+        "zh": "这是我的裤子。"
+      },
+      {
+        "en": "They are blue.",
+        "zh": "它们是蓝色的。"
+      },
+      {
+        "en": "These are my shoes.",
+        "zh": "这是我的鞋子。"
+      },
+      {
+        "en": "They are new.",
+        "zh": "它们是新的。"
+      },
+      {
+        "en": "Do you like my clothes?",
+        "zh": "你喜欢我的衣服吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "This is my coat. It's red.",
+        "zh": "这是我的外套。它是红色的。"
+      },
+      {
+        "en": "This is my hat. It's yellow.",
+        "zh": "这是我的帽子。它是黄色的。"
+      },
+      {
+        "en": "This is my shirt. It's white.",
+        "zh": "这是我的衬衫。它是白色的。"
+      },
+      {
+        "en": "This is my dress. It's green.",
+        "zh": "这是我的连衣裙。它是绿色的。"
+      }
+    ]
+  },
+  {
+    "id": "1-20",
+    "level": 1,
+    "unit": 20,
+    "title": "My Day",
+    "titleZh": "我的一天",
+    "lines": [
+      {
+        "en": "I get up early.",
+        "zh": "我起得很早。"
+      },
+      {
+        "en": "I wash my face.",
+        "zh": "我洗脸。"
+      },
+      {
+        "en": "I have my breakfast.",
+        "zh": "我吃早餐。"
+      },
+      {
+        "en": "I go to school.",
+        "zh": "我去上学。"
+      },
+      {
+        "en": "I play with my friends.",
+        "zh": "我和朋友们一起玩。"
+      },
+      {
+        "en": "I go to bed at night.",
+        "zh": "我晚上去睡觉。"
+      },
+      {
+        "en": "It is a happy day.",
+        "zh": "这是快乐的一天。"
+      },
+      {
+        "en": "What do you do every day?",
+        "zh": "你每天做什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I wash my face in the morning.",
+        "zh": "我早上洗脸。"
+      },
+      {
+        "en": "I go to school in the morning.",
+        "zh": "我早上去上学。"
+      },
+      {
+        "en": "I play with friends after school.",
+        "zh": "我放学后和朋友们玩。"
+      },
+      {
+        "en": "I go to bed at night.",
+        "zh": "我晚上去睡觉。"
+      }
+    ]
+  },
+  {
+    "id": "2-01",
+    "level": 2,
+    "unit": 1,
+    "title": "I Can Swim",
+    "titleZh": "我会游泳",
+    "lines": [
+      {
+        "en": "I can swim.",
+        "zh": "我会游泳。"
+      },
+      {
+        "en": "I swim in the sea with my father.",
+        "zh": "我和爸爸在海里游泳。"
+      },
+      {
+        "en": "The water is warm and blue.",
+        "zh": "海水又暖和又蓝。"
+      },
+      {
+        "en": "I can kick my legs.",
+        "zh": "我会踢腿。"
+      },
+      {
+        "en": "I can swim very well.",
+        "zh": "我游得很好。"
+      },
+      {
+        "en": "My little sister can't swim.",
+        "zh": "我的妹妹不会游泳。"
+      },
+      {
+        "en": "But she can jump and play in the sand.",
+        "zh": "但是她会在沙滩上跳跳玩玩。"
+      },
+      {
+        "en": "I am happy in the water.",
+        "zh": "我在水里很快乐。"
+      },
+      {
+        "en": "Can you swim?",
+        "zh": "你会游泳吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Can you swim? Yes, I can.",
+        "zh": "你会游泳吗？是的，我会。"
+      },
+      {
+        "en": "Can you jump? Yes, I can.",
+        "zh": "你会跳吗？是的，我会。"
+      },
+      {
+        "en": "Can you kick a ball? Yes, I can.",
+        "zh": "你会踢球吗？是的，我会。"
+      },
+      {
+        "en": "Can you cook? No, I can't.",
+        "zh": "你会做饭吗？不，我不会。"
+      },
+      {
+        "en": "Can you fly? No, I can't.",
+        "zh": "你会飞吗？不，我不会。"
+      }
+    ]
+  },
+  {
+    "id": "2-02",
+    "level": 2,
+    "unit": 2,
+    "title": "A Park Near My Home",
+    "titleZh": "我家附近的公园",
+    "lines": [
+      {
+        "en": "There is a park near my house.",
+        "zh": "我家附近有一个公园。"
+      },
+      {
+        "en": "There are tall trees in the park.",
+        "zh": "公园里有高高的树。"
+      },
+      {
+        "en": "There is a little river under the bridge.",
+        "zh": "桥下有一条小河。"
+      },
+      {
+        "en": "There are fish in the water.",
+        "zh": "水里有鱼。"
+      },
+      {
+        "en": "There are red and yellow flowers.",
+        "zh": "有红色和黄色的花。"
+      },
+      {
+        "en": "There is a long seat by the river.",
+        "zh": "河边有一张长椅子。"
+      },
+      {
+        "en": "I go to the park in the morning.",
+        "zh": "我早上去公园。"
+      },
+      {
+        "en": "The air is clean and sweet.",
+        "zh": "空气又清新又香甜。"
+      },
+      {
+        "en": "I love this park.",
+        "zh": "我爱这个公园。"
+      },
+      {
+        "en": "Is there a park near your house?",
+        "zh": "你家附近有公园吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Is there a park near your house? Yes, there is.",
+        "zh": "你家附近有公园吗？是的，有。"
+      },
+      {
+        "en": "Is there a school near your house? Yes, there is.",
+        "zh": "你家附近有学校吗？是的，有。"
+      },
+      {
+        "en": "Is there a river near your house? No, there isn't.",
+        "zh": "你家附近有河吗？不，没有。"
+      },
+      {
+        "en": "Are there trees in the park? Yes, there are.",
+        "zh": "公园里有树吗？是的，有。"
+      },
+      {
+        "en": "Are there birds in the park? Yes, there are.",
+        "zh": "公园里有鸟吗？是的，有。"
+      },
+      {
+        "en": "Are there boats on the river? Yes, there are.",
+        "zh": "河上有船吗？是的，有。"
+      }
+    ]
+  },
+  {
+    "id": "2-03",
+    "level": 2,
+    "unit": 3,
+    "title": "My Weekend",
+    "titleZh": "我的周末",
+    "lines": [
+      {
+        "en": "I like the weekend.",
+        "zh": "我喜欢周末。"
+      },
+      {
+        "en": "There is no school on the weekend.",
+        "zh": "周末不用上学。"
+      },
+      {
+        "en": "On Saturday, I play ball with my friends.",
+        "zh": "星期六，我和朋友们玩球。"
+      },
+      {
+        "en": "On Sunday, I go to the library with my mother.",
+        "zh": "星期天，我和妈妈去图书馆。"
+      },
+      {
+        "en": "There are books about animals and stars.",
+        "zh": "那里有关于动物和星星的书。"
+      },
+      {
+        "en": "I can take some books with me.",
+        "zh": "我可以借几本书带回去。"
+      },
+      {
+        "en": "At night, my family has a good meal.",
+        "zh": "晚上，我们全家吃一顿好饭。"
+      },
+      {
+        "en": "The weekend is a happy time.",
+        "zh": "周末是快乐的时光。"
+      },
+      {
+        "en": "What do you do on the weekend?",
+        "zh": "你周末做什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What do you do on Saturday? I play ball.",
+        "zh": "你星期六做什么？我玩球。"
+      },
+      {
+        "en": "What do you do on Saturday? I go swimming.",
+        "zh": "你星期六做什么？我去游泳。"
+      },
+      {
+        "en": "What do you do on Sunday? I go to the library.",
+        "zh": "你星期天做什么？我去图书馆。"
+      },
+      {
+        "en": "What do you do on Sunday? I help my mother.",
+        "zh": "你星期天做什么？我帮妈妈干活。"
+      },
+      {
+        "en": "What do you do on Sunday? I paint pictures.",
+        "zh": "你星期天做什么？我画画。"
+      }
+    ]
+  },
+  {
+    "id": "2-04",
+    "level": 2,
+    "unit": 4,
+    "title": "At the Shop",
+    "titleZh": "在商店",
+    "lines": [
+      {
+        "en": "My mother and I go to the shop.",
+        "zh": "我和妈妈去商店。"
+      },
+      {
+        "en": "There are apples, eggs and bread.",
+        "zh": "那里有苹果、鸡蛋和面包。"
+      },
+      {
+        "en": "There is cold milk by the door.",
+        "zh": "门边有冰牛奶。"
+      },
+      {
+        "en": "I see some red apples.",
+        "zh": "我看到一些红苹果。"
+      },
+      {
+        "en": "Can I have some apples, please?",
+        "zh": "我可以要一些苹果吗？"
+      },
+      {
+        "en": "How much are they?",
+        "zh": "它们多少钱？"
+      },
+      {
+        "en": "My mother gives the man some money.",
+        "zh": "妈妈给了那个人一些钱。"
+      },
+      {
+        "en": "The man smiles at us.",
+        "zh": "那个人对我们笑了笑。"
+      },
+      {
+        "en": "I put the apples in my bag.",
+        "zh": "我把苹果放进我的包里。"
+      },
+      {
+        "en": "Do you like going to the shop?",
+        "zh": "你喜欢去商店吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Can I have some apples, please? Yes, here you are.",
+        "zh": "我可以要一些苹果吗？好的，给你。"
+      },
+      {
+        "en": "Can I have some bread, please? Yes, here you are.",
+        "zh": "我可以要一些面包吗？好的，给你。"
+      },
+      {
+        "en": "Can I have some milk, please? Yes, here you are.",
+        "zh": "我可以要一些牛奶吗？好的，给你。"
+      },
+      {
+        "en": "Can I have some eggs, please? Yes, here you are.",
+        "zh": "我可以要一些鸡蛋吗？好的，给你。"
+      },
+      {
+        "en": "Can I have some oranges, please? Yes, here you are.",
+        "zh": "我可以要一些橙子吗？好的，给你。"
+      }
+    ]
+  },
+  {
+    "id": "2-05",
+    "level": 2,
+    "unit": 5,
+    "title": "Cooking with Dad",
+    "titleZh": "和爸爸一起做饭",
+    "lines": [
+      {
+        "en": "My dad is cooking in the kitchen.",
+        "zh": "爸爸正在厨房做饭。"
+      },
+      {
+        "en": "I am helping him.",
+        "zh": "我在帮他。"
+      },
+      {
+        "en": "He is cutting the potatoes.",
+        "zh": "他在切土豆。"
+      },
+      {
+        "en": "I am washing the rice.",
+        "zh": "我在洗米。"
+      },
+      {
+        "en": "There is some soup on the fire.",
+        "zh": "火上煮着一锅汤。"
+      },
+      {
+        "en": "Dad is putting salt in the soup.",
+        "zh": "爸爸在往汤里放盐。"
+      },
+      {
+        "en": "The soup smells very good.",
+        "zh": "汤闻起来好香。"
+      },
+      {
+        "en": "Now it is ready!",
+        "zh": "现在汤做好了！"
+      },
+      {
+        "en": "I love cooking with Dad.",
+        "zh": "我喜欢和爸爸一起做饭。"
+      },
+      {
+        "en": "Do you cook with your family?",
+        "zh": "你和家人一起做饭吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What are you doing? I'm washing the rice.",
+        "zh": "你在做什么？我在洗米。"
+      },
+      {
+        "en": "What are you doing? I'm cutting the potatoes.",
+        "zh": "你在做什么？我在切土豆。"
+      },
+      {
+        "en": "What are you doing? I'm cleaning the plates.",
+        "zh": "你在做什么？我在洗盘子。"
+      },
+      {
+        "en": "What is Dad doing? He's cooking the soup.",
+        "zh": "爸爸在做什么？他在煮汤。"
+      },
+      {
+        "en": "What is your mother doing? She's making a cake.",
+        "zh": "你妈妈在做什么？她在做蛋糕。"
+      }
+    ]
+  },
+  {
+    "id": "2-06",
+    "level": 2,
+    "unit": 6,
+    "title": "My Favorite Sport",
+    "titleZh": "我最喜欢的运动",
+    "lines": [
+      {
+        "en": "My favorite sport is running.",
+        "zh": "我最喜欢的运动是跑步。"
+      },
+      {
+        "en": "I run with my friends after school.",
+        "zh": "放学后，我和朋友们一起跑步。"
+      },
+      {
+        "en": "I can run very quickly.",
+        "zh": "我能跑得很快。"
+      },
+      {
+        "en": "Look! We are running round the field.",
+        "zh": "看！我们正在操场上绕圈跑。"
+      },
+      {
+        "en": "My friend is in front of me.",
+        "zh": "我的朋友在我前面。"
+      },
+      {
+        "en": "I am running after him.",
+        "zh": "我正在追他。"
+      },
+      {
+        "en": "Running makes me strong and healthy.",
+        "zh": "跑步让我又强壮又健康。"
+      },
+      {
+        "en": "I am tired, but I am happy.",
+        "zh": "我很累，但是我很开心。"
+      },
+      {
+        "en": "What is your favorite sport?",
+        "zh": "你最喜欢的运动是什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is your favorite sport? I like running.",
+        "zh": "你最喜欢的运动是什么？我喜欢跑步。"
+      },
+      {
+        "en": "What is your favorite sport? I like swimming.",
+        "zh": "你最喜欢的运动是什么？我喜欢游泳。"
+      },
+      {
+        "en": "What is your favorite sport? I like football.",
+        "zh": "你最喜欢的运动是什么？我喜欢足球。"
+      },
+      {
+        "en": "What is your favorite sport? I like basketball.",
+        "zh": "你最喜欢的运动是什么？我喜欢篮球。"
+      }
+    ]
+  },
+  {
+    "id": "2-07",
+    "level": 2,
+    "unit": 7,
+    "title": "A Rainy Day",
+    "titleZh": "下雨天",
+    "lines": [
+      {
+        "en": "It is raining this morning.",
+        "zh": "今天早上在下雨。"
+      },
+      {
+        "en": "The sky is dark and grey.",
+        "zh": "天空又暗又灰。"
+      },
+      {
+        "en": "There are black clouds over the town.",
+        "zh": "小城上空飘着乌云。"
+      },
+      {
+        "en": "Some boys and girls are walking with umbrellas.",
+        "zh": "一些孩子正撑着伞走路。"
+      },
+      {
+        "en": "A little dog is running in the rain.",
+        "zh": "一只小狗在雨里跑。"
+      },
+      {
+        "en": "I have my red boots on.",
+        "zh": "我穿上了我的红靴子。"
+      },
+      {
+        "en": "I am jumping in the water on the road.",
+        "zh": "我正在路上的水坑里跳。"
+      },
+      {
+        "en": "My socks are wet, but I am happy.",
+        "zh": "我的袜子湿了，但是我很开心。"
+      },
+      {
+        "en": "I like the rain.",
+        "zh": "我喜欢下雨。"
+      },
+      {
+        "en": "Do you like the rain?",
+        "zh": "你喜欢下雨吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is the weather like? It's raining.",
+        "zh": "天气怎么样？在下雨。"
+      },
+      {
+        "en": "What is the weather like? It's snowing.",
+        "zh": "天气怎么样？在下雪。"
+      },
+      {
+        "en": "What is the weather like? It's cold and wet.",
+        "zh": "天气怎么样？又冷又湿。"
+      },
+      {
+        "en": "What is the weather like? It's warm.",
+        "zh": "天气怎么样？很暖和。"
+      }
+    ]
+  },
+  {
+    "id": "2-08",
+    "level": 2,
+    "unit": 8,
+    "title": "What Are They Doing?",
+    "titleZh": "他们在做什么？",
+    "lines": [
+      {
+        "en": "Look at the park!",
+        "zh": "看看公园！"
+      },
+      {
+        "en": "There are boys and girls in the park.",
+        "zh": "公园里有男孩，也有女孩。"
+      },
+      {
+        "en": "Some boys are kicking a ball.",
+        "zh": "一些男孩在踢球。"
+      },
+      {
+        "en": "Some girls are flying a kite.",
+        "zh": "一些女孩在放风筝。"
+      },
+      {
+        "en": "A baby is sleeping under a tree.",
+        "zh": "一个小宝宝在树下睡觉。"
+      },
+      {
+        "en": "An old man is reading a book.",
+        "zh": "一位老爷爷在看书。"
+      },
+      {
+        "en": "His dog is playing with a stick.",
+        "zh": "他的狗在玩一根小树枝。"
+      },
+      {
+        "en": "They are all happy in the sun.",
+        "zh": "他们在阳光下都很开心。"
+      },
+      {
+        "en": "And I am painting a picture of them.",
+        "zh": "我正在给他们画一幅画。"
+      },
+      {
+        "en": "What are you doing now?",
+        "zh": "你现在在做什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What are they doing? They're kicking a ball.",
+        "zh": "他们在做什么？他们在踢球。"
+      },
+      {
+        "en": "What are they doing? They're flying a kite.",
+        "zh": "他们在做什么？他们在放风筝。"
+      },
+      {
+        "en": "What is he doing? He's reading a book.",
+        "zh": "他在做什么？他在看书。"
+      },
+      {
+        "en": "What is she doing? She's painting a picture.",
+        "zh": "她在做什么？她在画画。"
+      },
+      {
+        "en": "What is the baby doing? The baby is sleeping.",
+        "zh": "宝宝在做什么？宝宝在睡觉。"
+      }
+    ]
+  },
+  {
+    "id": "2-09",
+    "level": 2,
+    "unit": 9,
+    "title": "My Hobby",
+    "titleZh": "我的爱好",
+    "lines": [
+      {
+        "en": "My hobby is painting.",
+        "zh": "我的爱好是画画。"
+      },
+      {
+        "en": "I paint after school every day.",
+        "zh": "我每天放学后画画。"
+      },
+      {
+        "en": "I have a box of paints and some brushes.",
+        "zh": "我有一盒颜料和几支画笔。"
+      },
+      {
+        "en": "Look, I am painting a picture now.",
+        "zh": "看，我现在正在画一幅画。"
+      },
+      {
+        "en": "There is a tall tree in my picture.",
+        "zh": "我的画里有一棵高高的树。"
+      },
+      {
+        "en": "There are some birds on its branches.",
+        "zh": "树枝上有几只小鸟。"
+      },
+      {
+        "en": "I am painting the sky blue.",
+        "zh": "我正把天空涂成蓝色。"
+      },
+      {
+        "en": "Painting makes me quiet and happy.",
+        "zh": "画画让我又安静又快乐。"
+      },
+      {
+        "en": "I hope to be a painter some day.",
+        "zh": "我希望有一天能成为画家。"
+      },
+      {
+        "en": "What is your hobby?",
+        "zh": "你的爱好是什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is your hobby? I like painting.",
+        "zh": "你的爱好是什么？我喜欢画画。"
+      },
+      {
+        "en": "What is your hobby? I like reading.",
+        "zh": "你的爱好是什么？我喜欢读书。"
+      },
+      {
+        "en": "What is your hobby? I like singing.",
+        "zh": "你的爱好是什么？我喜欢唱歌。"
+      },
+      {
+        "en": "What is your hobby? I like cooking.",
+        "zh": "你的爱好是什么？我喜欢做饭。"
+      },
+      {
+        "en": "What is your hobby? I like swimming.",
+        "zh": "你的爱好是什么？我喜欢游泳。"
+      }
+    ]
+  },
+  {
+    "id": "2-10",
+    "level": 2,
+    "unit": 10,
+    "title": "On the Bus",
+    "titleZh": "在公交车上",
+    "lines": [
+      {
+        "en": "I am on the bus.",
+        "zh": "我在公交车上。"
+      },
+      {
+        "en": "I am going to school.",
+        "zh": "我正在去上学的路上。"
+      },
+      {
+        "en": "The bus is full this morning.",
+        "zh": "今天早上车上坐满了人。"
+      },
+      {
+        "en": "An old woman is getting on the bus.",
+        "zh": "一位老奶奶正在上车。"
+      },
+      {
+        "en": "I give her my seat.",
+        "zh": "我把座位让给她。"
+      },
+      {
+        "en": "She smiles at me.",
+        "zh": "她对我笑了笑。"
+      },
+      {
+        "en": "I am looking out of the window.",
+        "zh": "我正看着窗外。"
+      },
+      {
+        "en": "There are shops and trees on the street.",
+        "zh": "街上有商店和树。"
+      },
+      {
+        "en": "Now the bus is stopping at my school.",
+        "zh": "现在公交车正停在我的学校门口。"
+      },
+      {
+        "en": "Do you go to school by bus?",
+        "zh": "你坐公交车上学吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "How do you go to school? I go by bus.",
+        "zh": "你怎么去上学？我坐公交车去。"
+      },
+      {
+        "en": "How do you go to school? I go by train.",
+        "zh": "你怎么去上学？我坐火车去。"
+      },
+      {
+        "en": "How do you go to school? I go by car.",
+        "zh": "你怎么去上学？我坐汽车去。"
+      },
+      {
+        "en": "How do you go to school? I go by bike.",
+        "zh": "你怎么去上学？我骑自行车去。"
+      },
+      {
+        "en": "How do you go to school? I go on foot.",
+        "zh": "你怎么去上学？我走路去。"
+      }
+    ]
+  },
+  {
+    "id": "2-11",
+    "level": 2,
+    "unit": 11,
+    "title": "At the Doctor's",
+    "titleZh": "看医生",
+    "lines": [
+      {
+        "en": "I am ill this morning.",
+        "zh": "我今天早上生病了。"
+      },
+      {
+        "en": "I have a pain in my head.",
+        "zh": "我头疼。"
+      },
+      {
+        "en": "And I have a bad cough.",
+        "zh": "我还咳得很厉害。"
+      },
+      {
+        "en": "My mother is taking me to the doctor.",
+        "zh": "妈妈正带我去看医生。"
+      },
+      {
+        "en": "The doctor is looking at my throat.",
+        "zh": "医生正在检查我的喉咙。"
+      },
+      {
+        "en": "She says I have a cold.",
+        "zh": "她说我感冒了。"
+      },
+      {
+        "en": "I need to rest and drink warm water.",
+        "zh": "我需要休息，多喝温水。"
+      },
+      {
+        "en": "Now I am in bed.",
+        "zh": "现在我躺在床上。"
+      },
+      {
+        "en": "I hope I will be well tomorrow.",
+        "zh": "我希望明天就能好起来。"
+      },
+      {
+        "en": "Do you keep warm when it is cold?",
+        "zh": "天冷的时候，你会注意保暖吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is wrong with you? I have a cold.",
+        "zh": "你怎么了？我感冒了。"
+      },
+      {
+        "en": "What is wrong with you? I have a cough.",
+        "zh": "你怎么了？我咳嗽了。"
+      },
+      {
+        "en": "What is wrong with you? I have a pain in my head.",
+        "zh": "你怎么了？我头疼。"
+      },
+      {
+        "en": "What is wrong with you? I have a pain in my stomach.",
+        "zh": "你怎么了？我肚子疼。"
+      },
+      {
+        "en": "What is wrong with you? I have a bad tooth.",
+        "zh": "你怎么了？我牙疼。"
+      }
+    ]
+  },
+  {
+    "id": "2-12",
+    "level": 2,
+    "unit": 12,
+    "title": "Healthy Food",
+    "titleZh": "健康的食物",
+    "lines": [
+      {
+        "en": "I like healthy food.",
+        "zh": "我喜欢健康的食物。"
+      },
+      {
+        "en": "Fruit is good for my body.",
+        "zh": "水果对我的身体有好处。"
+      },
+      {
+        "en": "I have an apple every morning.",
+        "zh": "我每天早上吃一个苹果。"
+      },
+      {
+        "en": "Milk makes my bones strong.",
+        "zh": "牛奶让我的骨头更结实。"
+      },
+      {
+        "en": "There is fish and rice on the table.",
+        "zh": "桌上有鱼和米饭。"
+      },
+      {
+        "en": "My mother is cooking green vegetables.",
+        "zh": "妈妈正在炒绿色的蔬菜。"
+      },
+      {
+        "en": "Cake is sweet, but sugar is bad for my teeth.",
+        "zh": "蛋糕很甜，但是糖对我的牙齿不好。"
+      },
+      {
+        "en": "I am strong because I have good food.",
+        "zh": "我很强壮，因为我吃健康的食物。"
+      },
+      {
+        "en": "Do you like healthy food?",
+        "zh": "你喜欢健康的食物吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Is milk good for you? Yes, it is.",
+        "zh": "牛奶对你有好处吗？是的，有好处。"
+      },
+      {
+        "en": "Is fruit good for you? Yes, it is.",
+        "zh": "水果对你有好处吗？是的，有好处。"
+      },
+      {
+        "en": "Is fish good for you? Yes, it is.",
+        "zh": "鱼对你有好处吗？是的，有好处。"
+      },
+      {
+        "en": "Is sugar good for you? No, it isn't.",
+        "zh": "糖对你有好处吗？不，没有好处。"
+      },
+      {
+        "en": "Are vegetables good for you? Yes, they are.",
+        "zh": "蔬菜对你有好处吗？是的，有好处。"
+      }
+    ]
+  },
+  {
+    "id": "2-13",
+    "level": 2,
+    "unit": 13,
+    "title": "Helping at Home",
+    "titleZh": "在家帮忙",
+    "lines": [
+      {
+        "en": "It is Saturday morning.",
+        "zh": "今天是星期六早上。"
+      },
+      {
+        "en": "My family is cleaning the house.",
+        "zh": "我们全家正在打扫房子。"
+      },
+      {
+        "en": "My father is washing the windows.",
+        "zh": "爸爸在擦窗户。"
+      },
+      {
+        "en": "My mother is cleaning the floor.",
+        "zh": "妈妈在拖地。"
+      },
+      {
+        "en": "My sister is putting her books on the shelf.",
+        "zh": "妹妹在把她的书放到书架上。"
+      },
+      {
+        "en": "And I am washing the cups and plates.",
+        "zh": "我在洗杯子和盘子。"
+      },
+      {
+        "en": "There is water on my shirt, but I don't mind.",
+        "zh": "我的衬衫上有水，但是我不在意。"
+      },
+      {
+        "en": "Now our house is clean and bright.",
+        "zh": "现在我们的房子又干净又明亮。"
+      },
+      {
+        "en": "I am happy to help my family.",
+        "zh": "我很高兴能帮助家人。"
+      },
+      {
+        "en": "Do you help at home?",
+        "zh": "你在家帮忙做家务吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "How do you help at home? I wash the plates.",
+        "zh": "你在家怎么帮忙？我洗盘子。"
+      },
+      {
+        "en": "How do you help at home? I clean the floor.",
+        "zh": "你在家怎么帮忙？我拖地。"
+      },
+      {
+        "en": "How do you help at home? I make my bed.",
+        "zh": "你在家怎么帮忙？我整理床铺。"
+      },
+      {
+        "en": "How do you help at home? I give the plants water.",
+        "zh": "你在家怎么帮忙？我给植物浇水。"
+      },
+      {
+        "en": "How do you help at home? I put my books on the shelf.",
+        "zh": "你在家怎么帮忙？我把书放到书架上。"
+      }
+    ]
+  },
+  {
+    "id": "2-14",
+    "level": 2,
+    "unit": 14,
+    "title": "My Town",
+    "titleZh": "我的小城",
+    "lines": [
+      {
+        "en": "My house is in a small town.",
+        "zh": "我家在一座小城里。"
+      },
+      {
+        "en": "There is a long river in my town.",
+        "zh": "我的小城里有一条长长的河。"
+      },
+      {
+        "en": "There are boats on the river.",
+        "zh": "河上有船。"
+      },
+      {
+        "en": "There is a school near my house.",
+        "zh": "我家附近有一所学校。"
+      },
+      {
+        "en": "There is a market by the station.",
+        "zh": "车站旁边有一个市场。"
+      },
+      {
+        "en": "My mother is getting fruit and fish there.",
+        "zh": "妈妈正在那里买水果和鱼。"
+      },
+      {
+        "en": "We have a library and a hospital.",
+        "zh": "我们这里有图书馆和医院。"
+      },
+      {
+        "en": "My town is small, but it is beautiful.",
+        "zh": "我的小城很小，但是很美。"
+      },
+      {
+        "en": "I love my town.",
+        "zh": "我爱我的小城。"
+      },
+      {
+        "en": "What is in your town?",
+        "zh": "你的城市里有什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Is there a library in your town? Yes, there is.",
+        "zh": "你的城市里有图书馆吗？是的，有。"
+      },
+      {
+        "en": "Is there a hospital in your town? Yes, there is.",
+        "zh": "你的城市里有医院吗？是的，有。"
+      },
+      {
+        "en": "Is there a market in your town? Yes, there is.",
+        "zh": "你的城市里有市场吗？是的，有。"
+      },
+      {
+        "en": "Is there a station in your town? Yes, there is.",
+        "zh": "你的城市里有车站吗？是的，有。"
+      },
+      {
+        "en": "Is there a zoo in your town? No, there isn't.",
+        "zh": "你的城市里有动物园吗？不，没有。"
+      }
+    ]
+  },
+  {
+    "id": "2-15",
+    "level": 2,
+    "unit": 15,
+    "title": "My Pen Friend",
+    "titleZh": "我的笔友",
+    "lines": [
+      {
+        "en": "I have a pen friend.",
+        "zh": "我有一个笔友。"
+      },
+      {
+        "en": "His name is Tom.",
+        "zh": "他的名字叫汤姆。"
+      },
+      {
+        "en": "He is from London.",
+        "zh": "他来自伦敦。"
+      },
+      {
+        "en": "He is as old as me.",
+        "zh": "他和我一样大。"
+      },
+      {
+        "en": "He goes to a school near the sea.",
+        "zh": "他在海边的一所学校上学。"
+      },
+      {
+        "en": "He likes football and music.",
+        "zh": "他喜欢足球和音乐。"
+      },
+      {
+        "en": "Now I am writing a letter to him.",
+        "zh": "现在我正在给他写信。"
+      },
+      {
+        "en": "I am putting a picture of my family in it.",
+        "zh": "我在信里放了一张我家人的照片。"
+      },
+      {
+        "en": "I hope he will be happy to get my letter.",
+        "zh": "我希望他收到我的信会很开心。"
+      },
+      {
+        "en": "Do you have a pen friend?",
+        "zh": "你有笔友吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What does your pen friend like? He likes music.",
+        "zh": "你的笔友喜欢什么？他喜欢音乐。"
+      },
+      {
+        "en": "What does your pen friend like? He likes football.",
+        "zh": "你的笔友喜欢什么？他喜欢足球。"
+      },
+      {
+        "en": "What does your pen friend like? He likes reading.",
+        "zh": "你的笔友喜欢什么？他喜欢读书。"
+      },
+      {
+        "en": "What does your pen friend like? He likes animals.",
+        "zh": "你的笔友喜欢什么？他喜欢动物。"
+      },
+      {
+        "en": "What does your pen friend like? She likes painting.",
+        "zh": "你的笔友喜欢什么？她喜欢画画。"
+      }
+    ]
+  },
+  {
+    "id": "2-16",
+    "level": 2,
+    "unit": 16,
+    "title": "Last Sunday",
+    "titleZh": "上个星期天",
+    "lines": [
+      {
+        "en": "Last Sunday was a happy day.",
+        "zh": "上个星期天是快乐的一天。"
+      },
+      {
+        "en": "The weather was warm and bright.",
+        "zh": "天气暖和又晴朗。"
+      },
+      {
+        "en": "I went to the park with my family.",
+        "zh": "我和家人去了公园。"
+      },
+      {
+        "en": "We walked by the river.",
+        "zh": "我们在河边散步。"
+      },
+      {
+        "en": "My father played ball with me.",
+        "zh": "爸爸和我一起玩球。"
+      },
+      {
+        "en": "My mother had bread and fruit for us.",
+        "zh": "妈妈给我们带了面包和水果。"
+      },
+      {
+        "en": "I saw some fish in the water.",
+        "zh": "我看到水里有一些鱼。"
+      },
+      {
+        "en": "We were in the sun all morning.",
+        "zh": "我们整个上午都在晒太阳。"
+      },
+      {
+        "en": "We were tired, but we were very happy.",
+        "zh": "我们很累，但是非常开心。"
+      },
+      {
+        "en": "What did you do last Sunday?",
+        "zh": "你上个星期天做了什么？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What did you do last Sunday? I played ball.",
+        "zh": "你上个星期天做了什么？我玩了球。"
+      },
+      {
+        "en": "What did you do last Sunday? I went to the park.",
+        "zh": "你上个星期天做了什么？我去了公园。"
+      },
+      {
+        "en": "What did you do last Sunday? I went swimming.",
+        "zh": "你上个星期天做了什么？我去游泳了。"
+      },
+      {
+        "en": "What did you do last Sunday? I cooked with my father.",
+        "zh": "你上个星期天做了什么？我和爸爸一起做饭了。"
+      },
+      {
+        "en": "What did you do last Sunday? I painted a picture.",
+        "zh": "你上个星期天做了什么？我画了一幅画。"
+      }
+    ]
+  },
+  {
+    "id": "2-17",
+    "level": 2,
+    "unit": 17,
+    "title": "A Trip to the Farm",
+    "titleZh": "农场之旅",
+    "lines": [
+      {
+        "en": "Last week, we went to a farm.",
+        "zh": "上个星期，我们去了一个农场。"
+      },
+      {
+        "en": "The farm was green and quiet.",
+        "zh": "农场绿油油的，很安静。"
+      },
+      {
+        "en": "There were cows, pigs and sheep.",
+        "zh": "那里有奶牛、猪和羊。"
+      },
+      {
+        "en": "I gave some grass to a cow.",
+        "zh": "我给一头奶牛喂了些草。"
+      },
+      {
+        "en": "The little pigs were very dirty.",
+        "zh": "小猪们脏兮兮的。"
+      },
+      {
+        "en": "We took apples from the trees.",
+        "zh": "我们从树上摘了苹果。"
+      },
+      {
+        "en": "The apples were red and sweet.",
+        "zh": "苹果又红又甜。"
+      },
+      {
+        "en": "The farmer put me on his horse.",
+        "zh": "农场主把我抱上了他的马。"
+      },
+      {
+        "en": "It was a great day!",
+        "zh": "那真是很棒的一天！"
+      },
+      {
+        "en": "Have you been to a farm?",
+        "zh": "你去过农场吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What did you see on the farm? I saw some cows.",
+        "zh": "你在农场看到了什么？我看到了一些奶牛。"
+      },
+      {
+        "en": "What did you see on the farm? I saw some pigs.",
+        "zh": "你在农场看到了什么？我看到了一些猪。"
+      },
+      {
+        "en": "What did you see on the farm? I saw some sheep.",
+        "zh": "你在农场看到了什么？我看到了一些羊。"
+      },
+      {
+        "en": "What did you see on the farm? I saw some goats.",
+        "zh": "你在农场看到了什么？我看到了一些山羊。"
+      },
+      {
+        "en": "What did you see on the farm? I saw a horse.",
+        "zh": "你在农场看到了什么？我看到了一匹马。"
+      }
+    ]
+  },
+  {
+    "id": "2-18",
+    "level": 2,
+    "unit": 18,
+    "title": "Spring Festival",
+    "titleZh": "春节",
+    "lines": [
+      {
+        "en": "Spring Festival is our New Year.",
+        "zh": "春节是我们的新年。"
+      },
+      {
+        "en": "Last Spring Festival, we went to see my grandma.",
+        "zh": "去年春节，我们去看望了奶奶。"
+      },
+      {
+        "en": "All my family were there.",
+        "zh": "我们全家人都在那里。"
+      },
+      {
+        "en": "We put red paper on the doors.",
+        "zh": "我们在门上贴了红纸。"
+      },
+      {
+        "en": "My grandma and mother made dumplings.",
+        "zh": "奶奶和妈妈包了饺子。"
+      },
+      {
+        "en": "At night, we had a great meal together.",
+        "zh": "晚上，我们一起吃了一顿丰盛的大餐。"
+      },
+      {
+        "en": "There were fireworks in the sky.",
+        "zh": "天空中有烟花。"
+      },
+      {
+        "en": "My grandpa gave me some money in red paper.",
+        "zh": "爷爷给了我一个红包。"
+      },
+      {
+        "en": "I was very happy that night.",
+        "zh": "那天晚上我非常开心。"
+      },
+      {
+        "en": "Happy New Year to you!",
+        "zh": "祝你新年快乐！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What did you do at Spring Festival? I made dumplings.",
+        "zh": "春节你做了什么？我包了饺子。"
+      },
+      {
+        "en": "What did you do at Spring Festival? I had dumplings.",
+        "zh": "春节你做了什么？我吃了饺子。"
+      },
+      {
+        "en": "What did you do at Spring Festival? I had a great meal.",
+        "zh": "春节你做了什么？我吃了一顿大餐。"
+      },
+      {
+        "en": "What did you do at Spring Festival? I went to see my grandma.",
+        "zh": "春节你做了什么？我去看望了奶奶。"
+      },
+      {
+        "en": "What did you do at Spring Festival? I put red paper on the door.",
+        "zh": "春节你做了什么？我在门上贴了红纸。"
+      }
+    ]
+  },
+  {
+    "id": "2-19",
+    "level": 2,
+    "unit": 19,
+    "title": "My Best Day",
+    "titleZh": "我最棒的一天",
+    "lines": [
+      {
+        "en": "My best day was my birthday last year.",
+        "zh": "我最棒的一天是去年的生日。"
+      },
+      {
+        "en": "My friends came to my house.",
+        "zh": "朋友们来到了我家。"
+      },
+      {
+        "en": "My mother made a beautiful cake for me.",
+        "zh": "妈妈为我做了一个漂亮的蛋糕。"
+      },
+      {
+        "en": "We had the cake and some fruit.",
+        "zh": "我们吃了蛋糕和一些水果。"
+      },
+      {
+        "en": "We played in the garden and laughed.",
+        "zh": "我们在花园里玩耍、欢笑。"
+      },
+      {
+        "en": "My friends gave me some presents.",
+        "zh": "朋友们送给我一些礼物。"
+      },
+      {
+        "en": "My present from my father was a camera.",
+        "zh": "爸爸送给我的礼物是一台照相机。"
+      },
+      {
+        "en": "At night, I was tired but very happy.",
+        "zh": "晚上，我很累，但是非常开心。"
+      },
+      {
+        "en": "It was my best day ever!",
+        "zh": "那是我最棒的一天！"
+      },
+      {
+        "en": "What was your best day?",
+        "zh": "你最棒的一天是哪一天？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What was your best day? It was my birthday.",
+        "zh": "你最棒的一天是哪一天？是我的生日。"
+      },
+      {
+        "en": "What was your best day? It was my first day at school.",
+        "zh": "你最棒的一天是哪一天？是我上学的第一天。"
+      },
+      {
+        "en": "What was your best day? It was a day at the sea.",
+        "zh": "你最棒的一天是哪一天？是在海边的一天。"
+      },
+      {
+        "en": "What was your best day? It was a day on the farm.",
+        "zh": "你最棒的一天是哪一天？是在农场的一天。"
+      },
+      {
+        "en": "What was your best day? It was a day in the snow.",
+        "zh": "你最棒的一天是哪一天？是在雪地里玩的一天。"
+      }
+    ]
+  },
+  {
+    "id": "2-20",
+    "level": 2,
+    "unit": 20,
+    "title": "When I Was Small",
+    "titleZh": "我小时候",
+    "lines": [
+      {
+        "en": "When I was small, I could not walk.",
+        "zh": "我小时候不会走路。"
+      },
+      {
+        "en": "My mother had me in her arms all day.",
+        "zh": "妈妈整天把我抱在怀里。"
+      },
+      {
+        "en": "I could not talk, but I could cry.",
+        "zh": "我不会说话，但是我会哭。"
+      },
+      {
+        "en": "When I cried, my father played music for me.",
+        "zh": "我一哭，爸爸就给我放音乐。"
+      },
+      {
+        "en": "I had a little red ball.",
+        "zh": "我有一个红色的小球。"
+      },
+      {
+        "en": "I liked milk and soft rice.",
+        "zh": "我喜欢牛奶和软软的米饭。"
+      },
+      {
+        "en": "Now I am older and taller.",
+        "zh": "现在我长大了，也长高了。"
+      },
+      {
+        "en": "I can walk, run, talk and swim.",
+        "zh": "我会走，会跑，会说话，还会游泳。"
+      },
+      {
+        "en": "But I still love my mother and father very much.",
+        "zh": "但是我仍然非常爱我的爸爸妈妈。"
+      },
+      {
+        "en": "What were you like when you were small?",
+        "zh": "你小时候是什么样的？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "When you were small, could you walk? No, I could not.",
+        "zh": "你小时候会走路吗？不，我不会。"
+      },
+      {
+        "en": "When you were small, could you talk? No, I could not.",
+        "zh": "你小时候会说话吗？不，我不会。"
+      },
+      {
+        "en": "When you were small, could you swim? No, I could not.",
+        "zh": "你小时候会游泳吗？不，我不会。"
+      },
+      {
+        "en": "When you were small, could you cry? Yes, I could.",
+        "zh": "你小时候会哭吗？是的，我会。"
+      },
+      {
+        "en": "When you were small, could you smile? Yes, I could.",
+        "zh": "你小时候会笑吗？是的，我会。"
+      }
+    ]
+  },
+  {
+    "id": "3-01",
+    "level": 3,
+    "unit": 1,
+    "title": "My Dream Job",
+    "titleZh": "我的梦想职业",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Today I want to talk about my dream job.",
+        "zh": "今天我想谈谈我的梦想职业。"
+      },
+      {
+        "en": "I want to be a doctor when I grow up.",
+        "zh": "长大后我想当一名医生。"
+      },
+      {
+        "en": "Doctors help people who are ill.",
+        "zh": "医生帮助生病的人。"
+      },
+      {
+        "en": "Last year, my grandma was very ill.",
+        "zh": "去年，我的奶奶病得很重。"
+      },
+      {
+        "en": "A kind doctor looked after her every day.",
+        "zh": "一位好心的医生每天照顾她。"
+      },
+      {
+        "en": "Then she got well again.",
+        "zh": "后来她又好起来了。"
+      },
+      {
+        "en": "So I want to help people like that doctor.",
+        "zh": "所以我想像那位医生一样帮助别人。"
+      },
+      {
+        "en": "I will study hard to be a good doctor.",
+        "zh": "我会努力学习，成为一名好医生。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I want to be a doctor because I want to help people.",
+        "zh": "我想当医生，因为我想帮助别人。"
+      },
+      {
+        "en": "I want to be a teacher because I love children.",
+        "zh": "我想当老师，因为我喜欢孩子。"
+      },
+      {
+        "en": "I want to be a farmer because I love plants.",
+        "zh": "我想当农民，因为我喜欢植物。"
+      },
+      {
+        "en": "I want to be a cook because I like making good food.",
+        "zh": "我想当厨师，因为我喜欢做好吃的饭菜。"
+      }
+    ]
+  },
+  {
+    "id": "3-02",
+    "level": 3,
+    "unit": 2,
+    "title": "Holiday Plans",
+    "titleZh": "假期计划",
+    "lines": [
+      {
+        "en": "Hello, boys and girls.",
+        "zh": "同学们好。"
+      },
+      {
+        "en": "The summer holiday is coming.",
+        "zh": "暑假就要到了。"
+      },
+      {
+        "en": "Let me tell you about my holiday plans.",
+        "zh": "让我来说说我的假期计划。"
+      },
+      {
+        "en": "First, I am going to visit my grandparents in the country.",
+        "zh": "首先，我要去乡下看望爷爷奶奶。"
+      },
+      {
+        "en": "They have a garden with many fruit trees.",
+        "zh": "他们有一个园子，里面有很多果树。"
+      },
+      {
+        "en": "Then I am going to learn to swim.",
+        "zh": "然后我要学游泳。"
+      },
+      {
+        "en": "I will read ten good books.",
+        "zh": "我要读十本好书。"
+      },
+      {
+        "en": "If the weather is good, we will go to the beach.",
+        "zh": "如果天气好，我们就去海边。"
+      },
+      {
+        "en": "If it rains, we will stay at home and play games.",
+        "zh": "如果下雨，我们就待在家里玩游戏。"
+      },
+      {
+        "en": "I think it will be my best summer ever!",
+        "zh": "我想这会是我过得最棒的一个夏天！"
+      },
+      {
+        "en": "What are you going to do this holiday?",
+        "zh": "这个假期你打算做什么呢？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "This holiday, I am going to visit my grandparents.",
+        "zh": "这个假期，我要去看望爷爷奶奶。"
+      },
+      {
+        "en": "This holiday, I am going to learn to swim.",
+        "zh": "这个假期，我要学游泳。"
+      },
+      {
+        "en": "This holiday, I am going to read ten books.",
+        "zh": "这个假期，我要读十本书。"
+      },
+      {
+        "en": "If the weather is good, we will go to the beach.",
+        "zh": "如果天气好，我们就去海边。"
+      },
+      {
+        "en": "If it rains, we will stay at home and play games.",
+        "zh": "如果下雨，我们就待在家里玩游戏。"
+      }
+    ]
+  },
+  {
+    "id": "3-03",
+    "level": 3,
+    "unit": 3,
+    "title": "City or Country?",
+    "titleZh": "城市还是乡村？",
+    "lines": [
+      {
+        "en": "Good afternoon, everyone.",
+        "zh": "大家下午好。"
+      },
+      {
+        "en": "Do you like the city or the country?",
+        "zh": "你喜欢城市还是乡村？"
+      },
+      {
+        "en": "Some people like the city, but I like the country better.",
+        "zh": "有些人喜欢城市，但我更喜欢乡村。"
+      },
+      {
+        "en": "First, the air in the country is cleaner.",
+        "zh": "首先，乡村的空气更干净。"
+      },
+      {
+        "en": "There are green fields, tall trees and clear rivers.",
+        "zh": "那里有绿色的田野、高高的树和清澈的河流。"
+      },
+      {
+        "en": "Second, the country is quieter than the city.",
+        "zh": "其次，乡村比城市更安静。"
+      },
+      {
+        "en": "At night, I can see many stars in the sky.",
+        "zh": "晚上，我能看到天上有很多星星。"
+      },
+      {
+        "en": "Of course, the city has big shops and fast trains.",
+        "zh": "当然，城市里有大商店和快速的火车。"
+      },
+      {
+        "en": "But I think life in the country is happier.",
+        "zh": "但我觉得乡村的生活更快乐。"
+      },
+      {
+        "en": "That is why I love the country.",
+        "zh": "这就是我爱乡村的原因。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I think the country is quieter than the city.",
+        "zh": "我觉得乡村比城市更安静。"
+      },
+      {
+        "en": "I think the air in the country is cleaner than in the city.",
+        "zh": "我觉得乡村的空气比城市的更干净。"
+      },
+      {
+        "en": "I think the city is busier than the country.",
+        "zh": "我觉得城市比乡村更热闹。"
+      },
+      {
+        "en": "I think the shops in the city are bigger than in the country.",
+        "zh": "我觉得城市的商店比乡村的更大。"
+      },
+      {
+        "en": "I like the country better because it is green and quiet.",
+        "zh": "我更喜欢乡村，因为那里绿色又安静。"
+      }
+    ]
+  },
+  {
+    "id": "3-04",
+    "level": 3,
+    "unit": 4,
+    "title": "The Best Season for Me",
+    "titleZh": "我最喜欢的季节",
+    "lines": [
+      {
+        "en": "Hello, my friends.",
+        "zh": "朋友们好。"
+      },
+      {
+        "en": "Which season do you like best?",
+        "zh": "你最喜欢哪个季节？"
+      },
+      {
+        "en": "For me, autumn is the best season.",
+        "zh": "对我来说，秋天是最好的季节。"
+      },
+      {
+        "en": "It is cooler than summer and warmer than winter.",
+        "zh": "它比夏天凉快，比冬天暖和。"
+      },
+      {
+        "en": "The sky is blue, and the leaves turn red and yellow.",
+        "zh": "天空蓝蓝的，树叶变成了红色和黄色。"
+      },
+      {
+        "en": "Apples and oranges are ready to eat in autumn.",
+        "zh": "秋天，苹果和橙子都熟了。"
+      },
+      {
+        "en": "My family often goes for a walk in the park.",
+        "zh": "我们一家人常常去公园散步。"
+      },
+      {
+        "en": "We pick up beautiful leaves and make pictures with them.",
+        "zh": "我们捡来漂亮的树叶，用它们拼成图画。"
+      },
+      {
+        "en": "Spring is lovely, but autumn is more colorful.",
+        "zh": "春天很可爱，但秋天更加多彩。"
+      },
+      {
+        "en": "So autumn is the season I love most.",
+        "zh": "所以秋天是我最爱的季节。"
+      },
+      {
+        "en": "What about you?",
+        "zh": "你呢？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I like autumn best because it is cool.",
+        "zh": "我最喜欢秋天，因为天气凉爽。"
+      },
+      {
+        "en": "I like spring best because the flowers are beautiful.",
+        "zh": "我最喜欢春天，因为花儿很美。"
+      },
+      {
+        "en": "I like summer best because I can swim.",
+        "zh": "我最喜欢夏天，因为我可以游泳。"
+      },
+      {
+        "en": "I like winter best because I can play in the snow.",
+        "zh": "我最喜欢冬天，因为我可以在雪里玩。"
+      },
+      {
+        "en": "Autumn is cooler than summer.",
+        "zh": "秋天比夏天凉快。"
+      }
+    ]
+  },
+  {
+    "id": "3-05",
+    "level": 3,
+    "unit": 5,
+    "title": "Why I Love Reading",
+    "titleZh": "我为什么爱读书",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Do you like reading? I do!",
+        "zh": "你喜欢读书吗？我喜欢！"
+      },
+      {
+        "en": "Today I want to tell you why I love reading.",
+        "zh": "今天我想告诉大家我为什么爱读书。"
+      },
+      {
+        "en": "First, books take me to new places.",
+        "zh": "首先，书带我去新的地方。"
+      },
+      {
+        "en": "In a book, I can go to the bottom of the sea or to the moon.",
+        "zh": "在书里，我可以去海底，也可以去月球。"
+      },
+      {
+        "en": "Second, books help me learn new words.",
+        "zh": "其次，书帮我学习新单词。"
+      },
+      {
+        "en": "My English is getting better because I read every day.",
+        "zh": "因为我每天读书，我的英语越来越好。"
+      },
+      {
+        "en": "Third, reading makes me happy.",
+        "zh": "第三，读书让我快乐。"
+      },
+      {
+        "en": "When I feel sad, a good story makes me smile.",
+        "zh": "当我难过时，一个好故事能让我露出笑容。"
+      },
+      {
+        "en": "Every night, I read for twenty minutes before bed.",
+        "zh": "每天晚上睡觉前，我都读二十分钟书。"
+      },
+      {
+        "en": "I think books are my best friends.",
+        "zh": "我觉得书是我最好的朋友。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I love reading because books take me to new places.",
+        "zh": "我爱读书，因为书带我去新的地方。"
+      },
+      {
+        "en": "I love reading because books help me learn new words.",
+        "zh": "我爱读书，因为书帮我学习新单词。"
+      },
+      {
+        "en": "I love reading because stories make me happy.",
+        "zh": "我爱读书，因为故事让我快乐。"
+      },
+      {
+        "en": "If we read every day, we will learn a lot.",
+        "zh": "如果我们每天读书，就会学到很多。"
+      },
+      {
+        "en": "I think reading a book is better than watching TV.",
+        "zh": "我觉得读书比看电视更好。"
+      }
+    ]
+  },
+  {
+    "id": "3-06",
+    "level": 3,
+    "unit": 6,
+    "title": "A Person I Admire",
+    "titleZh": "我敬佩的人",
+    "lines": [
+      {
+        "en": "Hello, everyone, and good morning.",
+        "zh": "大家好，早上好。"
+      },
+      {
+        "en": "Let me tell you about a person I admire.",
+        "zh": "让我来说说一个我敬佩的人。"
+      },
+      {
+        "en": "She is my mother.",
+        "zh": "她就是我的妈妈。"
+      },
+      {
+        "en": "My mother is a nurse in a hospital.",
+        "zh": "我妈妈是一家医院的护士。"
+      },
+      {
+        "en": "She gets up early and comes back late.",
+        "zh": "她每天早出晚归。"
+      },
+      {
+        "en": "Her work is very hard, but she is kind and patient.",
+        "zh": "她的工作很辛苦，但她和蔼又耐心。"
+      },
+      {
+        "en": "Last winter, I had a bad cold.",
+        "zh": "去年冬天，我得了重感冒。"
+      },
+      {
+        "en": "She stayed with me all night and made soup for me.",
+        "zh": "她整夜陪着我，还给我做了汤。"
+      },
+      {
+        "en": "She helps our neighbors when they need help.",
+        "zh": "邻居需要帮助时，她会去帮忙。"
+      },
+      {
+        "en": "She says to me, \"Be kind to others.\"",
+        "zh": "她对我说：“要善待别人。”"
+      },
+      {
+        "en": "I want to be like her when I grow up.",
+        "zh": "长大后我想成为像她一样的人。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I admire my mother because she is kind.",
+        "zh": "我敬佩我的妈妈，因为她很善良。"
+      },
+      {
+        "en": "I admire my father because he is brave.",
+        "zh": "我敬佩我的爸爸，因为他很勇敢。"
+      },
+      {
+        "en": "I admire my teacher because she is patient.",
+        "zh": "我敬佩我的老师，因为她很有耐心。"
+      },
+      {
+        "en": "I admire my grandpa because he works hard.",
+        "zh": "我敬佩我的爷爷，因为他工作很努力。"
+      },
+      {
+        "en": "I want to be as kind as my mother.",
+        "zh": "我想像妈妈一样善良。"
+      }
+    ]
+  },
+  {
+    "id": "3-07",
+    "level": 3,
+    "unit": 7,
+    "title": "Save Water",
+    "titleZh": "节约用水",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Today I want to talk about saving water.",
+        "zh": "今天我想谈谈节约用水。"
+      },
+      {
+        "en": "Water is very important to us.",
+        "zh": "水对我们非常重要。"
+      },
+      {
+        "en": "People, animals and plants all need water.",
+        "zh": "人、动物和植物都需要水。"
+      },
+      {
+        "en": "But in some places, there is not enough clean water.",
+        "zh": "但在一些地方，干净的水并不够用。"
+      },
+      {
+        "en": "So we must not waste it.",
+        "zh": "所以我们一定不能浪费水。"
+      },
+      {
+        "en": "First, we should turn off the tap when we brush our teeth.",
+        "zh": "首先，刷牙时我们应该关掉水龙头。"
+      },
+      {
+        "en": "Then, we can take shorter showers.",
+        "zh": "然后，我们可以缩短洗澡的时间。"
+      },
+      {
+        "en": "We can also use the water from washing fruit for the flowers.",
+        "zh": "我们还可以用洗水果的水来浇花。"
+      },
+      {
+        "en": "If everyone saves a little water, we will save a lot.",
+        "zh": "如果每个人都节约一点水，我们就能节约很多。"
+      },
+      {
+        "en": "Let's start today!",
+        "zh": "让我们从今天做起！"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "If we turn off the tap, we will save water.",
+        "zh": "如果我们关掉水龙头，就能节约用水。"
+      },
+      {
+        "en": "If we take shorter showers, we will save water.",
+        "zh": "如果我们缩短洗澡时间，就能节约用水。"
+      },
+      {
+        "en": "If we use less water, we will help the earth.",
+        "zh": "如果我们少用水，就能帮助地球。"
+      },
+      {
+        "en": "We should turn off the tap when we brush our teeth.",
+        "zh": "刷牙时我们应该关掉水龙头。"
+      },
+      {
+        "en": "Saving water is easier than you think.",
+        "zh": "节约用水比你想象的更容易。"
+      }
+    ]
+  },
+  {
+    "id": "3-08",
+    "level": 3,
+    "unit": 8,
+    "title": "Be Kind to Animals",
+    "titleZh": "善待动物",
+    "lines": [
+      {
+        "en": "Hello, boys and girls.",
+        "zh": "同学们好。"
+      },
+      {
+        "en": "Do you love animals? I do!",
+        "zh": "你爱动物吗？我爱！"
+      },
+      {
+        "en": "Animals are our friends.",
+        "zh": "动物是我们的朋友。"
+      },
+      {
+        "en": "Like us, they can feel pain and fear.",
+        "zh": "它们和我们一样，也会感到疼痛和害怕。"
+      },
+      {
+        "en": "Last week, I saw a little cat in the rain.",
+        "zh": "上个星期，我在雨里看到一只小猫。"
+      },
+      {
+        "en": "It was cold and hungry.",
+        "zh": "它又冷又饿。"
+      },
+      {
+        "en": "My brother and I gave it some milk and a warm box.",
+        "zh": "我和哥哥给了它一些牛奶和一个暖和的箱子。"
+      },
+      {
+        "en": "Now it is happy and healthy in our house.",
+        "zh": "现在它在我们家里过得又快乐又健康。"
+      },
+      {
+        "en": "We should be kind to animals.",
+        "zh": "我们应该善待动物。"
+      },
+      {
+        "en": "First, we should never hurt them.",
+        "zh": "首先，我们永远不应该伤害它们。"
+      },
+      {
+        "en": "Second, if we have a pet, we must take good care of it.",
+        "zh": "其次，如果我们养宠物，就一定要好好照顾它。"
+      },
+      {
+        "en": "Let's make the world a better place for animals!",
+        "zh": "让我们把世界变成动物们更美好的地方！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "We should be kind to animals because they are our friends.",
+        "zh": "我们应该善待动物，因为它们是我们的朋友。"
+      },
+      {
+        "en": "We should never hurt animals because they feel pain.",
+        "zh": "我们永远不应该伤害动物，因为它们会感到疼痛。"
+      },
+      {
+        "en": "If we have a pet, we should give it food every day.",
+        "zh": "如果我们养宠物，就应该每天喂它。"
+      },
+      {
+        "en": "If we see a hungry cat, we can give it some milk.",
+        "zh": "如果我们看到一只饥饿的猫，可以给它一些牛奶。"
+      },
+      {
+        "en": "If we see a lost dog, we can ask a grown-up for help.",
+        "zh": "如果我们看到一只走失的狗，可以请大人帮忙。"
+      }
+    ]
+  },
+  {
+    "id": "3-09",
+    "level": 3,
+    "unit": 9,
+    "title": "My Favorite Story",
+    "titleZh": "我最喜欢的故事",
+    "lines": [
+      {
+        "en": "Good afternoon, everyone.",
+        "zh": "大家下午好。"
+      },
+      {
+        "en": "My favorite story is The Lion and the Mouse.",
+        "zh": "我最喜欢的故事是《狮子和老鼠》。"
+      },
+      {
+        "en": "One day, a lion caught a little mouse.",
+        "zh": "有一天，一头狮子抓住了一只小老鼠。"
+      },
+      {
+        "en": "The mouse said, \"Please let me go, and I will help you one day.\"",
+        "zh": "老鼠说：“请放了我吧，总有一天我会帮助你的。”"
+      },
+      {
+        "en": "The lion laughed, but he let the mouse go.",
+        "zh": "狮子哈哈大笑，但还是放走了老鼠。"
+      },
+      {
+        "en": "Some days later, the lion was caught in a net.",
+        "zh": "几天后，狮子被一张网困住了。"
+      },
+      {
+        "en": "He could not get out.",
+        "zh": "他怎么也出不来。"
+      },
+      {
+        "en": "Then the little mouse cut the net with its teeth.",
+        "zh": "这时，小老鼠用牙齿咬断了网。"
+      },
+      {
+        "en": "At last, the lion was free.",
+        "zh": "最后，狮子自由了。"
+      },
+      {
+        "en": "This story shows that small friends can be a great help.",
+        "zh": "这个故事告诉我们，小小的朋友也能帮上大忙。"
+      },
+      {
+        "en": "I like it because even a little mouse can help a lion.",
+        "zh": "我喜欢它，因为就连小老鼠也能帮助狮子。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I like this story because it is funny.",
+        "zh": "我喜欢这个故事，因为它很有趣。"
+      },
+      {
+        "en": "I like this story because the mouse is kind.",
+        "zh": "我喜欢这个故事，因为老鼠很善良。"
+      },
+      {
+        "en": "I like this story because the mouse is brave.",
+        "zh": "我喜欢这个故事，因为老鼠很勇敢。"
+      },
+      {
+        "en": "This story shows that small friends can be a great help.",
+        "zh": "这个故事告诉我们，小小的朋友也能帮上大忙。"
+      },
+      {
+        "en": "I think the mouse is braver than the lion.",
+        "zh": "我觉得老鼠比狮子更勇敢。"
+      }
+    ]
+  },
+  {
+    "id": "3-10",
+    "level": 3,
+    "unit": 10,
+    "title": "Making Friends",
+    "titleZh": "交朋友",
+    "lines": [
+      {
+        "en": "Hello, everyone, and good morning.",
+        "zh": "大家好，早上好。"
+      },
+      {
+        "en": "Today I want to share some ideas about making friends.",
+        "zh": "今天我想和大家分享一些交朋友的想法。"
+      },
+      {
+        "en": "Last year, I came to a new school.",
+        "zh": "去年，我来到了一所新学校。"
+      },
+      {
+        "en": "I had no friends, and I felt lonely.",
+        "zh": "我一个朋友也没有，感到很孤单。"
+      },
+      {
+        "en": "Then a girl named Lily smiled at me and said hello.",
+        "zh": "后来，一个叫莉莉的女孩笑着跟我打招呼。"
+      },
+      {
+        "en": "We started to play together after school.",
+        "zh": "我们开始在放学后一起玩。"
+      },
+      {
+        "en": "Now she is my best friend.",
+        "zh": "现在她是我最好的朋友。"
+      },
+      {
+        "en": "From her, I learned some things about making friends.",
+        "zh": "从她身上，我学到了交朋友的一些道理。"
+      },
+      {
+        "en": "First, smile and say hello.",
+        "zh": "第一，微笑着打招呼。"
+      },
+      {
+        "en": "Second, listen to others and share with them.",
+        "zh": "第二，倾听别人，和别人分享。"
+      },
+      {
+        "en": "Last, help your friends when they are in trouble.",
+        "zh": "最后，朋友遇到困难时要帮助他们。"
+      },
+      {
+        "en": "If you are friendly, you will make many friends.",
+        "zh": "如果你友好待人，就会交到很多朋友。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "If you smile at others, you will make new friends.",
+        "zh": "如果你对别人微笑，就会交到新朋友。"
+      },
+      {
+        "en": "If you share your toys, you will make new friends.",
+        "zh": "如果你分享你的玩具，就会交到新朋友。"
+      },
+      {
+        "en": "If you listen to others, they will like you.",
+        "zh": "如果你倾听别人，他们就会喜欢你。"
+      },
+      {
+        "en": "I think a good friend is someone who helps you.",
+        "zh": "我觉得好朋友就是会帮助你的人。"
+      },
+      {
+        "en": "I think a kind friend is better than a lot of toys.",
+        "zh": "我觉得一个善良的朋友比很多玩具更好。"
+      }
+    ]
+  },
+  {
+    "id": "3-11",
+    "level": 3,
+    "unit": 11,
+    "title": "Learning English",
+    "titleZh": "学英语",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Today I want to talk about learning English.",
+        "zh": "今天我想谈谈学英语。"
+      },
+      {
+        "en": "English is a very important language.",
+        "zh": "英语是一门非常重要的语言。"
+      },
+      {
+        "en": "It is used all over the world.",
+        "zh": "全世界都在使用它。"
+      },
+      {
+        "en": "At first, English was hard for me.",
+        "zh": "一开始，英语对我来说很难。"
+      },
+      {
+        "en": "At school, I was afraid to speak.",
+        "zh": "在学校里，我不敢开口说。"
+      },
+      {
+        "en": "Then my teacher had a talk with me.",
+        "zh": "后来，老师找我谈了谈。"
+      },
+      {
+        "en": "She said, \"Don't be afraid of mistakes.\"",
+        "zh": "她说：“不要害怕犯错。”"
+      },
+      {
+        "en": "Now I listen to English songs and read short stories every day.",
+        "zh": "现在我每天听英语歌，读英语小故事。"
+      },
+      {
+        "en": "My friends and I talk in English after school.",
+        "zh": "放学后，我和朋友们用英语聊天。"
+      },
+      {
+        "en": "My English is much better than before.",
+        "zh": "我的英语比以前好多了。"
+      },
+      {
+        "en": "If you keep trying, you will learn English well.",
+        "zh": "如果你坚持努力，就能学好英语。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I learn English by listening to songs.",
+        "zh": "我通过听歌学英语。"
+      },
+      {
+        "en": "I learn English by reading stories.",
+        "zh": "我通过读故事学英语。"
+      },
+      {
+        "en": "I learn English by watching cartoons.",
+        "zh": "我通过看动画片学英语。"
+      },
+      {
+        "en": "If we practice every day, we will speak better.",
+        "zh": "如果我们每天练习，就会说得更好。"
+      },
+      {
+        "en": "Speaking is harder than reading, but I like it.",
+        "zh": "说比读更难，但我很喜欢。"
+      }
+    ]
+  },
+  {
+    "id": "3-12",
+    "level": 3,
+    "unit": 12,
+    "title": "A Great Invention",
+    "titleZh": "一项伟大的发明",
+    "lines": [
+      {
+        "en": "Hello, my friends.",
+        "zh": "朋友们好。"
+      },
+      {
+        "en": "Today I want to talk about a great invention.",
+        "zh": "今天我想谈谈一项伟大的发明。"
+      },
+      {
+        "en": "It is paper.",
+        "zh": "那就是纸。"
+      },
+      {
+        "en": "Paper was first made in China a long time ago.",
+        "zh": "很久以前，纸最早在中国被造出来。"
+      },
+      {
+        "en": "Before paper, people wrote on bones, wood or silk.",
+        "zh": "在有纸之前，人们在骨头、木头或丝绸上写字。"
+      },
+      {
+        "en": "Bones and wood were heavy, and silk was very expensive.",
+        "zh": "骨头和木头很重，丝绸又非常贵。"
+      },
+      {
+        "en": "Paper was lighter and cheaper.",
+        "zh": "纸更轻，也更便宜。"
+      },
+      {
+        "en": "So more people could read and write.",
+        "zh": "所以更多的人能够读书写字了。"
+      },
+      {
+        "en": "Today we use paper every day.",
+        "zh": "今天我们每天都在用纸。"
+      },
+      {
+        "en": "We use it for books, letters, money and pictures.",
+        "zh": "我们用它来做书、信、钱和图画。"
+      },
+      {
+        "en": "I think paper is a really great invention.",
+        "zh": "我觉得纸真是一项伟大的发明。"
+      },
+      {
+        "en": "But we should not waste it, because paper comes from trees.",
+        "zh": "但我们不应该浪费纸，因为纸来自树木。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I think paper is a great invention because we use it every day.",
+        "zh": "我认为纸是一项伟大的发明，因为我们每天都用它。"
+      },
+      {
+        "en": "I think the light bulb is a great invention because it lights up the night.",
+        "zh": "我认为电灯是一项伟大的发明，因为它照亮了黑夜。"
+      },
+      {
+        "en": "I think the phone is a great invention because we can talk to friends far away.",
+        "zh": "我认为电话是一项伟大的发明，因为我们能和远方的朋友说话。"
+      },
+      {
+        "en": "Paper is lighter than wood.",
+        "zh": "纸比木头轻。"
+      },
+      {
+        "en": "Paper is cheaper than silk.",
+        "zh": "纸比丝绸便宜。"
+      }
+    ]
+  },
+  {
+    "id": "3-13",
+    "level": 3,
+    "unit": 13,
+    "title": "Keep Our Earth Clean",
+    "titleZh": "保持地球清洁",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "The earth is our home, and we only have one.",
+        "zh": "地球是我们的家园，而我们只有一个地球。"
+      },
+      {
+        "en": "But today, there is so much rubbish on the land and in the sea.",
+        "zh": "但如今，陆地上和海洋里有那么多垃圾。"
+      },
+      {
+        "en": "Some fish and birds get ill because they eat plastic.",
+        "zh": "一些鱼和鸟因为吃了塑料而生病。"
+      },
+      {
+        "en": "We need to keep our earth clean.",
+        "zh": "我们需要保持地球清洁。"
+      },
+      {
+        "en": "What can we do?",
+        "zh": "我们能做些什么呢？"
+      },
+      {
+        "en": "First, we can put rubbish in the right bins.",
+        "zh": "首先，我们可以把垃圾扔进正确的垃圾桶。"
+      },
+      {
+        "en": "Second, we can take our own bags when we go shopping.",
+        "zh": "其次，购物时我们可以带上自己的袋子。"
+      },
+      {
+        "en": "Last, we can walk to school instead of going by car.",
+        "zh": "最后，我们可以走路上学，而不是坐汽车。"
+      },
+      {
+        "en": "Last month, my friends and I cleaned up a park near our school.",
+        "zh": "上个月，我和朋友们清扫了学校附近的一个公园。"
+      },
+      {
+        "en": "It was hard work, but the park looked much cleaner after that.",
+        "zh": "那很辛苦，但之后公园看起来干净多了。"
+      },
+      {
+        "en": "If we all do a little, the earth will be a better place.",
+        "zh": "如果我们每个人都出一份力，地球就会变得更美好。"
+      },
+      {
+        "en": "Let's work together!",
+        "zh": "让我们一起努力吧！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "If we put rubbish in bins, the earth will be cleaner.",
+        "zh": "如果我们把垃圾扔进垃圾桶，地球就会更干净。"
+      },
+      {
+        "en": "If we plant trees, the air will be cleaner.",
+        "zh": "如果我们种树，空气就会更干净。"
+      },
+      {
+        "en": "If we take our own bags, we will use less plastic.",
+        "zh": "如果我们自带袋子，就会少用塑料。"
+      },
+      {
+        "en": "I think walking to school is better than going by car.",
+        "zh": "我觉得走路上学比坐汽车更好。"
+      },
+      {
+        "en": "We should take our own bags when we go shopping.",
+        "zh": "购物时我们应该自带袋子。"
+      }
+    ]
+  },
+  {
+    "id": "3-14",
+    "level": 3,
+    "unit": 14,
+    "title": "Screen Time",
+    "titleZh": "屏幕时间",
+    "lines": [
+      {
+        "en": "Hello, boys and girls.",
+        "zh": "同学们好。"
+      },
+      {
+        "en": "Do you use screens every day? I do!",
+        "zh": "你每天都用屏幕吗？我是这样！"
+      },
+      {
+        "en": "Many children use phones every day.",
+        "zh": "很多孩子每天都在用手机。"
+      },
+      {
+        "en": "Screens can be very useful.",
+        "zh": "屏幕可以非常有用。"
+      },
+      {
+        "en": "We can learn new things and watch videos on them.",
+        "zh": "我们可以用它们学习新知识、看视频。"
+      },
+      {
+        "en": "But too much screen time is bad for us.",
+        "zh": "但是屏幕时间太长对我们有害。"
+      },
+      {
+        "en": "It is bad for our eyes, and we may not sleep well.",
+        "zh": "它对我们的眼睛不好，我们也可能睡不好。"
+      },
+      {
+        "en": "And we have no time to play outside.",
+        "zh": "而且我们没有时间去户外玩了。"
+      },
+      {
+        "en": "Last year, I played on my phone for hours every day.",
+        "zh": "去年，我每天都要玩好几个小时手机。"
+      },
+      {
+        "en": "Now I only use it for half an hour a day.",
+        "zh": "现在我每天只用半个小时。"
+      },
+      {
+        "en": "After school, I read books and play football.",
+        "zh": "放学后，我读书、踢足球。"
+      },
+      {
+        "en": "I am stronger and happier than before.",
+        "zh": "我比以前更强壮、更快乐了。"
+      },
+      {
+        "en": "Let's put down our phones and go outside!",
+        "zh": "让我们放下手机，到户外去吧！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I think playing outside is better than playing on the phone.",
+        "zh": "我觉得在户外玩比玩手机更好。"
+      },
+      {
+        "en": "I think reading a book is better than watching videos.",
+        "zh": "我觉得读书比看视频更好。"
+      },
+      {
+        "en": "If we use screens too much, our eyes will get tired.",
+        "zh": "如果我们用屏幕太多，眼睛就会累。"
+      },
+      {
+        "en": "If we go to bed early, we will feel better.",
+        "zh": "如果我们早点睡觉，就会感觉更好。"
+      },
+      {
+        "en": "We should use screens for under an hour a day.",
+        "zh": "我们每天使用屏幕应该少于一个小时。"
+      }
+    ]
+  },
+  {
+    "id": "3-15",
+    "level": 3,
+    "unit": 15,
+    "title": "A Mistake I Learned From",
+    "titleZh": "我从错误中学到的",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Today I want to tell you about a mistake I made.",
+        "zh": "今天我想告诉大家我犯过的一个错误。"
+      },
+      {
+        "en": "Last winter, we had an important test.",
+        "zh": "去年冬天，我们有一场重要的考试。"
+      },
+      {
+        "en": "I thought it was easy, so I did not get ready for it.",
+        "zh": "我以为它很简单，所以没有好好准备。"
+      },
+      {
+        "en": "I played every night.",
+        "zh": "我每天晚上都在玩。"
+      },
+      {
+        "en": "My mark was very low, and I was very sad.",
+        "zh": "我的分数很低，我非常难过。"
+      },
+      {
+        "en": "I wanted to put the paper under my bed.",
+        "zh": "我想把试卷藏到床底下。"
+      },
+      {
+        "en": "But at last, I told my mother the truth.",
+        "zh": "但最后，我还是把实情告诉了妈妈。"
+      },
+      {
+        "en": "She was not angry at all.",
+        "zh": "她一点也没有生气。"
+      },
+      {
+        "en": "She helped me make a plan.",
+        "zh": "她帮我制订了一个计划。"
+      },
+      {
+        "en": "After that, I worked a little every day.",
+        "zh": "从那以后，我每天都学一点。"
+      },
+      {
+        "en": "In the second test, I did much better.",
+        "zh": "在第二次考试中，我考得好多了。"
+      },
+      {
+        "en": "Now I see that mistakes can help us grow.",
+        "zh": "现在我明白了，错误可以帮助我们成长。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I did not get ready for the test, so I did badly.",
+        "zh": "我没有为考试做准备，所以考得很差。"
+      },
+      {
+        "en": "I told the truth, so I felt better.",
+        "zh": "我说了实话，所以感觉好多了。"
+      },
+      {
+        "en": "I worked hard every day, so I did much better.",
+        "zh": "我每天都努力学习，所以考得好多了。"
+      },
+      {
+        "en": "I think telling the truth is better than keeping a secret.",
+        "zh": "我觉得说实话比藏着秘密更好。"
+      },
+      {
+        "en": "If we learn from our mistakes, we will grow.",
+        "zh": "如果我们从错误中学习，就会成长。"
+      }
+    ]
+  },
+  {
+    "id": "3-16",
+    "level": 3,
+    "unit": 16,
+    "title": "Festivals in China",
+    "titleZh": "中国的节日",
+    "lines": [
+      {
+        "en": "Good morning, boys and girls.",
+        "zh": "同学们，早上好。"
+      },
+      {
+        "en": "China has many great festivals.",
+        "zh": "中国有很多很棒的节日。"
+      },
+      {
+        "en": "Let me talk about some of them.",
+        "zh": "让我来介绍其中的几个。"
+      },
+      {
+        "en": "The Spring Festival is the most important festival in China.",
+        "zh": "春节是中国最重要的节日。"
+      },
+      {
+        "en": "Families get together for a special meal.",
+        "zh": "一家人团聚在一起，吃一顿特别的饭。"
+      },
+      {
+        "en": "We get red packets with money in them.",
+        "zh": "我们会收到装着钱的红包。"
+      },
+      {
+        "en": "Then there is the Dragon Boat Festival.",
+        "zh": "然后是端午节。"
+      },
+      {
+        "en": "We eat rice dumplings and watch the boat races.",
+        "zh": "我们吃粽子，看龙舟比赛。"
+      },
+      {
+        "en": "After that comes the Mid-Autumn Festival.",
+        "zh": "之后是中秋节。"
+      },
+      {
+        "en": "On that night, the moon is round and bright.",
+        "zh": "那天晚上，月亮又圆又亮。"
+      },
+      {
+        "en": "We eat mooncakes and look at the moon with our family.",
+        "zh": "我们和家人一起吃月饼、赏月。"
+      },
+      {
+        "en": "I like the Spring Festival best, because I can see all my family.",
+        "zh": "我最喜欢春节，因为我能见到全家人。"
+      },
+      {
+        "en": "Which festival do you like best?",
+        "zh": "你最喜欢哪个节日呢？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I like the Spring Festival best because I can see all my family.",
+        "zh": "我最喜欢春节，因为我能见到全家人。"
+      },
+      {
+        "en": "I like the Dragon Boat Festival best because I love rice dumplings.",
+        "zh": "我最喜欢端午节，因为我爱吃粽子。"
+      },
+      {
+        "en": "I like the Mid-Autumn Festival best because the moon is beautiful.",
+        "zh": "我最喜欢中秋节，因为月亮很美。"
+      },
+      {
+        "en": "On the Mid-Autumn Festival, the moon is brighter than on other nights.",
+        "zh": "中秋节的月亮比其他夜晚更亮。"
+      },
+      {
+        "en": "I think the Spring Festival is the most important festival.",
+        "zh": "我认为春节是最重要的节日。"
+      }
+    ]
+  },
+  {
+    "id": "3-17",
+    "level": 3,
+    "unit": 17,
+    "title": "A Trip I Want to Take",
+    "titleZh": "我想去的旅行",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Where do you want to go this summer?",
+        "zh": "这个夏天你想去哪里？"
+      },
+      {
+        "en": "Today I want to talk about a trip I want to take.",
+        "zh": "今天我想谈谈我想去的一次旅行。"
+      },
+      {
+        "en": "This summer, I want to go to Beijing with my family.",
+        "zh": "今年夏天，我想和家人一起去北京。"
+      },
+      {
+        "en": "Beijing has a long history, and it is very beautiful.",
+        "zh": "北京历史悠久，而且非常美丽。"
+      },
+      {
+        "en": "First, I am going to climb the Great Wall.",
+        "zh": "首先，我要去爬长城。"
+      },
+      {
+        "en": "It is longer than any other wall in the world.",
+        "zh": "它比世界上任何一道墙都长。"
+      },
+      {
+        "en": "Then I will go to the Palace Museum.",
+        "zh": "然后我会去故宫博物院。"
+      },
+      {
+        "en": "In the past, the emperors of China lived there.",
+        "zh": "在过去，中国的皇帝住在那里。"
+      },
+      {
+        "en": "I want to try the food there, like Beijing duck.",
+        "zh": "我想尝尝那里的美食，比如北京烤鸭。"
+      },
+      {
+        "en": "I will take many photos and send them to my friends.",
+        "zh": "我会拍很多照片，发给我的朋友们。"
+      },
+      {
+        "en": "I think this will be a really great trip.",
+        "zh": "我想这会是一次非常棒的旅行。"
+      },
+      {
+        "en": "I can't wait to go!",
+        "zh": "我都等不及要出发了！"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I want to go to Beijing because I want to see the Great Wall.",
+        "zh": "我想去北京，因为我想看长城。"
+      },
+      {
+        "en": "I want to go to the sea because I want to swim.",
+        "zh": "我想去海边，因为我想游泳。"
+      },
+      {
+        "en": "I want to go to the north because I want to see the snow.",
+        "zh": "我想去北方，因为我想看雪。"
+      },
+      {
+        "en": "When I get there, I am going to take many photos.",
+        "zh": "到了那里，我要拍很多照片。"
+      },
+      {
+        "en": "The Great Wall is longer than any other wall in the world.",
+        "zh": "长城比世界上任何一道墙都长。"
+      }
+    ]
+  },
+  {
+    "id": "3-18",
+    "level": 3,
+    "unit": 18,
+    "title": "Teamwork",
+    "titleZh": "团队合作",
+    "lines": [
+      {
+        "en": "Hello, everyone, and good morning.",
+        "zh": "大家好，早上好。"
+      },
+      {
+        "en": "Today I want to talk about teamwork.",
+        "zh": "今天我想谈谈团队合作。"
+      },
+      {
+        "en": "Last month, we had a basketball match at school.",
+        "zh": "上个月，我们在学校参加了一场篮球比赛。"
+      },
+      {
+        "en": "At first, we did not play well.",
+        "zh": "一开始，我们打得不好。"
+      },
+      {
+        "en": "Everyone wanted to keep the ball.",
+        "zh": "每个人都想自己拿着球。"
+      },
+      {
+        "en": "So we were behind.",
+        "zh": "所以我们落后了。"
+      },
+      {
+        "en": "At half time, our teacher said, \"Play as a team!\"",
+        "zh": "中场休息时，老师说：“要像一个团队那样打球！”"
+      },
+      {
+        "en": "In the second half, we passed the ball to each other.",
+        "zh": "下半场，我们互相传球。"
+      },
+      {
+        "en": "We helped each other and worked together.",
+        "zh": "我们互相帮助，齐心协力。"
+      },
+      {
+        "en": "At last, we won the match!",
+        "zh": "最后，我们赢得了比赛！"
+      },
+      {
+        "en": "I learned that a team is stronger than one person.",
+        "zh": "我明白了，一个团队比一个人更强大。"
+      },
+      {
+        "en": "Together, we are stronger.",
+        "zh": "在一起，我们就更强大。"
+      },
+      {
+        "en": "If we work together, we can do great things.",
+        "zh": "如果我们齐心协力，就能做成大事。"
+      },
+      {
+        "en": "Thank you for listening.",
+        "zh": "谢谢大家的聆听。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "If we work together, we will be stronger.",
+        "zh": "如果我们齐心协力，就会更强大。"
+      },
+      {
+        "en": "If we help each other, we will do better.",
+        "zh": "如果我们互相帮助，就会做得更好。"
+      },
+      {
+        "en": "If we talk to each other, we will be a better team.",
+        "zh": "如果我们互相交流，就会成为更好的团队。"
+      },
+      {
+        "en": "A team is stronger than one person.",
+        "zh": "一个团队比一个人更强大。"
+      },
+      {
+        "en": "I think working together is better than working alone.",
+        "zh": "我觉得一起合作比单独干更好。"
+      }
+    ]
+  },
+  {
+    "id": "3-19",
+    "level": 3,
+    "unit": 19,
+    "title": "Thank You, Teachers",
+    "titleZh": "感谢老师",
+    "lines": [
+      {
+        "en": "Dear teachers and friends, good morning.",
+        "zh": "亲爱的老师们、同学们，早上好。"
+      },
+      {
+        "en": "Today I want to say thank you to our teachers.",
+        "zh": "今天我想对我们的老师说声谢谢。"
+      },
+      {
+        "en": "Our teachers work very hard for us every day.",
+        "zh": "我们的老师每天都为我们辛勤工作。"
+      },
+      {
+        "en": "They teach us how to read, write and think.",
+        "zh": "他们教我们怎样读、怎样写、怎样思考。"
+      },
+      {
+        "en": "They help us to be good people.",
+        "zh": "他们帮助我们成为好人。"
+      },
+      {
+        "en": "I still remember my first day at school.",
+        "zh": "我还记得我上学的第一天。"
+      },
+      {
+        "en": "I was very sad, and I cried.",
+        "zh": "我很难过，还哭了。"
+      },
+      {
+        "en": "My first teacher held my hand and smiled at me.",
+        "zh": "我的第一位老师拉着我的手，对我笑了笑。"
+      },
+      {
+        "en": "After that day, I loved school.",
+        "zh": "从那天起，我爱上了学校。"
+      },
+      {
+        "en": "When I make mistakes, my teachers do not give up on me.",
+        "zh": "当我犯错时，老师们不会放弃我。"
+      },
+      {
+        "en": "They say to me, \"You can do it!\"",
+        "zh": "他们对我说：“你能做到！”"
+      },
+      {
+        "en": "Our teachers are like candles, giving light to others.",
+        "zh": "我们的老师就像蜡烛，照亮别人。"
+      },
+      {
+        "en": "Thank you, dear teachers, for all your hard work.",
+        "zh": "亲爱的老师们，谢谢你们的辛勤付出。"
+      },
+      {
+        "en": "We will work hard and make you proud.",
+        "zh": "我们会努力学习，让你们为我们骄傲。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I want to thank my teacher because she is patient.",
+        "zh": "我想感谢我的老师，因为她很有耐心。"
+      },
+      {
+        "en": "I want to thank my teacher because she helps me every day.",
+        "zh": "我想感谢我的老师，因为她每天都帮助我。"
+      },
+      {
+        "en": "I want to thank my teacher because she makes school fun.",
+        "zh": "我想感谢我的老师，因为她让学校生活很有趣。"
+      },
+      {
+        "en": "Thanks to my teacher, I am stronger than before.",
+        "zh": "多亏了我的老师，我比以前更坚强了。"
+      },
+      {
+        "en": "If we work hard in school, our teachers will be happy.",
+        "zh": "如果我们在学校努力学习，老师们就会很高兴。"
+      }
+    ]
+  },
+  {
+    "id": "3-20",
+    "level": 3,
+    "unit": 20,
+    "title": "Looking Back on This Year",
+    "titleZh": "回顾这一年",
+    "lines": [
+      {
+        "en": "Good morning, everyone.",
+        "zh": "大家早上好。"
+      },
+      {
+        "en": "Time goes so quickly, and this school year is almost over.",
+        "zh": "时间过得真快，这个学年快要结束了。"
+      },
+      {
+        "en": "Today I want to look back on this year.",
+        "zh": "今天我想回顾一下这一年。"
+      },
+      {
+        "en": "This year, I learned many new things.",
+        "zh": "这一年，我学到了很多新东西。"
+      },
+      {
+        "en": "My English is much better than last year.",
+        "zh": "我的英语比去年好多了。"
+      },
+      {
+        "en": "Now I can give a short talk in English.",
+        "zh": "现在我能用英语做一个简短的演讲了。"
+      },
+      {
+        "en": "I made new friends and joined the art club.",
+        "zh": "我交了新朋友，还参加了美术社团。"
+      },
+      {
+        "en": "Some days were hard for me.",
+        "zh": "有些日子对我来说很难熬。"
+      },
+      {
+        "en": "I lost a race on Sports Day, and I was very sad.",
+        "zh": "我在运动会上输了一场赛跑，非常难过。"
+      },
+      {
+        "en": "But I did not give up, and I kept running every morning.",
+        "zh": "但我没有放弃，每天早上都坚持跑步。"
+      },
+      {
+        "en": "These things made me stronger and braver.",
+        "zh": "这些经历让我变得更强大、更勇敢。"
+      },
+      {
+        "en": "Next year, I am going to read more books and help others.",
+        "zh": "明年，我要读更多的书，并且帮助别人。"
+      },
+      {
+        "en": "I think next year will be even better.",
+        "zh": "我相信明年会更好。"
+      },
+      {
+        "en": "Thank you all for a happy year!",
+        "zh": "谢谢大家陪我度过快乐的一年！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "This year, I learned to swim, and I am happy about it.",
+        "zh": "这一年，我学会了游泳，我为此感到高兴。"
+      },
+      {
+        "en": "My English is better than last year.",
+        "zh": "我的英语比去年更好了。"
+      },
+      {
+        "en": "I am braver than before because I did not give up.",
+        "zh": "我比以前更勇敢了，因为我没有放弃。"
+      },
+      {
+        "en": "Next year, I am going to read more books.",
+        "zh": "明年，我要读更多的书。"
+      },
+      {
+        "en": "If I keep working hard, next year will be even better.",
+        "zh": "如果我继续努力，明年会更好。"
       }
     ]
   }

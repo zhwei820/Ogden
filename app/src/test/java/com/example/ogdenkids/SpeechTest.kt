@@ -15,9 +15,9 @@ class SpeechTest {
             .groupBy({ it.getString("c") }, { it.getString("w").lowercase() })
         fun keysOf(vararg codes: String) = codes.flatMap { byCategory[it].orEmpty() }.toSet()
         LemmaVocabulary(
-            words = keysOf("op", "gt", "pt", "qg", "qo"),
-            qualities = keysOf("qg", "qo"),
-            things = keysOf("gt", "pt")
+            words = keysOf("op", "gt", "pt", "qg", "qo", "ex"),
+            qualities = keysOf("qg", "qo", "ex"),
+            things = keysOf("gt", "pt", "ex")
         )
     }
 

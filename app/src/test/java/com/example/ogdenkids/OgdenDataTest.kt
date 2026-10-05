@@ -13,7 +13,7 @@ class OgdenDataTest {
 
     @Test
     fun wordListHasExpectedTotalAndCategories() {
-        assertEquals(850, words.length())
+        assertEquals(1200, words.length())
         val counts = mutableMapOf<String, Int>()
         repeat(words.length()) { index ->
             val item = words.getJSONObject(index)
@@ -24,6 +24,7 @@ class OgdenDataTest {
         assertEquals(200, counts["pt"])
         assertEquals(100, counts["qg"])
         assertEquals(50, counts["qo"])
+        assertEquals(350, counts["ex"])
     }
 
     @Test

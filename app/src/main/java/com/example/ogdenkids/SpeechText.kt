@@ -42,8 +42,8 @@ private val IrregularForms = mapOf(
 /**
  * 词形还原用的词表视图（全部小写）。按后缀限定原形词类，避免 evening→even、forest→for 这类误还原。
  *
- * @param words 全部 850 词
- * @param qualities 性质词（qg/qo）：-er/-est/-ly 的原形必须在这里
+ * @param words 全部词（850 + 拓展词）
+ * @param qualities 性质词（qg/qo）：-er/-est/-ly 的原形必须在这里；拓展词不分词类，同时放进两组
  * @param things 名词（gt/pt）：与 [OperatorVerbs] 一起作为 -ing/-ed 的合法原形
  */
 class LemmaVocabulary(val words: Set<String>, val qualities: Set<String>, val things: Set<String>) {

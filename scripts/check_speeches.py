@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""校验 app/src/main/assets/speeches.json：每级句数 / 句长 / 句型数是否在梯度范围内，并列出每单元的 850 词表外用词。
+"""校验 app/src/main/assets/speeches.json：每级句数 / 句长 / 句型数是否在梯度范围内，并列出每单元的词表外用词。
 
 用法：python3 scripts/check_speeches.py [speeches.json ...]   有错误时退出码为 1。
 """
@@ -17,9 +17,11 @@ RULES = {
     2: ((8, 10), (3, 10), (4, 6)),
     3: ((10, 14), (3, 16), (4, 6)),
 }
-UNITS_PER_LEVEL = 20
+THEMES = ["me", "school", "food", "nature", "seasons", "hobbies", "places", "festivals"]
+UNITS_PER_THEME = 5
+UNITS_PER_LEVEL = len(THEMES) * UNITS_PER_THEME
 
-# 850 词表只收原形；这些代词变格 / be·do·have 变位 / 情态词按 Ogden 规则视为表内
+# 词表只收原形；这些代词变格 / be·do·have 变位 / 情态词按 Ogden 规则视为表内
 INFLECTED = set("""
 an me my mine your yours him his she her hers it its we us our ours they them their theirs
 is am are was were been being does did doing done has had having can could would shall should might must
@@ -60,7 +62,9 @@ def check(path, words):
         if level not in RULES:
             errors.append(f"{uid}: level={level} 不合法")
             continue
-        seen.setdefault(level, set()).add(u.get("unit"))
+        seen.setdefault(level, []).append((u.get("unit"), u.get("theme")))
+        if u.get("theme") not in THEMES:
+            errors.append(f"{uid}: theme={u.get('theme')} 不合法")
         (lmin, lmax), (wmin, wmax), (pmin, pmax) = RULES[level]
         lines, patterns = u.get("lines", []), u.get("patterns", [])
         if not lmin <= len(lines) <= lmax:
@@ -77,8 +81,13 @@ def check(path, words):
         extra = sorted({t for item in lines + patterns for t in tokens(item["en"]) if not in_list(t, words)})
         print(f"{uid:6} L{level} {u.get('title', '')[:28]:28} 表外词({len(extra)}): {' '.join(extra)}")
     for level, units_seen in sorted(seen.items()):
-        if units_seen != set(range(1, UNITS_PER_LEVEL + 1)):
-            errors.append(f"L{level}: 单元号应为 1-{UNITS_PER_LEVEL}，实际 {sorted(units_seen)}")
+        units_seen.sort(key=lambda x: x[0] or 0)
+        if [n for n, _ in units_seen] != list(range(1, UNITS_PER_LEVEL + 1)):
+            errors.append(f"L{level}: 单元号应为 1-{UNITS_PER_LEVEL}，实际 {[n for n, _ in units_seen]}")
+        # 单元按主题顺序连续编号：第 1-5 单元属于 THEMES[0]，依此类推
+        expected = [t for t in THEMES for _ in range(UNITS_PER_THEME)]
+        if [t for _, t in units_seen] != expected:
+            errors.append(f"L{level}: 主题应按 {THEMES} 顺序每个 {UNITS_PER_THEME} 单元连续排列")
     return errors
 
 

@@ -133,7 +133,8 @@ enum class Category(
     GeneralThings("gt", "General Things", "通用词", 400, Color(0xFF166534), Color(0xFFDCFCE7)),
     Picturable("pt", "Picturable", "图示词", 200, Color(0xFFA16207), Color(0xFFFEF9C3)),
     Qualities("qg", "Qualities", "性质词", 100, Color(0xFF1E40AF), Color(0xFFDBEAFE)),
-    Opposites("qo", "Opposites", "反义对", 50, Color(0xFF7C3AED), Color(0xFFEDE9FE));
+    Opposites("qo", "Opposites", "反义对", 50, Color(0xFF7C3AED), Color(0xFFEDE9FE)),
+    Extended("ex", "Extended", "拓展词", 350, Color(0xFF0F766E), Color(0xFFCCFBF1));
 
     companion object {
         fun from(code: String) = values().first { it.code == code }
@@ -280,7 +281,7 @@ class ProgressStore(context: Context) {
 
     fun favoriteWords(words: List<OgdenWord>) = words.filter { progress(it.word).favorite }
 
-    /** 演讲里收藏的非 850 词（850 词走 favorites），存小写原文。 */
+    /** 演讲里收藏的词表外单词（词表内的走 favorites），存小写原文。 */
     fun speechWords(): List<String> = set("speechWords").sorted()
 
     fun isSpeechWordSaved(word: String) = set("speechWords").contains(word)
@@ -365,8 +366,8 @@ fun OgdenKidsApp() {
             words.filter { it.category in categories }.map { it.word.lowercase() }.toSet()
         LemmaVocabulary(
             words = wordIndex.keys,
-            qualities = keysOf(Category.Qualities, Category.Opposites),
-            things = keysOf(Category.GeneralThings, Category.Picturable)
+            qualities = keysOf(Category.Qualities, Category.Opposites, Category.Extended),
+            things = keysOf(Category.GeneralThings, Category.Picturable, Category.Extended)
         )
     }
     val progressStore = remember { ProgressStore(context) }
@@ -819,7 +820,7 @@ fun ChallengeScreen(
         item {
             HeroCard(
                 title = "Ogden's Basic English",
-                subtitle = "850 词闯关 · 中英双语 · 离线可学",
+                subtitle = "850 + 350 拓展词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
             )
@@ -1112,7 +1113,7 @@ fun LibraryScreen(
         }
         item {
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                FilterChip(selected = category == null, onClick = { category = null }, label = { Text("All · 850") })
+                FilterChip(selected = category == null, onClick = { category = null }, label = { Text("All · ${words.size}") })
                 Category.values().forEach {
                     FilterChip(
                         selected = category == it,
@@ -1328,7 +1329,7 @@ fun ReviewScreen(
         item {
             ReviewEntryCard(
                 title = "演讲生词",
-                subtitle = if (speechWords.isEmpty()) "在演讲里点词即可收藏" else "演讲中收藏的 850 词表外的词",
+                subtitle = if (speechWords.isEmpty()) "在演讲里点词即可收藏" else "演讲中收藏的词表外的词",
                 count = speechWords.size,
                 tint = Category.Qualities.tint,
                 icon = Icons.Default.RecordVoiceOver,
@@ -1418,9 +1419,10 @@ fun WordCollectionScreen(
     }
 }
 
-private val SpeechLevelNames = mapOf(1 to "一级 · 起步", 2 to "二级 · 成长", 3 to "三级 · 表达")
+private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级")
+private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达")
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SpeechListScreen(
     speeches: List<Speech>,
@@ -1443,14 +1445,19 @@ fun SpeechListScreen(
             SectionTitle("示范演讲", "先听 Track1 跟读，再用 Track2 句型替换练说")
         }
         item {
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 SpeechLevelNames.forEach { (value, name) ->
-                    FilterChip(selected = level == value, onClick = { onLevel(value) }, label = { Text(name) })
+                    FilterChip(
+                        selected = level == value,
+                        onClick = { onLevel(value) },
+                        label = { Text(name, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+                        modifier = Modifier.weight(1f)
+                    )
                 }
             }
         }
         item {
-            AppText("已学 $learned / ${units.size} 单元", color = InkFaint, fontSize = 13.sp)
+            AppText("${SpeechLevelThemes[level]} · 已学 $learned / ${units.size} 单元", color = InkFaint, fontSize = 13.sp)
         }
         items(units, key = { it.id }) { speech ->
             Card(
@@ -1488,7 +1495,7 @@ fun SpeechListScreen(
 /** [line] 在 Track1 中是句序号，Track2 的句型接在其后编号，这样两段共用一个选中状态。 */
 private data class SelectedSpeechWord(val line: Int, val token: SpeechToken)
 
-/** 非 850 词的收藏键：小写并去掉所有格。 */
+/** 词表外单词的收藏键：小写并去掉所有格。 */
 private fun speechWordKey(token: String) = token.lowercase().removeSuffix("'s")
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1547,7 +1554,7 @@ fun SpeechReaderScreen(
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
                 Text(speech.title, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                AppText("${SpeechLevelNames[speech.level]} · Unit ${speech.unit} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
+                AppText("${SpeechLevelNames[speech.level]}${SpeechLevelThemes[speech.level]} · Unit ${speech.unit} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
             }
             TextButton(onClick = { showTranslation = !showTranslation }) {
                 AppText(if (showTranslation) "收起译文" else "显示译文", fontSize = 13.sp)
@@ -1618,15 +1625,15 @@ fun SpeechReaderScreen(
 
 @Composable
 private fun SpeechTrackHeader(title: String, subtitle: String, onPlayAll: (() -> Unit)?) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Column(Modifier.weight(1f)) {
-            AppText(title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp)
-            AppText(subtitle, color = InkFaint, fontSize = 12.sp)
-        }
-        if (onPlayAll != null) {
-            TextButton(onClick = onPlayAll) {
-                Icon(Icons.Default.PlayArrow, contentDescription = null)
-                AppText("全文朗读", fontSize = 13.sp)
+    Column {
+        AppText(title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            AppText(subtitle, color = InkFaint, fontSize = 12.sp, modifier = Modifier.weight(1f))
+            if (onPlayAll != null) {
+                TextButton(onClick = onPlayAll) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = null)
+                    AppText("全文朗读", fontSize = 13.sp)
+                }
             }
         }
     }
@@ -1659,20 +1666,21 @@ fun SpeechLineRow(
             Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 ClickableText(
                     text = text,
-                    style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink),
+                    style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, color = Ink),
                     onClick = { offset -> tokens.firstOrNull { offset in it.range }?.let(onTokenClick) }
                 )
                 AnimatedVisibility(showTranslation) {
                     AppText(
                         line.zh,
                         color = InkSoft,
-                        lineHeight = 22.sp,
+                        fontSize = 18.sp,
+                        lineHeight = 26.sp,
                         modifier = Modifier.clickable { onSpeakChinese(line.zh) }
                     )
                 }
             }
-            IconButton(onClick = { onSpeakEnglish(line.en) }) {
-                Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = Category.Operations.tint)
+            IconButton(onClick = { onSpeakEnglish(line.en) }, modifier = Modifier.size(56.dp)) {
+                Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = Category.Operations.tint, modifier = Modifier.size(32.dp))
             }
         }
     }
@@ -1721,7 +1729,7 @@ fun SpeechWordSheet(
                     Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = InkSoft)
                 }
             }
-            AppText("不在 850 词表中，收藏后可在「复习 · 演讲生词」查看", color = InkFaint, fontSize = 13.sp)
+            AppText("不在词表中，收藏后可在「复习 · 演讲生词」查看", color = InkFaint, fontSize = 13.sp)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             OutlinedButton(onClick = onToggleSave, shape = RoundedCornerShape(12.dp), modifier = Modifier.weight(1f)) {
@@ -1770,7 +1778,7 @@ fun SpeechWordListScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             if (words.isEmpty()) {
-                item { EmptyCard("在演讲里点击 850 词表外的词即可收藏到这里。") }
+                item { EmptyCard("在演讲里点击词表外的词即可收藏到这里。") }
             } else {
                 items(words, key = { it }) { word ->
                     Row(
@@ -2002,7 +2010,7 @@ fun privacySections() = listOf(
     ),
     LegalSection(
         "适用范围",
-        "本应用适合希望学习 Ogden Basic English 850 词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
+        "本应用适合希望学习 Ogden Basic English 850 词及拓展词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
     ),
     LegalSection(
         "本地数据与删除",
@@ -2017,7 +2025,7 @@ fun privacySections() = listOf(
 fun aboutSections() = listOf(
     LegalSection(
         "应用来源",
-        "本应用基于 Ogden Basic English 850 词学习内容进行二次创作，面向中文英语学习场景重新设计为 Android App。"
+        "本应用基于 Ogden Basic English 850 词学习内容进行二次创作，并补充 350 个儿童生活常用拓展词，面向中文英语学习场景重新设计为 Android App。"
     ),
     LegalSection(
         "原作说明",
