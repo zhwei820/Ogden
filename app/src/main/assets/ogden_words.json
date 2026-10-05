@@ -18083,5 +18083,161 @@
             "sport",
             "ball"
         ]
+    },
+    {
+        "w": "above",
+        "c": "ex",
+        "zh": "在……上方",
+        "en": "higher than something, not touching it",
+        "ex": "The bird is above the tree.",
+        "exz": "小鸟在树的上方。",
+        "s": [
+            "on",
+            "over"
+        ]
+    },
+    {
+        "w": "below",
+        "c": "ex",
+        "zh": "在……下方",
+        "en": "lower than something",
+        "ex": "The fish swim below the boat.",
+        "exz": "鱼在船的下方游。",
+        "s": [
+            "under",
+            "down"
+        ]
+    },
+    {
+        "w": "beside",
+        "c": "ex",
+        "zh": "在……旁边",
+        "en": "at the side of something",
+        "ex": "Sit beside me.",
+        "exz": "坐在我旁边。",
+        "s": [
+            "next",
+            "near"
+        ]
+    },
+    {
+        "w": "inside",
+        "c": "ex",
+        "zh": "在……里面",
+        "en": "in a room, box or building",
+        "ex": "The cat is inside the house.",
+        "exz": "猫在房子里面。",
+        "s": [
+            "in",
+            "outside"
+        ]
+    },
+    {
+        "w": "sixty",
+        "c": "ex",
+        "zh": "六十",
+        "en": "the number 60",
+        "ex": "My grandpa is sixty.",
+        "exz": "我爷爷六十岁。",
+        "s": [
+            "six",
+            "seventy"
+        ]
+    },
+    {
+        "w": "eighty",
+        "c": "ex",
+        "zh": "八十",
+        "en": "the number 80",
+        "ex": "There are eighty pages in this book.",
+        "exz": "这本书有八十页。",
+        "s": [
+            "eight",
+            "ninety"
+        ]
+    },
+    {
+        "w": "ninety",
+        "c": "ex",
+        "zh": "九十",
+        "en": "the number 90",
+        "ex": "Ninety and ten make a hundred.",
+        "exz": "九十加十等于一百。",
+        "s": [
+            "nine",
+            "hundred"
+        ]
+    },
+    {
+        "w": "fourth",
+        "c": "ex",
+        "zh": "第四",
+        "en": "number 4 in order",
+        "ex": "Thursday is the fourth day of the week.",
+        "exz": "星期四是一周的第四天。",
+        "s": [
+            "four",
+            "fifth"
+        ]
+    },
+    {
+        "w": "fifth",
+        "c": "ex",
+        "zh": "第五",
+        "en": "number 5 in order",
+        "ex": "I am in the fifth row.",
+        "exz": "我在第五排。",
+        "s": [
+            "five",
+            "fourth"
+        ]
+    },
+    {
+        "w": "seventh",
+        "c": "ex",
+        "zh": "第七",
+        "en": "number 7 in order",
+        "ex": "Sunday is the seventh day.",
+        "exz": "星期天是第七天。",
+        "s": [
+            "seven",
+            "eighth"
+        ]
+    },
+    {
+        "w": "eighth",
+        "c": "ex",
+        "zh": "第八",
+        "en": "number 8 in order",
+        "ex": "She is the eighth in line.",
+        "exz": "她排第八。",
+        "s": [
+            "eight",
+            "ninth"
+        ]
+    },
+    {
+        "w": "ninth",
+        "c": "ex",
+        "zh": "第九",
+        "en": "number 9 in order",
+        "ex": "This is my ninth birthday.",
+        "exz": "这是我的九岁生日。",
+        "s": [
+            "nine",
+            "tenth"
+        ]
+    },
+    {
+        "w": "quarter",
+        "c": "ex",
+        "zh": "一刻钟；四分之一",
+        "en": "fifteen minutes, or one of four equal parts",
+        "ex": "It's a quarter past three.",
+        "exz": "现在是三点一刻。",
+        "s": [
+            "half",
+            "hour"
+        ]
     }
 ]

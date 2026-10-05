@@ -3988,5 +3988,18 @@
     "shell": {"uk": "/ʃɛl/", "us": "/ʃɛl/"},
     "turtle": {"uk": "/ˈtɜːtəl/", "us": "/ˈtɝtəl/"},
     "violin": {"uk": "/ˌvaɪəˈlɪn/", "us": "/ˌvaɪəˈlɪn/"},
-    "volleyball": {"uk": "/ˈvɒlibɔːl/", "us": "/ˈvɑliˌbɔl/"}
+    "volleyball": {"uk": "/ˈvɒlibɔːl/", "us": "/ˈvɑliˌbɔl/"},
+    "above": {"uk": "/əˈbʌv/", "us": "/əˈbʌv/"},
+    "below": {"uk": "/bɪˈləʊ/", "us": "/bɪˈloʊ/"},
+    "beside": {"uk": "/bɪˈsaɪd/", "us": "/bɪˈsaɪd/"},
+    "inside": {"uk": "/ˌɪnˈsaɪd/", "us": "/ˌɪnˈsaɪd/"},
+    "sixty": {"uk": "/ˈsɪksti/", "us": "/ˈsɪksti/"},
+    "eighty": {"uk": "/ˈeɪti/", "us": "/ˈeɪti/"},
+    "ninety": {"uk": "/ˈnaɪnti/", "us": "/ˈnaɪnti/"},
+    "fourth": {"uk": "/fɔːθ/", "us": "/fɔɹθ/"},
+    "fifth": {"uk": "/fɪfθ/", "us": "/fɪfθ/"},
+    "seventh": {"uk": "/ˈsɛvənθ/", "us": "/ˈsɛvənθ/"},
+    "eighth": {"uk": "/eɪtθ/", "us": "/eɪtθ/"},
+    "ninth": {"uk": "/naɪnθ/", "us": "/naɪnθ/"},
+    "quarter": {"uk": "/ˈkwɔːtə/", "us": "/ˈkwɔɹtɝ/"}
 }
