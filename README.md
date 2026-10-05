@@ -8,20 +8,16 @@
 
 ## Screenshots
 
-| Home | Challenge |
-| --- | --- |
-| ![Home](docs/screenshots/home.jpg) | ![Challenge](docs/screenshots/challenge.jpg) |
-
-| Library | Review |
-| --- | --- |
-| ![Library](docs/screenshots/library.jpg) | ![Review](docs/screenshots/review.jpg) |
+| Challenge | Library | Review |
+| --- | --- | --- |
+| ![Challenge](docs/screenshots/challenge.jpg) | ![Library](docs/screenshots/library.jpg) | ![Review](docs/screenshots/review.jpg) |
 
 ## Features
 
 - 内置 Ogden Basic English 850 词，支持离线学习。
 - 词库分为 Operations、General Things、Picturable、Qualities、Opposites。
 - 支持搜索、分类筛选、US/UK 发音切换、简体/繁体显示。
-- 首页展示英文谚语卡片，点击翻转查看中文翻译。
+- 示范演讲：点击任意词查看释义（自动还原 came→come 等词形）并收藏；段落、译文和单词中文释义可用 Microsoft Azure 语音朗读。
 - 每 10 个词为一关，分类逐步解锁。
 - 练习包含听音选词、看中文选英文、例句填空、拼写挑战、近义词配对。
 - 本地保存学习进度、收藏、错词、熟练度和连续学习天数。
@@ -42,6 +38,7 @@
 
 - `app/src/main/assets/ogden_words.json`
 - `app/src/main/assets/ogden_ipa.json`
+- `app/src/main/assets/speeches.json`
 - `app/src/main/assets/audio/us`
 - `app/src/main/assets/audio/uk`
 
@@ -65,7 +62,7 @@ app/build/outputs/apk/debug/app-debug.apk
 
 - App 首版以离线学习为主，不接入账号、云同步或排行榜。
 - 发音优先使用内置音频；例句或缺失音频场景可回退到系统 TTS / 在线服务。
-- 一点颜体字体来自 [wordshub/free-font](https://github.com/wordshub/free-font)，用于首页底部短句。
+- Azure 朗读需在 `local.properties` 配置 `azure.speech.key` 与 `azure.speech.region`（构建时注入 APK，仅适合自用）；未配置或请求失败时回退系统 TTS。
 
 ## License
 

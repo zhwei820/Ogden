@@ -41,7 +41,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RecordVoiceOver
@@ -89,7 +88,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -119,7 +117,6 @@ private val Line = Color(0xFFE7E2D4)
 private val Success = Color(0xFF166534)
 private val Error = Color(0xFFB91C1C)
 private val LocalChineseMode = compositionLocalOf { ChineseMode.Hans }
-private val YidianYanti = FontFamily(Font(R.font.yidian_yanti))
 
 enum class Category(
     val code: String,
@@ -161,10 +158,9 @@ data class WordProgress(
 )
 
 enum class Tab(val title: String, val icon: ImageVector) {
-    Home("首页", Icons.Default.Home),
+    Speech("演讲", Icons.Default.RecordVoiceOver),
     Challenge("闯关", Icons.Default.Star),
     Library("词库", Icons.Default.Book),
-    Speech("演讲", Icons.Default.RecordVoiceOver),
     Review("复习", Icons.Default.Refresh),
     Software("软件", Icons.Default.Info)
 }
@@ -365,7 +361,7 @@ fun OgdenKidsApp() {
     }
     val progressStore = remember { ProgressStore(context) }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
-    var selectedTab by remember { mutableStateOf(Tab.Home) }
+    var selectedTab by remember { mutableStateOf(Tab.Speech) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
     var version by remember { mutableStateOf(0) }
@@ -405,9 +401,6 @@ fun OgdenKidsApp() {
                     onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
                     content = { padding ->
                         when (selectedTab) {
-                            Tab.Home -> ProverbHomeScreen(
-                                padding = padding
-                            )
                             Tab.Challenge -> ChallengeScreen(
                                 words = words,
                                 store = progressStore,
@@ -766,122 +759,6 @@ fun SettingsToggleRow(
         TogglePill(ChineseMode.Hant.label, chineseMode == ChineseMode.Hant, { onChineseMode(ChineseMode.Hant) })
     }
 }
-
-data class Proverb(val en: String, val zh: String)
-
-@Composable
-fun ProverbHomeScreen(padding: PaddingValues) {
-    val quotes = remember {
-        proverbs().shuffled().take(2)
-    }
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-            .padding(start = 18.dp, top = 30.dp, end = 18.dp, bottom = 18.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                "Ogden's Basic English",
-                fontFamily = FontFamily.Cursive,
-                fontWeight = FontWeight.Normal,
-                fontSize = 32.sp,
-                lineHeight = 38.sp,
-                color = Ink
-            )
-            AppText(
-                "今日读两句，再学十个词",
-                color = InkFaint,
-                fontSize = 13.sp,
-                fontFamily = FontFamily.Serif
-            )
-        }
-        Spacer(Modifier.height(15.dp))
-        quotes.forEach { proverb ->
-            ProverbCard(proverb)
-            Spacer(Modifier.height(15.dp))
-        }
-        Spacer(Modifier.weight(1f))
-        Text(
-            "從850個詞開始，做一個有情有義的人……",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 0.dp, vertical = 4.dp),
-            color = InkSoft,
-            fontSize = 13.sp,
-            lineHeight = 20.sp,
-            fontFamily = YidianYanti,
-            fontWeight = FontWeight.Normal,
-            textAlign = TextAlign.Center,
-            maxLines = 1,
-            overflow = TextOverflow.Clip,
-            softWrap = false
-        )
-    }
-}
-
-@Composable
-fun ProverbCard(proverb: Proverb) {
-    var flipped by remember(proverb.en) { mutableStateOf(false) }
-    Card(
-        colors = CardDefaults.cardColors(containerColor = PaperElevated),
-        shape = RoundedCornerShape(18.dp),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(176.dp)
-            .clickable { flipped = !flipped }
-            .border(1.dp, Line, RoundedCornerShape(18.dp))
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(22.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            if (!flipped) {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        proverb.en,
-                        fontFamily = FontFamily.Serif,
-                        fontStyle = FontStyle.Italic,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 22.sp,
-                        lineHeight = 28.sp,
-                        color = Ink
-                    )
-                    Text("Tap to turn", color = InkFaint, fontSize = 11.sp, fontFamily = FontFamily.Serif)
-                }
-            } else {
-                Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                    Text(
-                        proverb.zh,
-                        color = InkSoft.copy(alpha = 0.72f),
-                        fontSize = 17.sp,
-                        lineHeight = 25.sp,
-                        fontFamily = FontFamily.Cursive,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Center
-                    )
-                    AppText("轻触返回英文", color = InkFaint, fontSize = 11.sp, fontFamily = FontFamily.Serif)
-                }
-            }
-        }
-    }
-}
-
-fun proverbs() = listOf(
-    Proverb("Small words can carry a great light.", "微小的词，也能承载辽阔的光。"),
-    Proverb("A clear word opens a quiet door.", "一个清楚的词，能推开一扇安静的门。"),
-    Proverb("Learn the simple things, and the hard things grow kind.", "先学会简单的事，艰深的事也会变得温和。"),
-    Proverb("One word today is one step tomorrow.", "今日一词，明日一步。"),
-    Proverb("The child who listens well speaks with courage.", "善于聆听的孩子，也会勇敢表达。"),
-    Proverb("A good sentence is a small bridge between minds.", "一句好句子，是心灵之间的小桥。"),
-    Proverb("Slow study makes deep roots.", "缓慢的学习，会长出深深的根。"),
-    Proverb("Words are seeds; practice is rain.", "词语是种子，练习是雨水。"),
-    Proverb("To know a word is to find a new window.", "认识一个词，就是发现一扇新窗。"),
-    Proverb("Little by little, the voice becomes clear.", "一点一点，声音终会清晰。")
-)
 
 @Composable
 fun ChallengeScreen(
