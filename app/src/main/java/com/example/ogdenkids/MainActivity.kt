@@ -2220,7 +2220,7 @@ fun SoftwareScreen(
                     .border(1.dp, Line, RoundedCornerShape(18.dp))
             ) {
                 Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text("Ogden Basic", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
+                    Text("Panda English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
                     AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft)
                     AppText("当前版本：1.0", color = InkFaint, fontSize = 13.sp)
                 }
@@ -2386,7 +2386,7 @@ fun LegalInfoScreen(
 fun privacySections() = listOf(
     LegalSection(
         "基本说明",
-        "Ogden Basic 是一款面向英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
+        "Panda English 是一款面向英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
     ),
     LegalSection(
         "可能使用的权限",
@@ -2398,7 +2398,7 @@ fun privacySections() = listOf(
     ),
     LegalSection(
         "适用范围",
-        "本应用适合希望学习 Ogden Basic English 850 词及拓展词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
+        "本应用适合希望学习 Panda English 850 词及拓展词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
     ),
     LegalSection(
         "本地数据与删除",
@@ -2413,7 +2413,7 @@ fun privacySections() = listOf(
 fun aboutSections() = listOf(
     LegalSection(
         "应用来源",
-        "本应用基于 Ogden Basic English 850 词学习内容进行二次创作，并补充 350 个儿童生活常用拓展词，面向中文英语学习场景重新设计为 Android App。"
+        "本应用基于 Panda English 850 词学习内容进行二次创作，并补充 350 个儿童生活常用拓展词，面向中文英语学习场景重新设计为 Android App。"
     ),
     LegalSection(
         "原作说明",
