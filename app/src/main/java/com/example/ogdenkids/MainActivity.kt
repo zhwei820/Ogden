@@ -223,6 +223,8 @@ sealed class Screen {
     data class ThemePractice(val level: Int, val theme: SpeechTheme) : Screen()
     data class WordPractice(val title: String, val words: List<String>, val returnTo: Screen) : Screen()
     data class SpecialPractice(val topic: SpecialTopic, val level: Int) : Screen()
+    data class SpecialModulePage(val key: String) : Screen()
+    data class ModulePractice(val key: String) : Screen()
     object SpeechWords : Screen()
     object Settings : Screen()
     object Privacy : Screen()
@@ -272,6 +274,31 @@ class OgdenRepository(private val context: Context) {
                 words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
             )
         }.sortedWith(compareBy({ it.level }, { it.unit }))
+    }
+
+    fun loadSpecialModules(): List<SpecialModule> {
+        val modules = JSONArray(readAsset("specials.json"))
+        return List(modules.length()) { index ->
+            val item = modules.getJSONObject(index)
+            val groups = item.getJSONArray("groups")
+            val sentences = item.getJSONArray("sentences")
+            SpecialModule(
+                key = item.getString("key"),
+                zh = item.getString("zh"),
+                en = item.getString("en"),
+                icon = item.getString("icon"),
+                scene = item.optString("scene").takeIf { it.isNotBlank() && it != "null" }?.let { key -> SpecialTopic.values().first { it.key == key } },
+                groups = List(groups.length()) {
+                    val g = groups.getJSONObject(it)
+                    val words = g.getJSONArray("words")
+                    WordGroup(g.getString("zh"), g.getString("en"), List(words.length()) { w -> words.getString(w) })
+                },
+                sentences = List(sentences.length()) {
+                    val line = sentences.getJSONObject(it)
+                    SpeechLine(line.getString("en"), line.getString("zh"))
+                }
+            )
+        }
     }
 
     private fun readAsset(name: String): String =
@@ -408,6 +435,7 @@ fun OgdenKidsApp() {
     val repository = remember { OgdenRepository(context) }
     val words = remember { repository.loadWords() }
     val speeches = remember { repository.loadSpeeches() }
+    val specialModules = remember { repository.loadSpecialModules() }
     val wordIndex = remember(words) { words.associateBy { it.word.lowercase() } }
     val lemmaVocabulary = remember(words) {
         fun keysOf(vararg categories: Category) =
@@ -449,6 +477,11 @@ fun OgdenKidsApp() {
             is Screen.WordPractice -> {
                 version++
                 screen = current.returnTo
+            }
+            is Screen.SpecialPractice -> screen = Screen.SpecialModulePage(current.topic.key)
+            is Screen.ModulePractice -> {
+                azureSpeaker.stop()
+                screen = Screen.SpecialModulePage(current.key)
             }
             else -> {
                 azureSpeaker.stop()
@@ -529,7 +562,8 @@ fun OgdenKidsApp() {
                                 level = speechLevel,
                                 onLevel = { speechLevel = it },
                                 onPractice = { theme -> screen = Screen.ThemePractice(speechLevel, theme) },
-                                onSpecial = { topic -> screen = Screen.SpecialPractice(topic, speechLevel) },
+                                modules = specialModules,
+                                onSpecial = { module -> screen = Screen.SpecialModulePage(module.key) },
                                 padding = padding,
                                 onOpen = { screen = Screen.SpeechReader(it) }
                             )
@@ -595,6 +629,48 @@ fun OgdenKidsApp() {
                         }
                     )
                 }
+                is Screen.SpecialModulePage -> specialModules.firstOrNull { it.key == current.key }?.let { module ->
+                    SpecialModuleScreen(
+                        module = module,
+                        level = speechLevel,
+                        store = progressStore,
+                        wordIndex = wordIndex,
+                        lemmaVocabulary = lemmaVocabulary,
+                        accent = accent,
+                        onBack = goBack,
+                        onScene = { topic, level -> screen = Screen.SpecialPractice(topic, level) },
+                        onWordPractice = { list ->
+                            azureSpeaker.stop()
+                            screen = Screen.WordPractice("${module.zh} · 单词练习", list.shuffled().take(10), current)
+                        },
+                        onSentencePractice = { azureSpeaker.stop(); screen = Screen.ModulePractice(module.key) },
+                        onSpeakWord = { azureSpeaker.stop(); speak(it) },
+                        onSpeakEnglish = { text, onDone -> azureSpeaker.speak(text, AzureVoice.english(accent), onDone) },
+                        onSpeakChinese = { text, onDone -> azureSpeaker.speak(text, AzureVoice.ZhCn, onDone) },
+                        onStopSpeaking = { azureSpeaker.stop() },
+                        onOpenWord = {
+                            azureSpeaker.stop()
+                            screen = Screen.Detail(it, returnTo = current)
+                        }
+                    )
+                }
+                is Screen.ModulePractice -> specialModules.firstOrNull { it.key == current.key }?.let { module ->
+                    val unit = module.asPracticeUnit()
+                    ThemePracticeScreen(
+                        title = "${module.icon} ${module.zh} · 句子练习",
+                        subtitle = "专项训练",
+                        units = listOf(unit),
+                        vocabulary = unit.words.mapNotNull { wordIndex[it.lowercase()] },
+                        bestScore = progressStore.bestSpecialScore("${module.key}-sentences", 0),
+                        onSpeak = speakEnglish,
+                        onSpeakWord = { azureSpeaker.stop(); speak(it) },
+                        onFinish = { correct, _ ->
+                            progressStore.saveSpecialScore("${module.key}-sentences", 0, correct)
+                            version++
+                        },
+                        onBack = goBack
+                    )
+                }
                 is Screen.SpecialPractice -> SpecialPracticeScreen(
                     topic = current.topic,
                     level = current.level,
@@ -634,8 +710,8 @@ fun OgdenKidsApp() {
                     onOpen = { screen = Screen.Detail(it) }
                 )
                 is Screen.ThemePractice -> ThemePracticeScreen(
-                    level = current.level,
-                    theme = current.theme,
+                    title = "主题练习 · ${current.theme.zh}",
+                    subtitle = "${SpeechLevelNames[current.level]}${SpeechLevelThemes[current.level]}",
                     units = speeches.filter { it.level == current.level && it.theme == current.theme },
                     vocabulary = speeches.filter { it.level == current.level && it.theme == current.theme }
                         .flatMap { it.words }
@@ -807,6 +883,8 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.ThemePractice -> "theme-${screen.level}-${screen.theme.key}"
     is Screen.WordPractice -> "words-${screen.title}"
     is Screen.SpecialPractice -> "special-${screen.topic.key}-${screen.level}"
+    is Screen.SpecialModulePage -> "module-${screen.key}"
+    is Screen.ModulePractice -> "module-practice-${screen.key}"
     Screen.SpeechWords -> "speech-words"
     Screen.Settings -> "settings"
     Screen.Privacy -> "privacy"
@@ -1558,7 +1636,8 @@ fun SpeechListScreen(
     level: Int,
     onLevel: (Int) -> Unit,
     onPractice: (SpeechTheme) -> Unit,
-    onSpecial: (SpecialTopic) -> Unit,
+    modules: List<SpecialModule>,
+    onSpecial: (SpecialModule) -> Unit,
     padding: PaddingValues,
     onOpen: (Speech) -> Unit
 ) {
@@ -1656,20 +1735,21 @@ fun SpeechListScreen(
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
                 AppText("专项训练", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SpecialTopic.values().forEach { topic ->
-                        val best = store.bestSpecialScore(topic.key, level)
-                        OutlinedButton(
-                            onClick = { onSpecial(topic) },
-                            modifier = Modifier.weight(1f),
-                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
-                        ) {
-                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                Text(topic.icon, fontSize = 22.sp)
-                                AppText(topic.zh, fontSize = 15.sp, color = Ink)
-                                if (best != null) AppText("最佳 $best", fontSize = 11.sp, color = InkFaint)
+                modules.chunked(4).forEach { row ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        row.forEach { module ->
+                            OutlinedButton(
+                                onClick = { onSpecial(module) },
+                                modifier = Modifier.weight(1f),
+                                contentPadding = PaddingValues(horizontal = 2.dp, vertical = 8.dp)
+                            ) {
+                                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                    Text(module.icon, fontSize = 22.sp)
+                                    AppText(module.zh, fontSize = 13.sp, color = Ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                                }
                             }
                         }
+                        repeat(4 - row.size) { Spacer(Modifier.weight(1f)) }
                     }
                 }
             }
@@ -2649,8 +2729,8 @@ fun PracticeScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ThemePracticeScreen(
-    level: Int,
-    theme: SpeechTheme,
+    title: String,
+    subtitle: String,
     units: List<Speech>,
     vocabulary: List<OgdenWord>,
     bestScore: Int?,
@@ -2704,9 +2784,9 @@ fun ThemePracticeScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
-                AppText("主题练习 · ${theme.zh}", fontWeight = FontWeight.Bold)
+                AppText(title, fontWeight = FontWeight.Bold)
                 AppText(
-                    "${SpeechLevelNames[level]}${SpeechLevelThemes[level]} · ${(index + 1).coerceAtMost(questions.size)} / ${questions.size} · 答对 $correctCount",
+                    "$subtitle · ${(index + 1).coerceAtMost(questions.size)} / ${questions.size} · 答对 $correctCount",
                     color = InkFaint,
                     fontSize = 12.sp
                 )
@@ -2897,6 +2977,182 @@ fun ThemePracticeScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+fun SpecialModuleScreen(
+    module: SpecialModule,
+    level: Int,
+    store: ProgressStore,
+    wordIndex: Map<String, OgdenWord>,
+    lemmaVocabulary: LemmaVocabulary,
+    accent: Accent,
+    onBack: () -> Unit,
+    onScene: (SpecialTopic, Int) -> Unit,
+    onWordPractice: (List<String>) -> Unit,
+    onSentencePractice: () -> Unit,
+    onSpeakWord: (String) -> Unit,
+    onSpeakEnglish: (text: String, onDone: (() -> Unit)?) -> Unit,
+    onSpeakChinese: (text: String, onDone: (() -> Unit)?) -> Unit,
+    onStopSpeaking: () -> Unit,
+    onOpenWord: (OgdenWord) -> Unit
+) {
+    var selected by remember(module.key) { mutableStateOf<SelectedSpeechWord?>(null) }
+    var pickedWord by rememberSaveable(module.key) { mutableStateOf<String?>(null) }
+    var speakingIndex by remember(module.key) { mutableStateOf<Int?>(null) }
+    var sceneLevel by rememberSaveable(module.key) { mutableStateOf(level) }
+    var favoriteVersion by remember { mutableStateOf(0) }
+    fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
+    fun stopSpeaking() {
+        onStopSpeaking()
+        speakingIndex = null
+    }
+
+    LaunchedEffect(selected) {
+        val token = selected?.token ?: return@LaunchedEffect
+        stopSpeaking()
+        val word = ogdenWordOf(token)
+        if (word != null && contractionOf(token.text) == null) onSpeakWord(word.word) else onSpeakEnglish(token.text, null)
+    }
+
+    Scaffold(containerColor = Paper, topBar = {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(PaperElevated)
+                .border(1.dp, Line)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+            Column(Modifier.weight(1f)) {
+                Text("${module.icon} ${module.zh}", fontWeight = FontWeight.Bold)
+                AppText("${module.en} · ${module.words.size} 个词 · ${module.sentences.size} 个句子", color = InkFaint, fontSize = 12.sp)
+            }
+        }
+    }) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(18.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            module.scene?.let { topic ->
+                item {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = Category.Operations.soft),
+                        shape = RoundedCornerShape(16.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                            AppText("看图练习", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
+                            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                                SpeechLevelNames.forEach { (value, name) ->
+                                    val best = store.bestSpecialScore(topic.key, value)
+                                    FilterChip(
+                                        selected = sceneLevel == value,
+                                        onClick = { sceneLevel = value },
+                                        label = { Text(if (best != null) "$name · $best" else name, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
+                            Button(onClick = { stopSpeaking(); onScene(topic, sceneLevel) }, modifier = Modifier.fillMaxWidth()) {
+                                Text("开始 ${SpeechLevelNames[sceneLevel]}看图练习", fontSize = 18.sp)
+                            }
+                        }
+                    }
+                }
+            }
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(onClick = { stopSpeaking(); onWordPractice(module.words) }, modifier = Modifier.weight(1f)) {
+                        Text("单词练习", fontSize = 18.sp)
+                    }
+                    Button(onClick = { stopSpeaking(); onSentencePractice() }, modifier = Modifier.weight(1f)) {
+                        Text("句子练习", fontSize = 18.sp)
+                    }
+                }
+            }
+            module.groups.forEach { group ->
+                item(key = "group-${group.zh}") {
+                    Column(Modifier.padding(top = 8.dp)) {
+                        AppText(group.zh, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
+                        AppText("${group.en} · 点单词听发音、看释义", color = InkFaint, fontSize = 12.sp)
+                    }
+                }
+                item(key = "words-${group.zh}") {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        group.words.forEach { w ->
+                            val picked = pickedWord == w
+                            OutlinedButton(
+                                onClick = {
+                                    pickedWord = w
+                                    selected = SelectedSpeechWord(-1, SpeechToken(w, w.indices))
+                                },
+                                colors = ButtonDefaults.outlinedButtonColors(containerColor = if (picked) Category.Operations.soft else Color.Transparent),
+                                border = BorderStroke(if (picked) 2.dp else 1.dp, if (picked) Category.Operations.tint else Line),
+                                modifier = Modifier.padding(bottom = 8.dp),
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
+                            ) { Text(wordIndex[w.lowercase()]?.word ?: w, fontSize = 20.sp, fontFamily = FontFamily.Serif, color = Ink) }
+                        }
+                    }
+                }
+            }
+            item {
+                Spacer(Modifier.height(8.dp))
+                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按单词查释义", playingAll = false, onPlayAll = null)
+            }
+            items(module.sentences.size) { index ->
+                val line = module.sentences[index]
+                val tokens = remember(line.en) { tokenizeSpeech(line.en) }
+                SpeechLineRow(
+                    line = line,
+                    tokens = tokens,
+                    savedRanges = emptyList(),
+                    selectedRange = selected?.takeIf { it.line == index }?.token?.range,
+                    showTranslation = true,
+                    speaking = speakingIndex == index,
+                    onSpeakEnglish = {
+                        speakingIndex = index
+                        onSpeakEnglish(line.en) { if (speakingIndex == index) speakingIndex = null }
+                    },
+                    onSpeakChinese = {
+                        speakingIndex = index
+                        onSpeakChinese(line.zh) { if (speakingIndex == index) speakingIndex = null }
+                    },
+                    onTokenClick = { selected = SelectedSpeechWord(index, it) }
+                )
+            }
+        }
+    }
+
+    selected?.let { current ->
+        val word = ogdenWordOf(current.token)
+        val saved = remember(current, favoriteVersion) {
+            if (word != null) store.progress(word.word).favorite else store.isSpeechWordSaved(speechWordKey(current.token.text))
+        }
+        ModalBottomSheet(onDismissRequest = { selected = null }, containerColor = PaperElevated) {
+            SpeechWordSheet(
+                surface = current.token.text,
+                word = word,
+                contraction = contractionOf(current.token.text),
+                lookup = { wordIndex[it.lowercase()] },
+                accent = accent,
+                saved = saved,
+                onToggleSave = {
+                    if (word != null) store.toggleFavorite(word.word) else store.toggleSpeechWord(speechWordKey(current.token.text))
+                    favoriteVersion++
+                },
+                onSpeakWord = { stopSpeaking(); onSpeakWord(it) },
+                onSpeakEnglish = { stopSpeaking(); onSpeakEnglish(it, null) },
+                onSpeakChinese = { stopSpeaking(); onSpeakChinese(it, null) },
+                onOpenWord = { selected = null; onOpenWord(it) }
+            )
         }
     }
 }

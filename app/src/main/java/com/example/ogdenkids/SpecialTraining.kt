@@ -399,3 +399,24 @@ fun buildSpecialPractice(topic: SpecialTopic, level: Int, random: Random, count:
     }
     return questions
 }
+
+data class WordGroup(val zh: String, val en: String, val words: List<String>)
+
+/** 专项模块：分组单词 + 组合句；[scene] 不为空时另有看图练习。 */
+data class SpecialModule(
+    val key: String,
+    val zh: String,
+    val en: String,
+    val icon: String,
+    val scene: SpecialTopic?,
+    val groups: List<WordGroup>,
+    val sentences: List<SpeechLine>
+) {
+    val words: List<String> get() = groups.flatMap { it.words }.distinctBy { it.lowercase() }
+
+    /** 句子练习复用课文的主题练习出题器：组合句当课文，模块单词当本课单词。 */
+    fun asPracticeUnit() = Speech(
+        id = "special-$key", level = 0, unit = 0, theme = SpeechTheme.Me,
+        title = en, titleZh = zh, lines = sentences, patterns = emptyList(), words = words
+    )
+}

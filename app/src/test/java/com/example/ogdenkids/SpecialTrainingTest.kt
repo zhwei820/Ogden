@@ -69,6 +69,41 @@ class SpecialTrainingTest {
         }
     }
 
+    private val modules: List<SpecialModule> = run {
+        val array = JSONArray(File("src/main/assets/specials.json").readText(Charsets.UTF_8))
+        List(array.length()) { i ->
+            val m = array.getJSONObject(i)
+            val groups = m.getJSONArray("groups")
+            val sentences = m.getJSONArray("sentences")
+            SpecialModule(
+                key = m.getString("key"), zh = m.getString("zh"), en = m.getString("en"), icon = m.getString("icon"),
+                scene = m.optString("scene").takeIf { it.isNotBlank() && it != "null" }?.let { key -> SpecialTopic.values().first { it.key == key } },
+                groups = List(groups.length()) { g ->
+                    val group = groups.getJSONObject(g)
+                    val words = group.getJSONArray("words")
+                    WordGroup(group.getString("zh"), group.getString("en"), List(words.length()) { words.getString(it) })
+                },
+                sentences = List(sentences.length()) { SpeechLine(sentences.getJSONObject(it).getString("en"), sentences.getJSONObject(it).getString("zh")) }
+            )
+        }
+    }
+
+    @Test
+    fun modulesUseListedWordsAndYieldSentencePractice() {
+        assertEquals(16, modules.size)
+        assertEquals(SpecialTopic.values().toSet(), modules.mapNotNull { it.scene }.toSet())
+        modules.forEach { module ->
+            module.words.forEach { assertTrue("${module.key}: $it", it.lowercase() in vocabulary.words) }
+            module.sentences.flatMap { tokenizeSpeech(it.en) }.forEach { token ->
+                assertNotNull("${module.key}: ${token.text}", contractionOf(token.text) ?: lemmatize(token.text, vocabulary))
+            }
+            repeat(10) { seed ->
+                val questions = buildThemePractice(listOf(module.asPracticeUnit()), Random(seed), vocabulary = emptyList())
+                assertEquals("${module.key} seed=$seed", 10, questions.size)
+            }
+        }
+    }
+
     @Test
     fun numberWordsAreSpelledCorrectly() {
         assertEquals("seven", numberWord(7))
