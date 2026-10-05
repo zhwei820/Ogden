@@ -65,7 +65,7 @@ class SpeechTest {
     @Test
     fun lemmatizeRejectsFalseStems() {
         // 不加词类约束时 upper→up、inner→in 会被误还原（evening/forest 已是拓展词，不能再作反例）
-        listOf("upper", "inner", "newspaper", "zzz").forEach {
+        listOf("upper", "inner", "newspaper", "zzz", "planes").forEach {
             assertNull(it, lemmatize(it, vocabulary))
         }
         // 本身就是 850 词的不应被剥后缀
