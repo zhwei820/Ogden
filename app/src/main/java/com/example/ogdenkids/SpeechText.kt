@@ -183,11 +183,12 @@ private fun suffixCandidates(word: String): List<Pair<String, BaseKind>> {
     }
     listOf("ies" to BaseKind.Any, "ied" to BaseKind.Verb, "ier" to BaseKind.Quality, "iest" to BaseKind.Quality, "ily" to BaseKind.Quality)
         .forEach { (suffix, kind) -> stem(suffix)?.let { candidates += it + "y" to kind } }
-    // -es 只跟在 s/x/z/ch/sh/o 后面（boxes、tomatoes）；否则 planes 会先被剥成 plan
+    // 先试 -s 再试 -es：toes→toe、shoes→shoe（反过来会剥成 to、sho）；-s 对不上时 boxes、tomatoes 再走 -es。
+    // -es 只跟在 s/x/z/ch/sh/o 后面，否则 planes 会被剥成 plan
+    addStem("s", BaseKind.Any)
     if (stem("es")?.let { it.endsWith("s") || it.endsWith("x") || it.endsWith("z") || it.endsWith("ch") || it.endsWith("sh") || it.endsWith("o") } == true) {
         addStem("es", BaseKind.Any)
     }
-    addStem("s", BaseKind.Any)
     addStem("ing", BaseKind.Verb, withE = true, doubled = true)
     addStem("ed", BaseKind.Verb, withE = true, doubled = true)
     addStem("est", BaseKind.Quality, withE = true, doubled = true)

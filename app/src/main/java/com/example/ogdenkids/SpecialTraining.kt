@@ -73,7 +73,7 @@ private fun color(word: String) = Colors.first { it.word == word }
 /** 颜色固定、孩子一眼认得的东西，用于「The apple is red.」 */
 private val ColoredThings = listOf(
     Thing("🍎", "apple") to "red", Thing("🍌", "banana") to "yellow", Thing("🐸", "frog") to "green",
-    Thing("🐳", "whale") to "blue", Thing("☁️", "cloud") to "white", Thing("🍊", "orange") to "orange",
+    Thing("🌊", "sea") to "blue", Thing("☁️", "cloud") to "white", Thing("🍊", "orange") to "orange",
     Thing("🐷", "pig") to "pink", Thing("🍇", "grape") to "purple", Thing("🐻", "bear") to "brown",
     Thing("🐘", "elephant") to "grey"
 )

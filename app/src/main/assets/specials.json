@@ -1,0 +1,1811 @@
+[
+  {
+    "key": "position",
+    "zh": "方位",
+    "en": "Position",
+    "icon": "🧭",
+    "scene": "position",
+    "groups": [
+      {
+        "zh": "方位",
+        "en": "Position",
+        "words": [
+          "here",
+          "there",
+          "near",
+          "far",
+          "left",
+          "right",
+          "up",
+          "down",
+          "in",
+          "out",
+          "on",
+          "under",
+          "front",
+          "back",
+          "between",
+          "inside",
+          "outside",
+          "above",
+          "below"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My hand is on my head.",
+        "zh": "我的手放在头上。"
+      },
+      {
+        "en": "The cat is under the bed.",
+        "zh": "猫在床底下。"
+      },
+      {
+        "en": "The bird is in the tree.",
+        "zh": "鸟在树上。"
+      },
+      {
+        "en": "Put the apple on the table.",
+        "zh": "把苹果放在桌子上。"
+      },
+      {
+        "en": "The dog is outside the house.",
+        "zh": "狗在房子外面。"
+      },
+      {
+        "en": "Come here, please.",
+        "zh": "请到这里来。"
+      },
+      {
+        "en": "My school is near the park.",
+        "zh": "我的学校在公园附近。"
+      },
+      {
+        "en": "The sun is above the clouds.",
+        "zh": "太阳在云的上面。"
+      },
+      {
+        "en": "The fish swim below the boat.",
+        "zh": "鱼在船下面游。"
+      },
+      {
+        "en": "I sit between Mom and Dad.",
+        "zh": "我坐在妈妈和爸爸中间。"
+      },
+      {
+        "en": "Put up your left hand.",
+        "zh": "举起你的左手。"
+      },
+      {
+        "en": "Turn right at the station.",
+        "zh": "在车站右转。"
+      },
+      {
+        "en": "The milk is inside the box.",
+        "zh": "牛奶在盒子里。"
+      },
+      {
+        "en": "Look up at the sky.",
+        "zh": "抬头看天空。"
+      },
+      {
+        "en": "Sit down on the chair.",
+        "zh": "坐到椅子上。"
+      },
+      {
+        "en": "The bus stops in front of the school.",
+        "zh": "公交车停在学校前面。"
+      },
+      {
+        "en": "My bag is on my back.",
+        "zh": "书包背在我的背上。"
+      },
+      {
+        "en": "The library is far from here.",
+        "zh": "图书馆离这里很远。"
+      }
+    ]
+  },
+  {
+    "key": "food",
+    "zh": "食物",
+    "en": "Food",
+    "icon": "🍎",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "水果",
+        "en": "Fruit",
+        "words": [
+          "fruit",
+          "apple",
+          "banana",
+          "orange",
+          "lemon",
+          "grape",
+          "pear",
+          "peach",
+          "plum",
+          "cherry",
+          "strawberry",
+          "watermelon",
+          "melon",
+          "pineapple",
+          "mango",
+          "berry",
+          "nut"
+        ]
+      },
+      {
+        "zh": "主食",
+        "en": "Staple Food",
+        "words": [
+          "food",
+          "rice",
+          "bread",
+          "noodle",
+          "pasta",
+          "cake",
+          "biscuit",
+          "corn",
+          "wheat",
+          "grain",
+          "flour",
+          "potato"
+        ]
+      },
+      {
+        "zh": "蔬菜",
+        "en": "Vegetables",
+        "words": [
+          "vegetable",
+          "cabbage",
+          "lettuce",
+          "spinach",
+          "carrot",
+          "tomato",
+          "cucumber",
+          "onion",
+          "garlic",
+          "pepper",
+          "bean",
+          "pea",
+          "mushroom",
+          "pumpkin"
+        ]
+      },
+      {
+        "zh": "肉蛋奶",
+        "en": "Meat, Eggs & Milk",
+        "words": [
+          "meat",
+          "beef",
+          "pork",
+          "chicken",
+          "fish",
+          "egg",
+          "milk",
+          "cheese",
+          "butter",
+          "cream",
+          "yogurt"
+        ]
+      },
+      {
+        "zh": "零食",
+        "en": "Snacks",
+        "words": [
+          "snack",
+          "biscuit",
+          "cake",
+          "candy",
+          "chocolate",
+          "nut",
+          "chip",
+          "cookie",
+          "pie"
+        ]
+      },
+      {
+        "zh": "饮品",
+        "en": "Drinks",
+        "words": [
+          "water",
+          "milk",
+          "tea",
+          "coffee",
+          "juice",
+          "soup",
+          "drink"
+        ]
+      },
+      {
+        "zh": "调味与烹饪",
+        "en": "Taste & Cooking",
+        "words": [
+          "salt",
+          "sugar",
+          "oil",
+          "pepper",
+          "taste",
+          "sweet",
+          "sour",
+          "bitter",
+          "salty",
+          "hot",
+          "fresh",
+          "cook",
+          "raw",
+          "dry"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The apple is sweet.",
+        "zh": "苹果是甜的。"
+      },
+      {
+        "en": "The lemon is sour.",
+        "zh": "柠檬是酸的。"
+      },
+      {
+        "en": "The banana is yellow.",
+        "zh": "香蕉是黄色的。"
+      },
+      {
+        "en": "The tea is hot.",
+        "zh": "茶很烫。"
+      },
+      {
+        "en": "I eat rice and fish.",
+        "zh": "我吃米饭和鱼。"
+      },
+      {
+        "en": "Mom makes bread with flour.",
+        "zh": "妈妈用面粉做面包。"
+      },
+      {
+        "en": "Carrots are good for your eyes.",
+        "zh": "胡萝卜对眼睛有好处。"
+      },
+      {
+        "en": "The soup is too salty.",
+        "zh": "汤太咸了。"
+      },
+      {
+        "en": "I drink milk every morning.",
+        "zh": "我每天早上喝牛奶。"
+      },
+      {
+        "en": "Grandma makes an apple pie.",
+        "zh": "奶奶做了一个苹果派。"
+      },
+      {
+        "en": "Wash the fruit before you eat it.",
+        "zh": "吃水果之前要洗一洗。"
+      },
+      {
+        "en": "Don't eat raw meat.",
+        "zh": "不要吃生肉。"
+      },
+      {
+        "en": "This cake has too much sugar.",
+        "zh": "这个蛋糕糖放得太多了。"
+      },
+      {
+        "en": "I like cheese and tomato.",
+        "zh": "我喜欢奶酪和番茄。"
+      },
+      {
+        "en": "The strawberries are red and fresh.",
+        "zh": "草莓又红又新鲜。"
+      },
+      {
+        "en": "Can I have a cookie, please?",
+        "zh": "请问我可以吃一块饼干吗？"
+      },
+      {
+        "en": "Dad puts pepper in the soup.",
+        "zh": "爸爸往汤里放胡椒。"
+      },
+      {
+        "en": "We have noodles for lunch.",
+        "zh": "我们午饭吃面条。"
+      }
+    ]
+  },
+  {
+    "key": "colors",
+    "zh": "颜色",
+    "en": "Colors",
+    "icon": "🎨",
+    "scene": "colors",
+    "groups": [
+      {
+        "zh": "颜色",
+        "en": "Colors",
+        "words": [
+          "color",
+          "red",
+          "blue",
+          "green",
+          "yellow",
+          "black",
+          "white",
+          "brown",
+          "grey",
+          "pink",
+          "orange",
+          "purple",
+          "light",
+          "dark"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The banana is yellow.",
+        "zh": "香蕉是黄色的。"
+      },
+      {
+        "en": "The sky is blue.",
+        "zh": "天空是蓝色的。"
+      },
+      {
+        "en": "The grass is green.",
+        "zh": "草是绿色的。"
+      },
+      {
+        "en": "My cat is black and white.",
+        "zh": "我的猫是黑白色的。"
+      },
+      {
+        "en": "I have a red dress.",
+        "zh": "我有一条红裙子。"
+      },
+      {
+        "en": "The clouds are grey today.",
+        "zh": "今天的云是灰色的。"
+      },
+      {
+        "en": "What color is your bag?",
+        "zh": "你的书包是什么颜色的？"
+      },
+      {
+        "en": "The panda is black and white.",
+        "zh": "熊猫是黑白色的。"
+      },
+      {
+        "en": "My sister likes pink.",
+        "zh": "我妹妹喜欢粉色。"
+      },
+      {
+        "en": "The orange is orange.",
+        "zh": "橙子是橙色的。"
+      },
+      {
+        "en": "Grapes can be purple or green.",
+        "zh": "葡萄可以是紫色的，也可以是绿色的。"
+      },
+      {
+        "en": "The dog has brown hair.",
+        "zh": "这只狗的毛是棕色的。"
+      },
+      {
+        "en": "He has a light blue shirt.",
+        "zh": "他有一件浅蓝色的衬衫。"
+      },
+      {
+        "en": "It is dark at night.",
+        "zh": "晚上天很黑。"
+      },
+      {
+        "en": "Snow is white and cold.",
+        "zh": "雪又白又冷。"
+      },
+      {
+        "en": "The tomato is red now.",
+        "zh": "番茄现在变红了。"
+      }
+    ]
+  },
+  {
+    "key": "taste",
+    "zh": "味道与触感",
+    "en": "Taste & Touch",
+    "icon": "👅",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "味道",
+        "en": "Taste",
+        "words": [
+          "taste",
+          "sweet",
+          "sour",
+          "bitter",
+          "salty"
+        ]
+      },
+      {
+        "zh": "触感与温度",
+        "en": "Touch & Temperature",
+        "words": [
+          "hot",
+          "cold",
+          "warm",
+          "cool",
+          "soft",
+          "hard",
+          "rough",
+          "smooth",
+          "wet",
+          "dry"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The candy tastes sweet.",
+        "zh": "糖果尝起来很甜。"
+      },
+      {
+        "en": "The tea is hot.",
+        "zh": "茶很烫。"
+      },
+      {
+        "en": "The lemon is sour.",
+        "zh": "柠檬是酸的。"
+      },
+      {
+        "en": "This coffee is bitter.",
+        "zh": "这杯咖啡很苦。"
+      },
+      {
+        "en": "The chips are too salty.",
+        "zh": "薯片太咸了。"
+      },
+      {
+        "en": "The ice is cold.",
+        "zh": "冰是冷的。"
+      },
+      {
+        "en": "My bed is soft and warm.",
+        "zh": "我的床又软又暖和。"
+      },
+      {
+        "en": "The stone is hard.",
+        "zh": "石头是硬的。"
+      },
+      {
+        "en": "Your hand is cold.",
+        "zh": "你的手很凉。"
+      },
+      {
+        "en": "The water is cool.",
+        "zh": "水很凉爽。"
+      },
+      {
+        "en": "The cat's hair is smooth.",
+        "zh": "猫的毛很光滑。"
+      },
+      {
+        "en": "The tree is rough.",
+        "zh": "树皮摸起来很粗糙。"
+      },
+      {
+        "en": "My shoes are wet.",
+        "zh": "我的鞋湿了。"
+      },
+      {
+        "en": "Is your coat dry now?",
+        "zh": "你的外套现在干了吗？"
+      },
+      {
+        "en": "The bread is soft.",
+        "zh": "面包很软。"
+      },
+      {
+        "en": "Taste the soup, please.",
+        "zh": "请尝一尝汤。"
+      }
+    ]
+  },
+  {
+    "key": "feelings",
+    "zh": "情感与感觉",
+    "en": "Feelings",
+    "icon": "😊",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "情感与感觉",
+        "en": "Feelings",
+        "words": [
+          "feel",
+          "happy",
+          "sad",
+          "angry",
+          "afraid",
+          "tired",
+          "hungry",
+          "thirsty",
+          "sick",
+          "well",
+          "love",
+          "like",
+          "want",
+          "need",
+          "hope",
+          "fear",
+          "joy",
+          "pain",
+          "calm",
+          "surprise"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I am tired.",
+        "zh": "我累了。"
+      },
+      {
+        "en": "I am sick and my head hurts.",
+        "zh": "我生病了，头很疼。"
+      },
+      {
+        "en": "I feel happy today.",
+        "zh": "我今天很开心。"
+      },
+      {
+        "en": "I am hungry. I want rice.",
+        "zh": "我饿了，我想吃米饭。"
+      },
+      {
+        "en": "I am thirsty.",
+        "zh": "我口渴了。"
+      },
+      {
+        "en": "I want some water.",
+        "zh": "我想喝点水。"
+      },
+      {
+        "en": "The baby is sad.",
+        "zh": "宝宝很难过。"
+      },
+      {
+        "en": "Dad is angry with me.",
+        "zh": "爸爸生我的气了。"
+      },
+      {
+        "en": "I am afraid of the dark.",
+        "zh": "我怕黑。"
+      },
+      {
+        "en": "She is sick today.",
+        "zh": "她今天生病了。"
+      },
+      {
+        "en": "I don't feel well.",
+        "zh": "我感觉不舒服。"
+      },
+      {
+        "en": "I love my mother.",
+        "zh": "我爱我的妈妈。"
+      },
+      {
+        "en": "I hope it is sunny tomorrow.",
+        "zh": "我希望明天是晴天。"
+      },
+      {
+        "en": "I have a pain in my leg.",
+        "zh": "我的腿疼。"
+      },
+      {
+        "en": "Stay calm and sit down.",
+        "zh": "保持冷静，坐下来。"
+      },
+      {
+        "en": "What a nice surprise!",
+        "zh": "真是个惊喜！"
+      },
+      {
+        "en": "We need some food.",
+        "zh": "我们需要一些食物。"
+      },
+      {
+        "en": "The dog jumps with joy.",
+        "zh": "小狗高兴得跳起来。"
+      }
+    ]
+  },
+  {
+    "key": "body",
+    "zh": "身体部位",
+    "en": "Body",
+    "icon": "🧍",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "头部",
+        "en": "Head",
+        "words": [
+          "head",
+          "hair",
+          "face",
+          "eye",
+          "ear",
+          "nose",
+          "mouth",
+          "tooth",
+          "tongue",
+          "neck",
+          "cheek",
+          "chin",
+          "eyebrow"
+        ]
+      },
+      {
+        "zh": "身体",
+        "en": "Body",
+        "words": [
+          "body",
+          "arm",
+          "hand",
+          "finger",
+          "leg",
+          "foot",
+          "back",
+          "heart",
+          "skin",
+          "blood",
+          "shoulder",
+          "knee",
+          "toe",
+          "elbow"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My hand is on my head.",
+        "zh": "我的手放在头上。"
+      },
+      {
+        "en": "I have two eyes.",
+        "zh": "我有两只眼睛。"
+      },
+      {
+        "en": "Wash your hands before you eat.",
+        "zh": "吃饭前要洗手。"
+      },
+      {
+        "en": "Brush your teeth every night.",
+        "zh": "每天晚上都要刷牙。"
+      },
+      {
+        "en": "My head hurts.",
+        "zh": "我头疼。"
+      },
+      {
+        "en": "The elephant has a long nose.",
+        "zh": "大象有长长的鼻子。"
+      },
+      {
+        "en": "I hear with my ears.",
+        "zh": "我用耳朵听。"
+      },
+      {
+        "en": "She has long black hair.",
+        "zh": "她有一头黑色的长发。"
+      },
+      {
+        "en": "Touch your nose with your finger.",
+        "zh": "用手指摸摸你的鼻子。"
+      },
+      {
+        "en": "I have ten fingers.",
+        "zh": "我有十根手指。"
+      },
+      {
+        "en": "Open your mouth, please.",
+        "zh": "请张开嘴。"
+      },
+      {
+        "en": "My knee hurts after I run.",
+        "zh": "跑步后我的膝盖疼。"
+      },
+      {
+        "en": "Put your hands on your shoulders.",
+        "zh": "把手放在肩膀上。"
+      },
+      {
+        "en": "The rabbit has long ears.",
+        "zh": "兔子有长长的耳朵。"
+      },
+      {
+        "en": "My feet are cold.",
+        "zh": "我的脚很冷。"
+      },
+      {
+        "en": "Your face is red.",
+        "zh": "你的脸红了。"
+      },
+      {
+        "en": "Put your arms up.",
+        "zh": "把手臂举起来。"
+      }
+    ]
+  },
+  {
+    "key": "family",
+    "zh": "家庭与人称",
+    "en": "Family",
+    "icon": "👪",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "家庭与人称",
+        "en": "Family",
+        "words": [
+          "father",
+          "mother",
+          "brother",
+          "sister",
+          "grandma",
+          "grandpa",
+          "aunt",
+          "uncle",
+          "cousin",
+          "baby",
+          "family",
+          "I",
+          "you",
+          "he",
+          "she",
+          "we",
+          "they"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I love my family.",
+        "zh": "我爱我的家人。"
+      },
+      {
+        "en": "My father is a doctor.",
+        "zh": "我爸爸是医生。"
+      },
+      {
+        "en": "My mother can sing.",
+        "zh": "我妈妈会唱歌。"
+      },
+      {
+        "en": "My brother is tall.",
+        "zh": "我哥哥个子很高。"
+      },
+      {
+        "en": "My sister has a red dress.",
+        "zh": "我姐姐有一条红裙子。"
+      },
+      {
+        "en": "Grandma makes good soup.",
+        "zh": "奶奶做的汤很好喝。"
+      },
+      {
+        "en": "Grandpa drinks hot tea.",
+        "zh": "爷爷喝热茶。"
+      },
+      {
+        "en": "The baby is sleeping.",
+        "zh": "宝宝在睡觉。"
+      },
+      {
+        "en": "My aunt has a cat.",
+        "zh": "我阿姨有一只猫。"
+      },
+      {
+        "en": "My uncle drives a bus.",
+        "zh": "我叔叔开公交车。"
+      },
+      {
+        "en": "My cousin is six.",
+        "zh": "我的表弟六岁了。"
+      },
+      {
+        "en": "We go to the park on Sunday.",
+        "zh": "我们星期天去公园。"
+      },
+      {
+        "en": "They are my friends.",
+        "zh": "他们是我的朋友。"
+      },
+      {
+        "en": "He is my brother.",
+        "zh": "他是我的弟弟。"
+      },
+      {
+        "en": "She is happy today.",
+        "zh": "她今天很开心。"
+      },
+      {
+        "en": "Are you hungry?",
+        "zh": "你饿了吗？"
+      }
+    ]
+  },
+  {
+    "key": "numbers",
+    "zh": "数字",
+    "en": "Numbers",
+    "icon": "🔢",
+    "scene": "numbers",
+    "groups": [
+      {
+        "zh": "1–20",
+        "en": "1–20",
+        "words": [
+          "zero",
+          "one",
+          "two",
+          "three",
+          "four",
+          "five",
+          "six",
+          "seven",
+          "eight",
+          "nine",
+          "ten",
+          "eleven",
+          "twelve",
+          "thirteen",
+          "fourteen",
+          "fifteen",
+          "sixteen",
+          "seventeen",
+          "eighteen",
+          "nineteen",
+          "twenty"
+        ]
+      },
+      {
+        "zh": "整十与百",
+        "en": "Tens & Hundred",
+        "words": [
+          "twenty",
+          "thirty",
+          "forty",
+          "fifty",
+          "sixty",
+          "seventy",
+          "eighty",
+          "ninety",
+          "hundred"
+        ]
+      },
+      {
+        "zh": "序数",
+        "en": "Ordinals",
+        "words": [
+          "first",
+          "second",
+          "third",
+          "fourth",
+          "fifth",
+          "sixth",
+          "seventh",
+          "eighth",
+          "ninth",
+          "tenth"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have two eyes.",
+        "zh": "我有两只眼睛。"
+      },
+      {
+        "en": "I have ten fingers.",
+        "zh": "我有十根手指。"
+      },
+      {
+        "en": "I am seven.",
+        "zh": "我七岁了。"
+      },
+      {
+        "en": "There are three apples.",
+        "zh": "有三个苹果。"
+      },
+      {
+        "en": "A cat has four legs.",
+        "zh": "猫有四条腿。"
+      },
+      {
+        "en": "I have one brother.",
+        "zh": "我有一个哥哥。"
+      },
+      {
+        "en": "A week has seven days.",
+        "zh": "一周有七天。"
+      },
+      {
+        "en": "A year has twelve months.",
+        "zh": "一年有十二个月。"
+      },
+      {
+        "en": "My grandpa is eighty.",
+        "zh": "我爷爷八十岁了。"
+      },
+      {
+        "en": "There are thirty students in my class.",
+        "zh": "我们班有三十个学生。"
+      },
+      {
+        "en": "I get up at six o'clock.",
+        "zh": "我六点钟起床。"
+      },
+      {
+        "en": "She is first in the race.",
+        "zh": "她赛跑得了第一名。"
+      },
+      {
+        "en": "Monday is the first day of the week.",
+        "zh": "星期一是一周的第一天。"
+      },
+      {
+        "en": "My birthday is on May fifth.",
+        "zh": "我的生日是五月五日。"
+      },
+      {
+        "en": "I live on the ninth floor.",
+        "zh": "我住在九楼。"
+      },
+      {
+        "en": "One hundred is a big number.",
+        "zh": "一百是一个很大的数。"
+      },
+      {
+        "en": "Five and five is ten.",
+        "zh": "五加五等于十。"
+      }
+    ]
+  },
+  {
+    "key": "time",
+    "zh": "时间与日期",
+    "en": "Time",
+    "icon": "⏰",
+    "scene": "time",
+    "groups": [
+      {
+        "zh": "时刻",
+        "en": "Time",
+        "words": [
+          "time",
+          "day",
+          "night",
+          "morning",
+          "afternoon",
+          "evening",
+          "today",
+          "tomorrow",
+          "yesterday",
+          "week",
+          "month",
+          "year",
+          "hour",
+          "minute",
+          "o'clock",
+          "half",
+          "quarter"
+        ]
+      },
+      {
+        "zh": "星期",
+        "en": "Days",
+        "words": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ]
+      },
+      {
+        "zh": "月份",
+        "en": "Months",
+        "words": [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I get up at seven o'clock.",
+        "zh": "我七点钟起床。"
+      },
+      {
+        "en": "It's a quarter past three.",
+        "zh": "现在是三点一刻。"
+      },
+      {
+        "en": "It's half past six.",
+        "zh": "现在是六点半。"
+      },
+      {
+        "en": "What time is it?",
+        "zh": "现在几点了？"
+      },
+      {
+        "en": "Today is Monday.",
+        "zh": "今天是星期一。"
+      },
+      {
+        "en": "Tomorrow is Saturday.",
+        "zh": "明天是星期六。"
+      },
+      {
+        "en": "Yesterday was sunny.",
+        "zh": "昨天是晴天。"
+      },
+      {
+        "en": "I drink milk every morning.",
+        "zh": "我每天早上喝牛奶。"
+      },
+      {
+        "en": "We play in the park in the afternoon.",
+        "zh": "我们下午在公园里玩。"
+      },
+      {
+        "en": "I read a book in the evening.",
+        "zh": "我晚上看书。"
+      },
+      {
+        "en": "I sleep at night.",
+        "zh": "我晚上睡觉。"
+      },
+      {
+        "en": "A week has seven days.",
+        "zh": "一周有七天。"
+      },
+      {
+        "en": "An hour has sixty minutes.",
+        "zh": "一小时有六十分钟。"
+      },
+      {
+        "en": "It snows in January.",
+        "zh": "一月会下雪。"
+      },
+      {
+        "en": "My birthday is in June.",
+        "zh": "我的生日在六月。"
+      },
+      {
+        "en": "We have no school on Sunday.",
+        "zh": "星期天我们不上学。"
+      },
+      {
+        "en": "The flowers open in April.",
+        "zh": "花儿在四月开放。"
+      },
+      {
+        "en": "I am six years old this year.",
+        "zh": "我今年六岁。"
+      }
+    ]
+  },
+  {
+    "key": "weather",
+    "zh": "天气与自然",
+    "en": "Weather & Nature",
+    "icon": "🌤️",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "天气",
+        "en": "Weather",
+        "words": [
+          "weather",
+          "sun",
+          "rain",
+          "wind",
+          "snow",
+          "cloud",
+          "sky",
+          "hot",
+          "cold",
+          "sunny",
+          "rainy",
+          "windy",
+          "cloudy",
+          "snowy"
+        ]
+      },
+      {
+        "zh": "自然",
+        "en": "Nature",
+        "words": [
+          "tree",
+          "flower",
+          "grass",
+          "river",
+          "sea",
+          "mountain"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "It is sunny today.",
+        "zh": "今天是晴天。"
+      },
+      {
+        "en": "It is rainy and cold.",
+        "zh": "天下着雨，很冷。"
+      },
+      {
+        "en": "The wind is strong.",
+        "zh": "风很大。"
+      },
+      {
+        "en": "The snow is white.",
+        "zh": "雪是白色的。"
+      },
+      {
+        "en": "The sky is blue.",
+        "zh": "天空是蓝色的。"
+      },
+      {
+        "en": "The clouds are grey today.",
+        "zh": "今天的云是灰色的。"
+      },
+      {
+        "en": "It is hot in summer.",
+        "zh": "夏天很热。"
+      },
+      {
+        "en": "Put on your coat. It is cold.",
+        "zh": "穿上外套，天冷了。"
+      },
+      {
+        "en": "How is the weather today?",
+        "zh": "今天天气怎么样？"
+      },
+      {
+        "en": "The sun is above the clouds.",
+        "zh": "太阳在云的上面。"
+      },
+      {
+        "en": "The flowers are red and yellow.",
+        "zh": "花儿有红的也有黄的。"
+      },
+      {
+        "en": "The bird is in the tree.",
+        "zh": "鸟在树上。"
+      },
+      {
+        "en": "We swim in the sea.",
+        "zh": "我们在海里游泳。"
+      },
+      {
+        "en": "The fish swim in the river.",
+        "zh": "鱼在河里游。"
+      },
+      {
+        "en": "The mountain is very high.",
+        "zh": "这座山很高。"
+      },
+      {
+        "en": "It is windy. Hold my hand.",
+        "zh": "风很大，拉住我的手。"
+      },
+      {
+        "en": "The grass is wet after the rain.",
+        "zh": "雨后草地是湿的。"
+      }
+    ]
+  },
+  {
+    "key": "animals",
+    "zh": "动物",
+    "en": "Animals",
+    "icon": "🐶",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "动物",
+        "en": "Animals",
+        "words": [
+          "animal",
+          "dog",
+          "cat",
+          "bird",
+          "horse",
+          "cow",
+          "pig",
+          "sheep",
+          "duck",
+          "chicken",
+          "fish",
+          "rabbit",
+          "mouse",
+          "tiger",
+          "lion",
+          "panda",
+          "elephant",
+          "monkey"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "The cat is under the bed.",
+        "zh": "猫在床底下。"
+      },
+      {
+        "en": "The dog is outside the house.",
+        "zh": "狗在房子外面。"
+      },
+      {
+        "en": "The panda is black and white.",
+        "zh": "熊猫是黑白色的。"
+      },
+      {
+        "en": "The elephant has a long nose.",
+        "zh": "大象有长长的鼻子。"
+      },
+      {
+        "en": "The rabbit has long ears.",
+        "zh": "兔子有长长的耳朵。"
+      },
+      {
+        "en": "A cat has four legs.",
+        "zh": "猫有四条腿。"
+      },
+      {
+        "en": "The monkey likes bananas.",
+        "zh": "猴子喜欢香蕉。"
+      },
+      {
+        "en": "The cow gives us milk.",
+        "zh": "奶牛给我们产奶。"
+      },
+      {
+        "en": "The horse can run fast.",
+        "zh": "马能跑得很快。"
+      },
+      {
+        "en": "The bird can sing.",
+        "zh": "鸟会唱歌。"
+      },
+      {
+        "en": "The duck swims in the river.",
+        "zh": "鸭子在河里游泳。"
+      },
+      {
+        "en": "The pig is pink.",
+        "zh": "这头猪是粉红色的。"
+      },
+      {
+        "en": "The lion is angry.",
+        "zh": "狮子生气了。"
+      },
+      {
+        "en": "The mouse is afraid of the cat.",
+        "zh": "老鼠怕猫。"
+      },
+      {
+        "en": "The sheep eat green grass.",
+        "zh": "羊吃绿草。"
+      },
+      {
+        "en": "The tiger is big and strong.",
+        "zh": "老虎又大又壮。"
+      },
+      {
+        "en": "I love animals.",
+        "zh": "我爱动物。"
+      }
+    ]
+  },
+  {
+    "key": "actions",
+    "zh": "动作",
+    "en": "Actions",
+    "icon": "🏃",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "动作",
+        "en": "Actions",
+        "words": [
+          "go",
+          "come",
+          "eat",
+          "drink",
+          "see",
+          "hear",
+          "speak",
+          "take",
+          "give",
+          "run",
+          "walk",
+          "jump",
+          "sit",
+          "stand",
+          "read",
+          "write",
+          "sing",
+          "dance",
+          "swim",
+          "open",
+          "close"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Come here, please.",
+        "zh": "请到这里来。"
+      },
+      {
+        "en": "I eat rice and fish.",
+        "zh": "我吃米饭和鱼。"
+      },
+      {
+        "en": "I drink milk every morning.",
+        "zh": "我每天早上喝牛奶。"
+      },
+      {
+        "en": "I hear with my ears.",
+        "zh": "我用耳朵听。"
+      },
+      {
+        "en": "Sit down on the chair.",
+        "zh": "坐到椅子上。"
+      },
+      {
+        "en": "Stand up, please.",
+        "zh": "请站起来。"
+      },
+      {
+        "en": "Open your mouth, please.",
+        "zh": "请张开嘴。"
+      },
+      {
+        "en": "Close the door, please.",
+        "zh": "请把门关上。"
+      },
+      {
+        "en": "We go to school by bus.",
+        "zh": "我们坐公交车去上学。"
+      },
+      {
+        "en": "The horse can run fast.",
+        "zh": "马能跑得很快。"
+      },
+      {
+        "en": "I can jump high.",
+        "zh": "我能跳得很高。"
+      },
+      {
+        "en": "We walk in the park.",
+        "zh": "我们在公园里散步。"
+      },
+      {
+        "en": "I read a book in the evening.",
+        "zh": "我晚上看书。"
+      },
+      {
+        "en": "Write your name on the paper.",
+        "zh": "把你的名字写在纸上。"
+      },
+      {
+        "en": "Let's sing and dance!",
+        "zh": "我们来唱歌跳舞吧！"
+      },
+      {
+        "en": "We swim in the sea.",
+        "zh": "我们在海里游泳。"
+      },
+      {
+        "en": "Give me the red pen, please.",
+        "zh": "请把红笔给我。"
+      },
+      {
+        "en": "Take your coat. It is cold.",
+        "zh": "带上外套，天冷了。"
+      },
+      {
+        "en": "I see a bird in the tree.",
+        "zh": "我看见树上有一只鸟。"
+      },
+      {
+        "en": "Speak slowly, please.",
+        "zh": "请说慢一点。"
+      }
+    ]
+  },
+  {
+    "key": "study",
+    "zh": "学习与工具",
+    "en": "School",
+    "icon": "📚",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "学习与工具",
+        "en": "School",
+        "words": [
+          "book",
+          "pen",
+          "pencil",
+          "paper",
+          "school",
+          "teacher",
+          "student",
+          "desk",
+          "chair",
+          "ruler",
+          "eraser",
+          "bag",
+          "class",
+          "lesson",
+          "homework"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "Write your name on the paper.",
+        "zh": "把你的名字写在纸上。"
+      },
+      {
+        "en": "My bag is on my back.",
+        "zh": "书包背在我的背上。"
+      },
+      {
+        "en": "Give me the red pen, please.",
+        "zh": "请把红笔给我。"
+      },
+      {
+        "en": "I read a book in the evening.",
+        "zh": "我晚上看书。"
+      },
+      {
+        "en": "My pencil is in my bag.",
+        "zh": "我的铅笔在书包里。"
+      },
+      {
+        "en": "The teacher is kind.",
+        "zh": "老师很和蔼。"
+      },
+      {
+        "en": "There are thirty students in my class.",
+        "zh": "我们班有三十个学生。"
+      },
+      {
+        "en": "Sit down on the chair.",
+        "zh": "坐到椅子上。"
+      },
+      {
+        "en": "The ruler is on the desk.",
+        "zh": "尺子在桌子上。"
+      },
+      {
+        "en": "Can I use your eraser?",
+        "zh": "我可以用你的橡皮吗？"
+      },
+      {
+        "en": "We have an English lesson today.",
+        "zh": "我们今天有英语课。"
+      },
+      {
+        "en": "I do my homework after dinner.",
+        "zh": "我晚饭后做作业。"
+      },
+      {
+        "en": "My school is near the park.",
+        "zh": "我的学校在公园附近。"
+      },
+      {
+        "en": "Open your books, please.",
+        "zh": "请打开你们的书。"
+      },
+      {
+        "en": "The student puts up his hand.",
+        "zh": "那个学生举起了手。"
+      }
+    ]
+  },
+  {
+    "key": "places",
+    "zh": "交通与地点",
+    "en": "Transport & Places",
+    "icon": "🚌",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "交通",
+        "en": "Transport",
+        "words": [
+          "car",
+          "bus",
+          "train",
+          "bike",
+          "plane",
+          "boat"
+        ]
+      },
+      {
+        "zh": "地点",
+        "en": "Places",
+        "words": [
+          "road",
+          "station",
+          "house",
+          "shop",
+          "school",
+          "park",
+          "hospital",
+          "library",
+          "street"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "We go to school by bus.",
+        "zh": "我们坐公交车去上学。"
+      },
+      {
+        "en": "My school is near the park.",
+        "zh": "我的学校在公园附近。"
+      },
+      {
+        "en": "Turn right at the station.",
+        "zh": "在车站右转。"
+      },
+      {
+        "en": "The library is far from here.",
+        "zh": "图书馆离这里很远。"
+      },
+      {
+        "en": "The dog is outside the house.",
+        "zh": "狗在房子外面。"
+      },
+      {
+        "en": "My uncle drives a bus.",
+        "zh": "我叔叔开公交车。"
+      },
+      {
+        "en": "I ride my bike to the park.",
+        "zh": "我骑自行车去公园。"
+      },
+      {
+        "en": "The train is fast.",
+        "zh": "火车很快。"
+      },
+      {
+        "en": "The plane is in the sky.",
+        "zh": "飞机在天上。"
+      },
+      {
+        "en": "The boat is on the river.",
+        "zh": "船在河上。"
+      },
+      {
+        "en": "Mom buys bread at the shop.",
+        "zh": "妈妈在商店买面包。"
+      },
+      {
+        "en": "The doctor works in a hospital.",
+        "zh": "医生在医院工作。"
+      },
+      {
+        "en": "Look left and right on the road.",
+        "zh": "过马路时要左右看。"
+      },
+      {
+        "en": "Dad's car is red.",
+        "zh": "爸爸的车是红色的。"
+      },
+      {
+        "en": "There are many shops on this street.",
+        "zh": "这条街上有很多商店。"
+      }
+    ]
+  },
+  {
+    "key": "clothes",
+    "zh": "衣物",
+    "en": "Clothes",
+    "icon": "👕",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "衣物",
+        "en": "Clothes",
+        "words": [
+          "hat",
+          "coat",
+          "shoe",
+          "shirt",
+          "T-shirt",
+          "dress",
+          "skirt",
+          "sock",
+          "jacket",
+          "sweater",
+          "pants",
+          "scarf",
+          "glove",
+          "uniform"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "I have a red dress.",
+        "zh": "我有一条红裙子。"
+      },
+      {
+        "en": "My shoes are wet.",
+        "zh": "我的鞋湿了。"
+      },
+      {
+        "en": "Put on your coat. It is cold.",
+        "zh": "穿上外套，天冷了。"
+      },
+      {
+        "en": "He has a light blue shirt.",
+        "zh": "他有一件浅蓝色的衬衫。"
+      },
+      {
+        "en": "My T-shirt is white.",
+        "zh": "我的T恤是白色的。"
+      },
+      {
+        "en": "Put on your hat. It is sunny.",
+        "zh": "戴上帽子，太阳很大。"
+      },
+      {
+        "en": "My socks are on the bed.",
+        "zh": "我的袜子在床上。"
+      },
+      {
+        "en": "She has a pink skirt.",
+        "zh": "她有一条粉色的短裙。"
+      },
+      {
+        "en": "Wear your gloves. Your hands are cold.",
+        "zh": "戴上手套，你的手很冷。"
+      },
+      {
+        "en": "This sweater is soft and warm.",
+        "zh": "这件毛衣又软又暖和。"
+      },
+      {
+        "en": "These pants are too long.",
+        "zh": "这条裤子太长了。"
+      },
+      {
+        "en": "Put a scarf on your neck.",
+        "zh": "在脖子上围条围巾。"
+      },
+      {
+        "en": "We wear a uniform at school.",
+        "zh": "我们在学校穿校服。"
+      },
+      {
+        "en": "My jacket is green.",
+        "zh": "我的夹克是绿色的。"
+      },
+      {
+        "en": "Is your coat dry now?",
+        "zh": "你的外套现在干了吗？"
+      }
+    ]
+  },
+  {
+    "key": "jobs",
+    "zh": "职业",
+    "en": "Jobs",
+    "icon": "👩‍⚕️",
+    "scene": null,
+    "groups": [
+      {
+        "zh": "职业",
+        "en": "Jobs",
+        "words": [
+          "doctor",
+          "teacher",
+          "worker",
+          "farmer",
+          "nurse",
+          "cook",
+          "driver",
+          "police",
+          "officer",
+          "pilot"
+        ]
+      }
+    ],
+    "sentences": [
+      {
+        "en": "My father is a doctor.",
+        "zh": "我爸爸是医生。"
+      },
+      {
+        "en": "The doctor works in a hospital.",
+        "zh": "医生在医院工作。"
+      },
+      {
+        "en": "The teacher is kind.",
+        "zh": "老师很和蔼。"
+      },
+      {
+        "en": "The nurse is kind to me.",
+        "zh": "护士对我很好。"
+      },
+      {
+        "en": "The farmer has many cows.",
+        "zh": "农民有很多奶牛。"
+      },
+      {
+        "en": "The cook makes good soup.",
+        "zh": "厨师做的汤很好喝。"
+      },
+      {
+        "en": "The bus driver says hello.",
+        "zh": "公交车司机向我们问好。"
+      },
+      {
+        "en": "The pilot flies a plane.",
+        "zh": "飞行员驾驶飞机。"
+      },
+      {
+        "en": "The police officer helps us.",
+        "zh": "警察帮助我们。"
+      },
+      {
+        "en": "The workers build a house.",
+        "zh": "工人们在盖房子。"
+      },
+      {
+        "en": "I want to be a doctor.",
+        "zh": "我想当医生。"
+      },
+      {
+        "en": "My mother is a teacher.",
+        "zh": "我妈妈是老师。"
+      },
+      {
+        "en": "The farmer grows rice.",
+        "zh": "农民种水稻。"
+      },
+      {
+        "en": "The driver stops at the station.",
+        "zh": "司机在车站停车。"
+      }
+    ]
+  }
+]

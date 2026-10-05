@@ -210,7 +210,7 @@
     {
         "w":  "may",
         "c":  "op",
-        "zh":  "可以,可能",
+        "zh":  "可以,可能；（首字母大写 May）五月",
         "en":  "possibility or permission",
         "ex":  "You may go now.",
         "exz":  "你现在可以走了。",
@@ -2043,7 +2043,7 @@
     {
         "w":  "cook",
         "c":  "gt",
-        "zh":  "厨师",
+        "zh":  "厨师；做饭,烹调",
         "en":  "a person who prepares food",
         "ex":  "The cook made dinner.",
         "exz":  "厨师做了晚餐。",
@@ -18238,6 +18238,315 @@
         "s": [
             "half",
             "hour"
+        ]
+    },
+    {
+        "w": "plum",
+        "c": "ex",
+        "zh": "李子",
+        "en": "a small soft round fruit with a stone",
+        "ex": "The plum is purple.",
+        "exz": "这个李子是紫色的。",
+        "s": [
+            "fruit",
+            "peach"
+        ]
+    },
+    {
+        "w": "melon",
+        "c": "ex",
+        "zh": "甜瓜,瓜",
+        "en": "a big round fruit with sweet inside",
+        "ex": "The melon is sweet.",
+        "exz": "这个甜瓜很甜。",
+        "s": [
+            "watermelon",
+            "fruit"
+        ]
+    },
+    {
+        "w": "pasta",
+        "c": "ex",
+        "zh": "意大利面",
+        "en": "food made from flour and water, like noodles",
+        "ex": "I like pasta with tomato.",
+        "exz": "我喜欢番茄意大利面。",
+        "s": [
+            "noodle",
+            "rice"
+        ]
+    },
+    {
+        "w": "biscuit",
+        "c": "ex",
+        "zh": "饼干",
+        "en": "a small dry flat cake",
+        "ex": "Grandma gives me a biscuit.",
+        "exz": "奶奶给我一块饼干。",
+        "s": [
+            "cookie",
+            "cake"
+        ]
+    },
+    {
+        "w": "wheat",
+        "c": "ex",
+        "zh": "小麦",
+        "en": "a plant whose seeds make flour",
+        "ex": "Bread is made from wheat.",
+        "exz": "面包是用小麦做的。",
+        "s": [
+            "grain",
+            "flour"
+        ]
+    },
+    {
+        "w": "flour",
+        "c": "ex",
+        "zh": "面粉",
+        "en": "powder made from wheat, used to make bread",
+        "ex": "Mom makes bread with flour.",
+        "exz": "妈妈用面粉做面包。",
+        "s": [
+            "wheat",
+            "bread"
+        ]
+    },
+    {
+        "w": "lettuce",
+        "c": "ex",
+        "zh": "生菜",
+        "en": "a green vegetable with big soft leaves",
+        "ex": "Put some lettuce in the bread.",
+        "exz": "在面包里夹点生菜。",
+        "s": [
+            "cabbage",
+            "vegetable"
+        ]
+    },
+    {
+        "w": "spinach",
+        "c": "ex",
+        "zh": "菠菜",
+        "en": "a vegetable with dark green leaves",
+        "ex": "Spinach makes you strong.",
+        "exz": "吃菠菜让你变强壮。",
+        "s": [
+            "vegetable",
+            "lettuce"
+        ]
+    },
+    {
+        "w": "garlic",
+        "c": "ex",
+        "zh": "大蒜",
+        "en": "a small white plant with a strong taste",
+        "ex": "Garlic has a strong smell.",
+        "exz": "大蒜的气味很重。",
+        "s": [
+            "onion",
+            "pepper"
+        ]
+    },
+    {
+        "w": "pepper",
+        "c": "ex",
+        "zh": "胡椒;辣椒",
+        "en": "a hot powder, or a red or green vegetable",
+        "ex": "Dad puts pepper in the soup.",
+        "exz": "爸爸往汤里放胡椒。",
+        "s": [
+            "salt",
+            "vegetable"
+        ]
+    },
+    {
+        "w": "mushroom",
+        "c": "ex",
+        "zh": "蘑菇",
+        "en": "a small plant like an umbrella that you can eat",
+        "ex": "I see a mushroom under the tree.",
+        "exz": "我看见树下有一个蘑菇。",
+        "s": [
+            "vegetable"
+        ]
+    },
+    {
+        "w": "beef",
+        "c": "ex",
+        "zh": "牛肉",
+        "en": "meat from a cow",
+        "ex": "We have beef for dinner.",
+        "exz": "我们晚饭吃牛肉。",
+        "s": [
+            "meat",
+            "pork"
+        ]
+    },
+    {
+        "w": "pork",
+        "c": "ex",
+        "zh": "猪肉",
+        "en": "meat from a pig",
+        "ex": "I like pork and rice.",
+        "exz": "我喜欢猪肉配米饭。",
+        "s": [
+            "meat",
+            "beef"
+        ]
+    },
+    {
+        "w": "yogurt",
+        "c": "ex",
+        "zh": "酸奶",
+        "en": "a thick food made from milk",
+        "ex": "I eat yogurt with fruit.",
+        "exz": "我吃水果酸奶。",
+        "s": [
+            "milk",
+            "cheese"
+        ]
+    },
+    {
+        "w": "snack",
+        "c": "ex",
+        "zh": "零食,小吃",
+        "en": "a small amount of food between meals",
+        "ex": "Can I have a snack?",
+        "exz": "我可以吃点零食吗？",
+        "s": [
+            "food",
+            "cookie"
+        ]
+    },
+    {
+        "w": "chip",
+        "c": "ex",
+        "zh": "薯片,薯条",
+        "en": "a thin piece of fried potato",
+        "ex": "The chips are too salty.",
+        "exz": "薯片太咸了。",
+        "s": [
+            "potato",
+            "snack"
+        ]
+    },
+    {
+        "w": "cookie",
+        "c": "ex",
+        "zh": "曲奇,饼干",
+        "en": "a small sweet cake",
+        "ex": "Can I have a cookie, please?",
+        "exz": "请问我可以吃一块饼干吗？",
+        "s": [
+            "biscuit",
+            "cake"
+        ]
+    },
+    {
+        "w": "pie",
+        "c": "ex",
+        "zh": "馅饼,派",
+        "en": "a baked food with fruit or meat inside",
+        "ex": "Grandma makes an apple pie.",
+        "exz": "奶奶做了一个苹果派。",
+        "s": [
+            "cake",
+            "cookie"
+        ]
+    },
+    {
+        "w": "coffee",
+        "c": "ex",
+        "zh": "咖啡",
+        "en": "a hot brown drink",
+        "ex": "Dad drinks coffee in the morning.",
+        "exz": "爸爸早上喝咖啡。",
+        "s": [
+            "tea",
+            "drink"
+        ]
+    },
+    {
+        "w": "sour",
+        "c": "ex",
+        "zh": "酸的",
+        "en": "with a taste like a lemon",
+        "ex": "The lemon is sour.",
+        "exz": "柠檬是酸的。",
+        "s": [
+            "sweet",
+            "bitter"
+        ]
+    },
+    {
+        "w": "salty",
+        "c": "ex",
+        "zh": "咸的",
+        "en": "with a lot of salt",
+        "ex": "The soup is too salty.",
+        "exz": "汤太咸了。",
+        "s": [
+            "salt",
+            "sour"
+        ]
+    },
+    {
+        "w": "raw",
+        "c": "ex",
+        "zh": "生的",
+        "en": "not cooked",
+        "ex": "Don't eat raw meat.",
+        "exz": "不要吃生肉。",
+        "s": [
+            "fresh"
+        ]
+    },
+    {
+        "w": "thirsty",
+        "c": "ex",
+        "zh": "口渴的",
+        "en": "wanting to drink",
+        "ex": "I am thirsty. I want water.",
+        "exz": "我口渴了，我想喝水。",
+        "s": [
+            "hungry",
+            "dry"
+        ]
+    },
+    {
+        "w": "sick",
+        "c": "ex",
+        "zh": "生病的",
+        "en": "not well; ill",
+        "ex": "She is sick today.",
+        "exz": "她今天生病了。",
+        "s": [
+            "ill",
+            "well"
+        ]
+    },
+    {
+        "w": "joy",
+        "c": "ex",
+        "zh": "快乐,喜悦",
+        "en": "a great happy feeling",
+        "ex": "The dog jumps with joy.",
+        "exz": "小狗高兴得跳起来。",
+        "s": [
+            "happy",
+            "love"
+        ]
+    },
+    {
+        "w": "calm",
+        "c": "ex",
+        "zh": "平静的,冷静的",
+        "en": "quiet and not angry or afraid",
+        "ex": "Stay calm and sit down.",
+        "exz": "保持冷静，坐下来。",
+        "s": [
+            "quiet"
         ]
     }
 ]

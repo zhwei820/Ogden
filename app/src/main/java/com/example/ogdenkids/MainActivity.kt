@@ -119,6 +119,17 @@ import java.net.URLEncoder
 import java.util.Locale
 import kotlin.math.ceil
 import kotlin.random.Random
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalDensity
+import kotlin.math.cos
+import kotlin.math.sin
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -211,6 +222,7 @@ sealed class Screen {
     data class SpeechReader(val speech: Speech) : Screen()
     data class ThemePractice(val level: Int, val theme: SpeechTheme) : Screen()
     data class WordPractice(val title: String, val words: List<String>, val returnTo: Screen) : Screen()
+    data class SpecialPractice(val topic: SpecialTopic, val level: Int) : Screen()
     object SpeechWords : Screen()
     object Settings : Screen()
     object Privacy : Screen()
@@ -311,6 +323,13 @@ class ProgressStore(context: Context) {
     fun isSpeechLearned(id: String) = set("speechLearned").contains(id)
 
     fun toggleSpeechLearned(id: String) = updateSet("speechLearned", id, !isSpeechLearned(id))
+
+    fun bestSpecialScore(key: String, level: Int): Int? =
+        prefs.getInt("special.$key.$level", -1).takeIf { it >= 0 }
+
+    fun saveSpecialScore(key: String, level: Int, correct: Int) {
+        if (correct > (bestSpecialScore(key, level) ?: -1)) prefs.edit().putInt("special.$key.$level", correct).commit()
+    }
 
     fun bestThemeScore(level: Int, theme: SpeechTheme): Int? =
         prefs.getInt("themePractice.$level.${theme.key}", -1).takeIf { it >= 0 }
@@ -510,6 +529,7 @@ fun OgdenKidsApp() {
                                 level = speechLevel,
                                 onLevel = { speechLevel = it },
                                 onPractice = { theme -> screen = Screen.ThemePractice(speechLevel, theme) },
+                                onSpecial = { topic -> screen = Screen.SpecialPractice(topic, speechLevel) },
                                 padding = padding,
                                 onOpen = { screen = Screen.SpeechReader(it) }
                             )
@@ -575,6 +595,18 @@ fun OgdenKidsApp() {
                         }
                     )
                 }
+                is Screen.SpecialPractice -> SpecialPracticeScreen(
+                    topic = current.topic,
+                    level = current.level,
+                    bestScore = progressStore.bestSpecialScore(current.topic.key, current.level),
+                    onSpeak = speakEnglish,
+                    onSpeakChinese = speakChinese,
+                    onFinish = { correct ->
+                        progressStore.saveSpecialScore(current.topic.key, current.level, correct)
+                        version++
+                    },
+                    onBack = goBack
+                )
                 is Screen.WordPractice -> PracticeScreen(
                     allWords = words,
                     store = progressStore,
@@ -774,6 +806,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.SpeechReader -> "reader-${screen.speech.id}"
     is Screen.ThemePractice -> "theme-${screen.level}-${screen.theme.key}"
     is Screen.WordPractice -> "words-${screen.title}"
+    is Screen.SpecialPractice -> "special-${screen.topic.key}-${screen.level}"
     Screen.SpeechWords -> "speech-words"
     Screen.Settings -> "settings"
     Screen.Privacy -> "privacy"
@@ -1525,15 +1558,16 @@ fun SpeechListScreen(
     level: Int,
     onLevel: (Int) -> Unit,
     onPractice: (SpeechTheme) -> Unit,
+    onSpecial: (SpecialTopic) -> Unit,
     padding: PaddingValues,
     onOpen: (Speech) -> Unit
 ) {
     val units = speeches.filter { it.level == level }
     val learned = units.count { store.isSpeechLearned(it.id) }
     val groups = units.groupBy { it.theme }.toList()
-    // 列表头部依次是：标题、吸顶选择栏、进度行，之后每个主题占 1 个标题项 + 若干单元项
+    // 列表头部依次是：标题、吸顶选择栏、进度行、专项训练，之后每个主题占 1 个标题项 + 若干单元项
     val themeStarts = remember(groups) {
-        var index = 3
+        var index = 4
         groups.map { (_, themeUnits) -> index.also { index += 1 + themeUnits.size } }
     }
     val listState = rememberLazyListState()
@@ -1618,6 +1652,27 @@ fun SpeechListScreen(
         }
         item {
             AppText("${SpeechLevelThemes[level]} · 已学 $learned / ${units.size} 单元", color = InkFaint, fontSize = 13.sp)
+        }
+        item {
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                AppText("专项训练", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SpecialTopic.values().forEach { topic ->
+                        val best = store.bestSpecialScore(topic.key, level)
+                        OutlinedButton(
+                            onClick = { onSpecial(topic) },
+                            modifier = Modifier.weight(1f),
+                            contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp)
+                        ) {
+                            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                Text(topic.icon, fontSize = 22.sp)
+                                AppText(topic.zh, fontSize = 15.sp, color = Ink)
+                                if (best != null) AppText("最佳 $best", fontSize = 11.sp, color = InkFaint)
+                            }
+                        }
+                    }
+                }
+            }
         }
         groups.forEach { (theme, themeUnits) ->
             item(key = "theme-${theme.key}") {
@@ -2842,6 +2897,375 @@ fun ThemePracticeScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+// ---------- 专项训练：场景绘制 ----------
+
+private const val SceneWidth = 240f
+private const val SceneHeight = 190f
+
+/** 物体中心点（基准画布 240×190 dp 内）、大小，以及是否画在参照物之前（被挡住）。 */
+private data class Placement(val x: Float, val y: Float, val size: Float, val underRef: Boolean = false)
+
+private fun placementOf(relation: Relation): Placement = when (relation) {
+    Relation.On -> Placement(120f, 46f, 40f)
+    Relation.Above -> Placement(120f, 20f, 36f)
+    Relation.Under -> Placement(120f, 144f, 40f)
+    Relation.Below -> Placement(120f, 172f, 36f)
+    Relation.In -> Placement(120f, 80f, 30f, underRef = true)
+    Relation.Behind -> Placement(152f, 66f, 34f, underRef = true)
+    Relation.InFrontOf -> Placement(108f, 128f, 46f)
+    Relation.NextTo, Relation.Beside, Relation.RightOf -> Placement(172f, 100f, 40f)
+    Relation.Near -> Placement(212f, 100f, 36f)
+    Relation.LeftOf -> Placement(66f, 100f, 40f)
+    Relation.Between -> Placement(120f, 100f, 38f)
+    Relation.Inside -> Placement(120f, 110f, 26f)
+    Relation.Outside -> Placement(208f, 150f, 36f)
+}
+
+@Composable
+private fun EmojiAt(emoji: String, x: Float, y: Float, size: Float, scale: Float, alpha: Float = 1f) {
+    val density = LocalDensity.current
+    Box(
+        modifier = Modifier
+            .offset(((x - size / 2) * scale).dp, ((y - size / 2) * scale).dp)
+            .size((size * scale).dp)
+            .alpha(alpha),
+        contentAlignment = Alignment.Center
+    ) {
+        // 用 dp 换算字号，不受系统字体缩放影响，否则表情会溢出场景
+        Text(emoji, fontSize = with(density) { (size * scale * 0.8f).dp.toSp() })
+    }
+}
+
+@Composable
+private fun PlaceSceneView(scene: Scene.Place, scale: Float, showItem: Boolean = true) {
+    Box(Modifier.size((SceneWidth * scale).dp, (SceneHeight * scale).dp)) {
+        val p = placementOf(scene.relation)
+        val refSize = if (scene.relation == Relation.Inside || scene.relation == Relation.Outside) 84f else 66f
+        if (showItem && p.underRef) EmojiAt(scene.item.emoji, p.x, p.y, p.size, scale)
+        if (scene.ref2 != null) {
+            EmojiAt(scene.ref.emoji, 50f, 100f, 60f, scale)
+            EmojiAt(scene.ref2.emoji, 190f, 100f, 60f, scale)
+        } else {
+            EmojiAt(scene.ref.emoji, 120f, 100f, refSize, scale)
+        }
+        if (showItem && !p.underRef) EmojiAt(scene.item.emoji, p.x, p.y, p.size, scale)
+    }
+}
+
+@Composable
+private fun ClockView(hour: Int, minute: Int, scale: Float) {
+    val tint = Category.Operations.tint
+    Canvas(Modifier.size((150 * scale).dp)) {
+        val r = size.minDimension / 2
+        val c = center
+        drawCircle(Color.White, r)
+        drawCircle(Ink, r, style = Stroke(width = 4.dp.toPx() * scale))
+        repeat(12) { i ->
+            val a = Math.toRadians(i * 30.0 - 90)
+            val outer = r * 0.92f
+            val inner = if (i % 3 == 0) r * 0.78f else r * 0.85f
+            drawLine(
+                Ink,
+                Offset(c.x + (inner * cos(a)).toFloat(), c.y + (inner * sin(a)).toFloat()),
+                Offset(c.x + (outer * cos(a)).toFloat(), c.y + (outer * sin(a)).toFloat()),
+                strokeWidth = (if (i % 3 == 0) 4 else 2).dp.toPx() * scale
+            )
+        }
+        drawIntoCanvas { canvas ->
+            val paint = android.graphics.Paint().apply {
+                isAntiAlias = true
+                textAlign = android.graphics.Paint.Align.CENTER
+                textSize = r * 0.24f
+                color = android.graphics.Color.rgb(28, 25, 23)
+            }
+            listOf(12, 3, 6, 9).forEach { n ->
+                val a = Math.toRadians(n * 30.0 - 90)
+                val d = r * 0.6f
+                canvas.nativeCanvas.drawText("$n", c.x + (d * cos(a)).toFloat(), c.y + (d * sin(a)).toFloat() + paint.textSize / 3, paint)
+            }
+        }
+        fun hand(angleDeg: Double, length: Float, width: Float, color: Color) {
+            val a = Math.toRadians(angleDeg - 90)
+            drawLine(color, c, Offset(c.x + (length * cos(a)).toFloat(), c.y + (length * sin(a)).toFloat()), strokeWidth = width, cap = StrokeCap.Round)
+        }
+        hand((hour % 12 + minute / 60.0) * 30, r * 0.5f, 7.dp.toPx() * scale, Ink)
+        hand(minute * 6.0, r * 0.78f, 4.dp.toPx() * scale, tint)
+        drawCircle(Ink, 5.dp.toPx() * scale)
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun SceneView(scene: Scene, scale: Float = 1f) {
+    when (scene) {
+        is Scene.Place -> PlaceSceneView(scene, scale)
+        is Scene.Count -> FlowRow(
+            modifier = Modifier.width((SceneWidth * scale).dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            val size = if (scene.count > 10) 30f else 40f
+            repeat(scene.count) { Box(Modifier.size((size * scale).dp), contentAlignment = Alignment.Center) { EmojiInBox(scene.emoji, size * scale) } }
+        }
+        is Scene.Swatch -> Box(
+            Modifier
+                .size((110 * scale).dp)
+                .clip(CircleShape)
+                .background(Color(scene.color.argb))
+                .border(2.dp, Line, CircleShape)
+        )
+        is Scene.Emoji -> EmojiInBox(scene.emoji, 110 * scale)
+        is Scene.Arrow -> EmojiInBox(scene.direction.emoji, 110 * scale)
+        is Scene.Clock -> ClockView(scene.hour, scene.minute, scale)
+        is Scene.Label -> Text(scene.text, fontSize = (56 * scale).sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Serif, color = Ink)
+    }
+}
+
+@Composable
+private fun EmojiInBox(emoji: String, size: Float) {
+    val density = LocalDensity.current
+    Box(Modifier.size(size.dp), contentAlignment = Alignment.Center) {
+        Text(emoji, fontSize = with(density) { (size * 0.8f).dp.toSp() })
+    }
+}
+
+/** 「点一点放在哪」：参照物四周画虚线圈，点圈作答；答完在正确位置画出物体。 */
+@Composable
+private fun PlaceSlotsView(question: SpecialQuestion, selected: Int?, answered: Boolean, onPick: (Int) -> Unit) {
+    val first = question.options.first().scene as Scene.Place
+    val scale = 1.3f
+    Box(Modifier.size((SceneWidth * scale).dp, (SceneHeight * scale).dp)) {
+        EmojiAt(first.ref.emoji, 120f, 100f, 66f, scale)
+        question.options.forEachIndexed { index, option ->
+            val p = placementOf((option.scene as Scene.Place).relation)
+            val size = 46f
+            val color = when {
+                answered && index == question.answer -> Success
+                answered && index == selected -> Error
+                else -> Category.Operations.tint
+            }
+            Box(
+                modifier = Modifier
+                    .offset(((p.x - size / 2) * scale).dp, ((p.y - size / 2) * scale).dp)
+                    .size((size * scale).dp)
+                    .clip(CircleShape)
+                    .background(color.copy(alpha = 0.12f))
+                    .border(BorderStroke(3.dp, color), CircleShape)
+                    .clickable(enabled = !answered) { onPick(index) },
+                contentAlignment = Alignment.Center
+            ) {
+                if (answered && index == question.answer) EmojiInBox(first.item.emoji, size * scale * 0.8f)
+            }
+        }
+    }
+}
+
+// ---------- 专项训练：练习页 ----------
+
+@Composable
+fun SpecialPracticeScreen(
+    topic: SpecialTopic,
+    level: Int,
+    bestScore: Int?,
+    onSpeak: (String) -> Unit,
+    onSpeakChinese: (String) -> Unit,
+    onFinish: (correct: Int) -> Unit,
+    onBack: () -> Unit
+) {
+    var session by remember { mutableStateOf(0) }
+    val questions = remember(session) { buildSpecialPractice(topic, level, Random(System.nanoTime())) }
+    var index by remember(session) { mutableStateOf(0) }
+    var selected by remember(session, index) { mutableStateOf<Int?>(null) }
+    var correctCount by remember(session) { mutableStateOf(0) }
+    var finished by remember(session) { mutableStateOf(false) }
+    val question = questions.getOrNull(index)
+    val accent = Category.Operations
+    val answered = selected != null
+
+    fun pick(i: Int) {
+        if (answered || question == null) return
+        selected = i
+        if (i == question.answer) correctCount++
+    }
+
+    LaunchedEffect(session, index) { question?.speak?.let(onSpeak) }
+
+    Scaffold(containerColor = Paper, topBar = {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(PaperElevated)
+                .border(1.dp, Line)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+            Column(Modifier.weight(1f)) {
+                AppText("${topic.icon} ${topic.zh} · 看图练习", fontWeight = FontWeight.Bold)
+                AppText(
+                    "${SpeechLevelNames[level]} · ${(index + 1).coerceAtMost(questions.size)} / ${questions.size} · 答对 $correctCount",
+                    color = InkFaint,
+                    fontSize = 12.sp
+                )
+            }
+        }
+    }) { padding ->
+        if (finished || question == null) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AppText("答对 $correctCount / ${questions.size}", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 34.sp)
+                AppText(if (correctCount == questions.size) "全对！太棒了！" else "再练一次，争取全对", color = InkSoft, fontSize = 18.sp)
+                bestScore?.let { AppText("最好成绩 $it / ${questions.size}", color = InkFaint) }
+                Button(onClick = { session++ }, modifier = Modifier.fillMaxWidth()) { Text("再练一次", fontSize = 18.sp) }
+                OutlinedButton(onClick = onBack, modifier = Modifier.fillMaxWidth()) { Text("返回", fontSize = 18.sp) }
+            }
+            return@Scaffold
+        }
+        val isCorrect = selected == question.answer
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(18.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            item {
+                LinearProgressIndicator(
+                    progress = (index + if (answered) 1 else 0) / questions.size.toFloat(),
+                    color = accent.tint,
+                    trackColor = accent.soft,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                        .clip(RoundedCornerShape(99.dp))
+                )
+            }
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                    shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier.border(1.dp, Line, RoundedCornerShape(18.dp))
+                ) {
+                    Column(
+                        Modifier.padding(20.dp).fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(14.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AppText(question.kind.title, color = accent.tint, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            if (question.speak != null) {
+                                IconButton(onClick = { onSpeak(question.speak) }) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "再听一遍", tint = accent.tint, modifier = Modifier.size(32.dp))
+                                }
+                            }
+                        }
+                        if (question.kind == SpecialKind.Place) {
+                            PlaceSlotsView(question, selected, answered, ::pick)
+                        } else {
+                            question.scene?.let { SceneView(it) }
+                        }
+                        Text(
+                            question.prompt,
+                            fontSize = if ("____" in question.prompt) 26.sp else 22.sp,
+                            fontFamily = if ("____" in question.prompt) FontFamily.Serif else null,
+                            fontWeight = FontWeight.SemiBold,
+                            lineHeight = 34.sp,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                }
+            }
+            if (question.kind != SpecialKind.Place) {
+                if (question.options.all { it.scene != null }) {
+                    // 图片选项：两两一行
+                    items(question.options.indices.chunked(2)) { pair ->
+                        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            pair.forEach { i -> SpecialOptionCard(question.options[i], i, question.answer, selected, Modifier.weight(1f)) { pick(i) } }
+                        }
+                    }
+                } else {
+                    items(question.options.indices.toList()) { i ->
+                        SpecialOptionCard(question.options[i], i, question.answer, selected, Modifier.fillMaxWidth()) { pick(i) }
+                    }
+                }
+            }
+            item {
+                AnimatedVisibility(answered) {
+                    Card(
+                        colors = CardDefaults.cardColors(containerColor = if (isCorrect) Color(0xFFECFDF5) else Color(0xFFFEF2F2)),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            AppText(if (isCorrect) "答对了！" else "再看看正确答案", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(question.sentence, fontFamily = FontFamily.Serif, fontSize = 22.sp, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { onSpeak(question.sentence) }) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = accent.tint)
+                                }
+                            }
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AppText(question.sentenceZh, color = InkSoft, fontSize = 17.sp, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { onSpeakChinese(question.sentenceZh) }) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "朗读中文", tint = InkFaint)
+                                }
+                            }
+                            Button(
+                                onClick = {
+                                    if (index >= questions.lastIndex) {
+                                        onFinish(correctCount)
+                                        finished = true
+                                    } else {
+                                        index++
+                                    }
+                                },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(14.dp)
+                            ) { AppText(if (index >= questions.lastIndex) "看成绩" else "下一题", fontSize = 18.sp) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, selected: Int?, modifier: Modifier, onClick: () -> Unit) {
+    val answered = selected != null
+    val color = when {
+        answered && index == answer -> Success
+        answered && index == selected -> Error
+        else -> Line
+    }
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = when {
+                answered && index == answer -> Color(0xFFDCFCE7)
+                answered && index == selected -> Color(0xFFFEE2E2)
+                else -> PaperElevated
+            }
+        ),
+        shape = RoundedCornerShape(14.dp),
+        modifier = modifier
+            .border(BorderStroke(if (answered && (index == answer || index == selected)) 2.dp else 1.dp, color), RoundedCornerShape(14.dp))
+            .clickable(enabled = !answered, onClick = onClick)
+    ) {
+        Column(
+            Modifier.padding(12.dp).fillMaxWidth(),
+            horizontalAlignment = if (option.scene != null) Alignment.CenterHorizontally else Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            option.scene?.let { SceneView(it, scale = 0.62f) }
+            option.text?.let { Text(it, fontSize = 20.sp, lineHeight = 26.sp, color = Ink) }
         }
     }
 }
