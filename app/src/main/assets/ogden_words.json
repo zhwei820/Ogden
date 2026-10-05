@@ -17672,5 +17672,416 @@
             "eye",
             "hair"
         ]
+    },
+    {
+        "w": "balloon",
+        "c": "ex",
+        "zh": "气球",
+        "en": "a thin rubber bag you fill with air",
+        "ex": "I have a red balloon at the party.",
+        "exz": "我在派对上有一个红气球。",
+        "s": [
+            "party",
+            "birthday"
+        ]
+    },
+    {
+        "w": "bean",
+        "c": "ex",
+        "zh": "豆子",
+        "en": "a small seed you can cook and eat",
+        "ex": "Mom puts green beans in the soup.",
+        "exz": "妈妈在汤里放了青豆。",
+        "s": [
+            "vegetable",
+            "pea"
+        ]
+    },
+    {
+        "w": "borrow",
+        "c": "ex",
+        "zh": "借（入）",
+        "en": "take something and give it back later",
+        "ex": "I borrow two books from the library.",
+        "exz": "我从图书馆借了两本书。",
+        "s": [
+            "library",
+            "book"
+        ]
+    },
+    {
+        "w": "bowl",
+        "c": "ex",
+        "zh": "碗",
+        "en": "a deep round dish for rice or soup",
+        "ex": "I eat a bowl of rice for lunch.",
+        "exz": "我午饭吃一碗米饭。",
+        "s": [
+            "plate",
+            "cup",
+            "spoon"
+        ]
+    },
+    {
+        "w": "cabbage",
+        "c": "ex",
+        "zh": "卷心菜",
+        "en": "a big round vegetable with green leaves",
+        "ex": "Grandma cooks cabbage for dinner.",
+        "exz": "奶奶晚饭做了卷心菜。",
+        "s": [
+            "vegetable",
+            "carrot"
+        ]
+    },
+    {
+        "w": "cherry",
+        "c": "ex",
+        "zh": "樱桃",
+        "en": "a small round red fruit with a stone inside",
+        "ex": "The cherries are red and sweet.",
+        "exz": "樱桃又红又甜。",
+        "s": [
+            "fruit",
+            "berry"
+        ]
+    },
+    {
+        "w": "corn",
+        "c": "ex",
+        "zh": "玉米",
+        "en": "a tall plant with yellow seeds you can eat",
+        "ex": "I like hot corn in autumn.",
+        "exz": "我喜欢秋天吃热玉米。",
+        "s": [
+            "vegetable",
+            "grain"
+        ]
+    },
+    {
+        "w": "cucumber",
+        "c": "ex",
+        "zh": "黄瓜",
+        "en": "a long green vegetable you often eat raw",
+        "ex": "I put a cucumber in my salad.",
+        "exz": "我在沙拉里放了一根黄瓜。",
+        "s": [
+            "vegetable",
+            "salad"
+        ]
+    },
+    {
+        "w": "drum",
+        "c": "ex",
+        "zh": "鼓",
+        "en": "a music instrument you hit with sticks",
+        "ex": "My brother plays the drum.",
+        "exz": "我哥哥打鼓。",
+        "s": [
+            "music",
+            "instrument"
+        ]
+    },
+    {
+        "w": "exercise",
+        "c": "ex",
+        "zh": "锻炼；运动",
+        "en": "moving your body to stay healthy",
+        "ex": "We do exercise every morning.",
+        "exz": "我们每天早上锻炼。",
+        "s": [
+            "sport",
+            "health"
+        ]
+    },
+    {
+        "w": "fever",
+        "c": "ex",
+        "zh": "发烧",
+        "en": "when your body is too hot because you are ill",
+        "ex": "I have a fever, so I stay in bed.",
+        "exz": "我发烧了，所以躺在床上。",
+        "s": [
+            "ill",
+            "doctor",
+            "medicine"
+        ]
+    },
+    {
+        "w": "guitar",
+        "c": "ex",
+        "zh": "吉他",
+        "en": "a music instrument with strings",
+        "ex": "She sings and plays the guitar.",
+        "exz": "她边唱边弹吉他。",
+        "s": [
+            "music",
+            "instrument"
+        ]
+    },
+    {
+        "w": "housework",
+        "c": "ex",
+        "zh": "家务",
+        "en": "cleaning, washing and cooking at home",
+        "ex": "I help my mom with the housework.",
+        "exz": "我帮妈妈做家务。",
+        "s": [
+            "home",
+            "clean",
+            "help"
+        ]
+    },
+    {
+        "w": "interesting",
+        "c": "ex",
+        "zh": "有趣的",
+        "en": "making you want to know more",
+        "ex": "This book is very interesting.",
+        "exz": "这本书很有趣。",
+        "s": [
+            "fun",
+            "interest"
+        ]
+    },
+    {
+        "w": "lantern",
+        "c": "ex",
+        "zh": "灯笼",
+        "en": "a light in a paper or glass box",
+        "ex": "We hang red lanterns at the festival.",
+        "exz": "节日里我们挂红灯笼。",
+        "s": [
+            "light",
+            "festival"
+        ]
+    },
+    {
+        "w": "lemon",
+        "c": "ex",
+        "zh": "柠檬",
+        "en": "a yellow fruit that tastes sour",
+        "ex": "I put lemon in my water.",
+        "exz": "我在水里放了柠檬。",
+        "s": [
+            "fruit",
+            "orange"
+        ]
+    },
+    {
+        "w": "mango",
+        "c": "ex",
+        "zh": "芒果",
+        "en": "a sweet yellow fruit from hot places",
+        "ex": "The mango is soft and sweet.",
+        "exz": "芒果又软又甜。",
+        "s": [
+            "fruit"
+        ]
+    },
+    {
+        "w": "medicine",
+        "c": "ex",
+        "zh": "药",
+        "en": "something you take to get well",
+        "ex": "The doctor gives me some medicine.",
+        "exz": "医生给了我一些药。",
+        "s": [
+            "doctor",
+            "ill",
+            "hospital"
+        ]
+    },
+    {
+        "w": "onion",
+        "c": "ex",
+        "zh": "洋葱",
+        "en": "a round vegetable that can make you cry",
+        "ex": "Dad cuts an onion in the kitchen.",
+        "exz": "爸爸在厨房切洋葱。",
+        "s": [
+            "vegetable"
+        ]
+    },
+    {
+        "w": "passenger",
+        "c": "ex",
+        "zh": "乘客",
+        "en": "a person who rides in a car, bus or plane",
+        "ex": "The bus has many passengers.",
+        "exz": "公交车上有很多乘客。",
+        "s": [
+            "bus",
+            "taxi",
+            "driver"
+        ]
+    },
+    {
+        "w": "pea",
+        "c": "ex",
+        "zh": "豌豆",
+        "en": "a very small round green vegetable",
+        "ex": "I eat peas and rice.",
+        "exz": "我吃豌豆和米饭。",
+        "s": [
+            "bean",
+            "vegetable"
+        ]
+    },
+    {
+        "w": "peach",
+        "c": "ex",
+        "zh": "桃子",
+        "en": "a soft round fruit with a pink skin",
+        "ex": "This peach is soft and sweet.",
+        "exz": "这个桃子又软又甜。",
+        "s": [
+            "fruit",
+            "apple"
+        ]
+    },
+    {
+        "w": "pear",
+        "c": "ex",
+        "zh": "梨",
+        "en": "a sweet fruit, green or yellow, wider at the bottom",
+        "ex": "I eat a pear after lunch.",
+        "exz": "我午饭后吃一个梨。",
+        "s": [
+            "apple",
+            "fruit"
+        ]
+    },
+    {
+        "w": "piano",
+        "c": "ex",
+        "zh": "钢琴",
+        "en": "a big music instrument with black and white keys",
+        "ex": "My sister plays the piano.",
+        "exz": "我姐姐弹钢琴。",
+        "s": [
+            "music",
+            "instrument"
+        ]
+    },
+    {
+        "w": "pineapple",
+        "c": "ex",
+        "zh": "菠萝",
+        "en": "a big sweet fruit with a hard skin",
+        "ex": "The pineapple is sweet and yellow inside.",
+        "exz": "菠萝里面又甜又黄。",
+        "s": [
+            "fruit"
+        ]
+    },
+    {
+        "w": "pool",
+        "c": "ex",
+        "zh": "游泳池",
+        "en": "a place filled with water for swimming",
+        "ex": "We swim in the pool in summer.",
+        "exz": "夏天我们在游泳池游泳。",
+        "s": [
+            "swim",
+            "water"
+        ]
+    },
+    {
+        "w": "pumpkin",
+        "c": "ex",
+        "zh": "南瓜",
+        "en": "a big round orange vegetable",
+        "ex": "We cut a big pumpkin.",
+        "exz": "我们切了一个大南瓜。",
+        "s": [
+            "vegetable"
+        ]
+    },
+    {
+        "w": "rose",
+        "c": "ex",
+        "zh": "玫瑰",
+        "en": "a flower that smells sweet, often red",
+        "ex": "Mom likes red roses.",
+        "exz": "妈妈喜欢红玫瑰。",
+        "s": [
+            "flower",
+            "garden"
+        ]
+    },
+    {
+        "w": "safety",
+        "c": "ex",
+        "zh": "安全",
+        "en": "being safe from danger",
+        "ex": "Safety comes first on the road.",
+        "exz": "在路上安全第一。",
+        "s": [
+            "safe",
+            "danger"
+        ]
+    },
+    {
+        "w": "scarf",
+        "c": "ex",
+        "zh": "围巾",
+        "en": "a long piece of cloth you wear round your neck",
+        "ex": "I wear a warm scarf in winter.",
+        "exz": "冬天我戴一条暖和的围巾。",
+        "s": [
+            "hat",
+            "glove",
+            "coat"
+        ]
+    },
+    {
+        "w": "shell",
+        "c": "ex",
+        "zh": "贝壳",
+        "en": "the hard outside of a sea animal",
+        "ex": "I find a pretty shell on the beach.",
+        "exz": "我在海滩上找到一个漂亮的贝壳。",
+        "s": [
+            "beach",
+            "sea",
+            "sand"
+        ]
+    },
+    {
+        "w": "turtle",
+        "c": "ex",
+        "zh": "乌龟",
+        "en": "an animal with a hard shell on its back",
+        "ex": "My turtle walks very slowly.",
+        "exz": "我的乌龟走得很慢。",
+        "s": [
+            "animal",
+            "pet"
+        ]
+    },
+    {
+        "w": "violin",
+        "c": "ex",
+        "zh": "小提琴",
+        "en": "a music instrument with strings that you play with a bow",
+        "ex": "He plays the violin at the show.",
+        "exz": "他在演出中拉小提琴。",
+        "s": [
+            "music",
+            "instrument"
+        ]
+    },
+    {
+        "w": "volleyball",
+        "c": "ex",
+        "zh": "排球",
+        "en": "a game where teams hit a ball over a high net",
+        "ex": "We play volleyball on the beach.",
+        "exz": "我们在海滩打排球。",
+        "s": [
+            "sport",
+            "ball"
+        ]
     }
 ]

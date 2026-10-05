@@ -21,7 +21,25 @@ class SpeechPracticeTest {
                 title = item.getString("title"),
                 titleZh = item.getString("titleZh"),
                 lines = lines(item.getJSONArray("lines")),
-                patterns = lines(item.getJSONArray("patterns"))
+                patterns = lines(item.getJSONArray("patterns")),
+                words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
+            )
+        }
+    }
+
+    private val wordIndex: Map<String, OgdenWord> = run {
+        val array = JSONArray(File("src/main/assets/ogden_words.json").readText(Charsets.UTF_8).trimStart('\uFEFF'))
+        List(array.length()) { array.getJSONObject(it) }.associate { item ->
+            item.getString("w").lowercase() to OgdenWord(
+                word = item.getString("w"),
+                category = Category.from(item.getString("c")),
+                zh = item.getString("zh"),
+                englishDefinition = item.getString("en"),
+                example = item.getString("ex"),
+                exampleZh = item.getString("exz"),
+                synonyms = emptyList(),
+                ipaUk = "",
+                ipaUs = ""
             )
         }
     }
@@ -30,11 +48,16 @@ class SpeechPracticeTest {
     fun everyThemeYieldsTenValidQuestions() {
         for (level in 1..3) for (theme in SpeechTheme.values()) {
             val units = speeches.filter { it.level == level && it.theme == theme }
+            val vocabulary = units.flatMap { it.words }.mapNotNull { wordIndex[it.lowercase()] }
             repeat(20) { seed ->
-                val questions = buildThemePractice(units, Random(seed))
+                val questions = buildThemePractice(units, Random(seed), vocabulary = vocabulary)
                 val where = "L$level ${theme.key} seed=$seed"
                 assertEquals(where, 10, questions.size)
-                assertEquals(where, SentenceQuestionType.values().toSet(), questions.map { it.type }.toSet())
+                // 没有本课单词的主题出不了单词题
+                val expectedTypes = SentenceQuestionType.values().filter {
+                    vocabulary.size >= 4 || (it != SentenceQuestionType.WordListen && it != SentenceQuestionType.WordMeaning)
+                }.toSet()
+                assertEquals(where, expectedTypes, questions.map { it.type }.toSet())
                 assertEquals("$where duplicate sentence", questions.size, questions.map { it.sentence }.toSet().size)
                 questions.forEach { q ->
                     if (q.type == SentenceQuestionType.Order) {

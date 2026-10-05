@@ -2,20 +2,23 @@ package com.example.ogdenkids
 
 import kotlin.random.Random
 
+/** 声明顺序即出题轮换顺序，单词题穿插在句子题之间。 */
 enum class SentenceQuestionType(val title: String) {
     Listen("听句子，选出你听到的"),
+    WordListen("听单词，选出你听到的"),
     Meaning("看中文，选英文"),
     FillWord("句子填空"),
+    WordMeaning("看中文，选单词"),
     Pattern("句型替换"),
     Order("连词成句")
 }
 
 /**
- * @param prompt Listen：要朗读的英文；Meaning / Order：中文；FillWord / Pattern：挖空后的英文
- * @param hint FillWord / Pattern 的中文提示，其余为空
+ * @param prompt Listen / WordListen：要朗读的英文；Meaning / WordMeaning / Order：中文；FillWord / Pattern：挖空后的英文
+ * @param hint FillWord / Pattern / 单词题的中文，其余为空
  * @param answer Order：词块按正确顺序以空格连接
  * @param options Order：打乱后的词块（可能有重复词）；其余为含答案的选项
- * @param sentence 完整原句，答题后展示与朗读
+ * @param sentence 完整原句（单词题为单词本身），答题后展示与朗读
  */
 data class SentenceQuestion(
     val type: SentenceQuestionType,
@@ -35,10 +38,17 @@ private val Stopwords = setOf(
 private fun isContentWord(token: String) = token.length >= 3 && token.all { it.isLetter() } && token.lowercase() !in Stopwords
 
 /**
- * 从同一级同一主题的单元里出一组句子练习，题型按 [SentenceQuestionType] 轮换。
- * 某题型凑不出合格题（如句型没有替换位）时跳过，所以返回数量可能少于 [count]。
+ * 从同一级同一主题的单元里出一组练习，题型按 [SentenceQuestionType] 轮换。
+ * 某题型凑不出合格题（如句型没有替换位、没有本课单词）时跳过，所以返回数量可能少于 [count]。
+ *
+ * @param vocabulary 这些单元「本课单词」对应的词条，用于单词题
  */
-fun buildThemePractice(units: List<Speech>, random: Random, count: Int = 10): List<SentenceQuestion> {
+fun buildThemePractice(
+    units: List<Speech>,
+    random: Random,
+    count: Int = 10,
+    vocabulary: List<OgdenWord> = emptyList()
+): List<SentenceQuestion> {
     val lines = units.flatMap { it.lines }.distinctBy { it.en }
     val used = mutableSetOf<String>()
     val questions = mutableListOf<SentenceQuestion>()
@@ -52,6 +62,7 @@ fun buildThemePractice(units: List<Speech>, random: Random, count: Int = 10): Li
             SentenceQuestionType.FillWord -> fillWord(lines, used, random)
             SentenceQuestionType.Pattern -> pattern(units, used, random)
             SentenceQuestionType.Order -> order(lines, used, random)
+            SentenceQuestionType.WordListen, SentenceQuestionType.WordMeaning -> word(type, vocabulary, used, random)
         } ?: continue
         used += question.sentence
         questions += question
@@ -70,6 +81,21 @@ private fun chooseSentence(type: SentenceQuestionType, lines: List<SpeechLine>, 
         answer = line.en,
         options = (distractors + line.en).shuffled(random),
         sentence = line.en
+    )
+}
+
+private fun word(type: SentenceQuestionType, vocabulary: List<OgdenWord>, used: Set<String>, random: Random): SentenceQuestion? {
+    val words = vocabulary.distinctBy { it.word.lowercase() }
+    val target = words.filter { it.word !in used }.randomOrNull(random) ?: return null
+    val distractors = words.filter { it.word != target.word }.shuffled(random).take(3).map { it.word }
+    if (distractors.size < 3) return null
+    return SentenceQuestion(
+        type = type,
+        prompt = if (type == SentenceQuestionType.WordListen) target.word else target.zh,
+        hint = target.zh,
+        answer = target.word,
+        options = (distractors + target.word).shuffled(random),
+        sentence = target.word
     )
 }
 

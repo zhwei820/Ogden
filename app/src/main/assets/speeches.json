@@ -49,6 +49,25 @@
         "en": "I'm Tom. I'm eight.",
         "zh": "我是汤姆。我八岁。"
       }
+    ],
+    "words": [
+      "hello",
+      "goodbye",
+      "name",
+      "friend",
+      "book",
+      "happy",
+      "girl",
+      "boy",
+      "seven",
+      "eight",
+      "six",
+      "nine",
+      "ten",
+      "man",
+      "woman",
+      "child",
+      "baby"
     ]
   },
   {
@@ -101,6 +120,28 @@
         "en": "This is my sister.",
         "zh": "这是我的姐姐。"
       }
+    ],
+    "words": [
+      "family",
+      "father",
+      "mother",
+      "sister",
+      "brother",
+      "tall",
+      "kind",
+      "happy",
+      "play",
+      "mom",
+      "dad",
+      "grandma",
+      "grandpa",
+      "aunt",
+      "uncle",
+      "cousin",
+      "baby",
+      "parent",
+      "son",
+      "daughter"
     ]
   },
   {
@@ -153,6 +194,23 @@
         "en": "My mom is beautiful.",
         "zh": "我的妈妈很漂亮。"
       }
+    ],
+    "words": [
+      "mom",
+      "tall",
+      "kind",
+      "cook",
+      "food",
+      "love",
+      "happy",
+      "beautiful",
+      "busy",
+      "clever",
+      "young",
+      "nice",
+      "smile",
+      "help",
+      "hair"
     ]
   },
   {
@@ -164,28 +222,32 @@
     "titleZh": "我的身体",
     "lines": [
       {
-        "en": "Look at me!",
-        "zh": "看看我！"
+        "en": "Look at me! This is my body.",
+        "zh": "看看我！这是我的身体。"
       },
       {
-        "en": "I have two eyes.",
-        "zh": "我有两只眼睛。"
+        "en": "I have a head and a face.",
+        "zh": "我有一个头和一张脸。"
       },
       {
-        "en": "I see with my eyes.",
-        "zh": "我用眼睛看东西。"
+        "en": "I see with my two eyes.",
+        "zh": "我用两只眼睛看。"
       },
       {
-        "en": "I have two legs.",
-        "zh": "我有两条腿。"
+        "en": "I hear with my two ears.",
+        "zh": "我用两只耳朵听。"
       },
       {
-        "en": "I run with my legs.",
-        "zh": "我用腿跑步。"
+        "en": "I eat with my mouth.",
+        "zh": "我用嘴巴吃东西。"
       },
       {
-        "en": "My body is strong!",
-        "zh": "我的身体很强壮！"
+        "en": "I clap my hands, clap, clap!",
+        "zh": "我拍拍手，啪，啪！"
+      },
+      {
+        "en": "I run with my legs and feet.",
+        "zh": "我用腿和脚跑步。"
       },
       {
         "en": "What can your body do?",
@@ -194,21 +256,53 @@
     ],
     "patterns": [
       {
-        "en": "This is my nose.",
-        "zh": "这是我的鼻子。"
+        "en": "Touch your head. This is my head.",
+        "zh": "摸摸你的头。这是我的头。"
       },
       {
-        "en": "These are my eyes.",
-        "zh": "这是我的眼睛。"
+        "en": "Touch your nose. This is my nose.",
+        "zh": "摸摸你的鼻子。这是我的鼻子。"
       },
       {
-        "en": "These are my ears.",
-        "zh": "这是我的耳朵。"
+        "en": "Touch your ears. These are my ears.",
+        "zh": "摸摸你的耳朵。这是我的耳朵。"
       },
       {
-        "en": "These are my hands.",
-        "zh": "这是我的手。"
+        "en": "Touch your knees. These are my knees.",
+        "zh": "摸摸你的膝盖。这是我的膝盖。"
       }
+    ],
+    "words": [
+      "body",
+      "head",
+      "hair",
+      "face",
+      "eye",
+      "eyebrow",
+      "ear",
+      "nose",
+      "mouth",
+      "lip",
+      "tooth",
+      "tongue",
+      "cheek",
+      "chin",
+      "neck",
+      "shoulder",
+      "arm",
+      "elbow",
+      "hand",
+      "finger",
+      "thumb",
+      "nail",
+      "back",
+      "chest",
+      "tummy",
+      "leg",
+      "knee",
+      "foot",
+      "toe",
+      "skin"
     ]
   },
   {
@@ -269,6 +363,28 @@
         "en": "This is my dress. It's green.",
         "zh": "这是我的连衣裙。它是绿色的。"
       }
+    ],
+    "words": [
+      "clothes",
+      "coat",
+      "trousers",
+      "shoe",
+      "wear",
+      "warm",
+      "cold",
+      "hat",
+      "shirt",
+      "dress",
+      "T-shirt",
+      "sweater",
+      "jacket",
+      "skirt",
+      "pants",
+      "sock",
+      "glove",
+      "boot",
+      "uniform",
+      "pocket"
     ]
   },
   {
@@ -325,6 +441,22 @@
         "en": "I have a map in my bag.",
         "zh": "我的书包里有一张地图。"
       }
+    ],
+    "words": [
+      "school",
+      "bag",
+      "book",
+      "pen",
+      "pencil",
+      "map",
+      "eraser",
+      "ruler",
+      "crayon",
+      "notebook",
+      "paper",
+      "scissors",
+      "brush",
+      "paste"
     ]
   },
   {
@@ -385,6 +517,28 @@
         "en": "My teacher is happy.",
         "zh": "我的老师很开心。"
       }
+    ],
+    "words": [
+      "teacher",
+      "kind",
+      "tall",
+      "young",
+      "happy",
+      "hair",
+      "long",
+      "black",
+      "smile",
+      "teach",
+      "English",
+      "song",
+      "sing",
+      "classroom",
+      "student",
+      "lesson",
+      "school",
+      "class",
+      "board",
+      "chalk"
     ]
   },
   {
@@ -445,6 +599,26 @@
         "en": "He likes to jump.",
         "zh": "他喜欢跳。"
       }
+    ],
+    "words": [
+      "friend",
+      "tall",
+      "strong",
+      "play",
+      "ball",
+      "swim",
+      "run",
+      "jump",
+      "school",
+      "home",
+      "together",
+      "kind",
+      "funny",
+      "clever",
+      "friendly",
+      "happy",
+      "share",
+      "help"
     ]
   },
   {
@@ -505,6 +679,26 @@
         "en": "How many pens? I have four pens.",
         "zh": "有几支钢笔？我有四支钢笔。"
       }
+    ],
+    "words": [
+      "apple",
+      "cat",
+      "book",
+      "pen",
+      "number",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "zero",
+      "eleven",
+      "twelve"
     ]
   },
   {
@@ -565,6 +759,28 @@
         "en": "I go to bed at night.",
         "zh": "我晚上去睡觉。"
       }
+    ],
+    "words": [
+      "day",
+      "early",
+      "wash",
+      "face",
+      "breakfast",
+      "school",
+      "play",
+      "friend",
+      "night",
+      "bed",
+      "morning",
+      "afternoon",
+      "evening",
+      "lunch",
+      "dinner",
+      "sleep",
+      "homework",
+      "clock",
+      "time",
+      "wake"
     ]
   },
   {
@@ -617,6 +833,23 @@
         "en": "I like salad. It's green.",
         "zh": "我喜欢沙拉。它是绿色的。"
       }
+    ],
+    "words": [
+      "vegetable",
+      "carrot",
+      "tomato",
+      "potato",
+      "salad",
+      "cabbage",
+      "onion",
+      "corn",
+      "bean",
+      "pea",
+      "cucumber",
+      "pumpkin",
+      "sweet",
+      "strong",
+      "cook"
     ]
   },
   {
@@ -673,6 +906,24 @@
         "en": "I like bananas. They're yellow.",
         "zh": "我喜欢香蕉。它们是黄色的。"
       }
+    ],
+    "words": [
+      "fruit",
+      "apple",
+      "orange",
+      "banana",
+      "berry",
+      "grape",
+      "pear",
+      "peach",
+      "watermelon",
+      "strawberry",
+      "lemon",
+      "mango",
+      "pineapple",
+      "cherry",
+      "sweet",
+      "round"
     ]
   },
   {
@@ -729,6 +980,23 @@
         "en": "I have some milk.",
         "zh": "我喝一些牛奶。"
       }
+    ],
+    "words": [
+      "breakfast",
+      "morning",
+      "egg",
+      "bread",
+      "milk",
+      "cup",
+      "rice",
+      "food",
+      "juice",
+      "noodle",
+      "tea",
+      "butter",
+      "cheese",
+      "sandwich",
+      "glass"
     ]
   },
   {
@@ -789,6 +1057,27 @@
         "en": "I have a sandwich for lunch.",
         "zh": "我午饭吃三明治。"
       }
+    ],
+    "words": [
+      "lunch",
+      "hungry",
+      "rice",
+      "fish",
+      "soup",
+      "hot",
+      "delicious",
+      "noodle",
+      "dumpling",
+      "sandwich",
+      "meat",
+      "chicken",
+      "vegetable",
+      "egg",
+      "bowl",
+      "chopstick",
+      "spoon",
+      "plate",
+      "meal"
     ]
   },
   {
@@ -849,6 +1138,28 @@
         "en": "I run and jump every day.",
         "zh": "我每天跑跑跳跳。"
       }
+    ],
+    "words": [
+      "healthy",
+      "health",
+      "fruit",
+      "vegetable",
+      "milk",
+      "drink",
+      "eat",
+      "wash",
+      "hand",
+      "meal",
+      "run",
+      "jump",
+      "play",
+      "outside",
+      "sleep",
+      "early",
+      "strong",
+      "water",
+      "sport",
+      "exercise"
     ]
   },
   {
@@ -901,6 +1212,22 @@
         "en": "I have a bird. It's yellow.",
         "zh": "我有一只鸟。它是黄色的。"
       }
+    ],
+    "words": [
+      "pet",
+      "cat",
+      "dog",
+      "fish",
+      "bird",
+      "rabbit",
+      "mouse",
+      "turtle",
+      "soft",
+      "small",
+      "sleep",
+      "feed",
+      "love",
+      "tail"
     ]
   },
   {
@@ -957,6 +1284,23 @@
         "en": "I can see a duck. It can swim.",
         "zh": "我能看到一只鸭子。它会游泳。"
       }
+    ],
+    "words": [
+      "farm",
+      "farmer",
+      "cow",
+      "sheep",
+      "chicken",
+      "duck",
+      "pig",
+      "horse",
+      "goat",
+      "animal",
+      "milk",
+      "egg",
+      "wool",
+      "field",
+      "grass"
     ]
   },
   {
@@ -1013,6 +1357,24 @@
         "en": "The flower is white.",
         "zh": "这朵花是白色的。"
       }
+    ],
+    "words": [
+      "garden",
+      "flower",
+      "tree",
+      "plant",
+      "grass",
+      "leaf",
+      "seed",
+      "root",
+      "branch",
+      "stem",
+      "rose",
+      "bird",
+      "smell",
+      "sweet",
+      "pink",
+      "tall"
     ]
   },
   {
@@ -1073,6 +1435,25 @@
         "en": "I can see a bird. It has wings.",
         "zh": "我能看到一只鸟。它有翅膀。"
       }
+    ],
+    "words": [
+      "zoo",
+      "animal",
+      "monkey",
+      "tiger",
+      "snake",
+      "bird",
+      "lion",
+      "elephant",
+      "giraffe",
+      "panda",
+      "zebra",
+      "bear",
+      "kangaroo",
+      "tail",
+      "wing",
+      "strong",
+      "long"
     ]
   },
   {
@@ -1133,6 +1514,24 @@
         "en": "A giraffe is tall.",
         "zh": "长颈鹿很高。"
       }
+    ],
+    "words": [
+      "panda",
+      "bamboo",
+      "forest",
+      "tree",
+      "plant",
+      "climb",
+      "eat",
+      "cute",
+      "big",
+      "black",
+      "white",
+      "lion",
+      "rabbit",
+      "giraffe",
+      "bear",
+      "animal"
     ]
   },
   {
@@ -1189,6 +1588,23 @@
         "en": "In spring, the sky is blue.",
         "zh": "春天，天空是蓝的。"
       }
+    ],
+    "words": [
+      "spring",
+      "season",
+      "warm",
+      "green",
+      "tree",
+      "flower",
+      "grass",
+      "leaf",
+      "bird",
+      "sing",
+      "sky",
+      "kite",
+      "wind",
+      "rain",
+      "sunny"
     ]
   },
   {
@@ -1245,6 +1661,24 @@
         "en": "It's snowy. I wear my gloves.",
         "zh": "下雪了。我戴上手套。"
       }
+    ],
+    "words": [
+      "rain",
+      "rainy",
+      "umbrella",
+      "boot",
+      "wet",
+      "water",
+      "sky",
+      "grey",
+      "cloud",
+      "cloudy",
+      "coat",
+      "hat",
+      "glove",
+      "sunny",
+      "snowy",
+      "cold"
     ]
   },
   {
@@ -1305,6 +1739,26 @@
         "en": "It is a snowy day. I play in the snow.",
         "zh": "今天下雪了。我在雪地里玩。"
       }
+    ],
+    "words": [
+      "weather",
+      "sun",
+      "sunny",
+      "rain",
+      "rainy",
+      "wind",
+      "windy",
+      "snow",
+      "snowy",
+      "cloud",
+      "cloudy",
+      "hot",
+      "cold",
+      "warm",
+      "cool",
+      "wet",
+      "sky",
+      "kite"
     ]
   },
   {
@@ -1365,6 +1819,25 @@
         "en": "I like winter. It's cold.",
         "zh": "我喜欢冬天。天气很冷。"
       }
+    ],
+    "words": [
+      "summer",
+      "hot",
+      "swim",
+      "water",
+      "cool",
+      "ice",
+      "cream",
+      "spring",
+      "fall",
+      "autumn",
+      "winter",
+      "season",
+      "sun",
+      "beach",
+      "sea",
+      "watermelon",
+      "holiday"
     ]
   },
   {
@@ -1425,6 +1898,24 @@
         "en": "I wear my boots in winter.",
         "zh": "冬天我穿靴子。"
       }
+    ],
+    "words": [
+      "winter",
+      "cold",
+      "snow",
+      "snowy",
+      "snowman",
+      "ice",
+      "white",
+      "soft",
+      "warm",
+      "coat",
+      "hat",
+      "glove",
+      "boot",
+      "sweater",
+      "scarf",
+      "season"
     ]
   },
   {
@@ -1477,6 +1968,27 @@
         "en": "I like white. Snow is white.",
         "zh": "我喜欢白色。雪是白色的。"
       }
+    ],
+    "words": [
+      "color",
+      "red",
+      "blue",
+      "green",
+      "yellow",
+      "white",
+      "black",
+      "orange",
+      "pink",
+      "purple",
+      "brown",
+      "grey",
+      "rainbow",
+      "paint",
+      "picture",
+      "sky",
+      "grass",
+      "sun",
+      "snow"
     ]
   },
   {
@@ -1533,6 +2045,23 @@
         "en": "This is my doll. It's beautiful.",
         "zh": "这是我的娃娃。它很漂亮。"
       }
+    ],
+    "words": [
+      "toy",
+      "ball",
+      "train",
+      "boat",
+      "doll",
+      "kite",
+      "car",
+      "plane",
+      "robot",
+      "bike",
+      "bear",
+      "game",
+      "balloon",
+      "round",
+      "play"
     ]
   },
   {
@@ -1589,6 +2118,24 @@
         "en": "I can draw a house.",
         "zh": "我会画房子。"
       }
+    ],
+    "words": [
+      "draw",
+      "picture",
+      "crayon",
+      "pencil",
+      "paper",
+      "paint",
+      "brush",
+      "color",
+      "line",
+      "circle",
+      "square",
+      "sun",
+      "house",
+      "tree",
+      "cat",
+      "beautiful"
     ]
   },
   {
@@ -1649,6 +2196,23 @@
         "en": "I can whistle.",
         "zh": "我会吹口哨。"
       }
+    ],
+    "words": [
+      "music",
+      "song",
+      "sing",
+      "dance",
+      "whistle",
+      "listen",
+      "instrument",
+      "piano",
+      "drum",
+      "guitar",
+      "violin",
+      "singer",
+      "musician",
+      "band",
+      "happy"
     ]
   },
   {
@@ -1709,6 +2273,26 @@
         "en": "I play badminton.",
         "zh": "我打羽毛球。"
       }
+    ],
+    "words": [
+      "sport",
+      "football",
+      "basketball",
+      "tennis",
+      "badminton",
+      "volleyball",
+      "ball",
+      "team",
+      "win",
+      "kick",
+      "run",
+      "jump",
+      "swim",
+      "race",
+      "player",
+      "game",
+      "fast",
+      "strong"
     ]
   },
   {
@@ -1761,6 +2345,23 @@
         "en": "This is the garden.",
         "zh": "这是花园。"
       }
+    ],
+    "words": [
+      "house",
+      "home",
+      "garden",
+      "family",
+      "live",
+      "kitchen",
+      "bedroom",
+      "bathroom",
+      "room",
+      "door",
+      "window",
+      "wall",
+      "floor",
+      "roof",
+      "apartment"
     ]
   },
   {
@@ -1817,6 +2418,23 @@
         "en": "The bag is under the table.",
         "zh": "书包在桌子下面。"
       }
+    ],
+    "words": [
+      "room",
+      "bed",
+      "table",
+      "chair",
+      "desk",
+      "lamp",
+      "shelf",
+      "clock",
+      "window",
+      "door",
+      "box",
+      "toy",
+      "book",
+      "read",
+      "curtain"
     ]
   },
   {
@@ -1873,6 +2491,26 @@
         "en": "We play in the garden.",
         "zh": "我们在花园里玩。"
       }
+    ],
+    "words": [
+      "kitchen",
+      "cook",
+      "wash",
+      "vegetable",
+      "soup",
+      "smell",
+      "clean",
+      "pot",
+      "plate",
+      "cup",
+      "bowl",
+      "spoon",
+      "fork",
+      "knife",
+      "chopstick",
+      "oven",
+      "kettle",
+      "table"
     ]
   },
   {
@@ -1933,6 +2571,25 @@
         "en": "I go to school by subway.",
         "zh": "我坐地铁上学。"
       }
+    ],
+    "words": [
+      "bus",
+      "car",
+      "bike",
+      "subway",
+      "taxi",
+      "train",
+      "plane",
+      "boat",
+      "ship",
+      "driver",
+      "seat",
+      "window",
+      "street",
+      "road",
+      "stop",
+      "fast",
+      "people"
     ]
   },
   {
@@ -1993,6 +2650,26 @@
         "en": "We go to the park by bike.",
         "zh": "我们骑自行车去公园。"
       }
+    ],
+    "words": [
+      "beach",
+      "trip",
+      "sea",
+      "sand",
+      "swim",
+      "water",
+      "wave",
+      "sun",
+      "boat",
+      "shell",
+      "hat",
+      "car",
+      "train",
+      "bus",
+      "bike",
+      "park",
+      "zoo",
+      "farm"
     ]
   },
   {
@@ -2045,6 +2722,22 @@
         "en": "There is a hospital on my street.",
         "zh": "我住的街上有一家医院。"
       }
+    ],
+    "words": [
+      "street",
+      "road",
+      "shop",
+      "park",
+      "school",
+      "hospital",
+      "library",
+      "supermarket",
+      "bank",
+      "restaurant",
+      "station",
+      "house",
+      "quiet",
+      "clean"
     ]
   },
   {
@@ -2101,6 +2794,23 @@
         "en": "I can see trees in the park.",
         "zh": "我在公园里能看到树。"
       }
+    ],
+    "words": [
+      "park",
+      "tree",
+      "lake",
+      "bike",
+      "ride",
+      "duck",
+      "flower",
+      "grass",
+      "bench",
+      "bird",
+      "boat",
+      "playground",
+      "kite",
+      "play",
+      "walk"
     ]
   },
   {
@@ -2157,6 +2867,24 @@
         "en": "I find a book about the stars.",
         "zh": "我找到一本关于星星的书。"
       }
+    ],
+    "words": [
+      "library",
+      "book",
+      "read",
+      "quiet",
+      "story",
+      "page",
+      "picture",
+      "librarian",
+      "shelf",
+      "desk",
+      "find",
+      "sit",
+      "animal",
+      "bird",
+      "star",
+      "borrow"
     ]
   },
   {
@@ -2217,6 +2945,24 @@
         "en": "We buy some eggs.",
         "zh": "我们买一些鸡蛋。"
       }
+    ],
+    "words": [
+      "supermarket",
+      "shop",
+      "buy",
+      "money",
+      "price",
+      "cheap",
+      "basket",
+      "bag",
+      "fruit",
+      "milk",
+      "bread",
+      "egg",
+      "candy",
+      "juice",
+      "meat",
+      "cashier"
     ]
   },
   {
@@ -2277,6 +3023,26 @@
         "en": "Where is the shop? It's near the school.",
         "zh": "商店在哪里？它在学校旁边。"
       }
+    ],
+    "words": [
+      "hospital",
+      "city",
+      "street",
+      "road",
+      "way",
+      "turn",
+      "left",
+      "right",
+      "straight",
+      "near",
+      "corner",
+      "library",
+      "park",
+      "shop",
+      "school",
+      "bank",
+      "station",
+      "map"
     ]
   },
   {
@@ -2329,6 +3095,22 @@
         "en": "My aunt is a teacher.",
         "zh": "我的阿姨是一名老师。"
       }
+    ],
+    "words": [
+      "doctor",
+      "nurse",
+      "hospital",
+      "patient",
+      "ill",
+      "medicine",
+      "work",
+      "job",
+      "busy",
+      "proud",
+      "farmer",
+      "teacher",
+      "cook",
+      "driver"
     ]
   },
   {
@@ -2385,6 +3167,25 @@
         "en": "A farmer grows potatoes.",
         "zh": "农民种土豆。"
       }
+    ],
+    "words": [
+      "farmer",
+      "farm",
+      "field",
+      "grow",
+      "plant",
+      "seed",
+      "rice",
+      "vegetable",
+      "fruit",
+      "potato",
+      "cow",
+      "pig",
+      "sheep",
+      "chicken",
+      "work",
+      "early",
+      "food"
     ]
   },
   {
@@ -2441,6 +3242,23 @@
         "en": "A farmer works on a farm.",
         "zh": "农民在农场工作。"
       }
+    ],
+    "words": [
+      "cook",
+      "chef",
+      "restaurant",
+      "kitchen",
+      "food",
+      "meal",
+      "noodle",
+      "dumpling",
+      "delicious",
+      "waiter",
+      "pot",
+      "doctor",
+      "teacher",
+      "farmer",
+      "job"
     ]
   },
   {
@@ -2501,6 +3319,22 @@
         "en": "She takes people to school.",
         "zh": "她送人们去学校。"
       }
+    ],
+    "words": [
+      "taxi",
+      "driver",
+      "drive",
+      "car",
+      "road",
+      "street",
+      "station",
+      "place",
+      "careful",
+      "job",
+      "bus",
+      "traffic",
+      "map",
+      "passenger"
     ]
   },
   {
@@ -2561,6 +3395,25 @@
         "en": "I want to be a cook.",
         "zh": "我想当一名厨师。"
       }
+    ],
+    "words": [
+      "doctor",
+      "teacher",
+      "farmer",
+      "cook",
+      "nurse",
+      "driver",
+      "pilot",
+      "police",
+      "firefighter",
+      "scientist",
+      "singer",
+      "painter",
+      "astronaut",
+      "dream",
+      "job",
+      "study",
+      "animal"
     ]
   },
   {
@@ -2617,6 +3470,23 @@
         "en": "We get red packets.",
         "zh": "我们收到红包。"
       }
+    ],
+    "words": [
+      "festival",
+      "family",
+      "dinner",
+      "dumpling",
+      "grandma",
+      "red",
+      "packet",
+      "night",
+      "firework",
+      "visit",
+      "year",
+      "lantern",
+      "dragon",
+      "money",
+      "happy"
     ]
   },
   {
@@ -2673,6 +3543,23 @@
         "en": "We eat cake at the party.",
         "zh": "我们在派对上吃蛋糕。"
       }
+    ],
+    "words": [
+      "child",
+      "day",
+      "June",
+      "party",
+      "sing",
+      "dance",
+      "cake",
+      "candy",
+      "game",
+      "present",
+      "gift",
+      "balloon",
+      "show",
+      "fun",
+      "happy"
     ]
   },
   {
@@ -2733,6 +3620,24 @@
         "en": "Today is my birthday. I'm nine.",
         "zh": "今天是我的生日。我九岁了。"
       }
+    ],
+    "words": [
+      "birthday",
+      "party",
+      "cake",
+      "candle",
+      "present",
+      "gift",
+      "card",
+      "wish",
+      "balloon",
+      "friend",
+      "happy",
+      "sweet",
+      "six",
+      "seven",
+      "eight",
+      "nine"
     ]
   },
   {
@@ -2793,6 +3698,23 @@
         "en": "We eat mooncakes. They're sweet.",
         "zh": "我们吃月饼。月饼甜甜的。"
       }
+    ],
+    "words": [
+      "Mid-Autumn",
+      "festival",
+      "moon",
+      "mooncake",
+      "star",
+      "sky",
+      "night",
+      "family",
+      "together",
+      "round",
+      "bright",
+      "sweet",
+      "autumn",
+      "lantern",
+      "light"
     ]
   },
   {
@@ -2853,6 +3775,24 @@
         "en": "I can water the flowers.",
         "zh": "我会给花浇水。"
       }
+    ],
+    "words": [
+      "help",
+      "helper",
+      "home",
+      "clean",
+      "room",
+      "wash",
+      "cup",
+      "plate",
+      "dish",
+      "floor",
+      "bed",
+      "table",
+      "feed",
+      "cat",
+      "water",
+      "flower"
     ]
   },
   {
@@ -2925,6 +3865,31 @@
         "en": "Who is he? He's my grandpa.",
         "zh": "他是谁？他是我爷爷。"
       }
+    ],
+    "words": [
+      "family",
+      "people",
+      "dad",
+      "mom",
+      "father",
+      "mother",
+      "sister",
+      "brother",
+      "baby",
+      "grandpa",
+      "grandma",
+      "parent",
+      "home",
+      "evening",
+      "dinner",
+      "cook",
+      "teacher",
+      "read",
+      "laugh",
+      "talk",
+      "sing",
+      "song",
+      "love"
     ]
   },
   {
@@ -2997,6 +3962,28 @@
         "en": "What do you do on Sunday? I paint pictures.",
         "zh": "你星期天做什么？我画画。"
       }
+    ],
+    "words": [
+      "weekend",
+      "Saturday",
+      "Sunday",
+      "Friday",
+      "morning",
+      "night",
+      "play",
+      "ball",
+      "friend",
+      "tired",
+      "hungry",
+      "lunch",
+      "library",
+      "book",
+      "read",
+      "swim",
+      "paint",
+      "picture",
+      "help",
+      "holiday"
     ]
   },
   {
@@ -3069,6 +4056,26 @@
         "en": "How do you help at home? I put my books on the shelf.",
         "zh": "你在家怎么帮忙？我把书放到书架上。"
       }
+    ],
+    "words": [
+      "help",
+      "home",
+      "house",
+      "clean",
+      "wash",
+      "window",
+      "floor",
+      "shelf",
+      "cup",
+      "plate",
+      "dish",
+      "bed",
+      "plant",
+      "water",
+      "table",
+      "busy",
+      "bright",
+      "family"
     ]
   },
   {
@@ -3141,6 +4148,31 @@
         "en": "What did you do last Sunday? I painted a picture.",
         "zh": "你上个星期天做了什么？我画了一幅画。"
       }
+    ],
+    "words": [
+      "Sunday",
+      "park",
+      "walk",
+      "river",
+      "fish",
+      "water",
+      "grass",
+      "ball",
+      "play",
+      "swim",
+      "cook",
+      "paint",
+      "picture",
+      "bread",
+      "fruit",
+      "weather",
+      "warm",
+      "hungry",
+      "tired",
+      "happy",
+      "yesterday",
+      "last",
+      "week"
     ]
   },
   {
@@ -3213,6 +4245,29 @@
         "en": "When you were small, could you smile? Yes, I could.",
         "zh": "你小时候会笑吗？是的，我会。"
       }
+    ],
+    "words": [
+      "small",
+      "little",
+      "baby",
+      "young",
+      "old",
+      "tall",
+      "grow",
+      "walk",
+      "talk",
+      "cry",
+      "smile",
+      "run",
+      "swim",
+      "arm",
+      "toy",
+      "ball",
+      "music",
+      "love",
+      "quiet",
+      "mother",
+      "father"
     ]
   },
   {
@@ -3285,6 +4340,26 @@
         "en": "Are there flowers in your classroom? Yes, there are.",
         "zh": "你的教室里有花吗？是的，有。"
       }
+    ],
+    "words": [
+      "classroom",
+      "board",
+      "teacher",
+      "write",
+      "clock",
+      "desk",
+      "chair",
+      "seat",
+      "window",
+      "door",
+      "wall",
+      "computer",
+      "tv",
+      "map",
+      "flower",
+      "chalk",
+      "book",
+      "student"
     ]
   },
   {
@@ -3357,6 +4432,27 @@
         "en": "What is your friend like? She is friendly.",
         "zh": "你的朋友是什么样的？她很友好。"
       }
+    ],
+    "words": [
+      "friend",
+      "best",
+      "school",
+      "class",
+      "hair",
+      "smile",
+      "kind",
+      "funny",
+      "clever",
+      "quiet",
+      "friendly",
+      "draw",
+      "math",
+      "picture",
+      "help",
+      "play",
+      "together",
+      "share",
+      "happy"
     ]
   },
   {
@@ -3429,6 +4525,27 @@
         "en": "Are you drawing a picture? No, I'm not.",
         "zh": "你在画画吗？不，我没有。"
       }
+    ],
+    "words": [
+      "break",
+      "time",
+      "bell",
+      "ring",
+      "playground",
+      "football",
+      "game",
+      "run",
+      "jump",
+      "laugh",
+      "talk",
+      "play",
+      "boy",
+      "girl",
+      "tree",
+      "apple",
+      "sun",
+      "short",
+      "fun"
     ]
   },
   {
@@ -3501,6 +4618,26 @@
         "en": "What does your pen friend like? She likes painting.",
         "zh": "你的笔友喜欢什么？她喜欢画画。"
       }
+    ],
+    "words": [
+      "pen",
+      "friend",
+      "letter",
+      "write",
+      "send",
+      "stamp",
+      "card",
+      "picture",
+      "name",
+      "school",
+      "music",
+      "football",
+      "animal",
+      "read",
+      "paint",
+      "country",
+      "English",
+      "photo"
     ]
   },
   {
@@ -3573,6 +4710,27 @@
         "en": "How did you feel on your first day? I was tired.",
         "zh": "你第一天感觉怎么样？我很累。"
       }
+    ],
+    "words": [
+      "first",
+      "day",
+      "school",
+      "year",
+      "remember",
+      "teacher",
+      "class",
+      "friend",
+      "book",
+      "pencil",
+      "bag",
+      "new",
+      "shy",
+      "afraid",
+      "excited",
+      "tired",
+      "happy",
+      "kind",
+      "feel"
     ]
   },
   {
@@ -3645,6 +4803,27 @@
         "en": "What do you have for breakfast? I have dumplings.",
         "zh": "你早饭吃什么？我吃饺子。"
       }
+    ],
+    "words": [
+      "breakfast",
+      "morning",
+      "early",
+      "meal",
+      "milk",
+      "glass",
+      "egg",
+      "bread",
+      "rice",
+      "soup",
+      "noodle",
+      "banana",
+      "juice",
+      "dumpling",
+      "tea",
+      "cup",
+      "full",
+      "strong",
+      "important"
     ]
   },
   {
@@ -3717,6 +4896,28 @@
         "en": "Are vegetables good for you? Yes, they are.",
         "zh": "蔬菜对你有好处吗？是的，有好处。"
       }
+    ],
+    "words": [
+      "healthy",
+      "health",
+      "food",
+      "fruit",
+      "vegetable",
+      "apple",
+      "milk",
+      "fish",
+      "rice",
+      "meat",
+      "egg",
+      "water",
+      "cake",
+      "candy",
+      "sugar",
+      "sweet",
+      "bone",
+      "tooth",
+      "strong",
+      "bad"
     ]
   },
   {
@@ -3789,6 +4990,28 @@
         "en": "What are you eating? I'm eating a tomato.",
         "zh": "你在吃什么？我在吃西红柿。"
       }
+    ],
+    "words": [
+      "lunch",
+      "school",
+      "table",
+      "cook",
+      "food",
+      "rice",
+      "chicken",
+      "vegetable",
+      "tomato",
+      "soup",
+      "carrot",
+      "plate",
+      "noodle",
+      "fish",
+      "meat",
+      "spoon",
+      "chopstick",
+      "bowl",
+      "eat",
+      "grow"
     ]
   },
   {
@@ -3861,6 +5084,29 @@
         "en": "What is your mother doing? She's making a cake.",
         "zh": "你妈妈在做什么？她在做蛋糕。"
       }
+    ],
+    "words": [
+      "cook",
+      "dinner",
+      "dad",
+      "help",
+      "cut",
+      "wash",
+      "potato",
+      "rice",
+      "soup",
+      "salt",
+      "sugar",
+      "oil",
+      "egg",
+      "cake",
+      "pot",
+      "knife",
+      "plate",
+      "kitchen",
+      "fire",
+      "smell",
+      "ready"
     ]
   },
   {
@@ -3933,6 +5179,29 @@
         "en": "What did you eat at the picnic? I ate grapes.",
         "zh": "野餐时你吃了什么？我吃了葡萄。"
       }
+    ],
+    "words": [
+      "picnic",
+      "park",
+      "lake",
+      "grass",
+      "tree",
+      "sandwich",
+      "fruit",
+      "juice",
+      "apple",
+      "banana",
+      "grape",
+      "cake",
+      "chicken",
+      "bag",
+      "basket",
+      "ball",
+      "game",
+      "delicious",
+      "lunch",
+      "eat",
+      "sit"
     ]
   },
   {
@@ -4005,6 +5274,28 @@
         "en": "Do you have a pet? No, I don't.",
         "zh": "你有宠物吗？不，我没有。"
       }
+    ],
+    "words": [
+      "pet",
+      "cat",
+      "dog",
+      "rabbit",
+      "fish",
+      "bird",
+      "mouse",
+      "eye",
+      "tail",
+      "feed",
+      "milk",
+      "sleep",
+      "bed",
+      "garden",
+      "jump",
+      "climb",
+      "tree",
+      "soft",
+      "white",
+      "friend"
     ]
   },
   {
@@ -4077,6 +5368,32 @@
         "en": "What can a dog do? It can run fast.",
         "zh": "小狗会做什么？它会跑得很快。"
       }
+    ],
+    "words": [
+      "zoo",
+      "animal",
+      "elephant",
+      "giraffe",
+      "monkey",
+      "panda",
+      "tiger",
+      "lion",
+      "bear",
+      "zebra",
+      "snake",
+      "kangaroo",
+      "bird",
+      "rabbit",
+      "nose",
+      "ear",
+      "tail",
+      "climb",
+      "jump",
+      "fly",
+      "swim",
+      "run",
+      "cute",
+      "fat"
     ]
   },
   {
@@ -4149,6 +5466,30 @@
         "en": "What is the dog doing? It's running.",
         "zh": "小狗在做什么？它在跑。"
       }
+    ],
+    "words": [
+      "garden",
+      "grandpa",
+      "plant",
+      "water",
+      "seed",
+      "earth",
+      "flower",
+      "grass",
+      "tree",
+      "leaf",
+      "bee",
+      "frog",
+      "bird",
+      "cat",
+      "dog",
+      "fly",
+      "jump",
+      "sing",
+      "sleep",
+      "sunny",
+      "sound",
+      "life"
     ]
   },
   {
@@ -4221,6 +5562,27 @@
         "en": "What did you see in the forest? I saw a little river.",
         "zh": "你在森林里看到了什么？我看到了一条小河。"
       }
+    ],
+    "words": [
+      "forest",
+      "tree",
+      "leaf",
+      "wood",
+      "air",
+      "fresh",
+      "cool",
+      "walk",
+      "river",
+      "mountain",
+      "rabbit",
+      "bird",
+      "frog",
+      "nut",
+      "animal",
+      "listen",
+      "quiet",
+      "green",
+      "tall"
     ]
   },
   {
@@ -4293,6 +5655,26 @@
         "en": "What did you see on the farm? I saw a horse.",
         "zh": "你在农场看到了什么？我看到了一匹马。"
       }
+    ],
+    "words": [
+      "farm",
+      "farmer",
+      "cow",
+      "pig",
+      "sheep",
+      "goat",
+      "horse",
+      "chicken",
+      "duck",
+      "field",
+      "grass",
+      "apple",
+      "tree",
+      "dirty",
+      "sweet",
+      "animal",
+      "milk",
+      "egg"
     ]
   },
   {
@@ -4361,6 +5743,28 @@
         "en": "Which season do you like? I like winter.",
         "zh": "你喜欢哪个季节？我喜欢冬天。"
       }
+    ],
+    "words": [
+      "spring",
+      "summer",
+      "autumn",
+      "winter",
+      "season",
+      "weather",
+      "warm",
+      "wind",
+      "kite",
+      "tree",
+      "flower",
+      "grass",
+      "garden",
+      "bird",
+      "sing",
+      "green",
+      "soft",
+      "park",
+      "morning",
+      "early"
     ]
   },
   {
@@ -4429,6 +5833,28 @@
         "en": "What can you do in winter? I can play in the snow.",
         "zh": "冬天你能做什么？我能在雪里玩。"
       }
+    ],
+    "words": [
+      "summer",
+      "hot",
+      "sun",
+      "sky",
+      "bright",
+      "outside",
+      "home",
+      "read",
+      "cold",
+      "cool",
+      "watermelon",
+      "sweet",
+      "ice",
+      "cream",
+      "air",
+      "evening",
+      "swim",
+      "lake",
+      "beach",
+      "season"
     ]
   },
   {
@@ -4497,6 +5923,27 @@
         "en": "What is the weather like? It's warm.",
         "zh": "天气怎么样？很暖和。"
       }
+    ],
+    "words": [
+      "rain",
+      "rainy",
+      "umbrella",
+      "boot",
+      "sock",
+      "coat",
+      "wet",
+      "water",
+      "road",
+      "sky",
+      "dark",
+      "grey",
+      "cloud",
+      "weather",
+      "snow",
+      "cold",
+      "warm",
+      "jump",
+      "laugh"
     ]
   },
   {
@@ -4569,6 +6016,29 @@
         "en": "What are you doing? I'm drinking hot milk.",
         "zh": "你在做什么？我在喝热牛奶。"
       }
+    ],
+    "words": [
+      "snow",
+      "winter",
+      "snowman",
+      "ice",
+      "white",
+      "cold",
+      "warm",
+      "coat",
+      "hat",
+      "glove",
+      "carrot",
+      "nose",
+      "head",
+      "body",
+      "hand",
+      "milk",
+      "hot",
+      "drink",
+      "fun",
+      "play",
+      "run"
     ]
   },
   {
@@ -4641,6 +6111,29 @@
         "en": "What was the weather like yesterday? It was cloudy.",
         "zh": "昨天天气怎么样？多云。"
       }
+    ],
+    "words": [
+      "autumn",
+      "windy",
+      "wind",
+      "kite",
+      "leaf",
+      "tree",
+      "yellow",
+      "red",
+      "sky",
+      "high",
+      "strong",
+      "hat",
+      "park",
+      "weather",
+      "sunny",
+      "rainy",
+      "snowy",
+      "cloudy",
+      "cool",
+      "yesterday",
+      "season"
     ]
   },
   {
@@ -4713,6 +6206,26 @@
         "en": "Can you fly? No, I can't.",
         "zh": "你会飞吗？不，我不会。"
       }
+    ],
+    "words": [
+      "swim",
+      "water",
+      "sea",
+      "beach",
+      "wave",
+      "pool",
+      "summer",
+      "warm",
+      "kick",
+      "leg",
+      "arm",
+      "move",
+      "jump",
+      "sand",
+      "ball",
+      "fly",
+      "cook",
+      "help"
     ]
   },
   {
@@ -4785,6 +6298,28 @@
         "en": "What is your hobby? I like swimming.",
         "zh": "你的爱好是什么？我喜欢游泳。"
       }
+    ],
+    "words": [
+      "hobby",
+      "paint",
+      "brush",
+      "box",
+      "picture",
+      "tree",
+      "bird",
+      "branch",
+      "sky",
+      "painter",
+      "artist",
+      "read",
+      "sing",
+      "cook",
+      "swim",
+      "draw",
+      "dance",
+      "music",
+      "quiet",
+      "happy"
     ]
   },
   {
@@ -4849,6 +6384,29 @@
         "en": "What is your favorite sport? I like basketball.",
         "zh": "你最喜欢的运动是什么？我喜欢篮球。"
       }
+    ],
+    "words": [
+      "sport",
+      "run",
+      "race",
+      "field",
+      "team",
+      "player",
+      "win",
+      "ball",
+      "game",
+      "football",
+      "basketball",
+      "tennis",
+      "badminton",
+      "swim",
+      "jump",
+      "strong",
+      "healthy",
+      "tired",
+      "fast",
+      "quick",
+      "favorite"
     ]
   },
   {
@@ -4921,6 +6479,29 @@
         "en": "What is the baby doing? The baby is sleeping.",
         "zh": "宝宝在做什么？宝宝在睡觉。"
       }
+    ],
+    "words": [
+      "park",
+      "boy",
+      "girl",
+      "baby",
+      "man",
+      "woman",
+      "ball",
+      "kite",
+      "tree",
+      "dog",
+      "stick",
+      "sun",
+      "kick",
+      "fly",
+      "sleep",
+      "read",
+      "play",
+      "paint",
+      "picture",
+      "book",
+      "happy"
     ]
   },
   {
@@ -4989,6 +6570,28 @@
         "en": "What did you do on Sports Day? I watched the races.",
         "zh": "运动会上你做了什么？我看了比赛。"
       }
+    ],
+    "words": [
+      "sport",
+      "race",
+      "playground",
+      "run",
+      "jump",
+      "win",
+      "lose",
+      "team",
+      "class",
+      "first",
+      "second",
+      "third",
+      "proud",
+      "try",
+      "watch",
+      "basketball",
+      "football",
+      "player",
+      "score",
+      "sunny"
     ]
   },
   {
@@ -5061,6 +6664,28 @@
         "en": "Where are the books? They're on the shelf.",
         "zh": "书在哪里？在书架上。"
       }
+    ],
+    "words": [
+      "bedroom",
+      "bed",
+      "window",
+      "door",
+      "wall",
+      "clock",
+      "desk",
+      "chair",
+      "lamp",
+      "shelf",
+      "drawer",
+      "curtain",
+      "toy",
+      "bear",
+      "book",
+      "homework",
+      "sleep",
+      "night",
+      "soft",
+      "quiet"
     ]
   },
   {
@@ -5133,6 +6758,28 @@
         "en": "How can we go there? We can go on foot.",
         "zh": "我们怎么去那里？我们可以走路去。"
       }
+    ],
+    "words": [
+      "travel",
+      "trip",
+      "way",
+      "walk",
+      "ride",
+      "bike",
+      "bus",
+      "car",
+      "taxi",
+      "subway",
+      "train",
+      "plane",
+      "boat",
+      "ship",
+      "foot",
+      "drive",
+      "city",
+      "fast",
+      "far",
+      "road"
     ]
   },
   {
@@ -5205,6 +6852,27 @@
         "en": "How do you go to school? I go on foot.",
         "zh": "你怎么去上学？我走路去。"
       }
+    ],
+    "words": [
+      "bus",
+      "seat",
+      "stop",
+      "window",
+      "street",
+      "shop",
+      "tree",
+      "driver",
+      "ticket",
+      "old",
+      "woman",
+      "heavy",
+      "bag",
+      "smile",
+      "happy",
+      "car",
+      "train",
+      "bike",
+      "foot"
     ]
   },
   {
@@ -5277,6 +6945,28 @@
         "en": "Where did you go last summer? I went to see my grandma.",
         "zh": "去年夏天你去了哪里？我去看望了奶奶。"
       }
+    ],
+    "words": [
+      "beach",
+      "sea",
+      "sand",
+      "water",
+      "wave",
+      "sun",
+      "sky",
+      "swim",
+      "boat",
+      "shell",
+      "fish",
+      "summer",
+      "evening",
+      "train",
+      "mountain",
+      "farm",
+      "zoo",
+      "beautiful",
+      "tired",
+      "happy"
     ]
   },
   {
@@ -5349,6 +7039,27 @@
         "en": "How did you go there? I went by boat.",
         "zh": "你是怎么去那里的？我坐船去的。"
       }
+    ],
+    "words": [
+      "plane",
+      "trip",
+      "airport",
+      "pilot",
+      "ticket",
+      "fly",
+      "sky",
+      "cloud",
+      "seat",
+      "window",
+      "afraid",
+      "hour",
+      "south",
+      "north",
+      "east",
+      "west",
+      "winter",
+      "warm",
+      "travel"
     ]
   },
   {
@@ -5425,6 +7136,28 @@
         "en": "Are there boats on the river? Yes, there are.",
         "zh": "河上有船吗？是的，有。"
       }
+    ],
+    "words": [
+      "park",
+      "house",
+      "home",
+      "near",
+      "grandpa",
+      "walk",
+      "tree",
+      "air",
+      "clean",
+      "river",
+      "bridge",
+      "fish",
+      "seat",
+      "bench",
+      "rest",
+      "bird",
+      "boat",
+      "school",
+      "flower",
+      "grass"
     ]
   },
   {
@@ -5497,6 +7230,28 @@
         "en": "Is there a zoo in your town? No, there isn't.",
         "zh": "你的城市里有动物园吗？不，没有。"
       }
+    ],
+    "words": [
+      "town",
+      "city",
+      "village",
+      "street",
+      "road",
+      "house",
+      "river",
+      "boat",
+      "bridge",
+      "market",
+      "station",
+      "shop",
+      "bank",
+      "supermarket",
+      "school",
+      "library",
+      "hospital",
+      "park",
+      "zoo",
+      "beautiful"
     ]
   },
   {
@@ -5569,6 +7324,24 @@
         "en": "Can I have some oranges, please? Yes, here you are.",
         "zh": "我可以要一些橙子吗？好的，给你。"
       }
+    ],
+    "words": [
+      "shop",
+      "store",
+      "buy",
+      "money",
+      "price",
+      "cheap",
+      "expensive",
+      "bag",
+      "carry",
+      "apple",
+      "orange",
+      "egg",
+      "bread",
+      "milk",
+      "please",
+      "dinner"
     ]
   },
   {
@@ -5641,6 +7414,29 @@
         "en": "What is wrong with you? I have a bad tooth.",
         "zh": "你怎么了？我牙疼。"
       }
+    ],
+    "words": [
+      "doctor",
+      "nurse",
+      "hospital",
+      "ill",
+      "pain",
+      "cough",
+      "cold",
+      "fever",
+      "medicine",
+      "head",
+      "throat",
+      "stomach",
+      "tooth",
+      "rest",
+      "drink",
+      "water",
+      "bed",
+      "soup",
+      "well",
+      "warm",
+      "wrong"
     ]
   },
   {
@@ -5713,6 +7509,26 @@
         "en": "What did you see at the museum? I saw beautiful jewels.",
         "zh": "你在博物馆看到了什么？我看到了漂亮的宝石。"
       }
+    ],
+    "words": [
+      "museum",
+      "visit",
+      "visitor",
+      "building",
+      "city",
+      "bone",
+      "dinosaur",
+      "picture",
+      "history",
+      "cart",
+      "horse",
+      "money",
+      "jewel",
+      "old",
+      "learn",
+      "interesting",
+      "guide",
+      "ticket"
     ]
   },
   {
@@ -5785,6 +7601,28 @@
         "en": "What does he do? He is a cook.",
         "zh": "他是做什么的？他是厨师。"
       }
+    ],
+    "words": [
+      "job",
+      "work",
+      "people",
+      "farmer",
+      "doctor",
+      "nurse",
+      "teacher",
+      "cook",
+      "driver",
+      "worker",
+      "police",
+      "officer",
+      "neighbor",
+      "hospital",
+      "school",
+      "farm",
+      "help",
+      "important",
+      "useful",
+      "different"
     ]
   },
   {
@@ -5853,6 +7691,30 @@
         "en": "Where does a cook work? He works in a restaurant.",
         "zh": "厨师在哪里工作？他在饭馆工作。"
       }
+    ],
+    "words": [
+      "nurse",
+      "hospital",
+      "doctor",
+      "patient",
+      "medicine",
+      "ill",
+      "work",
+      "job",
+      "uniform",
+      "hat",
+      "kind",
+      "tired",
+      "proud",
+      "tea",
+      "teacher",
+      "school",
+      "farmer",
+      "farm",
+      "cook",
+      "restaurant",
+      "early",
+      "help"
     ]
   },
   {
@@ -5925,6 +7787,29 @@
         "en": "What is the nurse doing? She's helping an old man.",
         "zh": "护士在做什么？她在帮助一位老爷爷。"
       }
+    ],
+    "words": [
+      "cook",
+      "chef",
+      "restaurant",
+      "kitchen",
+      "busy",
+      "work",
+      "lunch",
+      "cut",
+      "meat",
+      "vegetable",
+      "noodle",
+      "pot",
+      "delicious",
+      "waiter",
+      "customer",
+      "farmer",
+      "cow",
+      "teacher",
+      "doctor",
+      "nurse",
+      "feed"
     ]
   },
   {
@@ -5997,6 +7882,28 @@
         "en": "What do you want to be? I want to be a nurse.",
         "zh": "你长大后想做什么？我想当护士。"
       }
+    ],
+    "words": [
+      "grow",
+      "future",
+      "dream",
+      "job",
+      "doctor",
+      "nurse",
+      "teacher",
+      "farmer",
+      "cook",
+      "pilot",
+      "scientist",
+      "police",
+      "admire",
+      "study",
+      "learn",
+      "body",
+      "brave",
+      "careful",
+      "kind",
+      "help"
     ]
   },
   {
@@ -6069,6 +7976,27 @@
         "en": "What did you see at the fire station? I saw a big bell.",
         "zh": "你在消防站看到了什么？我看到了一口大钟。"
       }
+    ],
+    "words": [
+      "fire",
+      "station",
+      "firefighter",
+      "engine",
+      "pipe",
+      "water",
+      "hat",
+      "helmet",
+      "bell",
+      "red",
+      "heavy",
+      "danger",
+      "dangerous",
+      "brave",
+      "safe",
+      "job",
+      "work",
+      "smoke",
+      "police"
     ]
   },
   {
@@ -6141,6 +8069,25 @@
         "en": "What are you doing on Children's Day? I'm playing games.",
         "zh": "儿童节你在做什么？我在玩游戏。"
       }
+    ],
+    "words": [
+      "child",
+      "parent",
+      "show",
+      "stage",
+      "dance",
+      "sing",
+      "song",
+      "story",
+      "tell",
+      "funny",
+      "laugh",
+      "smile",
+      "watch",
+      "game",
+      "play",
+      "happy",
+      "party"
     ]
   },
   {
@@ -6209,6 +8156,26 @@
         "en": "Which boat is in front? The blue boat is.",
         "zh": "哪条船领先？蓝色的那条。"
       }
+    ],
+    "words": [
+      "dragon",
+      "boat",
+      "festival",
+      "river",
+      "race",
+      "water",
+      "pull",
+      "team",
+      "fast",
+      "front",
+      "excited",
+      "rice",
+      "dumpling",
+      "sweet",
+      "delicious",
+      "family",
+      "people",
+      "June"
     ]
   },
   {
@@ -6281,6 +8248,27 @@
         "en": "What is your brother doing? He's looking at the moon.",
         "zh": "你弟弟在做什么？他在看月亮。"
       }
+    ],
+    "words": [
+      "Mid-Autumn",
+      "festival",
+      "moon",
+      "mooncake",
+      "rabbit",
+      "night",
+      "tonight",
+      "light",
+      "bright",
+      "round",
+      "story",
+      "tell",
+      "family",
+      "together",
+      "garden",
+      "fruit",
+      "tea",
+      "star",
+      "lantern"
     ]
   },
   {
@@ -6353,6 +8341,28 @@
         "en": "What did you do at Spring Festival? I put red paper on the door.",
         "zh": "春节你做了什么？我在门上贴了红纸。"
       }
+    ],
+    "words": [
+      "spring",
+      "festival",
+      "year",
+      "new",
+      "family",
+      "grandma",
+      "grandpa",
+      "red",
+      "paper",
+      "door",
+      "dumpling",
+      "meal",
+      "packet",
+      "money",
+      "firework",
+      "sky",
+      "night",
+      "lantern",
+      "dragon",
+      "happy"
     ]
   },
   {
@@ -6425,6 +8435,27 @@
         "en": "What was your best day? It was a day in the snow.",
         "zh": "你最棒的一天是哪一天？是在雪地里玩的一天。"
       }
+    ],
+    "words": [
+      "birthday",
+      "party",
+      "cake",
+      "candle",
+      "present",
+      "gift",
+      "camera",
+      "photo",
+      "picture",
+      "friend",
+      "garden",
+      "play",
+      "laugh",
+      "fun",
+      "happy",
+      "tired",
+      "best",
+      "day",
+      "afternoon"
     ]
   },
   {
@@ -6497,6 +8528,27 @@
         "en": "My grandpa is older than my dad, but he is very strong.",
         "zh": "爷爷比爸爸年纪大，但他身体很结实。"
       }
+    ],
+    "words": [
+      "family",
+      "parent",
+      "dad",
+      "mom",
+      "grandpa",
+      "grandma",
+      "brother",
+      "sister",
+      "farmer",
+      "teacher",
+      "old",
+      "strong",
+      "cook",
+      "dumpling",
+      "weekend",
+      "talk",
+      "love",
+      "help",
+      "together"
     ]
   },
   {
@@ -6577,6 +8629,29 @@
         "en": "I think helping at home is better than watching TV.",
         "zh": "我觉得在家帮忙比看电视更好。"
       }
+    ],
+    "words": [
+      "help",
+      "home",
+      "parent",
+      "family",
+      "busy",
+      "decide",
+      "bed",
+      "dish",
+      "wash",
+      "clean",
+      "room",
+      "water",
+      "flower",
+      "rest",
+      "time",
+      "happy",
+      "tv",
+      "floor",
+      "plate",
+      "cook",
+      "housework"
     ]
   },
   {
@@ -6657,6 +8732,28 @@
         "en": "If we work hard every day, our plants will grow.",
         "zh": "如果我们每天努力，植物就会生长。"
       }
+    ],
+    "words": [
+      "grandpa",
+      "garden",
+      "plant",
+      "tomato",
+      "water",
+      "seed",
+      "grow",
+      "wait",
+      "patient",
+      "time",
+      "week",
+      "green",
+      "red",
+      "dinner",
+      "teach",
+      "learn",
+      "old",
+      "work",
+      "hard",
+      "happen"
     ]
   },
   {
@@ -6741,6 +8838,27 @@
         "en": "I want to be as kind as my mother.",
         "zh": "我想像妈妈一样善良。"
       }
+    ],
+    "words": [
+      "admire",
+      "person",
+      "mother",
+      "father",
+      "teacher",
+      "nurse",
+      "hospital",
+      "work",
+      "kind",
+      "patient",
+      "brave",
+      "tired",
+      "neighbor",
+      "help",
+      "cold",
+      "soup",
+      "remember",
+      "word",
+      "example"
     ]
   },
   {
@@ -6825,6 +8943,28 @@
         "en": "If we learn from our mistakes, we will grow.",
         "zh": "如果我们从错误中学习，就会成长。"
       }
+    ],
+    "words": [
+      "mistake",
+      "test",
+      "exam",
+      "mark",
+      "low",
+      "easy",
+      "important",
+      "ready",
+      "game",
+      "sad",
+      "hide",
+      "truth",
+      "secret",
+      "surprise",
+      "angry",
+      "study",
+      "plan",
+      "learn",
+      "grow",
+      "better"
     ]
   },
   {
@@ -6905,6 +9045,27 @@
         "en": "I think reading a book is better than watching TV.",
         "zh": "我觉得读书比看电视更好。"
       }
+    ],
+    "words": [
+      "reading",
+      "read",
+      "book",
+      "story",
+      "word",
+      "page",
+      "library",
+      "English",
+      "learn",
+      "place",
+      "sea",
+      "moon",
+      "happy",
+      "sad",
+      "smile",
+      "minute",
+      "night",
+      "friend",
+      "tv"
     ]
   },
   {
@@ -6985,6 +9146,24 @@
         "en": "I think a kind friend is better than a lot of toys.",
         "zh": "我觉得一个善良的朋友比很多玩具更好。"
       }
+    ],
+    "words": [
+      "friend",
+      "friendly",
+      "idea",
+      "school",
+      "lonely",
+      "smile",
+      "hello",
+      "play",
+      "listen",
+      "share",
+      "help",
+      "trouble",
+      "kind",
+      "toy",
+      "someone",
+      "other"
     ]
   },
   {
@@ -7069,6 +9248,30 @@
         "en": "Paper is cheaper than silk.",
         "zh": "纸比丝绸便宜。"
       }
+    ],
+    "words": [
+      "invention",
+      "paper",
+      "bone",
+      "wood",
+      "silk",
+      "book",
+      "letter",
+      "money",
+      "picture",
+      "tree",
+      "waste",
+      "light",
+      "bulb",
+      "phone",
+      "heavy",
+      "expensive",
+      "cheap",
+      "write",
+      "read",
+      "great",
+      "machine",
+      "computer"
     ]
   },
   {
@@ -7153,6 +9356,28 @@
         "en": "Speaking is harder than reading, but I like it.",
         "zh": "说比读更难，但我很喜欢。"
       }
+    ],
+    "words": [
+      "English",
+      "language",
+      "world",
+      "learn",
+      "practice",
+      "speak",
+      "listen",
+      "read",
+      "write",
+      "word",
+      "song",
+      "story",
+      "cartoon",
+      "mistake",
+      "afraid",
+      "teacher",
+      "friend",
+      "important",
+      "hard",
+      "better"
     ]
   },
   {
@@ -7241,6 +9466,28 @@
         "en": "If we work hard in school, our teachers will be happy.",
         "zh": "如果我们在学校努力学习，老师们就会很高兴。"
       }
+    ],
+    "words": [
+      "teacher",
+      "thank",
+      "teach",
+      "student",
+      "school",
+      "read",
+      "write",
+      "think",
+      "remember",
+      "sad",
+      "cry",
+      "hand",
+      "smile",
+      "mistake",
+      "candle",
+      "light",
+      "patient",
+      "help",
+      "proud",
+      "dear"
     ]
   },
   {
@@ -7313,6 +9560,28 @@
         "en": "I think fruit is better than candy.",
         "zh": "我觉得水果比糖果更好。"
       }
+    ],
+    "words": [
+      "food",
+      "favorite",
+      "noodle",
+      "dumpling",
+      "hamburger",
+      "egg",
+      "tomato",
+      "vegetable",
+      "fruit",
+      "watermelon",
+      "candy",
+      "delicious",
+      "sweet",
+      "hot",
+      "warm",
+      "cold",
+      "love",
+      "grandma",
+      "pizza",
+      "rice"
     ]
   },
   {
@@ -7393,6 +9662,28 @@
         "en": "I have bread and milk for breakfast because they are good for me.",
         "zh": "我早饭吃面包、喝牛奶，因为它们对我有好处。"
       }
+    ],
+    "words": [
+      "breakfast",
+      "morning",
+      "early",
+      "late",
+      "meal",
+      "healthy",
+      "important",
+      "hungry",
+      "tired",
+      "milk",
+      "egg",
+      "bread",
+      "banana",
+      "apple",
+      "fruit",
+      "cake",
+      "strong",
+      "class",
+      "learn",
+      "juice"
     ]
   },
   {
@@ -7473,6 +9764,29 @@
         "en": "I think walking after dinner is better than sitting all evening.",
         "zh": "我觉得晚饭后散步比整晚坐着更好。"
       }
+    ],
+    "words": [
+      "habit",
+      "health",
+      "healthy",
+      "wash",
+      "hand",
+      "meal",
+      "vegetable",
+      "candy",
+      "dinner",
+      "walk",
+      "sleep",
+      "bed",
+      "early",
+      "body",
+      "grow",
+      "sport",
+      "football",
+      "tall",
+      "strong",
+      "happy",
+      "exercise"
     ]
   },
   {
@@ -7557,6 +9871,27 @@
         "en": "I think saving food is better than wasting it.",
         "zh": "我觉得节约食物比浪费食物好。"
       }
+    ],
+    "words": [
+      "food",
+      "waste",
+      "save",
+      "finish",
+      "rice",
+      "vegetable",
+      "bin",
+      "farmer",
+      "grow",
+      "hungry",
+      "enough",
+      "world",
+      "supermarket",
+      "buy",
+      "dinner",
+      "meal",
+      "plate",
+      "home",
+      "hard"
     ]
   },
   {
@@ -7645,6 +9980,30 @@
         "en": "We should use screens for under an hour a day.",
         "zh": "我们每天使用屏幕应该少于一个小时。"
       }
+    ],
+    "words": [
+      "screen",
+      "time",
+      "phone",
+      "video",
+      "tv",
+      "computer",
+      "game",
+      "health",
+      "eye",
+      "sleep",
+      "sleepy",
+      "tired",
+      "hour",
+      "minute",
+      "outside",
+      "play",
+      "useful",
+      "read",
+      "book",
+      "football",
+      "happy",
+      "strong"
     ]
   },
   {
@@ -7717,6 +10076,28 @@
         "en": "I think pandas are cuter than bears.",
         "zh": "我觉得大熊猫比熊更可爱。"
       }
+    ],
+    "words": [
+      "animal",
+      "panda",
+      "bamboo",
+      "forest",
+      "zoo",
+      "tree",
+      "world",
+      "care",
+      "cute",
+      "big",
+      "friendly",
+      "soft",
+      "clever",
+      "rabbit",
+      "elephant",
+      "dog",
+      "bear",
+      "eat",
+      "sleep",
+      "favorite"
     ]
   },
   {
@@ -7793,6 +10174,30 @@
         "en": "Trees are important because they give us fresh air.",
         "zh": "树很重要，因为它们给我们清新的空气。"
       }
+    ],
+    "words": [
+      "tree",
+      "plant",
+      "air",
+      "fresh",
+      "cool",
+      "home",
+      "bird",
+      "animal",
+      "school",
+      "spring",
+      "water",
+      "week",
+      "grow",
+      "tall",
+      "green",
+      "world",
+      "clean",
+      "city",
+      "cut",
+      "lose",
+      "earth",
+      "seed"
     ]
   },
   {
@@ -7873,6 +10278,29 @@
         "en": "If we see a lost dog, we can ask a grown-up for help.",
         "zh": "如果我们看到一只走失的狗，可以请大人帮忙。"
       }
+    ],
+    "words": [
+      "animal",
+      "kind",
+      "friend",
+      "pet",
+      "care",
+      "feel",
+      "pain",
+      "fear",
+      "hurt",
+      "cat",
+      "dog",
+      "rain",
+      "cold",
+      "hungry",
+      "milk",
+      "box",
+      "help",
+      "lost",
+      "food",
+      "world",
+      "grown-up"
     ]
   },
   {
@@ -7953,6 +10381,26 @@
         "en": "Saving water is easier than you think.",
         "zh": "节约用水比你想象的更容易。"
       }
+    ],
+    "words": [
+      "save",
+      "water",
+      "waste",
+      "tap",
+      "brush",
+      "tooth",
+      "shower",
+      "wash",
+      "clean",
+      "enough",
+      "important",
+      "earth",
+      "people",
+      "animal",
+      "plant",
+      "fruit",
+      "flower",
+      "less"
     ]
   },
   {
@@ -8037,6 +10485,28 @@
         "en": "We should take our own bags when we go shopping.",
         "zh": "购物时我们应该自带袋子。"
       }
+    ],
+    "words": [
+      "earth",
+      "rubbish",
+      "plastic",
+      "bin",
+      "bag",
+      "land",
+      "sea",
+      "air",
+      "fish",
+      "bird",
+      "tree",
+      "park",
+      "clean",
+      "dirty",
+      "ill",
+      "walk",
+      "car",
+      "shop",
+      "world",
+      "together"
     ]
   },
   {
@@ -8105,6 +10575,30 @@
         "en": "I think a rainy day can be as fun as a sunny day.",
         "zh": "我觉得下雨天也能和晴天一样有趣。"
       }
+    ],
+    "words": [
+      "rain",
+      "rainy",
+      "day",
+      "park",
+      "home",
+      "brother",
+      "read",
+      "book",
+      "funny",
+      "paper",
+      "boat",
+      "water",
+      "outside",
+      "air",
+      "fresh",
+      "cool",
+      "rainbow",
+      "sky",
+      "sunny",
+      "fun",
+      "weather",
+      "umbrella"
     ]
   },
   {
@@ -8181,6 +10675,30 @@
         "en": "I think snowy days are more exciting than rainy days.",
         "zh": "我觉得下雪天比下雨天更令人兴奋。"
       }
+    ],
+    "words": [
+      "snow",
+      "snowy",
+      "winter",
+      "snowman",
+      "white",
+      "cold",
+      "warm",
+      "jacket",
+      "carrot",
+      "nose",
+      "eye",
+      "hand",
+      "chocolate",
+      "hot",
+      "kite",
+      "sunny",
+      "windy",
+      "rainy",
+      "exciting",
+      "outside",
+      "play",
+      "happy"
     ]
   },
   {
@@ -8257,6 +10775,30 @@
         "en": "Autumn is cooler than summer.",
         "zh": "秋天比夏天凉快。"
       }
+    ],
+    "words": [
+      "season",
+      "spring",
+      "summer",
+      "autumn",
+      "winter",
+      "cool",
+      "warm",
+      "hot",
+      "cold",
+      "sky",
+      "leaf",
+      "apple",
+      "orange",
+      "walk",
+      "park",
+      "beautiful",
+      "picture",
+      "lovely",
+      "colorful",
+      "flower",
+      "swim",
+      "snow"
     ]
   },
   {
@@ -8337,6 +10879,30 @@
         "en": "I think a warm sweater is better than a thin shirt in winter.",
         "zh": "我觉得冬天穿暖和的毛衣比穿薄衬衫好。"
       }
+    ],
+    "words": [
+      "clothes",
+      "wear",
+      "weather",
+      "change",
+      "hot",
+      "cold",
+      "sunny",
+      "rain",
+      "T-shirt",
+      "hat",
+      "sweater",
+      "jacket",
+      "shirt",
+      "umbrella",
+      "thin",
+      "warm",
+      "check",
+      "healthy",
+      "coat",
+      "trousers",
+      "boot",
+      "glove"
     ]
   },
   {
@@ -8421,6 +10987,28 @@
         "en": "I think winter is the best season because of the Spring Festival.",
         "zh": "我觉得冬天是最好的季节，因为有春节。"
       }
+    ],
+    "words": [
+      "summer",
+      "winter",
+      "season",
+      "spring",
+      "hot",
+      "cold",
+      "weather",
+      "air",
+      "fresh",
+      "snow",
+      "rain",
+      "swim",
+      "holiday",
+      "festival",
+      "clothes",
+      "food",
+      "family",
+      "tired",
+      "fun",
+      "delicious"
     ]
   },
   {
@@ -8497,6 +11085,29 @@
         "en": "If I practice every day, my pictures will get better.",
         "zh": "如果我每天练习，我的画就会越来越好。"
       }
+    ],
+    "words": [
+      "hobby",
+      "draw",
+      "art",
+      "class",
+      "picture",
+      "painter",
+      "paint",
+      "artist",
+      "show",
+      "proud",
+      "practice",
+      "music",
+      "sing",
+      "dance",
+      "teacher",
+      "learn",
+      "quiet",
+      "happy",
+      "fun",
+      "cat",
+      "flower"
     ]
   },
   {
@@ -8577,6 +11188,29 @@
         "en": "I think making a kite is more fun than buying one.",
         "zh": "我觉得自己做风筝比买风筝更有趣。"
       }
+    ],
+    "words": [
+      "kite",
+      "fly",
+      "spring",
+      "wind",
+      "strong",
+      "sky",
+      "high",
+      "stick",
+      "paper",
+      "tail",
+      "colorful",
+      "park",
+      "afternoon",
+      "fall",
+      "try",
+      "jump",
+      "shout",
+      "fun",
+      "outside",
+      "buy",
+      "make"
     ]
   },
   {
@@ -8657,6 +11291,28 @@
         "en": "I think the mouse is braver than the lion.",
         "zh": "我觉得老鼠比狮子更勇敢。"
       }
+    ],
+    "words": [
+      "story",
+      "lion",
+      "mouse",
+      "net",
+      "tooth",
+      "help",
+      "free",
+      "cut",
+      "try",
+      "laugh",
+      "friend",
+      "small",
+      "big",
+      "funny",
+      "kind",
+      "brave",
+      "great",
+      "favorite",
+      "fiction",
+      "book"
     ]
   },
   {
@@ -8741,6 +11397,28 @@
         "en": "I think playing outside is better than sitting at home.",
         "zh": "我觉得在户外玩比坐在家里更好。"
       }
+    ],
+    "words": [
+      "sport",
+      "badminton",
+      "club",
+      "game",
+      "practice",
+      "win",
+      "lose",
+      "confident",
+      "healthy",
+      "strong",
+      "ill",
+      "cold",
+      "friend",
+      "team",
+      "swim",
+      "football",
+      "basketball",
+      "tennis",
+      "player",
+      "outside"
     ]
   },
   {
@@ -8829,6 +11507,28 @@
         "en": "I think working together is better than working alone.",
         "zh": "我觉得一起合作比单独干更好。"
       }
+    ],
+    "words": [
+      "teamwork",
+      "team",
+      "match",
+      "basketball",
+      "ball",
+      "player",
+      "pass",
+      "win",
+      "lose",
+      "half",
+      "time",
+      "teacher",
+      "help",
+      "work",
+      "together",
+      "strong",
+      "person",
+      "alone",
+      "talk",
+      "group"
     ]
   },
   {
@@ -8897,6 +11597,30 @@
         "en": "I think a small, warm home is better than a big, cold one.",
         "zh": "我觉得温暖的小家比冷冰冰的大房子更好。"
       }
+    ],
+    "words": [
+      "home",
+      "building",
+      "floor",
+      "apartment",
+      "room",
+      "bedroom",
+      "kitchen",
+      "bathroom",
+      "living",
+      "window",
+      "door",
+      "book",
+      "homework",
+      "family",
+      "love",
+      "warm",
+      "bright",
+      "quiet",
+      "small",
+      "big",
+      "smell",
+      "place"
     ]
   },
   {
@@ -8973,6 +11697,29 @@
         "en": "If it rains, I will take the bus.",
         "zh": "如果下雨，我就坐公交车。"
       }
+    ],
+    "words": [
+      "school",
+      "way",
+      "car",
+      "bus",
+      "bike",
+      "subway",
+      "foot",
+      "walk",
+      "ride",
+      "road",
+      "busy",
+      "late",
+      "air",
+      "dirty",
+      "minute",
+      "term",
+      "health",
+      "body",
+      "far",
+      "near",
+      "rainy"
     ]
   },
   {
@@ -9049,6 +11796,29 @@
         "en": "If it rains, we will stay at home and play games.",
         "zh": "如果下雨，我们就待在家里玩游戏。"
       }
+    ],
+    "words": [
+      "holiday",
+      "plan",
+      "summer",
+      "visit",
+      "grandparent",
+      "country",
+      "garden",
+      "fruit",
+      "tree",
+      "pick",
+      "swim",
+      "river",
+      "book",
+      "read",
+      "weather",
+      "beach",
+      "rain",
+      "home",
+      "game",
+      "trip",
+      "travel"
     ]
   },
   {
@@ -9133,6 +11903,29 @@
         "en": "Going by train is slower than going by plane, but it is more fun.",
         "zh": "坐火车比坐飞机慢，但更有趣。"
       }
+    ],
+    "words": [
+      "seaside",
+      "sea",
+      "beach",
+      "sand",
+      "castle",
+      "wave",
+      "water",
+      "swim",
+      "fish",
+      "restaurant",
+      "sun",
+      "trip",
+      "train",
+      "plane",
+      "lake",
+      "soft",
+      "warm",
+      "cool",
+      "tired",
+      "fresh",
+      "beautiful"
     ]
   },
   {
@@ -9221,6 +12014,30 @@
         "en": "The Great Wall is longer than any other wall in the world.",
         "zh": "长城比世界上任何一道墙都长。"
       }
+    ],
+    "words": [
+      "trip",
+      "travel",
+      "history",
+      "wall",
+      "palace",
+      "museum",
+      "emperor",
+      "food",
+      "duck",
+      "photo",
+      "camera",
+      "climb",
+      "walk",
+      "send",
+      "friend",
+      "world",
+      "past",
+      "beautiful",
+      "great",
+      "north",
+      "snow",
+      "sea"
     ]
   },
   {
@@ -9293,6 +12110,28 @@
         "en": "I think my hometown is more beautiful than before.",
         "zh": "我觉得我的家乡比以前更美了。"
       }
+    ],
+    "words": [
+      "hometown",
+      "town",
+      "city",
+      "village",
+      "river",
+      "bridge",
+      "tree",
+      "flower",
+      "street",
+      "air",
+      "people",
+      "kind",
+      "friendly",
+      "smile",
+      "hello",
+      "clean",
+      "beautiful",
+      "old",
+      "quiet",
+      "visit"
     ]
   },
   {
@@ -9369,6 +12208,28 @@
         "en": "I like the country better because it is green and quiet.",
         "zh": "我更喜欢乡村，因为那里绿色又安静。"
       }
+    ],
+    "words": [
+      "city",
+      "country",
+      "village",
+      "field",
+      "tree",
+      "river",
+      "air",
+      "star",
+      "sky",
+      "shop",
+      "train",
+      "life",
+      "clean",
+      "clear",
+      "green",
+      "quiet",
+      "busy",
+      "fast",
+      "happy",
+      "noise"
     ]
   },
   {
@@ -9449,6 +12310,27 @@
         "en": "I think reading in the library is better than reading at home.",
         "zh": "我觉得在图书馆读书比在家读书更好。"
       }
+    ],
+    "words": [
+      "library",
+      "book",
+      "story",
+      "science",
+      "reading",
+      "room",
+      "rule",
+      "quiet",
+      "free",
+      "care",
+      "thousand",
+      "read",
+      "surprise",
+      "weekend",
+      "museum",
+      "history",
+      "park",
+      "librarian",
+      "shelf"
     ]
   },
   {
@@ -9529,6 +12411,29 @@
         "en": "I think saying sorry is better than saying nothing.",
         "zh": "我觉得说声对不起比什么都不说更好。"
       }
+    ],
+    "words": [
+      "manner",
+      "public",
+      "place",
+      "polite",
+      "bus",
+      "seat",
+      "park",
+      "flower",
+      "grass",
+      "cinema",
+      "phone",
+      "rubbish",
+      "bin",
+      "bottle",
+      "street",
+      "sorry",
+      "loud",
+      "quiet",
+      "clean",
+      "friendly",
+      "people"
     ]
   },
   {
@@ -9613,6 +12518,31 @@
         "en": "I think waiting for the green light is better than running across the road.",
         "zh": "我觉得等绿灯比跑着过马路更好。"
       }
+    ],
+    "words": [
+      "road",
+      "safe",
+      "safety",
+      "traffic",
+      "light",
+      "rule",
+      "follow",
+      "cross",
+      "wait",
+      "stop",
+      "side",
+      "bus",
+      "car",
+      "bike",
+      "foot",
+      "red",
+      "green",
+      "danger",
+      "dangerous",
+      "lucky",
+      "afraid",
+      "hurt",
+      "run"
     ]
   },
   {
@@ -9681,6 +12611,27 @@
         "en": "I want to be a cook because I like making good food.",
         "zh": "我想当厨师，因为我喜欢做好吃的饭菜。"
       }
+    ],
+    "words": [
+      "dream",
+      "job",
+      "future",
+      "doctor",
+      "nurse",
+      "teacher",
+      "farmer",
+      "cook",
+      "pilot",
+      "scientist",
+      "hospital",
+      "ill",
+      "help",
+      "people",
+      "study",
+      "hard",
+      "kind",
+      "grow",
+      "care"
     ]
   },
   {
@@ -9757,6 +12708,29 @@
         "en": "If there were no bus drivers, many people could not go to work.",
         "zh": "如果没有公交车司机，很多人就没法去上班。"
       }
+    ],
+    "words": [
+      "driver",
+      "bus",
+      "job",
+      "drive",
+      "city",
+      "people",
+      "work",
+      "school",
+      "careful",
+      "proud",
+      "important",
+      "nurse",
+      "cook",
+      "taxi",
+      "road",
+      "traffic",
+      "station",
+      "ticket",
+      "busy",
+      "hard",
+      "easy"
     ]
   },
   {
@@ -9837,6 +12811,29 @@
         "en": "I think firefighters are braver than anyone.",
         "zh": "我觉得消防员比谁都勇敢。"
       }
+    ],
+    "words": [
+      "people",
+      "help",
+      "street",
+      "cleaner",
+      "police",
+      "officer",
+      "firefighter",
+      "doctor",
+      "nurse",
+      "fire",
+      "road",
+      "safe",
+      "brave",
+      "dangerous",
+      "helpful",
+      "lost",
+      "cross",
+      "city",
+      "job",
+      "work",
+      "thank"
     ]
   },
   {
@@ -9921,6 +12918,32 @@
         "en": "We should thank farmers because they grow our food.",
         "zh": "我们应该感谢农民，因为他们种出了我们的食物。"
       }
+    ],
+    "words": [
+      "farmer",
+      "farm",
+      "field",
+      "food",
+      "vegetable",
+      "tomato",
+      "chicken",
+      "cow",
+      "feed",
+      "water",
+      "pick",
+      "box",
+      "market",
+      "fresh",
+      "noon",
+      "sun",
+      "hot",
+      "rest",
+      "tired",
+      "early",
+      "hard",
+      "meal",
+      "waste",
+      "thank"
     ]
   },
   {
@@ -10009,6 +13032,31 @@
         "en": "I think working with robots will be more exciting than working alone.",
         "zh": "我觉得和机器人一起工作会比独自工作更令人兴奋。"
       }
+    ],
+    "words": [
+      "future",
+      "job",
+      "robot",
+      "space",
+      "moon",
+      "earth",
+      "world",
+      "scientist",
+      "astronaut",
+      "science",
+      "math",
+      "machine",
+      "computer",
+      "build",
+      "drive",
+      "cook",
+      "clean",
+      "study",
+      "new",
+      "different",
+      "exciting",
+      "engineer",
+      "invention"
     ]
   },
   {
@@ -10085,6 +13133,28 @@
         "en": "If you come to my party, we will have a lot of fun.",
         "zh": "如果你来参加我的派对，我们会玩得很开心。"
       }
+    ],
+    "words": [
+      "birthday",
+      "party",
+      "cake",
+      "chocolate",
+      "candle",
+      "wish",
+      "present",
+      "gift",
+      "card",
+      "book",
+      "kite",
+      "game",
+      "sing",
+      "laugh",
+      "fun",
+      "happy",
+      "special",
+      "friend",
+      "parent",
+      "tenth"
     ]
   },
   {
@@ -10165,6 +13235,28 @@
         "en": "I think Children's Day is more fun than other days.",
         "zh": "我觉得儿童节比其他日子更有趣。"
       }
+    ],
+    "words": [
+      "child",
+      "June",
+      "show",
+      "dance",
+      "sing",
+      "practice",
+      "lesson",
+      "school",
+      "parent",
+      "proud",
+      "shy",
+      "afraid",
+      "watch",
+      "game",
+      "ice",
+      "cream",
+      "fun",
+      "happy",
+      "favorite",
+      "party"
     ]
   },
   {
@@ -10249,6 +13341,29 @@
         "en": "I think the Spring Festival is the most important festival.",
         "zh": "我认为春节是最重要的节日。"
       }
+    ],
+    "words": [
+      "festival",
+      "spring",
+      "dragon",
+      "Mid-Autumn",
+      "family",
+      "meal",
+      "packet",
+      "money",
+      "boat",
+      "race",
+      "rice",
+      "dumpling",
+      "moon",
+      "mooncake",
+      "firework",
+      "lantern",
+      "autumn",
+      "special",
+      "important",
+      "round",
+      "bright"
     ]
   },
   {
@@ -10333,6 +13448,30 @@
         "en": "If I keep trying, I will do better every year.",
         "zh": "如果我坚持努力，就会一年比一年好。"
       }
+    ],
+    "words": [
+      "grow",
+      "grown-up",
+      "child",
+      "year",
+      "old",
+      "little",
+      "mistake",
+      "sad",
+      "exciting",
+      "tall",
+      "brave",
+      "wise",
+      "myself",
+      "help",
+      "cook",
+      "bed",
+      "ride",
+      "bike",
+      "learn",
+      "try",
+      "new",
+      "teach"
     ]
   },
   {
@@ -10421,6 +13560,31 @@
         "en": "If I keep working hard, next year will be even better.",
         "zh": "如果我继续努力，明年会更好。"
       }
+    ],
+    "words": [
+      "year",
+      "time",
+      "school",
+      "English",
+      "learn",
+      "talk",
+      "friend",
+      "join",
+      "art",
+      "club",
+      "race",
+      "sport",
+      "sad",
+      "happy",
+      "run",
+      "strong",
+      "brave",
+      "book",
+      "read",
+      "help",
+      "better",
+      "new",
+      "memory"
     ]
   }
 ]

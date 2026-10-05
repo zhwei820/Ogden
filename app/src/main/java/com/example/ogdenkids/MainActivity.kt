@@ -89,6 +89,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -141,7 +143,7 @@ enum class Category(
 ) {
     Operations("op", "Operations", "操作词", Color(0xFFB45309), Color(0xFFFEF3C7)),
     GeneralThings("gt", "General Things", "通用词", Color(0xFF166534), Color(0xFFDCFCE7)),
-    Picturable("pt", "Picturable", "图示词", Color(0xFFA16207), Color(0xFFFEF9C3)),
+    Picturable("pt", "Things", "物品词", Color(0xFFA16207), Color(0xFFFEF9C3)),
     Qualities("qg", "Qualities", "性质词", Color(0xFF1E40AF), Color(0xFFDBEAFE)),
     Opposites("qo", "Opposites", "反义对", Color(0xFF7C3AED), Color(0xFFEDE9FE)),
     Extended("ex", "Extended", "拓展词", Color(0xFF0F766E), Color(0xFFCCFBF1)),
@@ -205,6 +207,7 @@ sealed class Screen {
     data class WordCollection(val title: String, val kind: String) : Screen()
     data class SpeechReader(val speech: Speech) : Screen()
     data class ThemePractice(val level: Int, val theme: SpeechTheme) : Screen()
+    data class WordPractice(val title: String, val words: List<String>, val returnTo: Screen) : Screen()
     object SpeechWords : Screen()
     object Settings : Screen()
     object Privacy : Screen()
@@ -250,7 +253,8 @@ class OgdenRepository(private val context: Context) {
                 title = item.getString("title"),
                 titleZh = item.getString("titleZh"),
                 lines = lines(item.getJSONArray("lines")),
-                patterns = lines(item.getJSONArray("patterns"))
+                patterns = lines(item.getJSONArray("patterns")),
+                words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
             )
         }.sortedWith(compareBy({ it.level }, { it.unit }))
     }
@@ -399,6 +403,8 @@ fun OgdenKidsApp() {
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
     var version by remember { mutableStateOf(0) }
     var confirmExit by remember { mutableStateOf(false) }
+    // 每个页面 / 标签各自保存 rememberSaveable 状态（含列表滚动位置），切回来时恢复
+    val stateHolder = rememberSaveableStateHolder()
     var speechLevel by remember { mutableStateOf(1) }
     val speak = rememberSpeaker(accent)
     val azureSpeaker = remember { AzureSpeaker(context) }
@@ -417,6 +423,10 @@ fun OgdenKidsApp() {
             is Screen.Practice -> {
                 version++
                 screen = Screen.Main
+            }
+            is Screen.WordPractice -> {
+                version++
+                screen = current.returnTo
             }
             else -> {
                 azureSpeaker.stop()
@@ -460,6 +470,7 @@ fun OgdenKidsApp() {
                     }
                 )
             }
+            stateHolder.SaveableStateProvider(screenKey(screen)) {
             when (val current = screen) {
                 Screen.Main -> MainScaffold(
                     selectedTab = selectedTab,
@@ -469,6 +480,7 @@ fun OgdenKidsApp() {
                     chineseMode = chineseMode,
                     onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
                     content = { padding ->
+                        stateHolder.SaveableStateProvider("tab-${selectedTab.name}") {
                         when (selectedTab) {
                             Tab.Challenge -> ChallengeScreen(
                                 words = words,
@@ -512,6 +524,7 @@ fun OgdenKidsApp() {
                                 onPrivacy = { screen = Screen.Privacy },
                                 onAbout = { screen = Screen.About }
                             )
+                        }
                         }
                     }
                 )
@@ -559,6 +572,24 @@ fun OgdenKidsApp() {
                         }
                     )
                 }
+                is Screen.WordPractice -> PracticeScreen(
+                    allWords = words,
+                    store = progressStore,
+                    version = version,
+                    category = Category.Extended,
+                    level = 1,
+                    reviewOnly = false,
+                    zh = chineseMode,
+                    onSpeak = speak,
+                    onBack = goBack,
+                    onComplete = {},
+                    onRecord = { word, correct ->
+                        progressStore.record(word.word, correct)
+                        version++
+                    },
+                    customWords = current.words.mapNotNull { wordIndex[it.lowercase()] },
+                    customTitle = current.title
+                )
                 is Screen.WordCollection -> WordCollectionScreen(
                     title = current.title,
                     words = if (current.kind == "mistakes") progressStore.mistakeWords(words) else progressStore.favoriteWords(words),
@@ -571,8 +602,12 @@ fun OgdenKidsApp() {
                     level = current.level,
                     theme = current.theme,
                     units = speeches.filter { it.level == current.level && it.theme == current.theme },
+                    vocabulary = speeches.filter { it.level == current.level && it.theme == current.theme }
+                        .flatMap { it.words }
+                        .mapNotNull { wordIndex[it.lowercase()] },
                     bestScore = progressStore.bestThemeScore(current.level, current.theme),
                     onSpeak = speakEnglish,
+                    onSpeakWord = { azureSpeaker.stop(); speak(it) },
                     onFinish = { correct, _ ->
                         progressStore.saveThemeScore(current.level, current.theme, correct)
                         version++
@@ -594,6 +629,10 @@ fun OgdenKidsApp() {
                     onOpenWord = {
                         azureSpeaker.stop()
                         screen = Screen.Detail(it, returnTo = current)
+                    },
+                    onPracticeWords = { list ->
+                        azureSpeaker.stop()
+                        screen = Screen.WordPractice("${current.speech.title} · 单词练习", list.shuffled().take(10), current)
                     }
                 )
                 Screen.SpeechWords -> SpeechWordListScreen(
@@ -628,6 +667,7 @@ fun OgdenKidsApp() {
                         "创作初衷" to "https://longlong-skyligo.github.io/posts/basic-english/"
                     )
                 )
+            }
             }
         }
         }
@@ -719,6 +759,22 @@ fun rememberSpeaker(accent: Accent): (String) -> Unit {
             }
         }
     }
+}
+
+/** 页面的状态保存键：同一个词 / 课文 / 分类复用同一份滚动位置。 */
+private fun screenKey(screen: Screen): String = when (screen) {
+    Screen.Main -> "main"
+    is Screen.Detail -> "detail-${screen.word.word}"
+    is Screen.Levels -> "levels-${screen.category.code}"
+    is Screen.Practice -> "practice-${screen.category.code}-${screen.level}-${screen.reviewOnly}"
+    is Screen.WordCollection -> "collection-${screen.kind}"
+    is Screen.SpeechReader -> "reader-${screen.speech.id}"
+    is Screen.ThemePractice -> "theme-${screen.level}-${screen.theme.key}"
+    is Screen.WordPractice -> "words-${screen.title}"
+    Screen.SpeechWords -> "speech-words"
+    Screen.Settings -> "settings"
+    Screen.Privacy -> "privacy"
+    Screen.About -> "about"
 }
 
 private fun localAudioPath(text: String, accent: Accent): String? {
@@ -1485,7 +1541,14 @@ fun SpeechListScreen(
         derivedStateOf { themeStarts.indexOfLast { it <= listState.firstVisibleItemIndex + 1 }.coerceAtLeast(0) }
     }
     LaunchedEffect(currentTheme, themesExpanded) { if (!themesExpanded) chipState.animateScrollToItem(currentTheme) }
-    LaunchedEffect(level) { listState.scrollToItem(0) }
+    // 只在切换级别时回到顶部；从别的页面返回时保留原滚动位置
+    var shownLevel by rememberSaveable { mutableStateOf(level) }
+    LaunchedEffect(level) {
+        if (level != shownLevel) {
+            shownLevel = level
+            listState.scrollToItem(0)
+        }
+    }
     LazyColumn(
         state = listState,
         modifier = Modifier
@@ -1609,7 +1672,7 @@ private data class SelectedSpeechWord(val line: Int, val token: SpeechToken)
 /** 词表外单词的收藏键：小写并去掉所有格。 */
 private fun speechWordKey(token: String) = token.lowercase().removeSuffix("'s")
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun SpeechReaderScreen(
     speech: Speech,
@@ -1623,11 +1686,14 @@ fun SpeechReaderScreen(
     onSpeakEnglish: (text: String, onDone: (() -> Unit)?) -> Unit,
     onSpeakChinese: (text: String, onDone: (() -> Unit)?) -> Unit,
     onStopSpeaking: () -> Unit,
-    onOpenWord: (OgdenWord) -> Unit
+    onOpenWord: (OgdenWord) -> Unit,
+    onPracticeWords: (List<String>) -> Unit
 ) {
     var selected by remember(speech.id) { mutableStateOf<SelectedSpeechWord?>(null) }
     // 正在朗读的句子（下标同 SelectedSpeechWord.line）；playingAll 为 true 时读完一句自动接下一句
     var speakingIndex by remember(speech.id) { mutableStateOf<Int?>(null) }
+    // 本课单词里最近点过的词，关掉词卡后仍保持选中，方便孩子知道读到哪了
+    var pickedWord by rememberSaveable(speech.id) { mutableStateOf<String?>(null) }
     var playingAll by remember(speech.id) { mutableStateOf(false) }
     val listState = rememberLazyListState()
     var showTranslation by remember(speech.id) { mutableStateOf(true) }
@@ -1756,6 +1822,43 @@ fun SpeechReaderScreen(
                 )
             }
             items(speech.patterns.size) { lineRow(speech.lines.size + it) }
+            if (speech.words.isNotEmpty()) {
+                item {
+                    Spacer(Modifier.height(8.dp))
+                    SpeechTrackHeader(
+                        title = "Words · 本课单词",
+                        subtitle = "点单词听发音、看释义",
+                        playingAll = false,
+                        onPlayAll = null
+                    )
+                }
+                item {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        speech.words.forEach { w ->
+                            val picked = pickedWord == w
+                            OutlinedButton(
+                                onClick = {
+                                    stopSpeaking()
+                                    onSpeakWord(w)
+                                    pickedWord = w
+                                    selected = SelectedSpeechWord(-1, SpeechToken(w, w.indices))
+                                },
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    containerColor = if (picked) Category.Operations.soft else Color.Transparent
+                                ),
+                                border = BorderStroke(if (picked) 2.dp else 1.dp, if (picked) Category.Operations.tint else Line),
+                                modifier = Modifier.padding(bottom = 8.dp),
+                                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
+                            ) { Text(wordIndex[w.lowercase()]?.word ?: w, fontSize = 20.sp, fontFamily = FontFamily.Serif, color = Ink) }
+                        }
+                    }
+                }
+                item {
+                    Button(onClick = { stopSpeaking(); onPracticeWords(speech.words) }, modifier = Modifier.fillMaxWidth()) {
+                        Text("单词练习（${speech.words.size} 词，每次 10 题）", fontSize = 18.sp)
+                    }
+                }
+            }
             item {
                 Spacer(Modifier.height(8.dp))
                 if (learned) {
@@ -2230,11 +2333,14 @@ fun PracticeScreen(
     onSpeak: (String) -> Unit,
     onBack: () -> Unit,
     onComplete: () -> Unit,
-    onRecord: (OgdenWord, Boolean) -> Unit
+    onRecord: (OgdenWord, Boolean) -> Unit,
+    customWords: List<OgdenWord>? = null,
+    customTitle: String? = null
 ) {
-    val source = remember(version, category, level, reviewOnly) {
+    val source = remember(version, category, level, reviewOnly, customWords) {
         val reviewWords = store.mistakeWords(allWords)
-        if (reviewOnly && reviewWords.isNotEmpty()) reviewWords.take(10)
+        if (customWords != null) customWords
+        else if (reviewOnly && reviewWords.isNotEmpty()) reviewWords.take(10)
         else allWords.filter { it.category == category }.drop((level - 1) * 10).take(10)
     }
     var index by remember(source) { mutableStateOf(0) }
@@ -2254,7 +2360,7 @@ fun PracticeScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
-                AppText(if (reviewOnly) "错词复习" else "${category.zh} · 第 $level 关", fontWeight = FontWeight.Bold)
+                AppText(customTitle ?: if (reviewOnly) "错词复习" else "${category.zh} · 第 $level 关", fontWeight = FontWeight.Bold)
                 AppText("${index.coerceAtMost(source.size)} / ${source.size} · 答对 $correctCount", color = InkFaint, fontSize = 12.sp)
             }
         }
@@ -2266,7 +2372,7 @@ fun PracticeScreen(
             return@Scaffold
         }
         val type = PracticeType.values()[index % PracticeType.values().size]
-        val question = buildQuestion(type, word, allWords)
+        val question = remember(word, type) { buildQuestion(type, word, allWords) }
         val isCorrect = selected == question.answer
 
         LazyColumn(
@@ -2383,14 +2489,18 @@ fun ThemePracticeScreen(
     level: Int,
     theme: SpeechTheme,
     units: List<Speech>,
+    vocabulary: List<OgdenWord>,
     bestScore: Int?,
     onSpeak: (String) -> Unit,
+    onSpeakWord: (String) -> Unit,
     onFinish: (correct: Int, total: Int) -> Unit,
     onBack: () -> Unit
 ) {
     // 每次进入或「再练一次」换一组题
     var session by remember { mutableStateOf(0) }
-    val questions = remember(session) { buildThemePractice(units, Random(System.nanoTime())) }
+    val questions = remember(session) { buildThemePractice(units, Random(System.nanoTime()), vocabulary = vocabulary) }
+    val isWordQuestion = { q: SentenceQuestion -> q.type == SentenceQuestionType.WordListen || q.type == SentenceQuestionType.WordMeaning }
+    val speakQuestion = { q: SentenceQuestion -> if (isWordQuestion(q)) onSpeakWord(q.sentence) else onSpeak(q.sentence) }
     var index by remember(session) { mutableStateOf(0) }
     var selected by remember(session, index) { mutableStateOf<String?>(null) }
     // 连词成句：已点选的词块下标（按点选顺序）
@@ -2407,7 +2517,11 @@ fun ThemePracticeScreen(
     }
 
     LaunchedEffect(session, index) {
-        if (question?.type == SentenceQuestionType.Listen) onSpeak(question.prompt)
+        when (question?.type) {
+            SentenceQuestionType.Listen -> onSpeak(question.prompt)
+            SentenceQuestionType.WordListen -> onSpeakWord(question.prompt)
+            else -> Unit
+        }
     }
 
     Scaffold(containerColor = Paper, topBar = {
@@ -2487,8 +2601,8 @@ fun ThemePracticeScreen(
                     Column(Modifier.padding(20.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
                         AppText(question.type.title, color = accent.tint, fontWeight = FontWeight.Bold)
                         when (question.type) {
-                            SentenceQuestionType.Listen -> Button(
-                                onClick = { onSpeak(question.prompt) },
+                            SentenceQuestionType.Listen, SentenceQuestionType.WordListen -> Button(
+                                onClick = { speakQuestion(question) },
                                 shape = CircleShape,
                                 modifier = Modifier.size(96.dp)
                             ) {
@@ -2588,8 +2702,11 @@ fun ThemePracticeScreen(
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppText(if (isCorrect) "答对了！" else "再看看正确答案", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(question.sentence, fontFamily = FontFamily.Serif, fontSize = 22.sp, modifier = Modifier.weight(1f))
-                                IconButton(onClick = { onSpeak(question.sentence) }) {
+                                Column(Modifier.weight(1f)) {
+                                    Text(question.sentence, fontFamily = FontFamily.Serif, fontSize = 22.sp)
+                                    if (isWordQuestion(question)) AppText(question.hint, color = InkSoft, fontSize = 18.sp)
+                                }
+                                IconButton(onClick = { speakQuestion(question) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = accent.tint)
                                 }
                             }
@@ -2618,30 +2735,32 @@ fun ThemePracticeScreen(
 data class Question(val prompt: String, val answer: String, val options: List<String>)
 
 fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>): Question {
+    // 选项顺序也用固定种子：本函数随界面重组反复调用，未加种子的 shuffled() 会让选项每次刷新都换位置
+    val random = Random(word.word.hashCode() + type.ordinal)
     val distractors = allWords
         .filter { it.word != word.word }
-        .shuffled(Random(word.word.hashCode() + type.ordinal))
+        .shuffled(random)
         .take(6)
     return when (type) {
         PracticeType.Listen -> Question(
             prompt = "听声音，选出正确单词",
             answer = word.word,
-            options = (distractors.take(3).map { it.word } + word.word).shuffled()
+            options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
         PracticeType.Meaning -> Question(
             prompt = word.zh,
             answer = word.word,
-            options = (distractors.take(3).map { it.word } + word.word).shuffled()
+            options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
         PracticeType.Example -> Question(
             prompt = word.example.replace(Regex("\\b${Regex.escape(word.word)}\\b", RegexOption.IGNORE_CASE), "____"),
             answer = word.word,
-            options = (distractors.take(3).map { it.word } + word.word).shuffled()
+            options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
         PracticeType.Spelling -> Question(
             prompt = "${word.zh}\n${word.englishDefinition}",
             answer = word.word,
-            options = (distractors.take(3).map { it.word } + word.word).shuffled()
+            options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
         PracticeType.Synonym -> {
             val answer = word.synonyms.firstOrNull() ?: word.word
@@ -2649,7 +2768,7 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             Question(
                 prompt = "哪个词接近 ${word.word} 的意思？",
                 answer = answer,
-                options = (synOptions + answer).distinct().shuffled()
+                options = (synOptions + answer).distinct().shuffled(random)
             )
         }
     }

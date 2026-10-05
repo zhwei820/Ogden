@@ -41,6 +41,12 @@ class SpeechTest {
                 }
             }
         }
+        val headwords = JSONArray(File("src/main/assets/ogden_words.json").readText(Charsets.UTF_8).trimStart('\uFEFF'))
+            .let { a -> List(a.length()) { a.getJSONObject(it).getString("w").lowercase() }.toSet() }
+        repeat(speeches.length()) { index ->
+            val unitWords = speeches.getJSONObject(index).optJSONArray("words") ?: return@repeat
+            repeat(unitWords.length()) { assertTrue("Unit word not in list: ${unitWords.getString(it)}", unitWords.getString(it).lowercase() in headwords) }
+        }
         // 单元按 SpeechTheme 声明顺序连续编号，每个主题 5 个
         val expectedThemes = SpeechTheme.values().flatMap { theme -> List(5) { theme.key } }
         (1..3).forEach { level ->
