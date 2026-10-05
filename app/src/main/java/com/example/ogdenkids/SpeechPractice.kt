@@ -3,15 +3,15 @@ package com.example.ogdenkids
 import kotlin.random.Random
 
 /** 声明顺序即出题轮换顺序，单词题穿插在句子题之间。 */
-enum class SentenceQuestionType(val title: String) {
-    Listen("听句子，选出你听到的"),
-    WordListen("听单词，选出你听到的"),
-    Meaning("看中文，选英文"),
-    FillWord("句子填空"),
-    WordMeaning("看中文，选单词"),
-    Pattern("句型替换"),
-    Contraction("缩写配对"),
-    Order("连词成句")
+enum class SentenceQuestionType(val title: String, val titleEn: String) {
+    Listen("听句子，选出你听到的", "Listen and Choose"),
+    WordListen("听单词，选出你听到的", "Listen and Choose"),
+    Meaning("看中文，选英文", "Read and Choose"),
+    FillWord("句子填空", "Fill in the Blank"),
+    WordMeaning("看中文，选单词", "Read and Choose"),
+    Pattern("句型替换", "Change the Word"),
+    Contraction("缩写配对", "Short Forms"),
+    Order("连词成句", "Put the Words in Order")
 }
 
 /**

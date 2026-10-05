@@ -58,8 +58,10 @@ class SpecialTrainingTest {
     fun allEnglishResolvesToWordList() {
         for (topic in SpecialTopic.values()) for (level in 1..3) repeat(20) { seed ->
             buildSpecialPractice(topic, level, Random(seed)).forEach { q ->
-                val english = listOfNotNull(q.sentence.takeIf { "=" !in it }, q.speak) + q.options.mapNotNull { it.text }
-                english.flatMap { tokenizeSpeech(it) }.map { it.text }.forEach { token ->
+                assertTrue("${topic.key} L$level ${q.kind} question", q.question.endsWith("?"))
+                val english = listOfNotNull(q.sentence.takeIf { "=" !in it }, q.speak, q.question) + q.options.mapNotNull { it.text }
+                // 5th、3:45 这类数字写法只展示不查词
+                english.map { it.replace(Regex("\\d+(st|nd|rd|th)?"), "") }.flatMap { tokenizeSpeech(it) }.map { it.text }.forEach { token ->
                     // 数字里的连字符词 twenty-one 拆开查
                     token.split("-").forEach { part ->
                         assertNotNull("${topic.key} L$level: $part in \"$english\"", contractionOf(part) ?: lemmatize(part, vocabulary))

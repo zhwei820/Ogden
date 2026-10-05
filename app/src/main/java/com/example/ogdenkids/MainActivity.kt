@@ -1652,6 +1652,7 @@ fun SpeechListScreen(
     val listState = rememberLazyListState()
     val chipState = rememberLazyListState()
     var themesExpanded by remember { mutableStateOf(false) }
+    var specialsExpanded by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val currentTheme by remember(themeStarts) {
         derivedStateOf { themeStarts.indexOfLast { it <= listState.firstVisibleItemIndex + 1 }.coerceAtLeast(0) }
@@ -1734,8 +1735,20 @@ fun SpeechListScreen(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                AppText("专项训练", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
-                modules.chunked(4).forEach { row ->
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { specialsExpanded = !specialsExpanded },
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppText("专项训练", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
+                    AppText(" · ${modules.size} 个模块", color = InkFaint, fontSize = 13.sp, modifier = Modifier.weight(1f))
+                    Icon(
+                        if (specialsExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                        contentDescription = if (specialsExpanded) "收起专项训练" else "展开专项训练"
+                    )
+                }
+                if (specialsExpanded) modules.chunked(4).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         row.forEach { module ->
                             OutlinedButton(
@@ -2848,7 +2861,7 @@ fun ThemePracticeScreen(
                     modifier = Modifier.border(1.dp, Line, RoundedCornerShape(18.dp))
                 ) {
                     Column(Modifier.padding(20.dp).fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                        AppText(question.type.title, color = accent.tint, fontWeight = FontWeight.Bold)
+                        AppText("${question.type.title} · ${question.type.titleEn}", color = accent.tint, fontWeight = FontWeight.Bold)
                         when (question.type) {
                             SentenceQuestionType.Listen, SentenceQuestionType.WordListen -> Button(
                                 onClick = { speakQuestion(question) },
@@ -3162,16 +3175,16 @@ fun SpecialModuleScreen(
 private const val SceneWidth = 240f
 private const val SceneHeight = 190f
 
-/** 物体中心点（基准画布 240×190 dp 内）、大小，以及是否画在参照物之前（被挡住）。 */
-private data class Placement(val x: Float, val y: Float, val size: Float, val underRef: Boolean = false)
+/** 物体中心点（基准画布 240×190 dp 内）、大小，是否画在参照物之前（被挡住），以及透明度（后面的调淡显出纵深）。 */
+private data class Placement(val x: Float, val y: Float, val size: Float, val underRef: Boolean = false, val alpha: Float = 1f)
 
 private fun placementOf(relation: Relation): Placement = when (relation) {
     Relation.On -> Placement(120f, 46f, 40f)
     Relation.Above -> Placement(120f, 20f, 36f)
     Relation.Under -> Placement(120f, 144f, 40f)
     Relation.Below -> Placement(120f, 172f, 36f)
-    Relation.In -> Placement(120f, 80f, 30f, underRef = true)
-    Relation.Behind -> Placement(152f, 66f, 34f, underRef = true)
+    Relation.In -> Placement(120f, 68f, 34f, underRef = true)
+    Relation.Behind -> Placement(146f, 62f, 40f, underRef = true, alpha = 0.6f)
     Relation.InFrontOf -> Placement(108f, 128f, 46f)
     Relation.NextTo, Relation.Beside, Relation.RightOf -> Placement(172f, 100f, 40f)
     Relation.Near -> Placement(212f, 100f, 36f)
@@ -3201,7 +3214,7 @@ private fun PlaceSceneView(scene: Scene.Place, scale: Float, showItem: Boolean =
     Box(Modifier.size((SceneWidth * scale).dp, (SceneHeight * scale).dp)) {
         val p = placementOf(scene.relation)
         val refSize = if (scene.relation == Relation.Inside || scene.relation == Relation.Outside) 84f else 66f
-        if (showItem && p.underRef) EmojiAt(scene.item.emoji, p.x, p.y, p.size, scale)
+        if (showItem && p.underRef) EmojiAt(scene.item.emoji, p.x, p.y, p.size, scale, p.alpha)
         if (scene.ref2 != null) {
             EmojiAt(scene.ref.emoji, 50f, 100f, 60f, scale)
             EmojiAt(scene.ref2.emoji, 190f, 100f, 60f, scale)
@@ -3347,7 +3360,8 @@ fun SpecialPracticeScreen(
         if (i == question.answer) correctCount++
     }
 
-    LaunchedEffect(session, index) { question?.speak?.let(onSpeak) }
+    // 有听力内容先读听力，否则读英文问句
+    LaunchedEffect(session, index) { (question?.speak ?: question?.question)?.let(onSpeak) }
 
     Scaffold(containerColor = Paper, topBar = {
         Row(
@@ -3417,11 +3431,17 @@ fun SpecialPracticeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppText(question.kind.title, color = accent.tint, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            AppText("${question.kind.title} · ${question.kind.titleEn}", color = accent.tint, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                             if (question.speak != null) {
                                 IconButton(onClick = { onSpeak(question.speak) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "再听一遍", tint = accent.tint, modifier = Modifier.size(32.dp))
                                 }
+                            }
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(question.question, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 24.sp, lineHeight = 30.sp, color = Ink, modifier = Modifier.weight(1f))
+                            IconButton(onClick = { onSpeak(question.question) }) {
+                                Icon(Icons.Default.VolumeUp, contentDescription = "读问题", tint = InkFaint)
                             }
                         }
                         if (question.kind == SpecialKind.Place) {
@@ -3431,9 +3451,10 @@ fun SpecialPracticeScreen(
                         }
                         Text(
                             question.prompt,
-                            fontSize = if ("____" in question.prompt) 26.sp else 22.sp,
+                            fontSize = if ("____" in question.prompt) 26.sp else 18.sp,
                             fontFamily = if ("____" in question.prompt) FontFamily.Serif else null,
-                            fontWeight = FontWeight.SemiBold,
+                            fontWeight = if ("____" in question.prompt) FontWeight.SemiBold else null,
+                            color = if ("____" in question.prompt) Ink else InkSoft,
                             lineHeight = 34.sp,
                             textAlign = TextAlign.Center
                         )
@@ -3520,7 +3541,7 @@ private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, se
             horizontalAlignment = if (option.scene != null) Alignment.CenterHorizontally else Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            option.scene?.let { SceneView(it, scale = 0.62f) }
+            option.scene?.let { SceneView(it, scale = 0.72f) }
             option.text?.let { Text(it, fontSize = 20.sp, lineHeight = 26.sp, color = Ink) }
         }
     }

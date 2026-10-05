@@ -94,15 +94,15 @@ sealed class Scene {
     data class Label(val text: String) : Scene()
 }
 
-enum class SpecialKind(val title: String) {
-    LookChoose("看图选一选"),
-    ListenPick("听一听，选出对的图"),
-    FillBlank("看图补句子"),
-    Place("听指令，点一点放在哪"),
-    Count("数一数"),
-    ReadNumber("看数字，选单词"),
-    Mix("颜色混一混"),
-    Direction("看路标，选指令")
+enum class SpecialKind(val title: String, val titleEn: String) {
+    LookChoose("看图选一选", "Look and Choose"),
+    ListenPick("听一听，选出对的图", "Listen and Choose"),
+    FillBlank("看图补句子", "Fill in the Blank"),
+    Place("听指令，点一点放在哪", "Listen and Put"),
+    Count("数一数", "Count"),
+    ReadNumber("看数字，选单词", "Read and Choose"),
+    Mix("颜色混一混", "Mix the Colors"),
+    Direction("看路标，选指令", "Which Way?")
 }
 
 data class SpecialOption(val text: String? = null, val scene: Scene? = null)
@@ -112,6 +112,7 @@ data class SpecialOption(val text: String? = null, val scene: Scene? = null)
  * @param scene 题面图；ListenPick 为 null（图在选项里）
  * @param speak 进题自动朗读的英文
  * @param sentence / [sentenceZh] 完整答案句，答题后展示与朗读；同组内唯一
+ * @param question 英文问句（Where is the cat?），题面上方显示并可朗读
  */
 data class SpecialQuestion(
     val kind: SpecialKind,
@@ -121,8 +122,47 @@ data class SpecialQuestion(
     val options: List<SpecialOption>,
     val answer: Int,
     val sentence: String,
-    val sentenceZh: String
+    val sentenceZh: String,
+    val question: String = ""
 )
+
+/** 按题型和场景生成英文问句；在出题后统一补上，免得每个出题分支各写一遍。 */
+private fun englishQuestion(topic: SpecialTopic, q: SpecialQuestion): String {
+    val place = (q.scene ?: q.options.firstOrNull()?.scene) as? Scene.Place
+    val count = q.scene as? Scene.Count
+    val words = q.sentence.removeSuffix(".").split(" ")
+    return when (q.kind) {
+        SpecialKind.LookChoose -> when (topic) {
+            SpecialTopic.Position -> "Where is the ${place!!.item.name}?"
+            SpecialTopic.Colors -> "What color is it?"
+            else -> "What time is it?"
+        }
+        SpecialKind.ListenPick -> when (topic) {
+            SpecialTopic.Numbers -> "Which number do you hear?"
+            SpecialTopic.Colors -> "Which color do you hear?"
+            SpecialTopic.Time -> "Which clock is right?"
+            SpecialTopic.Position -> "Which picture is right?"
+        }
+        SpecialKind.FillBlank -> when (topic) {
+            SpecialTopic.Position -> "Where is the ${place!!.item.name}?"
+            SpecialTopic.Numbers -> "How many ${CountNouns.getValue(count!!.emoji)} do you have?"
+            SpecialTopic.Colors -> "What color is the ${words[1]}?"
+            SpecialTopic.Time -> "What time is it?"
+        }
+        SpecialKind.Place -> "Where do you put the ${place!!.item.name}?"
+        SpecialKind.Count -> "How many ${CountNouns.getValue(count!!.emoji)} are there?"
+        SpecialKind.ReadNumber -> {
+            val label = (q.scene as Scene.Label).text
+            when {
+                topic == SpecialTopic.Time -> "What time is $label?"
+                label.last().isLetter() -> "How do you say $label?"
+                else -> "How do you say this number?"
+            }
+        }
+        SpecialKind.Mix -> "What color do ${words[0].lowercase()} and ${words[2]} make?"
+        SpecialKind.Direction -> "Which way do you go?"
+    }
+}
 
 private val Items = listOf(
     Thing("🐱", "cat"), Thing("🐶", "dog"), Thing("⚽", "ball"), Thing("🐦", "bird"),
@@ -136,7 +176,9 @@ private val Car = Thing("🚗", "car")
 private val House = Thing("🏠", "house")
 
 private fun refsFor(relation: Relation): List<Thing> = when (relation) {
-    Relation.In -> listOf(Box, Basket, Car)
+    // 「里面」「后面」要靠参照物挡住一部分来表现，只用不透明的箱子、篮子
+    Relation.In -> listOf(Box, Basket)
+    Relation.Behind -> listOf(Box)
     Relation.Inside, Relation.Outside -> listOf(House)
     Relation.On, Relation.Above -> listOf(Box, Chair, Bed, Car)
     else -> listOf(Box, Basket, Chair, Bed, Car)
@@ -395,7 +437,7 @@ fun buildSpecialPractice(topic: SpecialTopic, level: Int, random: Random, count:
             SpecialTopic.Time -> timeQuestion(kind, level, random)
         } ?: continue
         if (questions.any { it.sentence == q.sentence }) continue
-        questions += q
+        questions += q.copy(question = englishQuestion(topic, q))
     }
     return questions
 }
