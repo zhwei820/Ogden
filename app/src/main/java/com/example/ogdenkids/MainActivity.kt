@@ -108,6 +108,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -1708,6 +1709,7 @@ fun SpeechReaderScreen(
         return if (word != null) store.progress(word.word).favorite else store.isSpeechWordSaved(speechWordKey(token.text))
     }
     val allLines = speech.lines + speech.patterns
+    val hasContraction = remember(speech.id) { allLines.any { line -> tokenizeSpeech(line.en).any { contractionOf(it.text) != null } } }
 
     fun speakOne(index: Int, chinese: Boolean) {
         playingAll = false
@@ -1801,7 +1803,8 @@ fun SpeechReaderScreen(
             item {
                 SpeechTrackHeader(
                     title = "课文 · Listen and Read",
-                    subtitle = "点句子听朗读，长按单词查释义",
+                    subtitle = if (hasContraction) "点句子听朗读，长按单词查释义；带下划线的是缩写，长按看完整写法"
+                    else "点句子听朗读，长按单词查释义",
                     playingAll = playingAll,
                     onPlayAll = {
                         if (playingAll) {
@@ -1841,7 +1844,6 @@ fun SpeechReaderScreen(
                             OutlinedButton(
                                 onClick = {
                                     stopSpeaking()
-                                    onSpeakWord(w)
                                     pickedWord = w
                                     selected = SelectedSpeechWord(-1, SpeechToken(w, w.indices))
                                 },
@@ -1878,6 +1880,14 @@ fun SpeechReaderScreen(
         }
     }
 
+    // 弹窗一出来就朗读标题上的词：词表词用离线录音，缩写和词表外的词读原文
+    LaunchedEffect(selected) {
+        val token = selected?.token ?: return@LaunchedEffect
+        stopSpeaking()
+        val word = ogdenWordOf(token)
+        if (word != null && contractionOf(token.text) == null) onSpeakWord(word.word) else onSpeakEnglish(token.text, null)
+    }
+
     selected?.let { current ->
         val word = ogdenWordOf(current.token)
         val saved = remember(current, favoriteVersion) { isSaved(current.token) }
@@ -1885,6 +1895,8 @@ fun SpeechReaderScreen(
             SpeechWordSheet(
                 surface = current.token.text,
                 word = word,
+                contraction = contractionOf(current.token.text),
+                lookup = { wordIndex[it.lowercase()] },
                 accent = accent,
                 saved = saved,
                 onToggleSave = {
@@ -1893,6 +1905,7 @@ fun SpeechReaderScreen(
                 },
                 onSpeakWord = { stopSpeaking(); onSpeakWord(it) },
                 onSpeakEnglish = { stopSpeaking(); onSpeakEnglish(it, null) },
+                onSpeakChinese = { stopSpeaking(); onSpeakChinese(it, null) },
                 onOpenWord = { selected = null; onOpenWord(it) }
             )
         }
@@ -1929,6 +1942,10 @@ fun SpeechLineRow(
 ) {
     val text = buildAnnotatedString {
         append(line.en)
+        // 缩写加下划线，提示可以长按看完整写法
+        tokens.filter { contractionOf(it.text) != null }.forEach {
+            addStyle(SpanStyle(textDecoration = TextDecoration.Underline), it.range.first, it.range.last + 1)
+        }
         savedRanges.forEach {
             addStyle(SpanStyle(color = Category.Opposites.tint, fontWeight = FontWeight.SemiBold), it.first, it.last + 1)
         }
@@ -1985,11 +2002,14 @@ fun SpeechLineRow(
 fun SpeechWordSheet(
     surface: String,
     word: OgdenWord?,
+    contraction: Contraction?,
+    lookup: (String) -> OgdenWord?,
     accent: Accent,
     saved: Boolean,
     onToggleSave: () -> Unit,
     onSpeakWord: (String) -> Unit,
     onSpeakEnglish: (String) -> Unit,
+    onSpeakChinese: (String) -> Unit,
     onOpenWord: (OgdenWord) -> Unit
 ) {
     Column(
@@ -1998,6 +2018,39 @@ fun SpeechWordSheet(
             .padding(start = 22.dp, end = 22.dp, bottom = 36.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
+        if (contraction != null) {
+            val full = expandContraction(surface, contraction)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(surface, fontSize = 34.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                IconButton(onClick = { onSpeakEnglish(surface) }) {
+                    Icon(Icons.Default.VolumeUp, contentDescription = "读缩写", tint = Category.Operations.tint)
+                }
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("= $full", fontSize = 30.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.SemiBold, color = Category.Operations.tint, modifier = Modifier.weight(1f))
+                IconButton(onClick = { onSpeakEnglish(full) }) {
+                    Icon(Icons.Default.VolumeUp, contentDescription = "读完整写法", tint = Category.Operations.tint)
+                }
+            }
+            AppText(contraction.zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+            Card(colors = CardDefaults.cardColors(containerColor = Paper), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(start = 14.dp, top = 8.dp, bottom = 4.dp)) {
+                    AppText("拆开看", color = InkFaint, fontSize = 13.sp)
+                    contraction.parts.forEach { part ->
+                        val partWord = lookup(part)
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(partWord?.word ?: part, fontFamily = FontFamily.Serif, fontSize = 22.sp, modifier = Modifier.width(90.dp))
+                            AppText(partWord?.zh.orEmpty(), color = InkSoft, fontSize = 16.sp, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+                            if (partWord != null) {
+                                TextButton(onClick = { onOpenWord(partWord) }) { AppText("查看") }
+                            }
+                        }
+                    }
+                }
+            }
+            AppText(contraction.note, color = InkFaint, fontSize = 14.sp)
+            return@Column
+        }
         if (word != null) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(word.word, fontSize = 34.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -2014,9 +2067,31 @@ fun SpeechWordSheet(
                     }
                 }
             }
-            CategoryBadge(word.category)
-            AppText(word.zh, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-            Text(word.englishDefinition, color = InkSoft, fontStyle = FontStyle.Italic)
+            AppText(word.zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+            if (word.example.isNotBlank()) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = Paper),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(Modifier.padding(start = 14.dp, top = 6.dp, bottom = 6.dp)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(word.example, fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink, modifier = Modifier.weight(1f))
+                            IconButton(onClick = { onSpeakEnglish(word.example) }) {
+                                Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = Category.Operations.tint)
+                            }
+                        }
+                        if (word.exampleZh.isNotBlank()) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AppText(word.exampleZh, color = InkSoft, fontSize = 17.sp, lineHeight = 24.sp, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { onSpeakChinese(word.exampleZh) }) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "读例句中文", tint = InkFaint)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         } else {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(surface, fontSize = 34.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
@@ -2515,7 +2590,13 @@ fun ThemePracticeScreen(
     var session by remember { mutableStateOf(0) }
     val questions = remember(session) { buildThemePractice(units, Random(System.nanoTime()), vocabulary = vocabulary) }
     val isWordQuestion = { q: SentenceQuestion -> q.type == SentenceQuestionType.WordListen || q.type == SentenceQuestionType.WordMeaning }
-    val speakQuestion = { q: SentenceQuestion -> if (isWordQuestion(q)) onSpeakWord(q.sentence) else onSpeak(q.sentence) }
+    val speakQuestion = { q: SentenceQuestion ->
+        when {
+            isWordQuestion(q) -> onSpeakWord(q.sentence)
+            q.type == SentenceQuestionType.Contraction -> onSpeak(q.answer)
+            else -> onSpeak(q.sentence)
+        }
+    }
     var index by remember(session) { mutableStateOf(0) }
     var selected by remember(session, index) { mutableStateOf<String?>(null) }
     // 连词成句：已点选的词块下标（按点选顺序）
@@ -2623,7 +2704,7 @@ fun ThemePracticeScreen(
                             ) {
                                 Icon(Icons.Default.VolumeUp, contentDescription = "再听一遍", modifier = Modifier.size(44.dp))
                             }
-                            SentenceQuestionType.FillWord, SentenceQuestionType.Pattern -> {
+                            SentenceQuestionType.FillWord, SentenceQuestionType.Pattern, SentenceQuestionType.Contraction -> {
                                 Text(question.prompt, fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp)
                                 AppText(question.hint, color = InkSoft, fontSize = 18.sp)
                             }

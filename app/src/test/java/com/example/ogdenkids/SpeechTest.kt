@@ -94,6 +94,28 @@ class SpeechTest {
     }
 
     @Test
+    fun contractionsExpandAndResolve() {
+        assertEquals("It is", expandContraction("It's", contractionOf("It's")!!))
+        assertEquals("I am", expandContraction("I'm", contractionOf("i'm")!!))
+        assertEquals("let us", expandContraction("let's", contractionOf("let's")!!))
+        assertEquals(listOf("can", "not"), contractionOf("can't")!!.parts)
+        assertNull(contractionOf("father's"))
+        // 课文里出现的缩写都要在表里，且拆开后的每个词都能在词表里查到
+        val speeches = JSONArray(File("src/main/assets/speeches.json").readText(Charsets.UTF_8))
+        val tokens = (0 until speeches.length()).flatMap { i ->
+            val unit = speeches.getJSONObject(i)
+            listOf("lines", "patterns").flatMap { key ->
+                val lines = unit.getJSONArray(key)
+                (0 until lines.length()).flatMap { tokenizeSpeech(lines.getJSONObject(it).getString("en")) }
+            }
+        }.map { it.text }.filter { "'" in it && !it.endsWith("'s", ignoreCase = true) && !it.equals("o'clock", ignoreCase = true) }
+        tokens.forEach { assertTrue("Missing contraction $it", contractionOf(it) != null) }
+        tokens.mapNotNull { contractionOf(it) }.flatMap { it.parts }.forEach {
+            assertTrue("Part not in list: $it", lemmatize(it, vocabulary) != null)
+        }
+    }
+
+    @Test
     fun ssmlEscapesSpecialCharacters() {
         val ssml = buildSsml("Tom & Jerry's <box> \"go\"", "en-US-JennyNeural", "en-US")
         assertTrue(ssml.contains("Tom &amp; Jerry&apos;s &lt;box&gt; &quot;go&quot;"))

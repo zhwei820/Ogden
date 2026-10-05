@@ -54,8 +54,11 @@ class SpeechPracticeTest {
                 val where = "L$level ${theme.key} seed=$seed"
                 assertEquals(where, 10, questions.size)
                 // 没有本课单词的主题出不了单词题
+                // 课文里没有缩写的主题出不了缩写题
+                val hasContraction = units.flatMap { it.lines + it.patterns }.any { line -> tokenizeSpeech(line.en).any { contractionOf(it.text) != null } }
                 val expectedTypes = SentenceQuestionType.values().filter {
-                    vocabulary.size >= 4 || (it != SentenceQuestionType.WordListen && it != SentenceQuestionType.WordMeaning)
+                    (vocabulary.size >= 4 || (it != SentenceQuestionType.WordListen && it != SentenceQuestionType.WordMeaning)) &&
+                        (hasContraction || it != SentenceQuestionType.Contraction)
                 }.toSet()
                 assertEquals(where, expectedTypes, questions.map { it.type }.toSet())
                 assertEquals("$where duplicate sentence", questions.size, questions.map { it.sentence }.toSet().size)
@@ -67,6 +70,9 @@ class SpeechPracticeTest {
                         assertTrue("$where ${q.type} answer missing", q.answer in q.options)
                         assertEquals("$where ${q.type} duplicate options", q.options.size, q.options.toSet().size)
                         assertTrue("$where ${q.type} too few options", q.options.size >= 3)
+                    }
+                    if (q.type == SentenceQuestionType.Contraction) {
+                        assertTrue("$where contraction options", q.options.size == 4)
                     }
                     if (q.type == SentenceQuestionType.FillWord || q.type == SentenceQuestionType.Pattern) {
                         assertEquals(where, q.sentence, q.prompt.replace("____", q.answer))

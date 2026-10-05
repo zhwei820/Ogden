@@ -43,6 +43,66 @@ fun tokenizeSpeech(text: String): List<SpeechToken> =
     TokenPattern.findAll(text).map { SpeechToken(it.value, it.range) }.toList()
 
 /**
+ * 缩写的完整写法。[full] 按小写书写，展示时由 [expandContraction] 按原文首字母大小写调整；
+ * [parts] 是拆开后的各个词表词，供「拆开看」逐个查词。
+ */
+data class Contraction(val full: String, val zh: String, val note: String) {
+    val parts: List<String> get() = (if (full == "cannot") "can not" else full).split(" ")
+}
+
+private const val NoteIs = "'s 是 is 的缩写，撇号 ' 表示省掉了字母 i"
+private const val NoteAre = "'re 是 are 的缩写，撇号 ' 表示省掉了字母 a"
+private const val NoteNot = "n't 是 not 的缩写，撇号 ' 表示省掉了 not 里的 o"
+private const val NoteWill = "'ll 是 will 的缩写，撇号 ' 表示省掉了 wi"
+private const val NoteHave = "'ve 是 have 的缩写，撇号 ' 表示省掉了 ha"
+
+private val Contractions = mapOf(
+    "i'm" to Contraction("I am", "我是", "'m 是 am 的缩写，撇号 ' 表示省掉了字母 a"),
+    "it's" to Contraction("it is", "它是", NoteIs),
+    "he's" to Contraction("he is", "他是", NoteIs),
+    "she's" to Contraction("she is", "她是", NoteIs),
+    "that's" to Contraction("that is", "那是", NoteIs),
+    "there's" to Contraction("there is", "有……", NoteIs),
+    "what's" to Contraction("what is", "……是什么", NoteIs),
+    "where's" to Contraction("where is", "……在哪里", NoteIs),
+    "who's" to Contraction("who is", "……是谁", NoteIs),
+    "here's" to Contraction("here is", "这是……", NoteIs),
+    "let's" to Contraction("let us", "让我们……", "'s 是 us 的缩写，撇号 ' 表示省掉了字母 u"),
+    "they're" to Contraction("they are", "他们是", NoteAre),
+    "we're" to Contraction("we are", "我们是", NoteAre),
+    "you're" to Contraction("you are", "你是；你们是", NoteAre),
+    "isn't" to Contraction("is not", "不是", NoteNot),
+    "aren't" to Contraction("are not", "不是", NoteNot),
+    "wasn't" to Contraction("was not", "（过去）不是", NoteNot),
+    "weren't" to Contraction("were not", "（过去）不是", NoteNot),
+    "don't" to Contraction("do not", "不（做某事）", NoteNot),
+    "doesn't" to Contraction("does not", "不（做某事）", NoteNot),
+    "didn't" to Contraction("did not", "没有（做某事）", NoteNot),
+    "haven't" to Contraction("have not", "还没有", NoteNot),
+    "hasn't" to Contraction("has not", "还没有", NoteNot),
+    "couldn't" to Contraction("could not", "不能；没能", NoteNot),
+    "shouldn't" to Contraction("should not", "不应该", NoteNot),
+    "can't" to Contraction("cannot", "不能；不会", "can't 是 cannot 的缩写，撇号 ' 表示省掉了 no"),
+    "won't" to Contraction("will not", "不会；将不", "won't 是 will not 的特殊缩写，要单独记住"),
+    "i'll" to Contraction("I will", "我将要", NoteWill),
+    "you'll" to Contraction("you will", "你将要", NoteWill),
+    "we'll" to Contraction("we will", "我们将要", NoteWill),
+    "they'll" to Contraction("they will", "他们将要", NoteWill),
+    "i've" to Contraction("I have", "我已经；我有", NoteHave),
+    "we've" to Contraction("we have", "我们已经；我们有", NoteHave),
+    "you've" to Contraction("you have", "你已经；你有", NoteHave),
+    "they've" to Contraction("they have", "他们已经；他们有", NoteHave)
+)
+
+fun contractionOf(token: String): Contraction? = Contractions[token.lowercase()]
+
+/** It's → It is；I'm → I am（I 始终大写）。 */
+fun expandContraction(token: String, contraction: Contraction): String {
+    val full = contraction.full
+    return if (token.firstOrNull()?.isUpperCase() == true) full.replaceFirstChar { it.uppercaseChar() } else full
+}
+
+/**
  * 只有当 key 本身不在词表里时才会查这张表，所以 thought / left 这类本身就是 850 词的不会被误还原。
  * 值不在词表里时同样视为未命中。
  */

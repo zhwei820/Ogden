@@ -10,15 +10,17 @@ enum class SentenceQuestionType(val title: String) {
     FillWord("句子填空"),
     WordMeaning("看中文，选单词"),
     Pattern("句型替换"),
+    Contraction("缩写配对"),
     Order("连词成句")
 }
 
 /**
- * @param prompt Listen / WordListen：要朗读的英文；Meaning / WordMeaning / Order：中文；FillWord / Pattern：挖空后的英文
- * @param hint FillWord / Pattern / 单词题的中文，其余为空
+ * @param prompt Listen / WordListen：要朗读的英文；Meaning / WordMeaning / Order：中文；FillWord / Pattern：挖空后的英文；
+ *               Contraction：「I'm = ?」
+ * @param hint FillWord / Pattern / 单词题的中文；Contraction 为缩写所在原句及中文；其余为空
  * @param answer Order：词块按正确顺序以空格连接
  * @param options Order：打乱后的词块（可能有重复词）；其余为含答案的选项
- * @param sentence 完整原句（单词题为单词本身），答题后展示与朗读
+ * @param sentence 完整原句（单词题为单词本身，缩写题为「I'm = I am」），答题后展示；同组内唯一
  */
 data class SentenceQuestion(
     val type: SentenceQuestionType,
@@ -63,6 +65,7 @@ fun buildThemePractice(
             SentenceQuestionType.Pattern -> pattern(units, used, random)
             SentenceQuestionType.Order -> order(lines, used, random)
             SentenceQuestionType.WordListen, SentenceQuestionType.WordMeaning -> word(type, vocabulary, used, random)
+            SentenceQuestionType.Contraction -> contraction(units, used, random)
         } ?: continue
         used += question.sentence
         questions += question
@@ -96,6 +99,41 @@ private fun word(type: SentenceQuestionType, vocabulary: List<OgdenWord>, used: 
         answer = target.word,
         options = (distractors + target.word).shuffled(random),
         sentence = target.word
+    )
+}
+
+private val BeAndAux = listOf("am", "is", "are", "will", "have")
+private val Negatives = listOf("is not", "are not", "do not", "does not", "did not", "cannot", "will not", "have not", "was not")
+
+/** 干扰项：be/助动词类换助动词（I am → I is / I are），否定类换别的否定（is not → do not），let's 给形近写法。 */
+private fun contractionDistractors(full: String, random: Random): List<String> {
+    val words = full.split(" ")
+    val pool = when {
+        full == "cannot" || words.last() == "not" -> Negatives
+        words.size == 2 && words[1] in BeAndAux -> BeAndAux.map { "${words[0]} $it" }
+        else -> listOf("${words[0]} is", "${words[0]} it", "${words[0]} as")
+    }
+    return pool.filter { !it.equals(full, ignoreCase = true) }.shuffled(random).take(3)
+}
+
+private fun contraction(units: List<Speech>, used: Set<String>, random: Random): SentenceQuestion? {
+    // 不按 used 过滤原句：缩写往往只出现在一两句里，被别的题型先用掉就出不了题；以「I'm = I am」去重
+    val candidates = units.flatMap { it.lines + it.patterns }
+        .distinctBy { it.en }
+        .flatMap { line -> tokenizeSpeech(line.en).mapNotNull { t -> contractionOf(t.text)?.let { Triple(line, t.text, it) } } }
+        .shuffled(random)
+    val (line, token, full) = candidates
+        .map { (line, token, contraction) -> Triple(line, token, expandContraction(token, contraction)) }
+        .firstOrNull { (_, token, full) -> "$token = $full" !in used } ?: return null
+    val distractors = contractionDistractors(full, random)
+        .map { if (full.first().isUpperCase()) it.replaceFirstChar { c -> c.uppercaseChar() } else it }
+    return SentenceQuestion(
+        type = SentenceQuestionType.Contraction,
+        prompt = "$token = ?",
+        hint = "${line.en}\n${line.zh}",
+        answer = full,
+        options = (distractors + full).distinct().shuffled(random),
+        sentence = "$token = $full"
     )
 }
 
