@@ -2,11 +2,30 @@ package com.example.ogdenkids
 
 data class SpeechLine(val en: String, val zh: String)
 
+/** 三个级别共用同一套主题，每级每个主题 5 个单元；声明顺序即单元编号顺序。 */
+enum class SpeechTheme(val key: String, val zh: String, val en: String) {
+    Me("me", "我和家人", "Me and My Family"),
+    School("school", "学校与朋友", "School and Friends"),
+    Food("food", "食物与健康", "Food and Health"),
+    Nature("nature", "动物与自然", "Animals and Nature"),
+    Seasons("seasons", "季节与天气", "Seasons and Weather"),
+    Hobbies("hobbies", "爱好与运动", "Hobbies and Sports"),
+    Places("places", "家与旅行", "Home and Travel"),
+    City("city", "城市", "My City"),
+    Jobs("jobs", "职业", "Jobs"),
+    Festivals("festivals", "节日与成长", "Festivals and Growing Up");
+
+    companion object {
+        fun from(key: String) = values().first { it.key == key }
+    }
+}
+
 /** 一个单元：[lines] 是 Track1 示范演讲（一句一行），[patterns] 是 Track2 替换句型。 */
 data class Speech(
     val id: String,
     val level: Int,
     val unit: Int,
+    val theme: SpeechTheme,
     val title: String,
     val titleZh: String,
     val lines: List<SpeechLine>,
@@ -40,7 +59,7 @@ private val IrregularForms = mapOf(
 )
 
 /**
- * 词形还原用的词表视图（全部小写）。按后缀限定原形词类，避免 evening→even、forest→for 这类误还原。
+ * 词形还原用的词表视图（全部小写）。按后缀限定原形词类，避免 upper→up、inner→in 这类误还原。
  *
  * @param words 全部词（850 + 拓展词）
  * @param qualities 性质词（qg/qo）：-er/-est/-ly 的原形必须在这里；拓展词不分词类，同时放进两组
@@ -64,7 +83,7 @@ private enum class BaseKind { Any, Quality, Verb }
  * @param token 正文原词，如 "Came"、"boxes"、"don't"
  * @return 命中的小写原形；对不上词表时返回 null
  *
- * Example: lemmatize("stopped", vocab) == "stop"; lemmatize("Is", vocab) == "be"; lemmatize("evening", vocab) == null
+ * Example: lemmatize("stopped", vocab) == "stop"; lemmatize("Is", vocab) == "be"; lemmatize("upper", vocab) == null
  */
 fun lemmatize(token: String, vocabulary: LemmaVocabulary): String? {
     val word = token.lowercase()

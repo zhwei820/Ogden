@@ -41,11 +41,14 @@ class SpeechTest {
                 }
             }
         }
+        // 单元按 SpeechTheme 声明顺序连续编号，每个主题 5 个
+        val expectedThemes = SpeechTheme.values().flatMap { theme -> List(5) { theme.key } }
         (1..3).forEach { level ->
             val units = List(speeches.length()) { speeches.getJSONObject(it) }
                 .filter { it.getInt("level") == level }
-                .map { it.getInt("unit") }
-            assertEquals("Level $level units", (1..20).toList(), units.sorted())
+                .sortedBy { it.getInt("unit") }
+            assertEquals("Level $level units", (1..expectedThemes.size).toList(), units.map { it.getInt("unit") })
+            assertEquals("Level $level themes", expectedThemes, units.map { it.getString("theme") })
         }
     }
 
@@ -61,8 +64,8 @@ class SpeechTest {
 
     @Test
     fun lemmatizeRejectsFalseStems() {
-        // 不加词类约束时 evening→even、forest→for 会被误还原
-        listOf("evening", "forest", "afraid", "newspaper", "zzz").forEach {
+        // 不加词类约束时 upper→up、inner→in 会被误还原（evening/forest 已是拓展词，不能再作反例）
+        listOf("upper", "inner", "newspaper", "zzz").forEach {
             assertNull(it, lemmatize(it, vocabulary))
         }
         // 本身就是 850 词的不应被剥后缀

@@ -6,6 +6,7 @@ key / region 读 local.properties 的 azure.speech.key / azure.speech.region。�
 """
 import json
 import re
+import ssl
 import sys
 import time
 import urllib.error
@@ -18,6 +19,9 @@ ASSETS = ROOT / "app/src/main/assets"
 # 与 AzureSpeaker / buildSsml 保持一致：同一嗓音、同一输出格式，和原有 850 词音频同为 24kHz 48kbps mono
 VOICES = {"us": ("en-US-JennyNeural", "en-US"), "uk": ("en-GB-SoniaNeural", "en-GB")}
 OUTPUT_FORMAT = "audio-24khz-48kbitrate-mono-mp3"
+# Python 3.13+ 默认开启 X.509 严格校验，会拒绝 Basic Constraints 未标 critical 的企业代理 CA；仍校验证书链，只放宽这一项
+SSL_CONTEXT = ssl.create_default_context()
+SSL_CONTEXT.verify_flags &= ~ssl.VERIFY_X509_STRICT
 
 
 def local_props():
@@ -47,14 +51,14 @@ def synthesize(word, voice, lang, key, region):
             "User-Agent": "OgdenBasic",
         },
     )
-    for attempt in range(4):
+    for attempt in range(8):
         try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            with urllib.request.urlopen(req, timeout=30, context=SSL_CONTEXT) as resp:
                 return resp.read()
         except urllib.error.HTTPError as e:
-            # 429 为免费档限流，退避后重试
-            if e.code == 429 and attempt < 3:
-                time.sleep(2 ** attempt * 2)
+            # 429 为限流（免费档约 20 次/分钟），按 Retry-After 或指数退避重试
+            if e.code == 429 and attempt < 7:
+                time.sleep(max(int(e.headers.get("Retry-After") or 0), 2 ** attempt))
                 continue
             raise
 

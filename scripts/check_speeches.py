@@ -17,7 +17,7 @@ RULES = {
     2: ((8, 10), (3, 10), (4, 6)),
     3: ((10, 14), (3, 16), (4, 6)),
 }
-THEMES = ["me", "school", "food", "nature", "seasons", "hobbies", "places", "festivals"]
+THEMES = ["me", "school", "food", "nature", "seasons", "hobbies", "places", "city", "jobs", "festivals"]
 UNITS_PER_THEME = 5
 UNITS_PER_LEVEL = len(THEMES) * UNITS_PER_THEME
 

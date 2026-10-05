@@ -5,6 +5,7 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import android.speech.tts.TextToSpeech
+import android.speech.tts.UtteranceProgressListener
 import android.util.Log
 import java.io.File
 import java.io.IOException
@@ -40,23 +41,42 @@ class AzureSpeaker(context: Context) {
     private val systemTts = TextToSpeech(context.applicationContext) { status ->
         systemTtsReady = status == TextToSpeech.SUCCESS
     }
+    // 系统 TTS 当前这句的 utteranceId 与它对应的 speak 编号；监听回调在 binder 线程，需切回主线程再比对
+    private var systemUtterance: Pair<String, Int>? = null
+    private var onFinished: (() -> Unit)? = null
 
-    fun speak(rawText: String, voice: AzureVoice) {
+    init {
+        systemTts.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
+            override fun onStart(utteranceId: String?) = Unit
+            override fun onDone(utteranceId: String?) = finishSystemUtterance(utteranceId)
+            @Deprecated("Deprecated in Java")
+            override fun onError(utteranceId: String?) = finishSystemUtterance(utteranceId)
+        })
+    }
+
+    /**
+     * @param onDone 这句正常播完（含回退到系统 TTS 播完、或无声可放）后在主线程回调；
+     *               被 [stop] 或下一次 [speak] 打断时不回调
+     */
+    fun speak(rawText: String, voice: AzureVoice, onDone: (() -> Unit)? = null) {
         val text = rawText.trim()
         if (text.isEmpty()) return
         stop()
         val seq = requestSeq.incrementAndGet()
+        onFinished = onDone
         executor.execute {
             val file = cachedOrSynthesize(text, voice)
             mainHandler.post {
                 if (seq != requestSeq.get()) return@post
-                if (file != null) playFile(file, text, voice) else speakWithSystemTts(text, voice)
+                if (file != null) playFile(file, text, voice, seq) else speakWithSystemTts(text, voice, seq)
             }
         }
     }
 
     fun stop() {
         requestSeq.incrementAndGet()
+        onFinished = null
+        systemUtterance = null
         player?.release()
         player = null
         systemTts.stop()
@@ -110,7 +130,23 @@ class AzureSpeaker(context: Context) {
         }
     }
 
-    private fun playFile(file: File, text: String, voice: AzureVoice) {
+    private fun finish(seq: Int) {
+        if (seq != requestSeq.get()) return
+        val callback = onFinished
+        onFinished = null
+        callback?.invoke()
+    }
+
+    private fun finishSystemUtterance(utteranceId: String?) {
+        mainHandler.post {
+            val (id, seq) = systemUtterance ?: return@post
+            if (id != utteranceId) return@post
+            systemUtterance = null
+            finish(seq)
+        }
+    }
+
+    private fun playFile(file: File, text: String, voice: AzureVoice, seq: Int) {
         runCatching {
             val mediaPlayer = MediaPlayer()
             player = mediaPlayer
@@ -119,29 +155,39 @@ class AzureSpeaker(context: Context) {
             mediaPlayer.setOnCompletionListener {
                 it.release()
                 if (player === it) player = null
+                finish(seq)
             }
             mediaPlayer.setOnErrorListener { mp, what, _ ->
                 Log.w(TAG, "Cached audio unplayable what=$what, deleting ${file.name}")
                 mp.release()
                 if (player === mp) player = null
                 file.delete()
-                speakWithSystemTts(text, voice)
+                speakWithSystemTts(text, voice, seq)
                 true
             }
             mediaPlayer.prepareAsync()
         }.onFailure {
             Log.w(TAG, "MediaPlayer setup failed", it)
-            speakWithSystemTts(text, voice)
+            speakWithSystemTts(text, voice, seq)
         }
     }
 
-    private fun speakWithSystemTts(text: String, voice: AzureVoice) {
-        if (!systemTtsReady) return
+    private fun speakWithSystemTts(text: String, voice: AzureVoice, seq: Int) {
+        if (!systemTtsReady) {
+            // 没有声音可放也要回调，否则全文朗读会停在这一句
+            finish(seq)
+            return
+        }
         val result = systemTts.setLanguage(voice.fallbackLocale)
         if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             Log.w(TAG, "System TTS lacks ${voice.fallbackLocale}")
         }
-        systemTts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "azure-fallback-${System.nanoTime()}")
+        val utteranceId = "azure-fallback-${System.nanoTime()}"
+        systemUtterance = utteranceId to seq
+        if (systemTts.speak(text, TextToSpeech.QUEUE_FLUSH, null, utteranceId) != TextToSpeech.SUCCESS) {
+            systemUtterance = null
+            finish(seq)
+        }
     }
 
     private fun sha1(value: String): String =
