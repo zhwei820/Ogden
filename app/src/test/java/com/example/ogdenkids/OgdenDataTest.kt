@@ -3,6 +3,7 @@ package com.example.ogdenkids
 import org.json.JSONArray
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
 
@@ -13,7 +14,6 @@ class OgdenDataTest {
 
     @Test
     fun wordListHasExpectedTotalAndCategories() {
-        assertEquals(1200, words.length())
         val counts = mutableMapOf<String, Int>()
         repeat(words.length()) { index ->
             val item = words.getJSONObject(index)
@@ -24,7 +24,12 @@ class OgdenDataTest {
         assertEquals(200, counts["pt"])
         assertEquals(100, counts["qg"])
         assertEquals(50, counts["qo"])
-        assertEquals(350, counts["ex"])
+        // 拓展词与变形词数量随内容增长，只要求存在；Ogden 850 原有五类不能变
+        assertTrue((counts["ex"] ?: 0) >= 350)
+        assertTrue((counts["fm"] ?: 0) > 0)
+        assertEquals(words.length(), counts.values.sum())
+        val headwords = List(words.length()) { words.getJSONObject(it).getString("w").lowercase() }
+        assertEquals("Duplicate headwords", headwords.size, headwords.toSet().size)
     }
 
     @Test
