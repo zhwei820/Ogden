@@ -30,13 +30,22 @@ class SpeechTest {
             val item = speeches.getJSONObject(index)
             listOf("id", "title", "titleZh").forEach { assertFalse("Missing $it at $index", item.optString(it).isBlank()) }
             assertTrue("Duplicate id at $index", ids.add(item.getString("id")))
-            val paragraphs = item.getJSONArray("paragraphs")
-            assertTrue(paragraphs.length() > 0)
-            repeat(paragraphs.length()) { p ->
-                val paragraph = paragraphs.getJSONObject(p)
-                assertFalse(paragraph.optString("en").isBlank())
-                assertFalse(paragraph.optString("zh").isBlank())
+            assertTrue("Bad level at $index", item.getInt("level") in 1..3)
+            listOf("lines", "patterns").forEach { key ->
+                val lines = item.getJSONArray(key)
+                assertTrue("Empty $key at $index", lines.length() > 0)
+                repeat(lines.length()) { p ->
+                    val line = lines.getJSONObject(p)
+                    assertFalse(line.optString("en").isBlank())
+                    assertFalse(line.optString("zh").isBlank())
+                }
             }
+        }
+        (1..3).forEach { level ->
+            val units = List(speeches.length()) { speeches.getJSONObject(it) }
+                .filter { it.getInt("level") == level }
+                .map { it.getInt("unit") }
+            assertEquals("Level $level units", (1..20).toList(), units.sorted())
         }
     }
 

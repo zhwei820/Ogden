@@ -1,5 +1,6 @@
 package com.example.ogdenkids
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
@@ -9,6 +10,7 @@ import android.os.Build
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -48,6 +50,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -220,19 +223,22 @@ class OgdenRepository(private val context: Context) {
 
     fun loadSpeeches(): List<Speech> {
         val speeches = JSONArray(readAsset("speeches.json"))
+        fun lines(array: JSONArray) = List(array.length()) {
+            val line = array.getJSONObject(it)
+            SpeechLine(en = line.getString("en"), zh = line.getString("zh"))
+        }
         return List(speeches.length()) { index ->
             val item = speeches.getJSONObject(index)
-            val paragraphs = item.getJSONArray("paragraphs")
             Speech(
                 id = item.getString("id"),
+                level = item.getInt("level"),
+                unit = item.getInt("unit"),
                 title = item.getString("title"),
                 titleZh = item.getString("titleZh"),
-                paragraphs = List(paragraphs.length()) {
-                    val paragraph = paragraphs.getJSONObject(it)
-                    SpeechParagraph(en = paragraph.getString("en"), zh = paragraph.getString("zh"))
-                }
+                lines = lines(item.getJSONArray("lines")),
+                patterns = lines(item.getJSONArray("patterns"))
             )
-        }
+        }.sortedWith(compareBy({ it.level }, { it.unit }))
     }
 
     private fun readAsset(name: String): String =
@@ -280,6 +286,10 @@ class ProgressStore(context: Context) {
     fun isSpeechWordSaved(word: String) = set("speechWords").contains(word)
 
     fun toggleSpeechWord(word: String) = updateSet("speechWords", word, !isSpeechWordSaved(word))
+
+    fun isSpeechLearned(id: String) = set("speechLearned").contains(id)
+
+    fun toggleSpeechLearned(id: String) = updateSet("speechLearned", id, !isSpeechLearned(id))
 
     fun dailyStreak(): Int = prefs.getInt("streak", 0)
 
@@ -365,6 +375,8 @@ fun OgdenKidsApp() {
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
     var version by remember { mutableStateOf(0) }
+    var confirmExit by remember { mutableStateOf(false) }
+    var speechLevel by remember { mutableStateOf(1) }
     val speak = rememberSpeaker(accent)
     val azureSpeaker = remember { AzureSpeaker(context) }
     DisposableEffect(azureSpeaker) {
@@ -372,6 +384,23 @@ fun OgdenKidsApp() {
     }
     val speakEnglish: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.english(accent)) }
     val speakChinese: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.ZhCn) }
+    val goBack: () -> Unit = {
+        when (val current = screen) {
+            Screen.Main -> confirmExit = true
+            is Screen.Detail -> {
+                azureSpeaker.stop()
+                screen = current.returnTo
+            }
+            is Screen.Practice -> {
+                version++
+                screen = Screen.Main
+            }
+            else -> {
+                azureSpeaker.stop()
+                screen = Screen.Main
+            }
+        }
+    }
 
     MaterialTheme(
         colorScheme = lightColorScheme(
@@ -391,6 +420,23 @@ fun OgdenKidsApp() {
     ) {
         CompositionLocalProvider(LocalChineseMode provides chineseMode) {
         Surface(color = Paper, modifier = Modifier.fillMaxSize()) {
+            BackHandler(onBack = goBack)
+            if (confirmExit) {
+                AlertDialog(
+                    onDismissRequest = { confirmExit = false },
+                    title = { Text("退出应用") },
+                    text = { Text("确定要退出吗？") },
+                    confirmButton = {
+                        TextButton(onClick = {
+                            confirmExit = false
+                            (context as? Activity)?.finish()
+                        }) { Text("退出") }
+                    },
+                    dismissButton = {
+                        TextButton(onClick = { confirmExit = false }) { Text("取消") }
+                    }
+                )
+            }
             when (val current = screen) {
                 Screen.Main -> MainScaffold(
                     selectedTab = selectedTab,
@@ -422,6 +468,9 @@ fun OgdenKidsApp() {
                             )
                             Tab.Speech -> SpeechListScreen(
                                 speeches = speeches,
+                                store = progressStore,
+                                level = speechLevel,
+                                onLevel = { speechLevel = it },
                                 padding = padding,
                                 onOpen = { screen = Screen.SpeechReader(it) }
                             )
@@ -447,10 +496,7 @@ fun OgdenKidsApp() {
                     progress = progressStore.progress(current.word.word),
                     accent = accent,
                     zh = chineseMode,
-                    onBack = {
-                        azureSpeaker.stop()
-                        screen = current.returnTo
-                    },
+                    onBack = goBack,
                     onSpeak = speak,
                     onSpeakZh = speakChinese,
                     onFavorite = {
@@ -463,7 +509,7 @@ fun OgdenKidsApp() {
                     words = words,
                     store = progressStore,
                     category = current.category,
-                    onBack = { screen = Screen.Main },
+                    onBack = goBack,
                     onStart = { level -> screen = Screen.Practice(current.category, level) }
                 )
                 is Screen.Practice -> {
@@ -479,10 +525,7 @@ fun OgdenKidsApp() {
                         reviewOnly = current.reviewOnly,
                         zh = chineseMode,
                         onSpeak = speak,
-                        onBack = {
-                            version++
-                            screen = Screen.Main
-                        },
+                        onBack = goBack,
                         onComplete = {
                             if (!current.reviewOnly) progressStore.markLevelComplete(current.category, current.level)
                         },
@@ -497,7 +540,7 @@ fun OgdenKidsApp() {
                     words = if (current.kind == "mistakes") progressStore.mistakeWords(words) else progressStore.favoriteWords(words),
                     store = progressStore,
                     zh = chineseMode,
-                    onBack = { screen = Screen.Main },
+                    onBack = goBack,
                     onOpen = { screen = Screen.Detail(it) }
                 )
                 is Screen.SpeechReader -> SpeechReaderScreen(
@@ -506,10 +549,8 @@ fun OgdenKidsApp() {
                     lemmaVocabulary = lemmaVocabulary,
                     store = progressStore,
                     accent = accent,
-                    onBack = {
-                        azureSpeaker.stop()
-                        screen = Screen.Main
-                    },
+                    onBack = goBack,
+                    onLearnedChange = { version++ },
                     onSpeakWord = { azureSpeaker.stop(); speak(it) },
                     onSpeakEnglish = speakEnglish,
                     onSpeakChinese = speakChinese,
@@ -520,10 +561,7 @@ fun OgdenKidsApp() {
                 )
                 Screen.SpeechWords -> SpeechWordListScreen(
                     words = remember(version) { progressStore.speechWords() },
-                    onBack = {
-                        azureSpeaker.stop()
-                        screen = Screen.Main
-                    },
+                    onBack = goBack,
                     onSpeak = speakEnglish,
                     onRemove = {
                         progressStore.toggleSpeechWord(it)
@@ -535,17 +573,17 @@ fun OgdenKidsApp() {
                     chineseMode = chineseMode,
                     onAccent = { accent = it; progressStore.saveAccent(it) },
                     onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
-                    onBack = { screen = Screen.Main }
+                    onBack = goBack
                 )
                 Screen.Privacy -> LegalInfoScreen(
                     title = "隐私声明",
-                    onBack = { screen = Screen.Main },
+                    onBack = goBack,
                     sections = privacySections(),
                     links = emptyList()
                 )
                 Screen.About -> LegalInfoScreen(
                     title = "关于作者",
-                    onBack = { screen = Screen.Main },
+                    onBack = goBack,
                     sections = aboutSections(),
                     links = listOf(
                         "原作地址" to "https://ogden.munch.love/",
@@ -1380,19 +1418,41 @@ fun WordCollectionScreen(
     }
 }
 
+private val SpeechLevelNames = mapOf(1 to "一级 · 起步", 2 to "二级 · 成长", 3 to "三级 · 表达")
+
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun SpeechListScreen(speeches: List<Speech>, padding: PaddingValues, onOpen: (Speech) -> Unit) {
+fun SpeechListScreen(
+    speeches: List<Speech>,
+    store: ProgressStore,
+    level: Int,
+    onLevel: (Int) -> Unit,
+    padding: PaddingValues,
+    onOpen: (Speech) -> Unit
+) {
+    val units = speeches.filter { it.level == level }
+    val learned = units.count { store.isSpeechLearned(it.id) }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(padding),
         contentPadding = PaddingValues(18.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            SectionTitle("示范演讲", "点任意词查看释义，可收藏到复习中心")
+            SectionTitle("示范演讲", "先听 Track1 跟读，再用 Track2 句型替换练说")
         }
-        items(speeches, key = { it.id }) { speech ->
+        item {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                SpeechLevelNames.forEach { (value, name) ->
+                    FilterChip(selected = level == value, onClick = { onLevel(value) }, label = { Text(name) })
+                }
+            }
+        }
+        item {
+            AppText("已学 $learned / ${units.size} 单元", color = InkFaint, fontSize = 13.sp)
+        }
+        items(units, key = { it.id }) { speech ->
             Card(
                 colors = CardDefaults.cardColors(containerColor = PaperElevated),
                 shape = RoundedCornerShape(16.dp),
@@ -1401,17 +1461,32 @@ fun SpeechListScreen(speeches: List<Speech>, padding: PaddingValues, onOpen: (Sp
                     .clickable { onOpen(speech) }
                     .border(1.dp, Line, RoundedCornerShape(16.dp))
             ) {
-                Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text(speech.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 22.sp, color = Ink)
-                    AppText(speech.titleZh, color = InkSoft)
-                    AppText("${speech.paragraphs.size} 段", color = InkFaint, fontSize = 12.sp)
+                Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
+                    AppText(
+                        "${speech.unit}",
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 22.sp,
+                        color = Category.Operations.tint,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.width(44.dp)
+                    )
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(speech.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 19.sp, color = Ink)
+                        AppText(speech.titleZh, color = InkSoft)
+                        AppText("${speech.lines.size} 句 · ${speech.patterns.size} 个句型", color = InkFaint, fontSize = 12.sp)
+                    }
+                    if (store.isSpeechLearned(speech.id)) {
+                        Icon(Icons.Default.Check, contentDescription = "已学", tint = Success)
+                    }
                 }
             }
         }
     }
 }
 
-private data class SelectedSpeechWord(val paragraph: Int, val token: SpeechToken)
+/** [line] 在 Track1 中是句序号，Track2 的句型接在其后编号，这样两段共用一个选中状态。 */
+private data class SelectedSpeechWord(val line: Int, val token: SpeechToken)
 
 /** 非 850 词的收藏键：小写并去掉所有格。 */
 private fun speechWordKey(token: String) = token.lowercase().removeSuffix("'s")
@@ -1425,19 +1500,39 @@ fun SpeechReaderScreen(
     store: ProgressStore,
     accent: Accent,
     onBack: () -> Unit,
+    onLearnedChange: () -> Unit,
     onSpeakWord: (String) -> Unit,
     onSpeakEnglish: (String) -> Unit,
     onSpeakChinese: (String) -> Unit,
     onOpenWord: (OgdenWord) -> Unit
 ) {
     var selected by remember(speech.id) { mutableStateOf<SelectedSpeechWord?>(null) }
-    var shownTranslations by remember(speech.id) { mutableStateOf(emptySet<Int>()) }
+    var showTranslation by remember(speech.id) { mutableStateOf(true) }
+    var learned by remember(speech.id) { mutableStateOf(store.isSpeechLearned(speech.id)) }
     // 收藏存在 SharedPreferences 里，不是 Compose 状态；改动后递增它，让高亮与词卡重新读取
     var favoriteVersion by remember { mutableStateOf(0) }
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
     fun isSaved(token: SpeechToken): Boolean {
         val word = ogdenWordOf(token)
         return if (word != null) store.progress(word.word).favorite else store.isSpeechWordSaved(speechWordKey(token.text))
+    }
+    val allLines = speech.lines + speech.patterns
+
+    @Composable
+    fun lineRow(index: Int) {
+        val line = allLines[index]
+        val tokens = remember(line.en) { tokenizeSpeech(line.en) }
+        val savedRanges = remember(line.en, favoriteVersion) { tokens.filter { isSaved(it) }.map { it.range } }
+        SpeechLineRow(
+            line = line,
+            tokens = tokens,
+            savedRanges = savedRanges,
+            selectedRange = selected?.takeIf { it.line == index }?.token?.range,
+            showTranslation = showTranslation,
+            onSpeakEnglish = onSpeakEnglish,
+            onSpeakChinese = onSpeakChinese,
+            onTokenClick = { selected = SelectedSpeechWord(index, it) }
+        )
     }
 
     Scaffold(containerColor = Paper, topBar = {
@@ -1452,7 +1547,10 @@ fun SpeechReaderScreen(
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
                 Text(speech.title, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                AppText(speech.titleZh, color = InkFaint, fontSize = 12.sp)
+                AppText("${SpeechLevelNames[speech.level]} · Unit ${speech.unit} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
+            }
+            TextButton(onClick = { showTranslation = !showTranslation }) {
+                AppText(if (showTranslation) "收起译文" else "显示译文", fontSize = 13.sp)
             }
         }
     }) { padding ->
@@ -1461,31 +1559,38 @@ fun SpeechReaderScreen(
                 .fillMaxSize()
                 .padding(padding),
             contentPadding = PaddingValues(18.dp),
-            verticalArrangement = Arrangement.spacedBy(14.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item {
-                AppText("轻触单词查看释义 · 已收藏的词以紫色标出", color = InkFaint, fontSize = 13.sp)
-            }
-            items(speech.paragraphs.size) { index ->
-                val paragraph = speech.paragraphs[index]
-                val tokens = remember(paragraph.en) { tokenizeSpeech(paragraph.en) }
-                val savedRanges = remember(paragraph.en, favoriteVersion) {
-                    tokens.filter { isSaved(it) }.map { it.range }
-                }
-                SpeechParagraphCard(
-                    index = index,
-                    paragraph = paragraph,
-                    tokens = tokens,
-                    savedRanges = savedRanges,
-                    selectedRange = selected?.takeIf { it.paragraph == index }?.token?.range,
-                    showTranslation = index in shownTranslations,
-                    onToggleTranslation = {
-                        shownTranslations = if (index in shownTranslations) shownTranslations - index else shownTranslations + index
-                    },
-                    onSpeakEnglish = onSpeakEnglish,
-                    onSpeakChinese = onSpeakChinese,
-                    onTokenClick = { selected = SelectedSpeechWord(index, it) }
+                SpeechTrackHeader(
+                    title = "Track1 · Model Speech",
+                    subtitle = "示范演讲：点喇叭听一句，点单词查释义",
+                    onPlayAll = { onSpeakEnglish(speech.lines.joinToString(" ") { it.en }) }
                 )
+            }
+            items(speech.lines.size) { lineRow(it) }
+            item {
+                Spacer(Modifier.height(8.dp))
+                SpeechTrackHeader(
+                    title = "Track2 · Listen and Speak",
+                    subtitle = "句型练习：听一遍，换上自己的词说一说",
+                    onPlayAll = null
+                )
+            }
+            items(speech.patterns.size) { lineRow(speech.lines.size + it) }
+            item {
+                Spacer(Modifier.height(8.dp))
+                if (learned) {
+                    OutlinedButton(
+                        onClick = { store.toggleSpeechLearned(speech.id); learned = false; onLearnedChange() },
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("已学会 · 点此取消") }
+                } else {
+                    Button(
+                        onClick = { store.toggleSpeechLearned(speech.id); learned = true; onLearnedChange() },
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("我学会了") }
+                }
             }
         }
     }
@@ -1512,20 +1617,34 @@ fun SpeechReaderScreen(
 }
 
 @Composable
-fun SpeechParagraphCard(
-    index: Int,
-    paragraph: SpeechParagraph,
+private fun SpeechTrackHeader(title: String, subtitle: String, onPlayAll: (() -> Unit)?) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(Modifier.weight(1f)) {
+            AppText(title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            AppText(subtitle, color = InkFaint, fontSize = 12.sp)
+        }
+        if (onPlayAll != null) {
+            TextButton(onClick = onPlayAll) {
+                Icon(Icons.Default.PlayArrow, contentDescription = null)
+                AppText("全文朗读", fontSize = 13.sp)
+            }
+        }
+    }
+}
+
+@Composable
+fun SpeechLineRow(
+    line: SpeechLine,
     tokens: List<SpeechToken>,
     savedRanges: List<IntRange>,
     selectedRange: IntRange?,
     showTranslation: Boolean,
-    onToggleTranslation: () -> Unit,
     onSpeakEnglish: (String) -> Unit,
     onSpeakChinese: (String) -> Unit,
     onTokenClick: (SpeechToken) -> Unit
 ) {
     val text = buildAnnotatedString {
-        append(paragraph.en)
+        append(line.en)
         savedRanges.forEach {
             addStyle(SpanStyle(color = Category.Opposites.tint, fontWeight = FontWeight.SemiBold), it.first, it.last + 1)
         }
@@ -1536,28 +1655,24 @@ fun SpeechParagraphCard(
         shape = RoundedCornerShape(14.dp),
         modifier = Modifier.border(1.dp, Line, RoundedCornerShape(14.dp))
     ) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AppText("第 ${index + 1} 段", color = InkFaint, fontSize = 12.sp, modifier = Modifier.weight(1f))
-                TextButton(onClick = onToggleTranslation) {
-                    AppText(if (showTranslation) "收起译文" else "译文", fontSize = 13.sp)
-                }
-                IconButton(onClick = { onSpeakEnglish(paragraph.en) }) {
-                    Icon(Icons.Default.VolumeUp, contentDescription = "朗读本段", tint = Category.Operations.tint)
+        Row(Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                ClickableText(
+                    text = text,
+                    style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink),
+                    onClick = { offset -> tokens.firstOrNull { offset in it.range }?.let(onTokenClick) }
+                )
+                AnimatedVisibility(showTranslation) {
+                    AppText(
+                        line.zh,
+                        color = InkSoft,
+                        lineHeight = 22.sp,
+                        modifier = Modifier.clickable { onSpeakChinese(line.zh) }
+                    )
                 }
             }
-            ClickableText(
-                text = text,
-                style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 30.sp, color = Ink),
-                onClick = { offset -> tokens.firstOrNull { offset in it.range }?.let(onTokenClick) }
-            )
-            AnimatedVisibility(showTranslation) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppText(paragraph.zh, color = InkSoft, lineHeight = 22.sp, modifier = Modifier.weight(1f))
-                    IconButton(onClick = { onSpeakChinese(paragraph.zh) }) {
-                        Icon(Icons.Default.VolumeUp, contentDescription = "朗读译文", tint = InkFaint)
-                    }
-                }
+            IconButton(onClick = { onSpeakEnglish(line.en) }) {
+                Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = Category.Operations.tint)
             }
         }
     }

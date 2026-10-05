@@ -1,12 +1,16 @@
 package com.example.ogdenkids
 
-data class SpeechParagraph(val en: String, val zh: String)
+data class SpeechLine(val en: String, val zh: String)
 
+/** 一个单元：[lines] 是 Track1 示范演讲（一句一行），[patterns] 是 Track2 替换句型。 */
 data class Speech(
     val id: String,
+    val level: Int,
+    val unit: Int,
     val title: String,
     val titleZh: String,
-    val paragraphs: List<SpeechParagraph>
+    val lines: List<SpeechLine>,
+    val patterns: List<SpeechLine>
 )
 
 /** 正文中一个可点击的英文词：[text] 为原文，[range] 为它在段落字符串中的位置。 */
