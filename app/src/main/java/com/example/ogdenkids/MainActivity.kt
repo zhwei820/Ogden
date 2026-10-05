@@ -39,7 +39,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
@@ -100,7 +99,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -175,7 +177,7 @@ data class WordProgress(
 )
 
 enum class Tab(val title: String, val icon: ImageVector) {
-    Speech("演讲", Icons.Default.RecordVoiceOver),
+    Speech("课文", Icons.Default.RecordVoiceOver),
     Challenge("闯关", Icons.Default.Star),
     Library("词库", Icons.Default.Book),
     Review("复习", Icons.Default.Refresh),
@@ -298,7 +300,7 @@ class ProgressStore(context: Context) {
 
     fun favoriteWords(words: List<OgdenWord>) = words.filter { progress(it.word).favorite }
 
-    /** 演讲里收藏的词表外单词（词表内的走 favorites），存小写原文。 */
+    /** 课文里收藏的词表外单词（词表内的走 favorites），存小写原文。 */
     fun speechWords(): List<String> = set("speechWords").sorted()
 
     fun isSpeechWordSaved(word: String) = set("speechWords").contains(word)
@@ -1420,8 +1422,8 @@ fun ReviewScreen(
         }
         item {
             ReviewEntryCard(
-                title = "演讲生词",
-                subtitle = if (speechWords.isEmpty()) "在演讲里点词即可收藏" else "演讲中收藏的词表外的词",
+                title = "课文生词",
+                subtitle = if (speechWords.isEmpty()) "在课文里长按单词即可收藏" else "课文中收藏的词表外的词",
                 count = speechWords.size,
                 tint = Category.Qualities.tint,
                 icon = Icons.Default.RecordVoiceOver,
@@ -1558,7 +1560,7 @@ fun SpeechListScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            SectionTitle("示范演讲", "先听 Track1 跟读，再用 Track2 句型替换练说")
+            SectionTitle("课文", "先听课文跟读，再用句型替换练说")
         }
         stickyHeader {
             Column(
@@ -1666,7 +1668,7 @@ fun SpeechListScreen(
     }
 }
 
-/** [line] 在 Track1 中是句序号，Track2 的句型接在其后编号，这样两段共用一个选中状态。 */
+/** [line] 在课文中是句序号，句型接在其后编号，这样两段共用一个选中状态。 */
 private data class SelectedSpeechWord(val line: Int, val token: SpeechToken)
 
 /** 词表外单词的收藏键：小写并去掉所有格。 */
@@ -1735,7 +1737,7 @@ fun SpeechReaderScreen(
     }
 
     LaunchedEffect(speakingIndex, playingAll) {
-        // 列表第 0 项是 Track1 标题，句子从第 1 项开始
+        // 列表第 0 项是课文标题，句子从第 1 项开始
         val index = speakingIndex
         if (playingAll && index != null) listState.animateScrollToItem(index + 1)
     }
@@ -1798,8 +1800,8 @@ fun SpeechReaderScreen(
         ) {
             item {
                 SpeechTrackHeader(
-                    title = "Track1 · Model Speech",
-                    subtitle = "示范演讲：点喇叭听一句，点单词查释义",
+                    title = "课文 · Listen and Read",
+                    subtitle = "点句子听朗读，长按单词查释义",
                     playingAll = playingAll,
                     onPlayAll = {
                         if (playingAll) {
@@ -1815,7 +1817,7 @@ fun SpeechReaderScreen(
             item {
                 Spacer(Modifier.height(8.dp))
                 SpeechTrackHeader(
-                    title = "Track2 · Listen and Speak",
+                    title = "句型 · Listen and Speak",
                     subtitle = "句型练习：听一遍，换上自己的词说一说",
                     playingAll = false,
                     onPlayAll = null
@@ -1933,21 +1935,34 @@ fun SpeechLineRow(
         selectedRange?.let { addStyle(SpanStyle(background = Category.Picturable.soft), it.first, it.last + 1) }
     }
     val accent = Category.Operations
+    var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
     Card(
         colors = CardDefaults.cardColors(containerColor = if (speaking) accent.soft else PaperElevated),
         shape = RoundedCornerShape(14.dp),
-        modifier = Modifier.border(
-            if (speaking) 2.dp else 1.dp,
-            if (speaking) accent.tint else Line,
-            RoundedCornerShape(14.dp)
-        )
+        modifier = Modifier
+            .border(
+                if (speaking) 2.dp else 1.dp,
+                if (speaking) accent.tint else Line,
+                RoundedCornerShape(14.dp)
+            )
+            .clickable(onClick = onSpeakEnglish)
     ) {
         Row(Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                ClickableText(
+                // 点句子任意处朗读整句；长按某个词查释义
+                Text(
                     text = text,
                     style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, color = Ink),
-                    onClick = { offset -> tokens.firstOrNull { offset in it.range }?.let(onTokenClick) }
+                    onTextLayout = { layout = it },
+                    modifier = Modifier.pointerInput(tokens) {
+                        detectTapGestures(
+                            onTap = { onSpeakEnglish() },
+                            onLongPress = { position ->
+                                val offset = layout?.getOffsetForPosition(position) ?: return@detectTapGestures
+                                tokens.firstOrNull { offset in it.range }?.let(onTokenClick)
+                            }
+                        )
+                    }
                 )
                 AnimatedVisibility(showTranslation) {
                     AppText(
@@ -2009,7 +2024,7 @@ fun SpeechWordSheet(
                     Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = InkSoft)
                 }
             }
-            AppText("不在词表中，收藏后可在「复习 · 演讲生词」查看", color = InkFaint, fontSize = 13.sp)
+            AppText("不在词表中，收藏后可在「复习 · 课文生词」查看", color = InkFaint, fontSize = 13.sp)
         }
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             OutlinedButton(onClick = onToggleSave, shape = RoundedCornerShape(12.dp), modifier = Modifier.weight(1f)) {
@@ -2047,7 +2062,7 @@ fun SpeechWordListScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
-            AppText("演讲生词 · ${words.size}", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            AppText("课文生词 · ${words.size}", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
         }
     }) { padding ->
         LazyColumn(
@@ -2058,7 +2073,7 @@ fun SpeechWordListScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             if (words.isEmpty()) {
-                item { EmptyCard("在演讲里点击词表外的词即可收藏到这里。") }
+                item { EmptyCard("在课文里长按词表外的词即可收藏到这里。") }
             } else {
                 items(words, key = { it }) { word ->
                     Row(
@@ -2298,7 +2313,7 @@ fun privacySections() = listOf(
     ),
     LegalSection(
         "发音服务",
-        "应用已内置 US / UK 两套单词发音音频，用于离线播放。对于例句、长文本或本地音频不可用的情况，应用可能访问在线发音服务作为备用，该请求仅包含需要发音的英文文本，不包含用户身份信息。示范演讲与中文释义的朗读使用 Microsoft Azure 语音服务，请求仅包含需要朗读的英文或中文文本，合成的音频缓存在本机。"
+        "应用已内置 US / UK 两套单词发音音频，用于离线播放。对于例句、长文本或本地音频不可用的情况，应用可能访问在线发音服务作为备用，该请求仅包含需要发音的英文文本，不包含用户身份信息。课文与中文释义的朗读使用 Microsoft Azure 语音服务，请求仅包含需要朗读的英文或中文文本，合成的音频缓存在本机。"
     )
 )
 

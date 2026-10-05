@@ -20,7 +20,7 @@ enum class SpeechTheme(val key: String, val zh: String, val en: String) {
     }
 }
 
-/** 一个单元：[lines] 是 Track1 示范演讲（一句一行），[patterns] 是 Track2 替换句型，[words] 是可选的本课单词（词表原形）。 */
+/** 一个单元：[lines] 是课文（一句一行），[patterns] 是替换句型，[words] 是可选的本课单词（词表原形）。 */
 data class Speech(
     val id: String,
     val level: Int,
