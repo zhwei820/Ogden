@@ -45,6 +45,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Info
@@ -720,7 +722,7 @@ fun rememberSpeaker(accent: Accent): (String) -> Unit {
 }
 
 private fun localAudioPath(text: String, accent: Accent): String? {
-    if (!text.matches(Regex("[A-Za-z][A-Za-z0-9-]*"))) return null
+    if (!text.matches(Regex("[A-Za-z][A-Za-z0-9'-]*"))) return null
     val file = text.lowercase(Locale.US).replace(Regex("[^a-z0-9]+"), "_").trim('_')
     if (file.isBlank()) return null
     val dir = if (accent == Accent.US) "us" else "uk"
@@ -1456,7 +1458,7 @@ fun WordCollectionScreen(
 private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级")
 private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达")
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun SpeechListScreen(
     speeches: List<Speech>,
@@ -1477,11 +1479,12 @@ fun SpeechListScreen(
     }
     val listState = rememberLazyListState()
     val chipState = rememberLazyListState()
+    var themesExpanded by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val currentTheme by remember(themeStarts) {
         derivedStateOf { themeStarts.indexOfLast { it <= listState.firstVisibleItemIndex + 1 }.coerceAtLeast(0) }
     }
-    LaunchedEffect(currentTheme) { chipState.animateScrollToItem(currentTheme) }
+    LaunchedEffect(currentTheme, themesExpanded) { if (!themesExpanded) chipState.animateScrollToItem(currentTheme) }
     LaunchedEffect(level) { listState.scrollToItem(0) }
     LazyColumn(
         state = listState,
@@ -1512,12 +1515,36 @@ fun SpeechListScreen(
                         )
                     }
                 }
-                LazyRow(state = chipState, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    itemsIndexed(groups, key = { _, (theme, _) -> theme.key }) { index, (theme, themeUnits) ->
-                        FilterChip(
-                            selected = index == currentTheme,
-                            onClick = { scope.launch { listState.animateScrollToItem(themeStarts[index]) } },
-                            label = { AppText("${theme.zh} ${themeUnits.count { store.isSpeechLearned(it.id) }}/${themeUnits.size}") }
+                @Composable
+                fun themeChip(index: Int, theme: SpeechTheme, themeUnits: List<Speech>, modifier: Modifier = Modifier) {
+                    FilterChip(
+                        selected = index == currentTheme,
+                        onClick = {
+                            themesExpanded = false
+                            scope.launch { listState.animateScrollToItem(themeStarts[index]) }
+                        },
+                        label = { AppText("${theme.zh} ${themeUnits.count { store.isSpeechLearned(it.id) }}/${themeUnits.size}") },
+                        modifier = modifier
+                    )
+                }
+                Row(verticalAlignment = Alignment.Top) {
+                    if (themesExpanded) {
+                        FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            groups.forEachIndexed { index, (theme, themeUnits) ->
+                                themeChip(index, theme, themeUnits, Modifier.padding(bottom = 4.dp))
+                            }
+                        }
+                    } else {
+                        LazyRow(state = chipState, modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            itemsIndexed(groups, key = { _, (theme, _) -> theme.key }) { index, (theme, themeUnits) ->
+                                themeChip(index, theme, themeUnits)
+                            }
+                        }
+                    }
+                    IconButton(onClick = { themesExpanded = !themesExpanded }) {
+                        Icon(
+                            if (themesExpanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                            contentDescription = if (themesExpanded) "收起主题" else "展开全部主题"
                         )
                     }
                 }
@@ -1666,8 +1693,8 @@ fun SpeechReaderScreen(
     }
 
     Scaffold(containerColor = Paper, floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
-        // 朗读时滚动会把标题里的按钮滚出屏幕，停止按钮悬浮在底部始终可点
-        if (speakingIndex != null) {
+        // 全文朗读时滚动会把标题里的按钮滚出屏幕，停止按钮悬浮在底部始终可点；单句很短，不需要
+        if (playingAll) {
             ExtendedFloatingActionButton(
                 onClick = { stopSpeaking() },
                 icon = { Icon(Icons.Default.Close, contentDescription = null) },
@@ -1863,11 +1890,7 @@ fun SpeechWordSheet(
             Text(if (accent == Accent.UK) word.ipaUk else word.ipaUs, color = InkFaint)
             if (!surface.equals(word.word, ignoreCase = true)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppText(
-                        formGloss(surface)?.let { "原文：$surface（$it）" } ?: "原文：$surface",
-                        color = InkSoft,
-                        modifier = Modifier.weight(1f)
-                    )
+                    AppText("原文：$surface", color = InkSoft, modifier = Modifier.weight(1f))
                     IconButton(onClick = { onSpeakEnglish(surface) }) {
                         Icon(Icons.Default.VolumeUp, contentDescription = "读原文", tint = InkFaint)
                     }
@@ -2505,18 +2528,22 @@ fun ThemePracticeScreen(
                 }
                 item {
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        question.options.indices.filter { it !in picked }.forEach { chunk ->
+                        question.options.indices.forEach { chunk ->
+                            // 已选的词块原位留同尺寸空位，其余词块不挪位置，孩子不用重新找
+                            val used = chunk in picked
                             Button(
                                 onClick = {
-                                    if (answered) return@Button
+                                    if (answered || used) return@Button
                                     picked = picked + chunk
                                     if (picked.size == question.options.size) {
                                         submit(picked.map { question.options[it] }.joinToString(" ") == question.answer)
                                     }
                                 },
+                                enabled = !used,
+                                colors = ButtonDefaults.buttonColors(disabledContainerColor = Line),
                                 modifier = Modifier.padding(bottom = 8.dp),
                                 contentPadding = PaddingValues(horizontal = 14.dp, vertical = 8.dp)
-                            ) { Text(question.options[chunk], fontSize = 20.sp) }
+                            ) { Text(question.options[chunk], fontSize = 20.sp, color = if (used) Color.Transparent else Color.Unspecified) }
                         }
                     }
                 }

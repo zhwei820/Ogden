@@ -35,7 +35,8 @@ data class Speech(
 /** 正文中一个可点击的英文词：[text] 为原文，[range] 为它在段落字符串中的位置。 */
 data class SpeechToken(val text: String, val range: IntRange)
 
-private val TokenPattern = Regex("[A-Za-z]+(?:'[A-Za-z]+)?")
+// 撇号与连字符连接的部分算同一个词：don't、father's、o'clock、T-shirt、Mid-Autumn
+private val TokenPattern = Regex("[A-Za-z]+(?:['-][A-Za-z]+)*")
 
 fun tokenizeSpeech(text: String): List<SpeechToken> =
     TokenPattern.findAll(text).map { SpeechToken(it.value, it.range) }.toList()
@@ -53,9 +54,6 @@ private val IrregularForms = mapOf(
     "kept" to "keep", "made" to "make", "took" to "take", "taken" to "take",
     "said" to "say", "saw" to "see", "seen" to "see", "sent" to "send",
     "me" to "i", "my" to "i", "mine" to "i",
-    "his" to "he", "him" to "he", "her" to "she", "its" to "it",
-    "your" to "you", "yours" to "you", "our" to "we", "ours" to "we", "us" to "we",
-    "their" to "they", "theirs" to "they", "them" to "they",
     "men" to "man", "women" to "woman", "feet" to "foot", "teeth" to "tooth",
     "better" to "good", "best" to "good", "worse" to "bad", "worst" to "bad",
     "won't" to "will", "can't" to "can"
@@ -68,17 +66,6 @@ private val IrregularForms = mapOf(
  * @param qualities 性质词（qg/qo）：-er/-est/-ly 的原形必须在这里；拓展词不分词类，同时放进两组
  * @param things 名词（gt/pt）：与 [OperatorVerbs] 一起作为 -ing/-ed 的合法原形
  */
-/** 代词变格还原到原形后，词条只有原形释义；这里给出该形式本身的中文，避免 my 被讲成「我」。 */
-private val FormGlosses = mapOf(
-    "me" to "我（宾格）", "my" to "我的", "mine" to "我的（东西）",
-    "his" to "他的", "him" to "他（宾格）", "her" to "她（宾格）；她的", "its" to "它的",
-    "your" to "你的；你们的", "yours" to "你的（东西）",
-    "our" to "我们的", "ours" to "我们的（东西）", "us" to "我们（宾格）",
-    "their" to "他们的", "theirs" to "他们的（东西）", "them" to "他们（宾格）"
-)
-
-fun formGloss(token: String): String? = FormGlosses[token.lowercase()]
-
 class LemmaVocabulary(val words: Set<String>, val qualities: Set<String>, val things: Set<String>) {
     fun canTakeVerbSuffix(base: String) = base in things || base in OperatorVerbs
 }

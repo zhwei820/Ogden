@@ -49,7 +49,7 @@ def in_list(token, words):
 
 
 def tokens(text):
-    return [t.lower() for t in re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text)]
+    return [t.lower() for t in re.findall(r"[A-Za-z]+(?:['-][A-Za-z]+)*", text)]
 
 
 def check(path, words):

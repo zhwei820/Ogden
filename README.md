@@ -14,7 +14,7 @@
 
 ## Features
 
-- 内置 Ogden Basic English 850 词，另加 350 个儿童生活常用拓展词，支持离线学习。
+- 内置 Ogden Basic English 850 词，另加 450 个儿童生活常用拓展词和 98 个变形词（my、went、is 等），支持离线学习。
 - 词库分为 Operations、General Things、Picturable、Qualities、Opposites。
 - 支持搜索、分类筛选、US/UK 发音切换、简体/繁体显示。
 - 示范演讲：点击任意词查看释义（自动还原 came→come 等词形）并收藏；段落、译文和单词中文释义可用 Microsoft Azure 语音朗读。
@@ -26,14 +26,15 @@
 
 ## Word Data
 
-词库总数为 1200（Ogden 850 + 拓展词 350）：
+词库总数为 1398（Ogden 850 + 拓展词 450 + 变形词 98）：
 
 - Operations: 100
 - General Things: 400
 - Picturable: 200
 - Qualities: 100
 - Opposites: 50
-- Extended（拓展词）: 350
+- Extended（拓展词）: 450
+- Word Forms（变形词）: 98
 
 主要数据文件：
 

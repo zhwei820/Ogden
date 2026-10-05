@@ -55,10 +55,12 @@ class SpeechTest {
     @Test
     fun lemmatizeRestoresInflectedForms() {
         mapOf(
-            "came" to "come", "Went" to "go", "boxes" to "box", "planes" to "plane", "my" to "i", "her" to "she", "them" to "they", "stories" to "story",
+            // came/went/is/my 等已有变形词词条，直接命中自身；sent 仍靠 IrregularForms 还原
+            "came" to "came", "Went" to "went", "sent" to "send", "boxes" to "box", "planes" to "plane",
+            "my" to "my", "children" to "children", "stories" to "story", "T-shirt" to "t-shirt", "o'clock" to "o'clock",
             "stopped" to "stop", "going" to "go", "making" to "make", "used" to "use",
             "happier" to "happy", "longer" to "long", "slowly" to "slow", "later" to "late",
-            "Is" to "be", "father's" to "father", "I'm" to "i", "don't" to "do", "words" to "word"
+            "Is" to "is", "father's" to "father", "I'm" to "i", "don't" to "do", "words" to "word"
         ).forEach { (token, expected) -> assertEquals(token, expected, lemmatize(token, vocabulary)) }
     }
 
@@ -79,6 +81,10 @@ class SpeechTest {
         val tokens = tokenizeSpeech(text)
         assertEquals(listOf("I'm", "here", "father's", "book"), tokens.map { it.text })
         tokens.forEach { assertEquals(it.text, text.substring(it.range)) }
+        assertEquals(
+            listOf("My", "T-shirt", "at", "seven", "o'clock", "Mid-Autumn", "grown-up"),
+            tokenizeSpeech("My T-shirt, at seven o'clock - Mid-Autumn grown-up.").map { it.text }
+        )
     }
 
     @Test
