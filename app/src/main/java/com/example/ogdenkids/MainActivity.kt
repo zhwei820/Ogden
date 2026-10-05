@@ -2049,8 +2049,26 @@ fun SpeechWordSheet(
                 }
             }
             AppText(contraction.note, color = InkFaint, fontSize = 14.sp)
-            return@Column
+        } else {
+            // 内联布局里不能 return@Column 提前返回：旧版 Compose 会破坏分组栈并崩溃
+            WordSheetBody(surface, word, accent, saved, onToggleSave, onSpeakWord, onSpeakEnglish, onSpeakChinese, onOpenWord)
         }
+    }
+}
+
+@Composable
+private fun WordSheetBody(
+    surface: String,
+    word: OgdenWord?,
+    accent: Accent,
+    saved: Boolean,
+    onToggleSave: () -> Unit,
+    onSpeakWord: (String) -> Unit,
+    onSpeakEnglish: (String) -> Unit,
+    onSpeakChinese: (String) -> Unit,
+    onOpenWord: (OgdenWord) -> Unit
+) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         if (word != null) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(word.word, fontSize = 34.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
