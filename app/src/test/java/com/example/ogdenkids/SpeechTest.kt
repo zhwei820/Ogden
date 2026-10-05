@@ -55,7 +55,7 @@ class SpeechTest {
     @Test
     fun lemmatizeRestoresInflectedForms() {
         mapOf(
-            "came" to "come", "Went" to "go", "boxes" to "box", "stories" to "story",
+            "came" to "come", "Went" to "go", "boxes" to "box", "planes" to "plane", "my" to "i", "her" to "she", "them" to "they", "stories" to "story",
             "stopped" to "stop", "going" to "go", "making" to "make", "used" to "use",
             "happier" to "happy", "longer" to "long", "slowly" to "slow", "later" to "late",
             "Is" to "be", "father's" to "father", "I'm" to "i", "don't" to "do", "words" to "word"
@@ -65,7 +65,7 @@ class SpeechTest {
     @Test
     fun lemmatizeRejectsFalseStems() {
         // 不加词类约束时 upper→up、inner→in 会被误还原（evening/forest 已是拓展词，不能再作反例）
-        listOf("upper", "inner", "newspaper", "zzz", "planes").forEach {
+        listOf("upper", "inner", "newspaper", "zzz").forEach {
             assertNull(it, lemmatize(it, vocabulary))
         }
         // 本身就是 850 词的不应被剥后缀

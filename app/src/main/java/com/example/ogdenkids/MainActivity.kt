@@ -58,6 +58,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -1596,7 +1598,18 @@ fun SpeechReaderScreen(
         )
     }
 
-    Scaffold(containerColor = Paper, topBar = {
+    Scaffold(containerColor = Paper, floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
+        // 朗读时滚动会把标题里的按钮滚出屏幕，停止按钮悬浮在底部始终可点
+        if (speakingIndex != null) {
+            ExtendedFloatingActionButton(
+                onClick = { stopSpeaking() },
+                icon = { Icon(Icons.Default.Close, contentDescription = null) },
+                text = { Text("停止朗读", fontSize = 18.sp) },
+                containerColor = Category.Operations.tint,
+                contentColor = Color.White
+            )
+        }
+    }, topBar = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -1620,7 +1633,7 @@ fun SpeechReaderScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            contentPadding = PaddingValues(18.dp),
+            contentPadding = PaddingValues(start = 18.dp, top = 18.dp, end = 18.dp, bottom = 96.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             item {
@@ -1783,7 +1796,11 @@ fun SpeechWordSheet(
             Text(if (accent == Accent.UK) word.ipaUk else word.ipaUs, color = InkFaint)
             if (!surface.equals(word.word, ignoreCase = true)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppText("原文：$surface", color = InkSoft, modifier = Modifier.weight(1f))
+                    AppText(
+                        formGloss(surface)?.let { "原文：$surface（$it）" } ?: "原文：$surface",
+                        color = InkSoft,
+                        modifier = Modifier.weight(1f)
+                    )
                     IconButton(onClick = { onSpeakEnglish(surface) }) {
                         Icon(Icons.Default.VolumeUp, contentDescription = "读原文", tint = InkFaint)
                     }
