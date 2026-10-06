@@ -27,6 +27,7 @@ class OgdenDataTest {
         // 拓展词与变形词数量随内容增长，只要求存在；Ogden 850 原有五类不能变
         assertTrue((counts["ex"] ?: 0) >= 350)
         assertTrue((counts["fm"] ?: 0) > 0)
+        assertTrue((counts["kd"] ?: 0) > 0)
         assertEquals(words.length(), counts.values.sum())
         val headwords = List(words.length()) { words.getJSONObject(it).getString("w").lowercase() }
         assertEquals("Duplicate headwords", headwords.size, headwords.toSet().size)

@@ -17931,7 +17931,7 @@
     },
     {
         "w": "tummy",
-        "c": "ex",
+        "c": "kd",
         "zh": "肚子",
         "en": "a child's word for stomach",
         "ex": "My tummy is full.",
@@ -18997,7 +18997,7 @@
     },
     {
         "w": "yummy",
-        "c": "ex",
+        "c": "kd",
         "zh": "好吃的",
         "en": "very good to eat",
         "ex": "Yummy! I love this cake.",
@@ -19616,7 +19616,7 @@
     },
     {
         "w": "mommy",
-        "c": "ex",
+        "c": "kd",
         "zh": "妈妈",
         "en": "a child's word for mother",
         "ex": "Mommy, can you read me a story?",
@@ -19628,7 +19628,7 @@
     },
     {
         "w": "daddy",
-        "c": "ex",
+        "c": "kd",
         "zh": "爸爸",
         "en": "a child's word for father",
         "ex": "Daddy is playing ball with me.",
@@ -19640,7 +19640,7 @@
     },
     {
         "w": "granny",
-        "c": "ex",
+        "c": "kd",
         "zh": "奶奶,外婆",
         "en": "a child's word for grandmother",
         "ex": "Granny made a cake for me.",
@@ -19652,7 +19652,7 @@
     },
     {
         "w": "doggy",
-        "c": "ex",
+        "c": "kd",
         "zh": "小狗狗",
         "en": "a child's word for a dog",
         "ex": "The doggy is wagging its tail.",
@@ -19664,7 +19664,7 @@
     },
     {
         "w": "kitty",
-        "c": "ex",
+        "c": "kd",
         "zh": "小猫咪",
         "en": "a child's word for a cat",
         "ex": "The kitty is sleeping on the bed.",
@@ -19676,7 +19676,7 @@
     },
     {
         "w": "bunny",
-        "c": "ex",
+        "c": "kd",
         "zh": "小兔子",
         "en": "a child's word for a rabbit",
         "ex": "The bunny has long ears.",
@@ -19687,7 +19687,7 @@
     },
     {
         "w": "piggy",
-        "c": "ex",
+        "c": "kd",
         "zh": "小猪猪",
         "en": "a child's word for a pig",
         "ex": "The piggy is in the mud.",
@@ -19698,7 +19698,7 @@
     },
     {
         "w": "horsey",
-        "c": "ex",
+        "c": "kd",
         "zh": "小马",
         "en": "a child's word for a horse",
         "ex": "I want to ride the horsey.",
@@ -19709,7 +19709,7 @@
     },
     {
         "w": "birdie",
-        "c": "ex",
+        "c": "kd",
         "zh": "小鸟",
         "en": "a child's word for a bird",
         "ex": "Look at the little birdie in the tree.",
@@ -19720,7 +19720,7 @@
     },
     {
         "w": "bye-bye",
-        "c": "ex",
+        "c": "kd",
         "zh": "拜拜",
         "en": "a child's way to say goodbye",
         "ex": "Say bye-bye to Grandpa.",
@@ -19731,7 +19731,7 @@
     },
     {
         "w": "jammies",
-        "c": "ex",
+        "c": "kd",
         "zh": "睡衣",
         "en": "a child's word for pajamas",
         "ex": "Put on your jammies, it is time for bed.",
