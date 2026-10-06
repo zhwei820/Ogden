@@ -3981,7 +3981,7 @@ private fun placementOf(relation: Relation): Placement = when (relation) {
     Relation.Above -> Placement(120f, 22f, 34f)
     Relation.Under -> Placement(120f, 152f, 40f)
     Relation.Below -> Placement(120f, 174f, 30f)
-    Relation.In -> Placement(120f, 68f, 34f, underRef = true)
+    Relation.In -> Placement(120f, 78f, 34f, underRef = true)
     // 「后面 / 前面」放在三维辅助线的前后轴上：后面的小一些、淡一些，被参照物挡住一部分
     Relation.Behind -> Placement(156f, 72f, 34f, underRef = true, alpha = 0.75f)
     Relation.InFrontOf -> Placement(82f, 129f, 46f)
@@ -4101,7 +4101,19 @@ private fun DrawScope.drawSpatialGuides(relation: Relation?, labels: Boolean) {
         }, tint)
     }
     val activeEnd = relation?.let(::axisEndOf)
-    if (activeEnd != null) arrow(origin, ends.getValue(activeEnd) * u)
+    if (activeEnd != null) {
+        // 离得远的（上方、下方、附近）箭头只画到物体边上，指着物体；其余穿到轴端，物体像停在轴上
+        val target = if (relation == Relation.Above || relation == Relation.Below || relation == Relation.Near) {
+            val p = placementOf(relation)
+            val end = ends.getValue(activeEnd)
+            val dir = Offset(end.x - OriginX, end.y - OriginY)
+            val unit = dir / dir.getDistance()
+            Offset(p.x, p.y) - unit * (p.size / 2 + 8f)
+        } else {
+            ends.getValue(activeEnd)
+        }
+        arrow(origin, target * u)
+    }
     if (relation == Relation.Outside) placementOf(relation).let { arrow(origin, pt(it.x - 18f, it.y - 12f)) }
     // 「上方 / 下方」不挨着：在参照物和物体之间画一段带端点的虚线标出空隙
     if (relation == Relation.Above || relation == Relation.Below) {
@@ -4125,10 +4137,11 @@ private fun DrawScope.drawSpatialGuides(relation: Relation?, labels: Boolean) {
                 canvas.nativeCanvas.drawText(text, at.x * u, at.y * u + paint.textSize / 3, paint)
             }
             fun end(e: AxisEnd) = ends.getValue(e)
-            label("上", end(AxisEnd.Up) + Offset(10f, 4f), activeEnd == AxisEnd.Up)
-            label("下", end(AxisEnd.Down) + Offset(10f, -2f), activeEnd == AxisEnd.Down)
-            label("左", end(AxisEnd.Left) + Offset(6f, -9f), activeEnd == AxisEnd.Left)
-            label("右", end(AxisEnd.Right) + Offset(-6f, -9f), activeEnd == AxisEnd.Right)
+            // 「上 / 下」放在轴右边、「右」放在轴上方，避开沿轴摆放的物体
+            label("上", end(AxisEnd.Up) + Offset(24f, 4f), activeEnd == AxisEnd.Up)
+            label("下", end(AxisEnd.Down) + Offset(24f, -2f), activeEnd == AxisEnd.Down)
+            label("左", end(AxisEnd.Left) + Offset(6f, -12f), activeEnd == AxisEnd.Left)
+            label("右", end(AxisEnd.Right) + Offset(-4f, -26f), activeEnd == AxisEnd.Right)
             label("后", end(AxisEnd.Back) + Offset(14f, -4f), activeEnd == AxisEnd.Back)
             label("前", end(AxisEnd.Front) + Offset(-10f, 12f), activeEnd == AxisEnd.Front)
             if (relation == Relation.In || relation == Relation.Inside) label("里", Offset(OriginX + 52f, OriginY + 26f), true)
