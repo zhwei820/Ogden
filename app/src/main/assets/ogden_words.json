@@ -9617,6 +9617,7 @@
     },
     {
         "w":  "male",
+        "np":  true,
         "c":  "qg",
         "zh":  "男性的",
         "en":  "of the man sex",
@@ -10521,6 +10522,7 @@
     },
     {
         "w":  "female",
+        "np":  true,
         "c":  "qo",
         "zh":  "女性的",
         "en":  "of the woman sex",

@@ -238,7 +238,9 @@ data class OgdenWord(
     val collocations: List<Collocation> = emptyList(),
     /** 一词多义时第二个意思的例句（ex2 / exz2），没有的为空；只在单词详情和查词弹窗展示 */
     val example2: String = "",
-    val exampleZh2: String = ""
+    val exampleZh2: String = "",
+    /** false 的词（ogden_words.json 里标 np）只在词库展示，不进任何单词练习 */
+    val practice: Boolean = true
 ) {
     /** 英文例句与中文翻译，第一句之外最多再有一句 */
     val examples: List<Pair<String, String>>
@@ -336,7 +338,8 @@ class OgdenRepository(private val context: Context) {
                     }
                 }.orEmpty(),
                 example2 = item.optString("ex2"),
-                exampleZh2 = item.optString("exz2")
+                exampleZh2 = item.optString("exz2"),
+                practice = !item.optBoolean("np")
             )
         }
     }
@@ -544,8 +547,10 @@ fun OgdenKidsApp() {
     val repository = remember { OgdenRepository(context) }
     val words = remember { repository.loadWords() }
     val speeches = remember { repository.loadSpeeches() }
+    val lessonWords = remember(speeches) { speeches.flatMap { it.words }.map { it.lowercase() }.toSet() }
     val specialModules = remember { repository.loadSpecialModules() }
     val wordIndex = remember(words) { words.associateBy { it.word.lowercase() } }
+    val practiceWords = remember(words) { words.filter { it.practice } }
     val lemmaVocabulary = remember(words) {
         fun keysOf(vararg categories: Category) =
             words.filter { it.category in categories }.map { it.word.lowercase() }.toSet()
@@ -727,7 +732,7 @@ fun OgdenKidsApp() {
                     }
                 )
                 is Screen.Levels -> LevelSelectionScreen(
-                    words = words,
+                    words = practiceWords,
                     store = progressStore,
                     category = current.category,
                     onBack = goBack,
@@ -738,7 +743,8 @@ fun OgdenKidsApp() {
                         if (!current.reviewOnly) progressStore.saveLastLevel(current.category, current.level)
                     }
                     PracticeScreen(
-                        allWords = words,
+                        allWords = practiceWords,
+                        lessonWords = lessonWords,
                         store = progressStore,
                         version = version,
                         category = current.category,
@@ -755,7 +761,7 @@ fun OgdenKidsApp() {
                             progressStore.record(word.word, correct)
                             version++
                         },
-                        onNextLevel = if (!current.reviewOnly && current.level * 10 < words.count { it.category == current.category }) {
+                        onNextLevel = if (!current.reviewOnly && current.level * 10 < practiceWords.count { it.category == current.category }) {
                             {
                                 stateHolder.removeState(screenKey(current))
                                 version++
@@ -820,7 +826,8 @@ fun OgdenKidsApp() {
                     onBack = goBack
                 )
                 is Screen.WordPractice -> PracticeScreen(
-                    allWords = words,
+                    allWords = practiceWords,
+                    lessonWords = lessonWords,
                     store = progressStore,
                     version = version,
                     category = Category.Extended,
@@ -835,7 +842,7 @@ fun OgdenKidsApp() {
                         progressStore.record(word.word, correct)
                         version++
                     },
-                    customWords = current.words.mapNotNull { wordIndex[it.lowercase()] },
+                    customWords = current.words.mapNotNull { wordIndex[it.lowercase()]?.takeIf { it.practice } },
                     customTitle = current.title
                 )
                 is Screen.WordCollection -> {
@@ -1187,7 +1194,7 @@ fun ChallengeScreen(
             SectionTitle("分类闯关", "每 10 个词一关，先短跑，再复习")
         }
         items(Category.values()) { category ->
-            val categoryWords = words.filter { it.category == category }
+            val categoryWords = words.filter { it.category == category && it.practice }
             val learned = categoryWords.count { store.progress(it.word).mastered }
             CategoryProgressCard(
                 category = category,
@@ -3514,6 +3521,7 @@ fun privacySections() = listOf(
 @Composable
 fun PracticeScreen(
     allWords: List<OgdenWord>,
+    lessonWords: Set<String>,
     store: ProgressStore,
     version: Int,
     category: Category,
@@ -3588,7 +3596,7 @@ fun PracticeScreen(
             return@Scaffold
         }
         val type = PracticeType.values()[index % PracticeType.values().size]
-        val question = remember(word, type) { buildQuestion(type, word, allWords) }
+        val question = remember(word, type) { buildQuestion(type, word, allWords, lessonWords) }
         // 听音选词一进题就播放
         LaunchedEffect(word, type) { if (type == PracticeType.Listen && !answerShown) onSpeak(word.word) }
         val isCorrect = selected == question.answer
@@ -4853,10 +4861,12 @@ private fun arithmeticQuestion(word: OgdenWord, allWords: List<OgdenWord>, rando
 fun letterBlank(text: String): String =
     text.split(' ').joinToString(" ") { part -> List(part.length) { "_" }.joinToString("\u202F") }
 
-fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>): Question {
+/** @param lessonWords 课文「本课单词」（小写）；干扰项只从这里挑，避免出现拓展词里的生僻词 */
+fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>, lessonWords: Set<String> = emptySet()): Question {
     // 选项顺序也用固定种子：本函数随界面重组反复调用，未加种子的 shuffled() 会让选项每次刷新都换位置
     val random = Random(word.word.hashCode() + type.ordinal)
-    val distractors = allWords
+    val optionPool = allWords.filter { it.word.lowercase() in lessonWords }.takeIf { it.size > 6 } ?: allWords
+    val distractors = optionPool
         .filter { it.word != word.word }
         .shuffled(random)
         .take(6)
@@ -4886,10 +4896,10 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             val headwords = allWords.associateBy { it.word.lowercase() }
             val answer = word.synonyms.firstNotNullOfOrNull { headwords[it.lowercase()]?.word }
                 .takeIf { word.category.hasTrueSynonyms }
-            if (answer == null) buildQuestion(PracticeType.Meaning, word, allWords).copy(title = PracticeType.Meaning.title) else {
+            if (answer == null) buildQuestion(PracticeType.Meaning, word, allWords, lessonWords).copy(title = PracticeType.Meaning.title) else {
                 // 干扰项不能和题目词互为近义词，否则出现两个正确答案
                 val related = (word.synonyms + word.word).map { it.lowercase() }.toSet()
-                val synOptions = allWords
+                val synOptions = optionPool
                     .shuffled(random)
                     .filter { it.word.lowercase() !in related && it.synonyms.none { s -> s.lowercase() == word.word.lowercase() } }
                     .map { it.word }
