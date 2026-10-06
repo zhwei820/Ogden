@@ -485,7 +485,9 @@ fun OgdenKidsApp() {
     val speakEnglish: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.english(accent)) }
     val speakChinese: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.ZhCn) }
     val translator = remember { Translator(context) }
-    val speechServices = remember(accent) { SpeechServices(translator, speakEnglish, speakChinese) }
+    val speechServices = remember(accent) {
+        SpeechServices(translator, speakEnglish, speakChinese) { token -> lemmatize(token, lemmaVocabulary)?.let { wordIndex[it] } }
+    }
     val goBack: () -> Unit = {
         when (val current = screen) {
             Screen.Main -> confirmExit = true
@@ -1973,8 +1975,8 @@ fun SpeechReaderScreen(
             item {
                 SpeechTrackHeader(
                     title = "课文 · Listen and Read",
-                    subtitle = if (hasContraction) "点句子听朗读，长按选词可查词、翻译、朗读；带下划线的是缩写，查词看完整写法"
-                    else "点句子听朗读，长按选词可查词、翻译、朗读",
+                    subtitle = if (hasContraction) "点句子听朗读，长按选词可查词、翻译；带下划线的是缩写，查词看完整写法"
+                    else "点句子听朗读，长按选词可查词、翻译",
                     playingAll = playingAll,
                     onPlayAll = {
                         if (playingAll) {
@@ -2105,13 +2107,19 @@ private fun SpeechTrackHeader(title: String, subtitle: String, playingAll: Boole
 }
 
 /** 划词翻译与弹窗朗读要用的服务，由根部提供，避免一层层传参。 */
-class SpeechServices(val translator: Translator?, val speakEnglish: (String) -> Unit, val speakChinese: (String) -> Unit)
+class SpeechServices(
+    val translator: Translator?,
+    val speakEnglish: (String) -> Unit,
+    val speakChinese: (String) -> Unit,
+    /** 原文词 → 词库词条（含词形还原），查不到为 null */
+    val lookup: (String) -> OgdenWord?
+)
 
-val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}) }
+val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}, { null }) }
 
 /**
  * 可划词的英文。点击走 [onTap]；长按一个词进入选词状态（高亮 + 震动 + 下方工具条），
- * 之后点别的词、拖两端圆点或长按拖动都能调整选区，再从工具条选「查词 / 翻译 / 朗读 / 取消」。
+ * 之后点别的词、拖两端圆点或长按拖动都能调整选区，再从工具条选「查词 / 翻译 / 取消」。
  * 松手不会自动出结果，选错了可以接着改。
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -2137,6 +2145,8 @@ fun TranslatableText(
     val last = if (active) maxOf(selFrom!!, selTo!!) else -1
     val selectedRange = if (active) tokens[first].range.first..tokens[last].range.last else null
     val selectedText = selectedRange?.let { text.text.substring(it) }
+    // 只选了一个词库里的词：用查词或直接显示释义，不再给「翻译」
+    val dictionaryWord = if (active && first == last) services.lookup(tokens[first].text) else null
 
     fun clear() {
         selFrom = null
@@ -2270,13 +2280,20 @@ fun TranslatableText(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    AppText("已选：$selectedText", color = Category.Qualities.tint, fontSize = 15.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    AppText(
+                        "已选：$selectedText" + (dictionaryWord?.takeIf { onWord == null }?.let { " · ${it.zh}" } ?: ""),
+                        color = Category.Qualities.tint,
+                        fontSize = 15.sp,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
+                    )
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         if (first == last && onWord != null) {
                             Button(onClick = { val t = tokens[first]; clear(); onWord(t) }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("查词") }
                         }
-                        Button(onClick = { phrase = selectedText }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("翻译") }
-                        OutlinedButton(onClick = { services.speakEnglish(selectedText) }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("朗读") }
+                        if (dictionaryWord == null) {
+                            Button(onClick = { phrase = selectedText }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("翻译") }
+                        }
                         TextButton(onClick = { clear() }) { Text("取消") }
                     }
                 }
@@ -2376,7 +2393,7 @@ fun SpeechLineRow(
     ) {
         Row(Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                // 点句子任意处朗读整句；长按进入选词，可查词 / 翻译 / 朗读
+                // 点句子任意处朗读整句；长按进入选词，可查词 / 翻译
                 TranslatableText(
                     text = text,
                     style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, color = Ink),
@@ -3335,7 +3352,7 @@ fun SpecialModuleScreen(
             }
             item {
                 Spacer(Modifier.height(8.dp))
-                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按选词可查词、翻译、朗读", playingAll = false, onPlayAll = null)
+                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按选词可查词、翻译", playingAll = false, onPlayAll = null)
             }
             items(module.sentences.size) { index ->
                 val line = module.sentences[index]
