@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "app/src/main/assets/tts"
 MANIFEST = ROOT / "app/build/tts-manifest.json"
 # 与 AzureVoice 一致；英文按设置里的 US / UK 口音各生成一份
-VOICES = {"en": [("en-US-JennyNeural", "en-US"), ("en-GB-SoniaNeural", "en-GB")]}
+VOICES = {"en": [("en-US-JennyNeural", "en-US"), ("en-GB-SoniaNeural", "en-GB")], "en_us": [("en-US-JennyNeural", "en-US")]}
 # 打包进 APK，比运行时缓存用的 24kHz/48kbps 更省体积，语音清晰度够用
 OUTPUT_FORMAT = "audio-16khz-32kbitrate-mono-mp3"
 
@@ -137,7 +137,8 @@ def main():
         sys.exit("local.properties 缺少 azure.speech.key / azure.speech.region")
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     jobs = []
-    for lang_group, texts in (("en", manifest["en"]),):
+    # en：美音 + 英音；en_us（常见搭配）只生成美音
+    for lang_group, texts in (("en", manifest["en"]), ("en_us", manifest.get("en_us", []))):
         for voice, lang in VOICES[lang_group]:
             out_dir = ASSETS / lang
             out_dir.mkdir(parents=True, exist_ok=True)

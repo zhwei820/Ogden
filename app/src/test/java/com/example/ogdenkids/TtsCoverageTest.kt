@@ -13,6 +13,10 @@ class TtsCoverageTest {
     private fun lines(a: JSONArray) = List(a.length()) { SpeechLine(a.getJSONObject(it).getString("en"), a.getJSONObject(it).getString("zh")) }
 
     private val antonyms = JSONObject(File("src/main/assets/antonyms.json").readText(Charsets.UTF_8))
+    private val collocations = JSONObject(File("src/main/assets/collocations.json").readText(Charsets.UTF_8))
+    private fun collocationsOf(word: String) = collocations.optJSONArray(word)?.let { a ->
+        List(a.length()) { a.getJSONObject(it).let { c -> Collocation(c.getString("phrase"), c.getString("zh"), c.getString("ex"), c.getString("exz")) } }
+    }.orEmpty()
     private val relatedJson = JSONObject(File("src/main/assets/related_words.json").readText(Charsets.UTF_8))
     private val dropped = relatedJson.keys().asSequence().filter { relatedJson.getJSONObject(it).optBoolean("drop") }.toSet()
     private val related = relatedJson.keys().asSequence().filter { it !in dropped }.map {
@@ -23,7 +27,16 @@ class TtsCoverageTest {
         List(a.length()) { a.getJSONObject(it) }.map {
             OgdenWord(it.getString("w"), Category.from(it.getString("c")), it.getString("zh"), it.getString("en"),
                 it.getString("ex"), it.getString("exz"), strings(it.getJSONArray("s")).filter { s -> s !in dropped }, "", "",
-                strings(antonyms.optJSONArray(it.getString("w"))))
+                strings(antonyms.optJSONArray(it.getString("w"))), collocationsOf(it.getString("w")))
+        }
+    }
+
+    @Test
+    fun collocationsReferToHeadwords() {
+        val headwords = words.map { it.word }.toSet()
+        collocations.keys().forEach { key ->
+            assertTrue("collocations.json key not a headword: $key", key in headwords)
+            assertTrue("$key collocations", collocationsOf(key).isNotEmpty())
         }
     }
 
@@ -58,7 +71,12 @@ class TtsCoverageTest {
     fun writeManifest() {
         val out = File("build/tts-manifest.json")
         out.parentFile.mkdirs()
-        out.writeText(JSONObject().put("en", JSONArray(texts.english.sorted())).toString(1))
+        out.writeText(
+            JSONObject()
+                .put("en", JSONArray(texts.english.sorted()))
+                .put("en_us", JSONArray(texts.englishUsOnly.sorted()))
+                .toString(1)
+        )
     }
 
     @Test
@@ -75,7 +93,8 @@ class TtsCoverageTest {
     @Test
     fun everySpeakableTextHasBundledAudio() {
         // 只预生成英文；中文播放时在线合成
-        val missing = texts.english.flatMap { t -> listOf(AzureVoice.EnUs, AzureVoice.EnGb).map { it to t } }
+        val missing = texts.english.flatMap { t -> listOf(AzureVoice.EnUs, AzureVoice.EnGb).map { it to t } } +
+            texts.englishUsOnly.map { AzureVoice.EnUs to it }
         val absent = missing.filter { (voice, text) -> !File("src/main/assets/${ttsAssetPath(voice, text)}").exists() }
         assertTrue("${absent.size} 条缺少预生成音频，运行 scripts/gen_tts_assets.py；例如 ${absent.take(5)}", absent.isEmpty())
     }

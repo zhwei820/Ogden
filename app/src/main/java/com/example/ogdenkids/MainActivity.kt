@@ -151,6 +151,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.compose.material.icons.filled.Mic
+import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.drawscope.DrawScope
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
@@ -212,8 +216,12 @@ data class OgdenWord(
     val ipaUk: String,
     val ipaUs: String,
     /** 反义词，来自 antonyms.json；没有的为空，只在单词详情展示 */
-    val antonyms: List<String> = emptyList()
+    val antonyms: List<String> = emptyList(),
+    /** 常见搭配，来自 collocations.json（目前只覆盖课文「本课单词」） */
+    val collocations: List<Collocation> = emptyList()
 )
+
+data class Collocation(val phrase: String, val zh: String, val example: String, val exampleZh: String)
 
 /** 不在词库里的近义词 / 反义词的离线释义与例句（related_words.json）。 */
 data class RelatedWord(val zh: String, val example: String, val exampleZh: String)
@@ -275,6 +283,7 @@ class OgdenRepository(private val context: Context) {
         val words = JSONArray(readAsset("ogden_words.json"))
         val ipa = JSONObject(readAsset("ogden_ipa.json"))
         val antonyms = JSONObject(readAsset("antonyms.json"))
+        val collocations = JSONObject(readAsset("collocations.json"))
         // related_words.json 里标了 drop 的是描述性条目（如 "12 months"），不当近义词展示
         val dropped = JSONObject(readAsset("related_words.json")).let { r ->
             r.keys().asSequence().filter { r.getJSONObject(it).optBoolean("drop") }.toSet()
@@ -294,7 +303,13 @@ class OgdenRepository(private val context: Context) {
                 synonyms = List(synonyms.length()) { synonyms.getString(it) }.filter { it !in dropped },
                 ipaUk = ipaItem?.optString("uk").orEmpty(),
                 ipaUs = ipaItem?.optString("us").orEmpty(),
-                antonyms = antonyms.optJSONArray(word)?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
+                antonyms = antonyms.optJSONArray(word)?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty(),
+                collocations = collocations.optJSONArray(word)?.let { a ->
+                    List(a.length()) {
+                        val c = a.getJSONObject(it)
+                        Collocation(c.getString("phrase"), c.getString("zh"), c.getString("ex"), c.getString("exz"))
+                    }
+                }.orEmpty()
             )
         }
     }
@@ -1555,6 +1570,14 @@ fun WordDetailScreen(
                     onSpeak(word.example)
                 }
             }
+            if (word.collocations.isNotEmpty()) {
+                item {
+                    SectionTitle("常见搭配", "点短语或例句听朗读")
+                }
+                items(word.collocations) { c ->
+                    CollocationCard(c, zh, onSpeak, onSpeakZh)
+                }
+            }
             item {
                 SectionTitle("近义词", "点击听发音，长按查看")
                 FlowRowCompat(word.synonyms) { syn -> SynonymChip(syn, onSpeak) }
@@ -2624,19 +2647,14 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
         stopRequested = false
         state = ReadAlongState.Recording
         scope.launch {
-            val recording = runCatching {
+            val pcm = runCatching {
                 PronunciationScorer.record({ stopRequested }, PronunciationScorer.maxMsFor(line.en)) { level = it }
             }.getOrElse {
                 state = ReadAlongState.Failed("麦克风打不开，请检查录音权限", null)
                 return@launch
             }
-            val pcm = recording.pcm
-            if (!recording.heard && !stopRequested) {
-                state = ReadAlongState.Failed("没听到声音，靠近一点再读一遍", null)
-                return@launch
-            }
             if (pcm.size < 16000) {
-                state = ReadAlongState.Failed("录音太短了，再试一次", null)
+                state = ReadAlongState.Failed("录音太短了，按住话筒读完再松开", null)
                 return@launch
             }
             state = ReadAlongState.Scoring
@@ -2651,13 +2669,19 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
     }
 
     val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) startRecording() else state = ReadAlongState.Failed("需要麦克风权限才能跟读", null)
+        // 授权弹窗打断了这次按住，要重新按
+        if (!granted) state = ReadAlongState.Failed("需要麦克风权限才能跟读", null)
     }
-    fun requestRecording() {
+    /** 按下话筒时调用；返回 false 表示还没有录音权限（已发起申请），这次按住不录。 */
+    fun requestRecording(): Boolean {
         // 录音前停掉正在播放的朗读，免得录进去
         services.stopSpeaking()
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) startRecording()
-        else permission.launch(Manifest.permission.RECORD_AUDIO)
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            permission.launch(Manifest.permission.RECORD_AUDIO)
+            return false
+        }
+        startRecording()
+        return true
     }
 
     ModalBottomSheet(onDismissRequest = { stopRequested = true; onDismiss() }, containerColor = PaperElevated) {
@@ -2713,43 +2737,47 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
                         fontSize = 14.sp
                     )
                     if (s.result.words.isNotEmpty()) AppText("绿色读得好，橙色一般，红色要多练，灰色是漏读", color = InkFaint, fontSize = 12.sp)
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(s.pcm) }) { Text("听我的录音") }
-                        Button(onClick = { requestRecording() }) { Text("再读一遍") }
-                    }
+                    OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(s.pcm) }) { Text("听我的录音") }
                 }
                 is ReadAlongState.Failed -> {
                     AppText(s.message, color = Error, fontSize = 16.sp, textAlign = TextAlign.Center)
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        s.pcm?.let { pcm -> OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(pcm) }) { Text("听我的录音") } }
-                        Button(onClick = { requestRecording() }) { Text("再读一遍") }
-                    }
+                    s.pcm?.let { pcm -> OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(pcm) }) { Text("听我的录音") } }
                 }
                 ReadAlongState.Scoring -> AppText("评分中……", color = InkFaint, fontSize = 18.sp)
-                ReadAlongState.Idle, ReadAlongState.Recording -> {
-                    val recording = s == ReadAlongState.Recording
-                    Box(
-                        modifier = Modifier
-                            .size(96.dp + (if (recording) (level * 40).dp else 0.dp))
-                            .clip(CircleShape)
-                            .background(if (recording) Error else Category.Operations.tint)
-                            .clickable { if (recording) stopRequested = true else requestRecording() },
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Icon(
-                            if (recording) Icons.Default.Close else Icons.Default.Mic,
-                            contentDescription = if (recording) "结束录音" else "开始录音",
-                            tint = Color.White,
-                            modifier = Modifier.size(44.dp)
-                        )
-                    }
-                    AppText(
-                        if (recording) "正在听……读完停一下就会自动结束" else "点话筒，跟着读一遍",
-                        color = InkSoft,
-                        fontSize = 16.sp,
-                        textAlign = TextAlign.Center
-                    )
+                ReadAlongState.Idle, ReadAlongState.Recording -> Unit
+            }
+
+            // 按住话筒录音、松开结束并评分；评完分或失败后再按住就是再读一遍
+            val current = state
+            if (current != ReadAlongState.Scoring) {
+                val recording = current == ReadAlongState.Recording
+                Box(
+                    modifier = Modifier
+                        .size(96.dp + (if (recording) (level * 40).dp else 0.dp))
+                        .clip(CircleShape)
+                        .background(if (recording) Error else Category.Operations.tint)
+                        .pointerInput(Unit) {
+                            detectTapGestures(onPress = {
+                                if (requestRecording()) {
+                                    tryAwaitRelease()
+                                    stopRequested = true
+                                }
+                            })
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(Icons.Default.Mic, contentDescription = "按住跟读", tint = Color.White, modifier = Modifier.size(44.dp))
                 }
+                AppText(
+                    when {
+                        recording -> "正在听……读完松开话筒"
+                        current == ReadAlongState.Idle -> "按住话筒跟着读，读完松开"
+                        else -> "按住话筒再读一遍"
+                    },
+                    color = InkSoft,
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }
@@ -3922,8 +3950,9 @@ private fun placementOf(relation: Relation): Placement = when (relation) {
     Relation.Under -> Placement(120f, 144f, 40f)
     Relation.Below -> Placement(120f, 172f, 36f)
     Relation.In -> Placement(120f, 68f, 34f, underRef = true)
-    Relation.Behind -> Placement(146f, 62f, 40f, underRef = true, alpha = 0.6f)
-    Relation.InFrontOf -> Placement(108f, 128f, 46f)
+    // 「后面 / 前面」放在三维辅助线的前后轴上：后面的小一些、淡一些，被参照物挡住一部分
+    Relation.Behind -> Placement(156f, 72f, 34f, underRef = true, alpha = 0.75f)
+    Relation.InFrontOf -> Placement(82f, 129f, 46f)
     Relation.NextTo, Relation.Beside, Relation.RightOf -> Placement(172f, 100f, 40f)
     Relation.Near -> Placement(212f, 100f, 36f)
     Relation.LeftOf -> Placement(66f, 100f, 40f)
@@ -3947,9 +3976,108 @@ private fun EmojiAt(emoji: String, x: Float, y: Float, size: Float, scale: Float
     }
 }
 
+/** 先在「后面 / 前面」两种方位上试用三维辅助线，效果确认后再推广。 */
+private val GuidedRelations = setOf(Relation.Behind, Relation.InFrontOf)
+
+// 参照物外框立方体（基准画布坐标）：正面框住参照物，背面向右上偏移表现纵深
+private const val CubeLeft = 85f
+private const val CubeTop = 68f
+private const val CubeRight = 155f
+private const val CubeBottom = 132f
+private const val CubeDepthX = 18f
+private const val CubeDepthY = -14f
+
+/**
+ * 三维辅助线：线框立方体 + 地面阴影 + 上下 / 左右 / 前后三条轴（轴端标中文）。
+ * 物体所在的那一面填浅色，所在方向的半条轴画成箭头、轴端文字加粗变色；全部画在表情底下，
+ * 物体像停在轴上，箭头从物体后面伸出去。[labels] 为 false 时（缩略图）不标字。
+ */
+private fun DrawScope.drawSpatialGuides(relation: Relation, labels: Boolean) {
+    val u = size.width / SceneWidth
+    fun pt(x: Float, y: Float) = Offset(x * u, y * u)
+    val guide = Color(0xFF94A3B8)
+    val axis = Color(0xFFCBD5E1)
+    val tint = Category.Qualities.tint
+    val dash = PathEffect.dashPathEffect(floatArrayOf(6f * u, 5f * u))
+    val l = CubeLeft; val t = CubeTop; val r = CubeRight; val b = CubeBottom
+    val dx = CubeDepthX; val dy = CubeDepthY
+    val cx = (l + r) / 2 + dx / 2
+    val cy = (t + b) / 2 + dy / 2
+    val back = Offset(cx + dx * 3.4f, cy + dy * 3.4f)
+    val front = Offset(cx - dx * 4.4f, cy - dy * 4.4f)
+
+    fun face(p: List<Offset>) {
+        drawPath(Path().apply { moveTo(p[0].x, p[0].y); p.drop(1).forEach { lineTo(it.x, it.y) }; close() }, tint.copy(alpha = 0.16f))
+    }
+
+    drawOval(Color(0x18000000), topLeft = pt(l - 8, b - 10), size = Size((r - l + dx + 16) * u, 22 * u))
+    when (relation) {
+        Relation.Behind -> face(listOf(pt(l + dx, t + dy), pt(r + dx, t + dy), pt(r + dx, b + dy), pt(l + dx, b + dy)))
+        Relation.InFrontOf -> face(listOf(pt(l, t), pt(r, t), pt(r, b), pt(l, b)))
+        else -> Unit
+    }
+    drawLine(axis, pt(cx, 10f), pt(cx, 182f), 1.5f * u, pathEffect = dash)
+    drawLine(axis, pt(12f, cy), pt(228f, cy), 1.5f * u, pathEffect = dash)
+    drawLine(axis, pt(front.x, front.y), pt(back.x, back.y), 1.5f * u, pathEffect = dash)
+    listOf(
+        pt(l + dx, t + dy) to pt(l + dx, b + dy),
+        pt(l + dx, b + dy) to pt(r + dx, b + dy),
+        pt(l, b) to pt(l + dx, b + dy)
+    ).forEach { (a, c) -> drawLine(guide, a, c, 1.5f * u, pathEffect = dash) }
+    listOf(
+        pt(l, t) to pt(r, t), pt(r, t) to pt(r, b), pt(r, b) to pt(l, b), pt(l, b) to pt(l, t),
+        pt(l, t) to pt(l + dx, t + dy), pt(r, t) to pt(r + dx, t + dy), pt(l + dx, t + dy) to pt(r + dx, t + dy),
+        pt(r, b) to pt(r + dx, b + dy), pt(r + dx, t + dy) to pt(r + dx, b + dy)
+    ).forEach { (a, c) -> drawLine(guide, a, c, 2f * u) }
+
+    // 物体所在方向的半条轴画成箭头
+    val end = when (relation) {
+        Relation.Behind -> back
+        Relation.InFrontOf -> front
+        else -> null
+    }
+    if (end != null) {
+        val start = pt(cx, cy)
+        val tip = pt(end.x, end.y)
+        val dir = tip - start
+        val unit = dir / dir.getDistance()
+        val normal = Offset(-unit.y, unit.x)
+        drawLine(tint, start, tip, 3f * u, cap = StrokeCap.Round)
+        drawPath(Path().apply {
+            moveTo(tip.x + unit.x * 9f * u, tip.y + unit.y * 9f * u)
+            lineTo(tip.x + normal.x * 7f * u, tip.y + normal.y * 7f * u)
+            lineTo(tip.x - normal.x * 7f * u, tip.y - normal.y * 7f * u)
+            close()
+        }, tint)
+    }
+    if (labels) {
+        drawIntoCanvas { canvas ->
+            fun label(text: String, x: Float, y: Float, active: Boolean) {
+                val paint = android.graphics.Paint().apply {
+                    isAntiAlias = true
+                    textAlign = android.graphics.Paint.Align.CENTER
+                    textSize = (if (active) 14f else 11f) * u
+                    isFakeBoldText = active
+                    color = if (active) android.graphics.Color.rgb(30, 64, 175) else android.graphics.Color.rgb(148, 163, 184)
+                }
+                canvas.nativeCanvas.drawText(text, x * u, y * u + paint.textSize / 3, paint)
+            }
+            label("上", cx + 9f, 14f, false)
+            label("下", cx + 9f, 180f, false)
+            label("左", 18f, cy - 9f, false)
+            label("右", 222f, cy - 9f, false)
+            label("后", back.x + 14f, back.y - 4f, relation == Relation.Behind)
+            label("前", front.x - 10f, front.y + 12f, relation == Relation.InFrontOf)
+        }
+    }
+}
+
 @Composable
 private fun PlaceSceneView(scene: Scene.Place, scale: Float, showItem: Boolean = true) {
     Box(Modifier.size((SceneWidth * scale).dp, (SceneHeight * scale).dp)) {
+        if (scene.relation in GuidedRelations && scene.ref2 == null) {
+            Canvas(Modifier.matchParentSize()) { drawSpatialGuides(scene.relation, labels = scale >= 1f) }
+        }
         val p = placementOf(scene.relation)
         val refSize = if (scene.relation == Relation.Inside || scene.relation == Relation.Outside) 84f else 66f
         if (showItem && p.underRef) EmojiAt(scene.item.emoji, p.x, p.y, p.size, scale, p.alpha)
@@ -4404,6 +4532,49 @@ fun TogglePill(label: String, selected: Boolean, onClick: () -> Unit, modifier: 
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
     ) {
         AppText(label, color = if (selected) Color.White else InkSoft, maxLines = 1, fontSize = 12.sp)
+    }
+}
+
+@Composable
+private fun CollocationCard(c: Collocation, zh: ChineseMode, onSpeak: (String) -> Unit, onSpeakZh: (String) -> Unit) {
+    Card(
+        colors = CardDefaults.cardColors(containerColor = PaperElevated),
+        shape = RoundedCornerShape(14.dp),
+        modifier = Modifier.fillMaxWidth().border(1.dp, Line, RoundedCornerShape(14.dp))
+    ) {
+        Column(Modifier.padding(start = 16.dp, top = 8.dp, bottom = 8.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    c.phrase,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 21.sp,
+                    color = Category.Operations.tint,
+                    modifier = Modifier.clickable { onSpeak(c.phrase) }
+                )
+                AppText("  ${convertZh(c.zh, zh)}", color = InkSoft, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                IconButton(onClick = { onSpeak(c.phrase) }) {
+                    Icon(Icons.Default.VolumeUp, contentDescription = "读搭配", tint = Category.Operations.tint)
+                }
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                TranslatableText(
+                    AnnotatedString(c.example),
+                    TextStyle(fontFamily = FontFamily.Serif, fontSize = 18.sp, lineHeight = 26.sp, color = Ink),
+                    modifier = Modifier.weight(1f),
+                    onTap = { onSpeak(c.example) }
+                )
+                IconButton(onClick = { onSpeak(c.example) }) {
+                    Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = InkFaint)
+                }
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AppText(convertZh(c.exampleZh, zh), color = InkFaint, fontSize = 15.sp, modifier = Modifier.weight(1f))
+                IconButton(onClick = { onSpeakZh(c.exampleZh) }) {
+                    Icon(Icons.Default.VolumeUp, contentDescription = "读例句中文", tint = InkFaint)
+                }
+            }
+        }
     }
 }
 

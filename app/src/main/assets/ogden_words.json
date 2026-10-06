@@ -3434,7 +3434,7 @@
     {
         "w":  "join",
         "c":  "gt",
-        "zh":  "接合处",
+        "zh":  "加入;连接;接合处",
         "en":  "a place where things meet",
         "ex":  "The join is smooth.",
         "exz":  "接缝平滑。",
@@ -7477,7 +7477,7 @@
     {
         "w":  "fly",
         "c":  "pt",
-        "zh":  "苍蝇",
+        "zh":  "飞;苍蝇",
         "en":  "small flying insect",
         "ex":  "There\u0027s a fly on the window.",
         "exz":  "窗上有只苍蝇。",
@@ -8998,7 +8998,7 @@
     {
         "w":  "watch",
         "c":  "pt",
-        "zh":  "手表",
+        "zh":  "看;观看;手表",
         "en":  "small clock for wrist",
         "ex":  "My watch is fast.",
         "exz":  "我表快了。",
@@ -9934,7 +9934,7 @@
     {
         "w":  "present",
         "c":  "qg",
-        "zh":  "现在的;在场的",
+        "zh":  "礼物;现在的;在场的",
         "en":  "current or here",
         "ex":  "All are present today.",
         "exz":  "今天全都到了。",

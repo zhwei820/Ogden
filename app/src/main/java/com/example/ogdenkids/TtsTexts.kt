@@ -9,7 +9,8 @@ fun ttsKey(voiceName: String, text: String): String =
 
 fun ttsAssetPath(voice: AzureVoice, text: String) = "tts/${voice.lang}/${ttsKey(voice.voiceName, text)}.mp3"
 
-data class TtsTexts(val english: Set<String>)
+/** [english] 预生成美音 + 英音；[englishUsOnly]（常见搭配及其例句）只预生成美音，英音在线合成 */
+data class TtsTexts(val english: Set<String>, val englishUsOnly: Set<String>)
 
 /**
  * 应用里所有可能经 AzureSpeaker 朗读的英文（单词本身走 assets/audio 的离线录音，不在此列）。
@@ -41,5 +42,8 @@ fun speakableTexts(
     }
     related.forEach { en += it.example }
     en += allSpecialUtterances().first
-    return TtsTexts(en.map { it.trim() }.filter { it.isNotEmpty() }.toSet())
+    val english = en.map { it.trim() }.filter { it.isNotEmpty() }.toSet()
+    val usOnly = words.flatMap { w -> w.collocations.flatMap { listOf(it.phrase, it.example) } }
+        .map { it.trim() }.filter { it.isNotEmpty() && it !in english }.toSet()
+    return TtsTexts(english, usOnly)
 }
