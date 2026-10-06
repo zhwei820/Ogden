@@ -15,9 +15,12 @@ import java.io.ByteArrayOutputStream
 import java.net.HttpURLConnection
 import java.net.URL
 import kotlin.coroutines.coroutineContext
-import kotlin.math.abs
+import kotlin.math.sqrt
 
 data class WordScore(val word: String, val score: Double, val errorType: String)
+
+/** [heard] 为 false 表示一直没检测到开口 */
+class Recording(val pcm: ByteArray, val heard: Boolean)
 
 data class Assessment(
     val pron: Double,
@@ -35,14 +38,21 @@ data class Assessment(
  */
 object PronunciationScorer {
     private const val SAMPLE_RATE = 16000
-    private const val MAX_MS = 15_000
-    // 开口之后连续这么久没声音就自动结束
-    private const val TRAILING_SILENCE_MS = 1_500
-    private const val VOICE_PEAK = 1_500
+    private const val CHUNK_MS = 100
+    // 开头这段时间只测环境底噪
+    private const val NOISE_MS = 300
+    // 开口后连续这么久安静就自动结束
+    private const val TRAILING_SILENCE_MS = 700
+    // 一直没开口就放弃
+    private const val NO_SPEECH_MS = 7_000
 
-    /** 录到 [shouldStop] 为真、开口后静音够久或满 15 秒为止。调用方负责先拿到录音权限。 */
+    /** 录到「开口后安静够久」、[shouldStop] 为真或超时为止；门槛按开头测到的底噪自适应。调用方负责先拿到录音权限。 */
     @SuppressLint("MissingPermission")
-    suspend fun record(shouldStop: () -> Boolean, onLevel: (Float) -> Unit): ByteArray = withContext(Dispatchers.IO) {
+    suspend fun record(
+        shouldStop: () -> Boolean,
+        maxMs: Int = 15_000,
+        onLevel: (Float) -> Unit
+    ): Recording = withContext(Dispatchers.IO) {
         val minBuffer = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT)
         val recorder = AudioRecord(
             MediaRecorder.AudioSource.VOICE_RECOGNITION,
@@ -53,38 +63,57 @@ object PronunciationScorer {
         )
         check(recorder.state == AudioRecord.STATE_INITIALIZED) { "麦克风不可用" }
         val out = ByteArrayOutputStream()
-        val chunk = ShortArray(SAMPLE_RATE / 10) // 100ms
+        val chunk = ShortArray(SAMPLE_RATE * CHUNK_MS / 1000)
+        var noise = 0.0
+        var noiseChunks = 0
+        var loudRun = 0
         var heard = false
         var silentMs = 0
         var totalMs = 0
         try {
             recorder.startRecording()
-            while (coroutineContext.isActive && !shouldStop() && totalMs < MAX_MS) {
+            while (coroutineContext.isActive && !shouldStop() && totalMs < maxMs) {
                 val n = recorder.read(chunk, 0, chunk.size)
                 if (n <= 0) continue
-                var peak = 0
+                var sum = 0.0
                 for (i in 0 until n) {
                     val v = chunk[i].toInt()
                     out.write(v and 0xff)
                     out.write((v shr 8) and 0xff)
-                    peak = maxOf(peak, abs(v))
+                    sum += v.toDouble() * v
                 }
-                onLevel(peak / 32768f)
-                totalMs += 100
-                if (peak >= VOICE_PEAK) {
-                    heard = true
-                    silentMs = 0
-                } else if (heard) {
-                    silentMs += 100
+                val rms = sqrt(sum / n)
+                onLevel((rms / 6000).toFloat().coerceIn(0f, 1f))
+                totalMs += CHUNK_MS
+                if (totalMs <= NOISE_MS) {
+                    noise += rms
+                    noiseChunks++
+                    continue
+                }
+                val floor = if (noiseChunks > 0) noise / noiseChunks else 200.0
+                val speechLevel = maxOf(floor * 3, 900.0)
+                val silenceLevel = maxOf(floor * 1.8, 600.0)
+                if (!heard) {
+                    // 连续两段够响才算开口，避免碰麦克风的杂音
+                    loudRun = if (rms >= speechLevel) loudRun + 1 else 0
+                    if (loudRun >= 2) heard = true
+                    if (!heard && totalMs >= NO_SPEECH_MS) break
+                } else if (rms < silenceLevel) {
+                    silentMs += CHUNK_MS
                     if (silentMs >= TRAILING_SILENCE_MS) break
+                } else {
+                    silentMs = 0
                 }
             }
         } finally {
             recorder.stop()
             recorder.release()
         }
-        out.toByteArray()
+        Recording(out.toByteArray(), heard)
     }
+
+    /** 按句子长短给录音上限：每词约 0.8 秒，再留 3 秒余量。 */
+    fun maxMsFor(sentence: String) = (tokenizeSpeech(sentence).size * 800 + 3_000).coerceIn(5_000, 20_000)
 
     suspend fun assess(pcm: ByteArray, reference: String): Result<Assessment> = withContext(Dispatchers.IO) {
         runCatching {

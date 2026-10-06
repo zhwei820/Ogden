@@ -2624,8 +2624,15 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
         stopRequested = false
         state = ReadAlongState.Recording
         scope.launch {
-            val pcm = runCatching { PronunciationScorer.record({ stopRequested }) { level = it } }.getOrElse {
+            val recording = runCatching {
+                PronunciationScorer.record({ stopRequested }, PronunciationScorer.maxMsFor(line.en)) { level = it }
+            }.getOrElse {
                 state = ReadAlongState.Failed("麦克风打不开，请检查录音权限", null)
+                return@launch
+            }
+            val pcm = recording.pcm
+            if (!recording.heard && !stopRequested) {
+                state = ReadAlongState.Failed("没听到声音，靠近一点再读一遍", null)
                 return@launch
             }
             if (pcm.size < 16000) {
@@ -2737,7 +2744,7 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
                         )
                     }
                     AppText(
-                        if (recording) "正在听……读完会自动结束，也可以点一下结束" else "点话筒，跟着读一遍",
+                        if (recording) "正在听……读完停一下就会自动结束" else "点话筒，跟着读一遍",
                         color = InkSoft,
                         fontSize = 16.sp,
                         textAlign = TextAlign.Center
