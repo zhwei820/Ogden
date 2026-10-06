@@ -29,7 +29,12 @@ enum class Relation(val phrase: String, val zh: String, val level: Int, val regi
     LeftOf("on the left of", "在……左边", 3, Region.Left),
     RightOf("on the right of", "在……右边", 3, Region.Right),
     Inside("inside", "在……里面", 3, Region.Center),
-    Outside("outside", "在……外面", 3, Region.Right)
+    Outside("outside", "在……外面", 3, Region.Right);
+
+    /** 「点一点放在哪」只用画得出独立落点的方位 */
+    val placeable: Boolean
+        get() = region in setOf(Region.Top, Region.Bottom, Region.Center, Region.Left, Region.Right) &&
+            this != Between && this != Inside && this != Outside
 }
 
 /** 画出来分不清的方位组：同组的不会同时出现在一道题的选项里。 */
@@ -219,15 +224,15 @@ private fun <T> withAnswer(answer: T, distractors: List<T>, random: Random): Pai
 
 // ---------- 方位 ----------
 
-private fun positionQuestion(kind: SpecialKind, level: Int, random: Random): SpecialQuestion? {
+private fun positionQuestion(kind: SpecialKind, level: Int, random: Random, fixed: Relation? = null, fixedDir: Direction? = null): SpecialQuestion? {
     val pool = Relation.values().filter { it.level <= level }
     if (kind == SpecialKind.Direction) {
-        val dir = Direction.values().random(random)
+        val dir = fixedDir ?: Direction.values().random(random)
         val (options, answer) = withAnswer(dir, (Direction.values().toList() - dir).shuffled(random).take(3), random)
         return SpecialQuestion(kind, "按路标走，该怎么说？", Scene.Arrow(dir), null, options.map { SpecialOption(text = it.sentence) }, answer, dir.sentence, dir.zh)
     }
     // 新学的方位多出一些
-    val relation = (pool.filter { it.level == level } + pool).random(random)
+    val relation = fixed ?: (pool.filter { it.level == level } + pool).random(random)
     val scene = randomPlace(relation, random)
     val sentence = positionSentence(scene)
     return when (kind) {
@@ -249,8 +254,8 @@ private fun positionQuestion(kind: SpecialKind, level: Int, random: Random): Spe
         }
         SpecialKind.Place -> {
             // 只用画得出独立落点的区域，每个区域一个方位
-            val placeable = pool.filter { it.region in setOf(Region.Top, Region.Bottom, Region.Center, Region.Left, Region.Right) && it != Relation.Between && it != Relation.Inside && it != Relation.Outside }
-            val target = placeable.random(random)
+            val placeable = pool.filter { it.placeable }
+            val target = if (fixed != null) fixed.takeIf { it in placeable } ?: return null else placeable.random(random)
             val ref = refsFor(Relation.In).random(random)
             val others = placeable.filter { it.region != target.region }.groupBy { it.region }.values.map { it.random(random) }.shuffled(random).take(3)
             if (others.size < 3) return null
@@ -303,18 +308,25 @@ private fun confusableNumbers(n: Int, level: Int, random: Random): List<Int> {
 private val CountEmojis = listOf("🍎", "⭐", "🐟", "🎈", "🐥", "🌸", "🍪", "🚗")
 private val CountNouns = mapOf("🍎" to "apples", "⭐" to "stars", "🐟" to "fish", "🎈" to "balloons", "🐥" to "birds", "🌸" to "flowers", "🍪" to "cakes", "🚗" to "cars")
 
-private fun numberQuestion(kind: SpecialKind, level: Int, random: Random): SpecialQuestion? {
+private fun numberQuestion(kind: SpecialKind, level: Int, random: Random, fixedN: Int? = null): SpecialQuestion? {
     if (level == 3 && kind == SpecialKind.Count) {
         // 三级的「数一数」换成序数：4th → fourth
-        val n = (1..10).random(random)
-        val distractors = listOf(numberWord(n), if (n in 3..9) numberWord(n + 10) else numberWord(n * 10 % 100 + 10), Ordinals[if (n == 10) 9 else n + 1]).distinct()
-        val (options, answer) = withAnswer(Ordinals[n], distractors.filter { it != Ordinals[n] }.take(3), random)
+        val n = fixedN ?: (1..10).random(random)
+        // 容易混的：同数的基数词（four）、加十 / 乘十（fourteen、forty）、相邻序数
+        val distractors = listOfNotNull(
+            numberWord(n),
+            (n + 10).takeIf { it <= 100 }?.let(::numberWord),
+            (n * 10).takeIf { it in 11..100 }?.let(::numberWord),
+            Ordinals.getOrNull(n + 1)?.takeIf { it.isNotEmpty() },
+            Ordinals.getOrNull(n - 1)?.takeIf { it.isNotEmpty() }
+        ).distinct()
+        val (options, answer) = withAnswer(Ordinals[n], distractors.filter { it != Ordinals[n] }.shuffled(random).take(3), random)
         if (options.size < 4) return null
         return SpecialQuestion(SpecialKind.ReadNumber, "${ordinalMark(n)} 是哪个词？", Scene.Label(ordinalMark(n)), Ordinals[n],
             options.map { SpecialOption(text = it) }, answer, "${ordinalMark(n)} = ${Ordinals[n]}", "第 $n")
     }
     val range = if (kind == SpecialKind.Count) (1..(if (level == 1) 10 else 20)).toList() else numberRange(level)
-    val n = range.random(random)
+    val n = fixedN ?: range.random(random)
     val word = numberWord(n)
     val wrong = confusableNumbers(n, level, random)
     return when (kind) {
@@ -333,7 +345,7 @@ private fun numberQuestion(kind: SpecialKind, level: Int, random: Random): Speci
             SpecialQuestion(kind, "这个数字怎么读？", Scene.Label("$n"), null, options.map { SpecialOption(text = it) }, answer, "$n = $word", "数字 $n")
         }
         SpecialKind.FillBlank -> {
-            val count = if (level == 1) n else (2..20).random(random)
+            val count = if (level == 1 || fixedN != null) n else (2..20).random(random)
             val countWord = numberWord(count)
             val emoji = CountEmojis.random(random)
             val noun = CountNouns.getValue(emoji)
@@ -347,10 +359,10 @@ private fun numberQuestion(kind: SpecialKind, level: Int, random: Random): Speci
 
 // ---------- 颜色 ----------
 
-private fun colorQuestion(kind: SpecialKind, level: Int, random: Random): SpecialQuestion? {
+private fun colorQuestion(kind: SpecialKind, level: Int, random: Random, fixedColor: ColorName? = null, fixedMix: Triple<String, String, String>? = null): SpecialQuestion? {
     val pool = Colors.filter { it.level <= level }
     if (kind == SpecialKind.Mix) {
-        val (a, b, result) = ColorMixes.random(random)
+        val (a, b, result) = fixedMix ?: ColorMixes.random(random)
         val wrong = pool.filter { it.word !in setOf(a, b, result) && " " !in it.word }.shuffled(random).take(3).map { it.word }
         val (options, answer) = withAnswer(result, wrong, random)
         val sentence = "${a.replaceFirstChar { it.uppercaseChar() }} and $b make $result."
@@ -358,13 +370,14 @@ private fun colorQuestion(kind: SpecialKind, level: Int, random: Random): Specia
             options.map { SpecialOption(scene = Scene.Swatch(color(it)), text = it) }, answer, sentence, "${color(a).zh}和${color(b).zh}调成${color(result).zh}。")
     }
     if (kind == SpecialKind.FillBlank) {
-        val (thing, word) = ColoredThings.filter { (_, w) -> pool.any { it.word == w } }.random(random)
+        val (thing, word) = if (fixedColor != null) ColoredThings.firstOrNull { it.second == fixedColor.word } ?: return null
+        else ColoredThings.filter { (_, w) -> pool.any { it.word == w } }.random(random)
         val wrong = pool.filter { it.word != word && " " !in it.word }.shuffled(random).take(3).map { it.word }
         val (options, answer) = withAnswer(word, wrong, random)
         val sentence = "The ${thing.name} is $word."
         return SpecialQuestion(kind, "The ${thing.name} is ____.", Scene.Emoji(thing.emoji), null, options.map { SpecialOption(text = it) }, answer, sentence, "${thing.zh}是${color(word).zh}的。")
     }
-    val target = (pool.filter { it.level == level } + pool).random(random)
+    val target = fixedColor ?: (pool.filter { it.level == level } + pool).random(random)
     val wrong = pool.filter { it != target }.shuffled(random).take(3)
     val (options, answer) = withAnswer(target, wrong, random)
     return when (kind) {
@@ -392,10 +405,10 @@ private fun timeZh(hour: Int, minute: Int): String = when (minute) {
 
 private fun minutesFor(level: Int) = when (level) { 1 -> listOf(0); 2 -> listOf(0, 30); else -> listOf(0, 30, 15, 45) }
 
-private fun timeQuestion(kind: SpecialKind, level: Int, random: Random): SpecialQuestion? {
+private fun timeQuestion(kind: SpecialKind, level: Int, random: Random, fixed: Pair<Int, Int>? = null): SpecialQuestion? {
     val minutes = minutesFor(level)
-    val hour = (1..12).random(random)
-    val minute = minutes.random(random)
+    val hour = fixed?.first ?: (1..12).random(random)
+    val minute = fixed?.second ?: minutes.random(random)
     // 干扰：同一种说法换钟点，或同一钟点换说法
     val candidates = (minutes.map { hour to it } + (1..12).map { it to minute } + (1..12).map { it to minutes.random(random) })
         .filter { it != hour to minute }.distinct().shuffled(random).take(3)
@@ -419,35 +432,70 @@ private fun timeQuestion(kind: SpecialKind, level: Int, random: Random): Special
     }
 }
 
-private fun kindsFor(topic: SpecialTopic, level: Int): List<SpecialKind> = when (topic) {
-    SpecialTopic.Position -> listOf(SpecialKind.LookChoose, SpecialKind.ListenPick, SpecialKind.FillBlank, SpecialKind.Place) +
-        if (level == 3) listOf(SpecialKind.Direction) else emptyList()
-    SpecialTopic.Numbers -> listOf(SpecialKind.Count, SpecialKind.ListenPick, SpecialKind.ReadNumber, SpecialKind.FillBlank)
-    SpecialTopic.Colors -> listOf(SpecialKind.LookChoose, SpecialKind.ListenPick, SpecialKind.FillBlank) +
-        if (level == 3) listOf(SpecialKind.Mix) else emptyList()
-    SpecialTopic.Time -> listOf(SpecialKind.LookChoose, SpecialKind.ListenPick, SpecialKind.FillBlank) +
+/** 题型轮换出 [count] 道题；同一答案句不重复，凑不出时换下一种题型。 */
+/** 一道题考的知识点：每个知识点出一题 */
+private sealed class Target {
+    data class Rel(val relation: Relation) : Target()
+    data class Dir(val direction: Direction) : Target()
+    data class Num(val n: Int) : Target()
+    data class Ord(val n: Int) : Target()
+    data class Col(val color: ColorName) : Target()
+    data class Mix(val mix: Triple<String, String, String>) : Target()
+    data class Clock(val hour: Int, val minute: Int) : Target()
+}
+
+private fun targetsFor(topic: SpecialTopic, level: Int): List<Target> = when (topic) {
+    SpecialTopic.Position -> Relation.values().filter { it.level <= level }.map { Target.Rel(it) } +
+        if (level == 3) Direction.values().map { Target.Dir(it) } else emptyList()
+    SpecialTopic.Numbers -> numberRange(level).map { Target.Num(it) } +
+        if (level == 3) (1..10).map { Target.Ord(it) } else emptyList()
+    SpecialTopic.Colors -> Colors.filter { it.level <= level }.map { Target.Col(it) } +
+        if (level == 3) ColorMixes.map { Target.Mix(it) } else emptyList()
+    SpecialTopic.Time -> (1..12).flatMap { h -> minutesFor(level).map { m -> Target.Clock(h, m) } }
+}
+
+/** 某个知识点能出哪些题型 */
+private fun kindsFor(target: Target, level: Int): List<SpecialKind> = when (target) {
+    is Target.Rel -> listOf(SpecialKind.LookChoose, SpecialKind.ListenPick, SpecialKind.FillBlank) +
+        if (target.relation.placeable) listOf(SpecialKind.Place) else emptyList()
+    is Target.Dir -> listOf(SpecialKind.Direction)
+    // 「数一数」「补句子」要把数量画出来，只给 20 以内的数
+    is Target.Num -> (if (target.n <= 20) listOf(SpecialKind.Count, SpecialKind.FillBlank) else emptyList()) +
+        listOf(SpecialKind.ListenPick, SpecialKind.ReadNumber)
+    is Target.Ord -> listOf(SpecialKind.Count)
+    is Target.Col -> listOf(SpecialKind.LookChoose, SpecialKind.ListenPick) +
+        if (ColoredThings.any { it.second == target.color.word }) listOf(SpecialKind.FillBlank) else emptyList()
+    is Target.Mix -> listOf(SpecialKind.Mix)
+    is Target.Clock -> listOf(SpecialKind.LookChoose, SpecialKind.ListenPick, SpecialKind.FillBlank) +
         if (level == 3) listOf(SpecialKind.ReadNumber) else emptyList()
 }
 
-/** 题型轮换出 [count] 道题；同一答案句不重复，凑不出时换下一种题型。 */
-fun buildSpecialPractice(topic: SpecialTopic, level: Int, random: Random, count: Int = 10): List<SpecialQuestion> {
-    val kinds = kindsFor(topic, level)
-    val questions = mutableListOf<SpecialQuestion>()
-    var attempt = 0
-    while (questions.size < count && attempt < count * 10) {
-        val kind = kinds[attempt % kinds.size]
-        attempt++
-        val q = when (topic) {
-            SpecialTopic.Position -> positionQuestion(kind, level, random)
-            SpecialTopic.Numbers -> numberQuestion(kind, level, random)
-            SpecialTopic.Colors -> colorQuestion(kind, level, random)
-            SpecialTopic.Time -> timeQuestion(kind, level, random)
-        } ?: continue
-        if (questions.any { it.sentence == q.sentence }) continue
-        questions += q.copy(question = englishQuestion(topic, q))
+private fun questionFor(topic: SpecialTopic, level: Int, target: Target, kind: SpecialKind, random: Random): SpecialQuestion? = when (target) {
+    is Target.Rel -> positionQuestion(kind, level, random, fixed = target.relation)
+    is Target.Dir -> positionQuestion(kind, level, random, fixedDir = target.direction)
+    is Target.Num -> numberQuestion(kind, level, random, fixedN = target.n)
+    // 序数题走 numberQuestion 三级的 Count 分支
+    is Target.Ord -> numberQuestion(SpecialKind.Count, 3, random, fixedN = target.n)
+    is Target.Col -> colorQuestion(kind, level, random, fixedColor = target.color)
+    is Target.Mix -> colorQuestion(kind, level, random, fixedMix = target.mix)
+    is Target.Clock -> timeQuestion(kind, level, random, fixed = target.hour to target.minute)
+}?.let { it.copy(question = englishQuestion(topic, it)) }
+
+/**
+ * 看图练习：本级每个知识点各出一题，顺序随机；题型在该知识点适用的题型间轮换，
+ * 某题型出不了（如干扰项凑不齐）就换下一种。
+ */
+fun buildSpecialPractice(topic: SpecialTopic, level: Int, random: Random): List<SpecialQuestion> =
+    targetsFor(topic, level).shuffled(random).mapIndexedNotNull { index, target ->
+        val kinds = kindsFor(target, level)
+        kinds.indices.asSequence()
+            .map { kinds[(index + it) % kinds.size] }
+            .mapNotNull { questionFor(topic, level, target, it, random) }
+            .firstOrNull()
     }
-    return questions
-}
+
+/** 本级看图练习的题数（每个知识点一题） */
+fun specialPracticeSize(topic: SpecialTopic, level: Int) = targetsFor(topic, level).size
 
 data class WordGroup(val zh: String, val en: String, val words: List<String>)
 

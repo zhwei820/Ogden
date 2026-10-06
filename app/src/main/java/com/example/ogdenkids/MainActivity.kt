@@ -3863,7 +3863,7 @@ fun SpecialModuleScreen(
                                 }
                             }
                             Button(onClick = { stopSpeaking(); onScene(topic, sceneLevel) }, modifier = Modifier.fillMaxWidth()) {
-                                Text("开始 ${SpeechLevelNames[sceneLevel]}看图练习", fontSize = 18.sp)
+                                Text("开始${SpeechLevelNames[sceneLevel]}看图练习 · 共 ${specialPracticeSize(topic, sceneLevel)} 题", fontSize = 18.sp)
                             }
                         }
                     }

@@ -22,11 +22,12 @@ class SpecialTrainingTest {
     }
 
     @Test
-    fun everyTopicAndLevelYieldsTenValidQuestions() {
+    fun everyKnowledgePointGetsOneValidQuestion() {
         for (topic in SpecialTopic.values()) for (level in 1..3) repeat(20) { seed ->
             val where = "${topic.key} L$level seed=$seed"
             val questions = buildSpecialPractice(topic, level, Random(seed))
-            assertEquals(where, 10, questions.size)
+            // 每个知识点各一题，一题不少
+            assertEquals(where, specialPracticeSize(topic, level), questions.size)
             assertEquals("$where duplicate", questions.size, questions.map { it.sentence }.toSet().size)
             questions.forEach { q ->
                 assertTrue("$where ${q.kind} answer index", q.answer in q.options.indices)
