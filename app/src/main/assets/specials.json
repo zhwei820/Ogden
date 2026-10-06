@@ -7,28 +7,66 @@
     "scene": "position",
     "groups": [
       {
-        "zh": "方位",
-        "en": "Position",
+        "zh": "基本位置",
+        "en": "Where Is It?",
         "words": [
-          "here",
-          "there",
-          "near",
-          "far",
-          "left",
-          "right",
-          "up",
-          "down",
           "in",
-          "out",
           "on",
           "under",
+          "behind",
           "front",
-          "back",
+          "next",
+          "beside",
           "between",
+          "near",
+          "far",
+          "above",
+          "below",
+          "over",
           "inside",
           "outside",
-          "above",
-          "below"
+          "among",
+          "opposite",
+          "against"
+        ]
+      },
+      {
+        "zh": "方向与移动",
+        "en": "Which Way?",
+        "words": [
+          "up",
+          "down",
+          "left",
+          "right",
+          "here",
+          "there",
+          "forward",
+          "away",
+          "into",
+          "out",
+          "onto",
+          "off",
+          "across",
+          "through",
+          "along",
+          "around",
+          "past",
+          "toward",
+          "upstairs",
+          "downstairs"
+        ]
+      },
+      {
+        "zh": "位置名词",
+        "en": "Parts and Places",
+        "words": [
+          "top",
+          "bottom",
+          "middle",
+          "side",
+          "corner",
+          "front",
+          "back"
         ]
       }
     ],
@@ -104,6 +142,38 @@
       {
         "en": "The library is far from here.",
         "zh": "图书馆离这里很远。"
+      },
+      {
+        "en": "The cat is behind the box.",
+        "zh": "猫在箱子后面。"
+      },
+      {
+        "en": "My bag is next to my desk.",
+        "zh": "我的书包在书桌旁边。"
+      },
+      {
+        "en": "Please sit beside me.",
+        "zh": "请坐在我旁边。"
+      },
+      {
+        "en": "The bird flies over the tree.",
+        "zh": "小鸟飞过大树。"
+      },
+      {
+        "en": "We walk across the road.",
+        "zh": "我们走过马路。"
+      },
+      {
+        "en": "The children run around the park.",
+        "zh": "孩子们绕着公园跑。"
+      },
+      {
+        "en": "The ball is in the middle of the room.",
+        "zh": "球在房间中间。"
+      },
+      {
+        "en": "Go upstairs to your bedroom.",
+        "zh": "上楼去你的卧室。"
       }
     ]
   },
@@ -1002,7 +1072,10 @@
           "minute",
           "o'clock",
           "half",
-          "quarter"
+          "quarter",
+          "past",
+          "to",
+          "clock"
         ]
       },
       {
@@ -1109,6 +1182,14 @@
       {
         "en": "I am six years old this year.",
         "zh": "我今年六岁。"
+      },
+      {
+        "en": "It's a quarter to nine.",
+        "zh": "现在是八点三刻。"
+      },
+      {
+        "en": "Look at the clock on the wall.",
+        "zh": "看看墙上的钟。"
       }
     ]
   },

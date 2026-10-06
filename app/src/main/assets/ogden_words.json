@@ -18548,5 +18548,65 @@
         "s": [
             "quiet"
         ]
+    },
+    {
+        "w": "around",
+        "c": "ex",
+        "zh": "在……周围;绕着",
+        "en": "on every side of something, or moving in a circle",
+        "ex": "We walk around the lake.",
+        "exz": "我们绕着湖散步。",
+        "s": [
+            "round",
+            "about"
+        ]
+    },
+    {
+        "w": "onto",
+        "c": "ex",
+        "zh": "到……上面",
+        "en": "moving to a place on top of something",
+        "ex": "The cat jumps onto the bed.",
+        "exz": "猫跳到了床上。",
+        "s": [
+            "on",
+            "into"
+        ]
+    },
+    {
+        "w": "toward",
+        "c": "ex",
+        "zh": "朝着,向",
+        "en": "in the direction of something",
+        "ex": "The dog runs toward me.",
+        "exz": "小狗朝我跑过来。",
+        "s": [
+            "to",
+            "forward"
+        ]
+    },
+    {
+        "w": "upstairs",
+        "c": "ex",
+        "zh": "在楼上;往楼上",
+        "en": "on or to a higher floor of a building",
+        "ex": "My bedroom is upstairs.",
+        "exz": "我的卧室在楼上。",
+        "s": [
+            "up",
+            "downstairs"
+        ]
+    },
+    {
+        "w": "downstairs",
+        "c": "ex",
+        "zh": "在楼下;往楼下",
+        "en": "on or to a lower floor of a building",
+        "ex": "Grandma is cooking downstairs.",
+        "exz": "奶奶在楼下做饭。",
+        "s": [
+            "down",
+            "upstairs"
+        ]
     }
 ]

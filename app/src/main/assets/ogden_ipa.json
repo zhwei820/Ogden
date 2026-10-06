@@ -4027,5 +4027,10 @@
     "thirsty": {"uk": "/ˈθɜːsti/", "us": "/ˈθɝsti/"},
     "sick": {"uk": "/sɪk/", "us": "/sɪk/"},
     "joy": {"uk": "/dʒɔɪ/", "us": "/dʒɔɪ/"},
-    "calm": {"uk": "/kɑːm/", "us": "/kɑm/"}
+    "calm": {"uk": "/kɑːm/", "us": "/kɑm/"},
+    "around": {"uk": "/əˈɹaʊnd/", "us": "/əˈɹaʊnd/"},
+    "onto": {"uk": "/ˈɒntuː/", "us": "/ˈɑntu/"},
+    "toward": {"uk": "/təˈwɔːd/", "us": "/təˈwɔɹd/"},
+    "upstairs": {"uk": "/ˌʌpˈsteəz/", "us": "/ˌʌpˈstɛɹz/"},
+    "downstairs": {"uk": "/ˌdaʊnˈsteəz/", "us": "/ˌdaʊnˈstɛɹz/"}
 }
