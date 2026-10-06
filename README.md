@@ -63,7 +63,7 @@ app/build/outputs/apk/debug/app-debug.apk
 ## Notes
 
 - App 首版以离线学习为主，不接入账号、云同步或排行榜。
-- 所有朗读（单词、课文、例句、练习、中文）都使用内置音频：单词在 `assets/audio/{us,uk}`，其余在 `assets/tts/<语言>/<sha1>.mp3`；缺失时才在线请求 Azure，再失败回退系统 TTS。
+- 英文朗读（单词、课文、例句、练习）都使用内置音频：单词在 `assets/audio/{us,uk}`，其余在 `assets/tts/<语言>/<sha1>.mp3`；中文不预生成，播放时在线请求 Azure 并缓存在本机；缺失或失败时回退系统 TTS。
 - 新增或修改了会朗读的内容后，重新生成音频（单元测试 `TtsCoverageTest` 会列出缺失项）：
   ```
   ./gradlew :app:testDebugUnitTest --tests '*TtsCoverageTest.writeManifest'

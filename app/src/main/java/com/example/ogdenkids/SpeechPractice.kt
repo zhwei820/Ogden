@@ -21,6 +21,7 @@ enum class SentenceQuestionType(val title: String, val titleEn: String) {
  * @param answer Order：词块按正确顺序以空格连接
  * @param options Order：打乱后的词块（可能有重复词）；其余为含答案的选项
  * @param sentence 完整原句（单词题为单词本身，缩写题为「I'm = I am」），答题后展示；同组内唯一
+ * @param zh [sentence] 的中文，答题后展示
  */
 data class SentenceQuestion(
     val type: SentenceQuestionType,
@@ -28,7 +29,8 @@ data class SentenceQuestion(
     val hint: String,
     val answer: String,
     val options: List<String>,
-    val sentence: String
+    val sentence: String,
+    val zh: String
 )
 
 private val Stopwords = setOf(
@@ -83,7 +85,8 @@ private fun chooseSentence(type: SentenceQuestionType, lines: List<SpeechLine>, 
         hint = "",
         answer = line.en,
         options = (distractors + line.en).shuffled(random),
-        sentence = line.en
+        sentence = line.en,
+        zh = line.zh
     )
 }
 
@@ -98,7 +101,8 @@ private fun word(type: SentenceQuestionType, vocabulary: List<OgdenWord>, used: 
         hint = target.zh,
         answer = target.word,
         options = (distractors + target.word).shuffled(random),
-        sentence = target.word
+        sentence = target.word,
+        zh = target.zh
     )
 }
 
@@ -133,7 +137,8 @@ private fun contraction(units: List<Speech>, used: Set<String>, random: Random):
         hint = "${line.en}\n${line.zh}",
         answer = full,
         options = (distractors + full).distinct().shuffled(random),
-        sentence = "$token = $full"
+        sentence = "$token = $full",
+        zh = contractionOf(token)?.zh ?: line.zh
     )
 }
 
@@ -153,7 +158,8 @@ private fun fillWord(lines: List<SpeechLine>, used: Set<String>, random: Random)
             hint = line.zh,
             answer = token.text,
             options = (distractors + token.text).shuffled(random),
-            sentence = line.en
+            sentence = line.en,
+            zh = line.zh
         )
     }
     return null
@@ -184,7 +190,8 @@ private fun pattern(units: List<Speech>, used: Set<String>, random: Random): Sen
                 hint = line.zh,
                 answer = slot.text,
                 options = (distractors + slot.text).shuffled(random),
-                sentence = line.en
+                sentence = line.en,
+                zh = line.zh
             )
         }
     }
@@ -203,7 +210,8 @@ private fun order(lines: List<SpeechLine>, used: Set<String>, random: Random): S
         hint = "",
         answer = chunks.joinToString(" "),
         options = shuffled,
-        sentence = line.en
+        sentence = line.en,
+        zh = line.zh
     )
 }
 

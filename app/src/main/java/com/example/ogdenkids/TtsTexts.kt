@@ -9,22 +9,20 @@ fun ttsKey(voiceName: String, text: String): String =
 
 fun ttsAssetPath(voice: AzureVoice, text: String) = "tts/${voice.lang}/${ttsKey(voice.voiceName, text)}.mp3"
 
-data class TtsTexts(val english: Set<String>, val chinese: Set<String>)
+data class TtsTexts(val english: Set<String>)
 
 /**
- * 应用里所有可能经 AzureSpeaker 朗读的文本（单词本身走 assets/audio 的离线录音，不在此列）。
+ * 应用里所有可能经 AzureSpeaker 朗读的英文（单词本身走 assets/audio 的离线录音，不在此列）。
+ * 中文不预生成，播放时在线合成并缓存在本机。
  * 新增会朗读的内容时要同步加到这里，否则 TtsCoverageTest 会报缺音频。
  */
 fun speakableTexts(words: List<OgdenWord>, speeches: List<Speech>, modules: List<SpecialModule>): TtsTexts {
     val headwords = words.map { it.word.lowercase() }.toSet()
     val en = mutableSetOf<String>()
-    val zh = mutableSetOf<String>()
     val lines = speeches.flatMap { it.lines + it.patterns } + modules.flatMap { it.sentences }
-    lines.forEach { en += it.en; zh += it.zh }
+    lines.forEach { en += it.en }
     words.forEach { word ->
         en += word.example
-        zh += word.exampleZh
-        zh += word.zh
         // 近义词按钮和近义词题的答案；词表内的有离线录音
         word.synonyms.filter { it.lowercase() !in headwords }.forEach { en += it }
     }
@@ -36,8 +34,6 @@ fun speakableTexts(words: List<OgdenWord>, speeches: List<Speech>, modules: List
             en += token.lowercase().removeSuffix("'s")
         }
     }
-    val (specialEn, specialZh) = allSpecialUtterances()
-    en += specialEn
-    zh += specialZh
-    return TtsTexts(en.map { it.trim() }.filter { it.isNotEmpty() }.toSet(), zh.map { it.trim() }.filter { it.isNotEmpty() }.toSet())
+    en += allSpecialUtterances().first
+    return TtsTexts(en.map { it.trim() }.filter { it.isNotEmpty() }.toSet())
 }

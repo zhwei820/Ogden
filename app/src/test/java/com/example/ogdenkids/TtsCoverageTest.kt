@@ -40,7 +40,7 @@ class TtsCoverageTest {
     fun writeManifest() {
         val out = File("build/tts-manifest.json")
         out.parentFile.mkdirs()
-        out.writeText(JSONObject().put("en", JSONArray(texts.english.sorted())).put("zh", JSONArray(texts.chinese.sorted())).toString(1))
+        out.writeText(JSONObject().put("en", JSONArray(texts.english.sorted())).toString(1))
     }
 
     @Test
@@ -56,8 +56,8 @@ class TtsCoverageTest {
 
     @Test
     fun everySpeakableTextHasBundledAudio() {
-        val missing = texts.english.flatMap { t -> listOf(AzureVoice.EnUs, AzureVoice.EnGb).map { it to t } } +
-            texts.chinese.map { AzureVoice.ZhCn to it }
+        // 只预生成英文；中文播放时在线合成
+        val missing = texts.english.flatMap { t -> listOf(AzureVoice.EnUs, AzureVoice.EnGb).map { it to t } }
         val absent = missing.filter { (voice, text) -> !File("src/main/assets/${ttsAssetPath(voice, text)}").exists() }
         assertTrue("${absent.size} 条缺少预生成音频，运行 scripts/gen_tts_assets.py；例如 ${absent.take(5)}", absent.isEmpty())
     }

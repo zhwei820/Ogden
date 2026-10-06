@@ -43,6 +43,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
@@ -555,10 +556,6 @@ fun OgdenKidsApp() {
                 Screen.Main -> MainScaffold(
                     selectedTab = selectedTab,
                     onTab = { selectedTab = it },
-                    accent = accent,
-                    onAccent = { accent = it; progressStore.saveAccent(it) },
-                    chineseMode = chineseMode,
-                    onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
                     onSettings = { screen = Screen.Settings },
                     onPrivacy = { screen = Screen.Privacy },
                     content = { padding ->
@@ -687,6 +684,7 @@ fun OgdenKidsApp() {
                         bestScore = progressStore.bestSpecialScore("${module.key}-sentences", 0),
                         onSpeak = speakEnglish,
                         onSpeakWord = { azureSpeaker.stop(); speak(it) },
+                        onSpeakChinese = speakChinese,
                         onFinish = { correct, _ ->
                             progressStore.saveSpecialScore("${module.key}-sentences", 0, correct)
                             version++
@@ -747,6 +745,7 @@ fun OgdenKidsApp() {
                     bestScore = progressStore.bestThemeScore(current.level, current.theme),
                     onSpeak = speakEnglish,
                     onSpeakWord = { azureSpeaker.stop(); speak(it) },
+                    onSpeakChinese = speakChinese,
                     onFinish = { correct, _ ->
                         progressStore.saveThemeScore(current.level, current.theme, correct)
                         version++
@@ -913,10 +912,6 @@ fun AppText(
 fun MainScaffold(
     selectedTab: Tab,
     onTab: (Tab) -> Unit,
-    accent: Accent,
-    onAccent: (Accent) -> Unit,
-    chineseMode: ChineseMode,
-    onChineseMode: (ChineseMode) -> Unit,
     onSettings: () -> Unit,
     onPrivacy: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
@@ -973,14 +968,6 @@ fun MainScaffold(
             },
             bottomBar = {
                 Column {
-                    if (selectedTab == Tab.Library) {
-                        SettingsToggleRow(
-                            accent = accent,
-                            chineseMode = chineseMode,
-                            onAccent = onAccent,
-                            onChineseMode = onChineseMode
-                        )
-                    }
                     NavigationBar(containerColor = PaperElevated) {
                         Tab.values().forEach { tab ->
                             NavigationBarItem(
@@ -1312,12 +1299,18 @@ fun LibraryScreen(
 ) {
     var query by remember { mutableStateOf("") }
     var category by remember { mutableStateOf<Category?>(null) }
-    val filtered = words.filter { word ->
+    // 随机模式：打乱当前筛选结果；「换一批」换种子重新打乱
+    var randomOrder by rememberSaveable { mutableStateOf(false) }
+    var shuffleSeed by rememberSaveable { mutableStateOf(0) }
+    val matched = words.filter { word ->
         (category == null || word.category == category) &&
             (query.isBlank() ||
                 word.word.contains(query, ignoreCase = true) ||
                 word.zh.contains(query) ||
                 word.englishDefinition.contains(query, ignoreCase = true))
+    }
+    val filtered = remember(matched, randomOrder, shuffleSeed) {
+        if (randomOrder) matched.shuffled(Random(shuffleSeed)) else matched
     }
     LazyColumn(
         modifier = Modifier
@@ -1350,7 +1343,21 @@ fun LibraryScreen(
             }
         }
         item {
-            AppText("显示 ${filtered.size} 个词", color = InkFaint, fontSize = 13.sp)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AppText("显示 ${filtered.size} 个词", color = InkFaint, fontSize = 13.sp, modifier = Modifier.weight(1f))
+                if (randomOrder) {
+                    TextButton(onClick = { shuffleSeed++ }) { AppText("换一批") }
+                }
+                FilterChip(
+                    selected = randomOrder,
+                    onClick = {
+                        randomOrder = !randomOrder
+                        if (randomOrder) shuffleSeed = (0..Int.MAX_VALUE).random()
+                    },
+                    leadingIcon = { Icon(Icons.Default.Shuffle, contentDescription = null, modifier = Modifier.size(18.dp)) },
+                    label = { Text("随机") }
+                )
+            }
         }
         items(filtered, key = { it.word }) { word ->
             WordListCard(
@@ -1399,6 +1406,7 @@ fun WordListCard(
             }
             Text(word.englishDefinition, color = InkFaint, fontStyle = FontStyle.Italic)
             TranslatableText(AnnotatedString(word.example), TextStyle(color = InkSoft, fontFamily = FontFamily.Serif, fontSize = 16.sp))
+            if (word.exampleZh.isNotBlank()) AppText(convertZh(word.exampleZh, zh), color = InkFaint, fontSize = 14.sp)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 word.synonyms.take(3).forEach { AssistChip(onClick = { onSpeak(it) }, label = { Text(it) }) }
                 repeat(progress.mastery) {
@@ -2969,6 +2977,7 @@ fun ThemePracticeScreen(
     bestScore: Int?,
     onSpeak: (String) -> Unit,
     onSpeakWord: (String) -> Unit,
+    onSpeakChinese: (String) -> Unit,
     onFinish: (correct: Int, total: Int) -> Unit,
     onBack: () -> Unit
 ) {
@@ -3198,12 +3207,21 @@ fun ThemePracticeScreen(
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppText(if (isCorrect) "答对了！" else "再看看正确答案", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    TranslatableText(AnnotatedString(question.sentence), TextStyle(fontFamily = FontFamily.Serif, fontSize = 22.sp, lineHeight = 30.sp, color = Ink), onTap = { speakQuestion(question) })
-                                    if (isWordQuestion(question)) AppText(question.hint, color = InkSoft, fontSize = 18.sp)
-                                }
+                                TranslatableText(
+                                    AnnotatedString(question.sentence),
+                                    TextStyle(fontFamily = FontFamily.Serif, fontSize = 22.sp, lineHeight = 30.sp, color = Ink),
+                                    modifier = Modifier.weight(1f),
+                                    onTap = { speakQuestion(question) }
+                                )
                                 IconButton(onClick = { speakQuestion(question) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = accent.tint)
+                                }
+                            }
+                            // 答对答错都给出中文，听力题也能确认自己听到的意思
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                AppText(question.zh, color = InkSoft, fontSize = 18.sp, lineHeight = 26.sp, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { onSpeakChinese(question.zh) }) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "朗读中文", tint = InkFaint)
                                 }
                             }
                         }
