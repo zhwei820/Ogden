@@ -15486,5 +15486,117 @@
    "ex": "My swimming coach helps me a lot.",
    "exz": "我的游泳教练帮了我很多。"
   }
+ ],
+ "forehead": [
+  {
+   "phrase": "a high forehead",
+   "zh": "高高的额头",
+   "ex": "My little brother has a high forehead.",
+   "exz": "我弟弟的额头高高的。"
+  },
+  {
+   "phrase": "touch your forehead",
+   "zh": "摸摸额头",
+   "ex": "Touch your forehead and see if it's hot.",
+   "exz": "摸摸额头看烫不烫。"
+  }
+ ],
+ "eyelash": [
+  {
+   "phrase": "long eyelashes",
+   "zh": "长长的睫毛",
+   "ex": "My sister has long eyelashes.",
+   "exz": "我妹妹有长长的睫毛。"
+  },
+  {
+   "phrase": "an eyelash on your cheek",
+   "zh": "脸上的一根睫毛",
+   "ex": "There is an eyelash on your cheek.",
+   "exz": "你脸上有一根睫毛。"
+  }
+ ],
+ "wrist": [
+  {
+   "phrase": "on my wrist",
+   "zh": "在我手腕上",
+   "ex": "I wear a watch on my wrist.",
+   "exz": "我手腕上戴着一块手表。"
+  },
+  {
+   "phrase": "hurt my wrist",
+   "zh": "弄伤手腕",
+   "ex": "I hurt my wrist when I fell.",
+   "exz": "我摔倒时弄伤了手腕。"
+  }
+ ],
+ "palm": [
+  {
+   "phrase": "in your palm",
+   "zh": "在手掌里",
+   "ex": "Hold the bird in your palm.",
+   "exz": "把小鸟捧在手掌里。"
+  },
+  {
+   "phrase": "palm to palm",
+   "zh": "掌心对掌心",
+   "ex": "Put your hands palm to palm.",
+   "exz": "双手掌心对掌心合起来。"
+  }
+ ],
+ "ankle": [
+  {
+   "phrase": "hurt my ankle",
+   "zh": "伤了脚踝",
+   "ex": "I hurt my ankle at football.",
+   "exz": "我踢足球时伤了脚踝。"
+  },
+  {
+   "phrase": "ankle socks",
+   "zh": "短袜",
+   "ex": "I wear white ankle socks.",
+   "exz": "我穿白色的短袜。"
+  }
+ ],
+ "heel": [
+  {
+   "phrase": "high heels",
+   "zh": "高跟鞋",
+   "ex": "Mom wears high heels to the party.",
+   "exz": "妈妈穿高跟鞋去参加聚会。"
+  },
+  {
+   "phrase": "heel to toe",
+   "zh": "脚跟接脚尖",
+   "ex": "Walk heel to toe on the line.",
+   "exz": "沿着线脚跟接脚尖地走。"
+  }
+ ],
+ "waist": [
+  {
+   "phrase": "around my waist",
+   "zh": "在我腰上",
+   "ex": "I tie my coat around my waist.",
+   "exz": "我把外套系在腰上。"
+  },
+  {
+   "phrase": "waist size",
+   "zh": "腰围",
+   "ex": "What is your waist size?",
+   "exz": "你的腰围是多少？"
+  }
+ ],
+ "hip": [
+  {
+   "phrase": "hands on hips",
+   "zh": "双手叉腰",
+   "ex": "Stand with your hands on your hips.",
+   "exz": "双手叉腰站好。"
+  },
+  {
+   "phrase": "hip and knee",
+   "zh": "髋和膝",
+   "ex": "Bend at the hip and knee.",
+   "exz": "弯曲髋部和膝盖。"
+  }
  ]
 }

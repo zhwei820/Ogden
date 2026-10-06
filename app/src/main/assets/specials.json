@@ -889,7 +889,9 @@
           "cheek",
           "chin",
           "neck",
-          "throat"
+          "throat",
+          "forehead",
+          "eyelash"
         ]
       },
       {
@@ -906,7 +908,9 @@
           "bone",
           "muscle",
           "skin",
-          "blood"
+          "blood",
+          "waist",
+          "hip"
         ]
       },
       {
@@ -916,13 +920,17 @@
           "shoulder",
           "arm",
           "elbow",
+          "wrist",
           "hand",
+          "palm",
           "finger",
           "thumb",
           "nail",
           "leg",
           "knee",
+          "ankle",
           "foot",
+          "heel",
           "toe"
         ]
       }
@@ -1023,6 +1031,22 @@
       {
         "en": "Ice cream is cold on my lips.",
         "zh": "冰淇淋碰到嘴唇凉凉的。"
+      },
+      {
+        "en": "My ankle hurts after the race.",
+        "zh": "赛跑后我的脚踝疼。"
+      },
+      {
+        "en": "Put your hands on your hips.",
+        "zh": "把手放在腰上。"
+      },
+      {
+        "en": "Touch your forehead with your palm.",
+        "zh": "用手掌摸摸额头。"
+      },
+      {
+        "en": "I wear a watch on my wrist.",
+        "zh": "我手腕上戴着一块手表。"
       }
     ]
   },

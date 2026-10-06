@@ -19517,5 +19517,227 @@
             "shoe",
             "home"
         ]
+    },
+    {
+        "w": "forehead",
+        "c": "ex",
+        "zh": "额头",
+        "en": "the part of your face above your eyes",
+        "ex": "Mom kisses me on the forehead.",
+        "exz": "妈妈亲了亲我的额头。",
+        "s": [
+            "face",
+            "head"
+        ]
+    },
+    {
+        "w": "eyelash",
+        "c": "ex",
+        "zh": "睫毛",
+        "en": "one of the small hairs on the edge of your eye",
+        "ex": "The baby has long eyelashes.",
+        "exz": "宝宝的睫毛很长。",
+        "s": [
+            "eye",
+            "eyebrow"
+        ]
+    },
+    {
+        "w": "wrist",
+        "c": "ex",
+        "zh": "手腕",
+        "en": "the part of your arm next to your hand",
+        "ex": "I wear a watch on my wrist.",
+        "exz": "我手腕上戴着一块手表。",
+        "s": [
+            "hand",
+            "arm"
+        ]
+    },
+    {
+        "w": "palm",
+        "c": "ex",
+        "zh": "手掌",
+        "en": "the inside part of your hand",
+        "ex": "Put the seed in your palm.",
+        "exz": "把种子放在手掌里。",
+        "s": [
+            "hand",
+            "finger"
+        ]
+    },
+    {
+        "w": "ankle",
+        "c": "ex",
+        "zh": "脚踝",
+        "en": "the part of your leg just above your foot",
+        "ex": "I hurt my ankle at football.",
+        "exz": "我踢足球时伤了脚踝。",
+        "s": [
+            "foot",
+            "leg"
+        ]
+    },
+    {
+        "w": "heel",
+        "c": "ex",
+        "zh": "脚后跟",
+        "en": "the back part of your foot",
+        "ex": "My new shoes hurt my heels.",
+        "exz": "我的新鞋磨脚后跟。",
+        "s": [
+            "foot",
+            "toe"
+        ]
+    },
+    {
+        "w": "waist",
+        "c": "ex",
+        "zh": "腰",
+        "en": "the middle part of your body",
+        "ex": "The belt goes around my waist.",
+        "exz": "腰带系在我的腰上。",
+        "s": [
+            "body",
+            "hip"
+        ]
+    },
+    {
+        "w": "hip",
+        "c": "ex",
+        "zh": "臀部,髋部",
+        "en": "the side of your body below your waist",
+        "ex": "Put your hands on your hips.",
+        "exz": "把手放在腰上。",
+        "s": [
+            "waist",
+            "leg"
+        ]
+    },
+    {
+        "w": "mommy",
+        "c": "ex",
+        "zh": "妈妈",
+        "en": "a child's word for mother",
+        "ex": "Mommy, can you read me a story?",
+        "exz": "妈妈，你能给我讲个故事吗？",
+        "s": [
+            "mom",
+            "mother"
+        ]
+    },
+    {
+        "w": "daddy",
+        "c": "ex",
+        "zh": "爸爸",
+        "en": "a child's word for father",
+        "ex": "Daddy is playing ball with me.",
+        "exz": "爸爸在和我玩球。",
+        "s": [
+            "dad",
+            "father"
+        ]
+    },
+    {
+        "w": "granny",
+        "c": "ex",
+        "zh": "奶奶,外婆",
+        "en": "a child's word for grandmother",
+        "ex": "Granny made a cake for me.",
+        "exz": "奶奶给我做了一个蛋糕。",
+        "s": [
+            "grandma",
+            "grandmother"
+        ]
+    },
+    {
+        "w": "doggy",
+        "c": "ex",
+        "zh": "小狗狗",
+        "en": "a child's word for a dog",
+        "ex": "The doggy is wagging its tail.",
+        "exz": "小狗狗在摇尾巴。",
+        "s": [
+            "dog",
+            "puppy"
+        ]
+    },
+    {
+        "w": "kitty",
+        "c": "ex",
+        "zh": "小猫咪",
+        "en": "a child's word for a cat",
+        "ex": "The kitty is sleeping on the bed.",
+        "exz": "小猫咪在床上睡觉。",
+        "s": [
+            "cat",
+            "kitten"
+        ]
+    },
+    {
+        "w": "bunny",
+        "c": "ex",
+        "zh": "小兔子",
+        "en": "a child's word for a rabbit",
+        "ex": "The bunny has long ears.",
+        "exz": "小兔子有长长的耳朵。",
+        "s": [
+            "rabbit"
+        ]
+    },
+    {
+        "w": "piggy",
+        "c": "ex",
+        "zh": "小猪猪",
+        "en": "a child's word for a pig",
+        "ex": "The piggy is in the mud.",
+        "exz": "小猪猪在泥里。",
+        "s": [
+            "pig"
+        ]
+    },
+    {
+        "w": "horsey",
+        "c": "ex",
+        "zh": "小马",
+        "en": "a child's word for a horse",
+        "ex": "I want to ride the horsey.",
+        "exz": "我想骑小马。",
+        "s": [
+            "horse"
+        ]
+    },
+    {
+        "w": "birdie",
+        "c": "ex",
+        "zh": "小鸟",
+        "en": "a child's word for a bird",
+        "ex": "Look at the little birdie in the tree.",
+        "exz": "看树上的小鸟。",
+        "s": [
+            "bird"
+        ]
+    },
+    {
+        "w": "bye-bye",
+        "c": "ex",
+        "zh": "拜拜",
+        "en": "a child's way to say goodbye",
+        "ex": "Say bye-bye to Grandpa.",
+        "exz": "跟爷爷说拜拜。",
+        "s": [
+            "goodbye"
+        ]
+    },
+    {
+        "w": "jammies",
+        "c": "ex",
+        "zh": "睡衣",
+        "en": "a child's word for pajamas",
+        "ex": "Put on your jammies, it is time for bed.",
+        "exz": "穿上睡衣，该睡觉了。",
+        "s": [
+            "pajamas"
+        ]
     }
 ]

@@ -4082,5 +4082,57 @@
     "pajamas": {"uk": "/pəˈdʒɑːməz/", "us": "/pəˈdʒɑməz/"},
     "sneaker": {"uk": "/ˈsniːkə/", "us": "/ˈsnikɝ/"},
     "sandal": {"uk": "/ˈsændəl/", "us": "/ˈsændəl/"},
-    "slipper": {"uk": "/ˈslɪpə/", "us": "/ˈslɪpɝ/"}
+    "slipper": {"uk": "/ˈslɪpə/", "us": "/ˈslɪpɝ/"},
+    "forehead": {"uk": "/ˈfɔːhɛd/", "us": "/ˈfɔɹhɛd/"},
+    "eyelash": {"uk": "/ˈaɪlæʃ/", "us": "/ˈaɪlæʃ/"},
+    "wrist": {"uk": "/ɹɪst/", "us": "/ɹɪst/"},
+    "palm": {"uk": "/pɑːm/", "us": "/pɑm/"},
+    "ankle": {"uk": "/ˈæŋkəl/", "us": "/ˈæŋkəl/"},
+    "heel": {"uk": "/hiːl/", "us": "/hil/"},
+    "waist": {"uk": "/weɪst/", "us": "/weɪst/"},
+    "hip": {"uk": "/hɪp/", "us": "/hɪp/"},
+    "mommy":  {
+        "uk":  "/ˈmɒmi/",
+        "us":  "/ˈmɑmi/"
+    },
+    "daddy":  {
+        "uk":  "/ˈdædi/",
+        "us":  "/ˈdædi/"
+    },
+    "granny":  {
+        "uk":  "/ˈɡɹæni/",
+        "us":  "/ˈɡɹæni/"
+    },
+    "doggy":  {
+        "uk":  "/ˈdɒɡi/",
+        "us":  "/ˈdɔɡi/"
+    },
+    "kitty":  {
+        "uk":  "/ˈkɪti/",
+        "us":  "/ˈkɪti/"
+    },
+    "bunny":  {
+        "uk":  "/ˈbʌni/",
+        "us":  "/ˈbʌni/"
+    },
+    "piggy":  {
+        "uk":  "/ˈpɪɡi/",
+        "us":  "/ˈpɪɡi/"
+    },
+    "horsey":  {
+        "uk":  "/ˈhɔːsi/",
+        "us":  "/ˈhɔɹsi/"
+    },
+    "birdie":  {
+        "uk":  "/ˈbɜːdi/",
+        "us":  "/ˈbɝdi/"
+    },
+    "bye-bye":  {
+        "uk":  "/ˌbaɪˈbaɪ/",
+        "us":  "/ˌbaɪˈbaɪ/"
+    },
+    "jammies":  {
+        "uk":  "/ˈdʒæmiz/",
+        "us":  "/ˈdʒæmiz/"
+    }
 }

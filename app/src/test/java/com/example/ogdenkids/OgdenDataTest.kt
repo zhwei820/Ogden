@@ -33,6 +33,15 @@ class OgdenDataTest {
     }
 
     @Test
+    fun registerWordsAndFormalFormsAreHeadwords() {
+        val headwords = List(words.length()) { words.getJSONObject(it).getString("w").lowercase() }.toSet()
+        allRegisters().forEach { (word, register) ->
+            assertTrue("register word $word", word in headwords)
+            assertTrue("formal ${register.formal} of $word", register.formal.lowercase() in headwords)
+        }
+    }
+
+    @Test
     fun requiredFieldsArePresent() {
         repeat(words.length()) { index ->
             val item = words.getJSONObject(index)

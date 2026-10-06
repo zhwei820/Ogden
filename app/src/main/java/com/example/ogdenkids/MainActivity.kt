@@ -1505,6 +1505,7 @@ fun WordListCard(
                         Text(word.word, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
                         Spacer(Modifier.width(8.dp))
                         Text(if (accent == Accent.UK) word.ipaUk else word.ipaUs, color = InkFaint, fontStyle = FontStyle.Italic)
+                        registerOf(word.word)?.let { Spacer(Modifier.width(8.dp)); RegisterBadge(it.tag) }
                     }
                     Text(convertZh(word.zh, zh), fontWeight = FontWeight.Medium, color = Ink)
                 }
@@ -1588,6 +1589,7 @@ fun WordDetailScreen(
                             fontWeight = FontWeight.SemiBold,
                             modifier = Modifier.clickable { onSpeakZh(word.zh) }
                         )
+                        RegisterNote(word.word)
                         Text(word.englishDefinition, color = InkSoft, fontStyle = FontStyle.Italic)
                     }
                 }
@@ -2184,7 +2186,10 @@ fun SpeechReaderScreen(
                                 border = BorderStroke(if (picked) 2.dp else 1.dp, if (picked) Category.Operations.tint else Line),
                                 modifier = Modifier.padding(bottom = 8.dp),
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
-                            ) { Text(wordIndex[w.lowercase()]?.word ?: w, fontSize = 20.sp, fontFamily = FontFamily.Serif, color = Ink) }
+                            ) {
+                                Text(wordIndex[w.lowercase()]?.word ?: w, fontSize = 20.sp, fontFamily = FontFamily.Serif, color = Ink)
+                                registerOf(w)?.let { Spacer(Modifier.width(6.dp)); RegisterBadge(it.tag) }
+                            }
                         }
                     }
                 }
@@ -3042,6 +3047,7 @@ private fun WordSheetBody(
                 }
             }
             AppText(word.zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+            RegisterNote(word.word)
             word.examples.filter { it.first.isNotBlank() }.forEach { (example, exampleZh) ->
                 Card(
                     colors = CardDefaults.cardColors(containerColor = Paper),
@@ -4039,6 +4045,7 @@ fun SpecialModuleScreen(
                                     fontWeight = if (marked) FontWeight.Bold else null,
                                     color = if (marked) Category.Opposites.tint else Ink
                                 )
+                                registerOf(w)?.let { Spacer(Modifier.width(6.dp)); RegisterBadge(it.tag) }
                             }
                         }
                     }
@@ -4762,6 +4769,44 @@ fun TogglePill(label: String, selected: Boolean, onClick: () -> Unit, modifier: 
         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 4.dp)
     ) {
         AppText(label, color = if (selected) Color.White else InkSoft, maxLines = 1, fontSize = 12.sp)
+    }
+}
+
+/** 「儿语 / 口语」小标签 */
+@Composable
+fun RegisterBadge(tag: String) {
+    val kid = tag == "儿语"
+    Text(
+        tag,
+        fontSize = 11.sp,
+        fontWeight = FontWeight.Bold,
+        color = if (kid) Category.Operations.tint else InkSoft,
+        modifier = Modifier
+            .clip(RoundedCornerShape(6.dp))
+            .background(if (kid) Category.Operations.soft else Line)
+            .padding(horizontal = 6.dp, vertical = 2.dp)
+    )
+}
+
+/** 标签 + 「正式说法：stomach」，点正式说法跳到它的词条 */
+@Composable
+fun RegisterNote(word: String) {
+    val register = registerOf(word) ?: return
+    val services = LocalSpeechServices.current
+    val formal = services.lookup(register.formal)
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        RegisterBadge(register.tag)
+        Spacer(Modifier.width(8.dp))
+        AppText("正式说法：", color = InkSoft, fontSize = 15.sp)
+        Text(
+            formal?.word ?: register.formal,
+            fontFamily = FontFamily.Serif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 17.sp,
+            color = Category.Qualities.tint,
+            modifier = Modifier.clickable(enabled = formal != null) { formal?.let(services.openWord) }
+        )
+        formal?.let { AppText("  ${it.zh}", color = InkFaint, fontSize = 14.sp, maxLines = 1, overflow = TextOverflow.Ellipsis) }
     }
 }
 
