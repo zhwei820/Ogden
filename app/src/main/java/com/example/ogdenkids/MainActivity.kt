@@ -1506,7 +1506,15 @@ fun WordListCard(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(word.word, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
                         Spacer(Modifier.width(8.dp))
-                        Text(if (accent == Accent.UK) word.ipaUk else word.ipaUs, color = InkFaint, fontStyle = FontStyle.Italic)
+                        // 音标让位：长音标省略，保证后面的口语标签不被挤成竖排
+                        Text(
+                            if (accent == Accent.UK) word.ipaUk else word.ipaUs,
+                            color = InkFaint,
+                            fontStyle = FontStyle.Italic,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
                         registerOf(word.word)?.let { Spacer(Modifier.width(8.dp)); RegisterBadge(it.tag) }
                     }
                     Text(convertZh(word.zh, zh), fontWeight = FontWeight.Medium, color = Ink)
@@ -4813,6 +4821,8 @@ fun RegisterBadge(tag: String) {
         fontSize = 11.sp,
         fontWeight = FontWeight.Bold,
         color = category.tint,
+        maxLines = 1,
+        softWrap = false,
         modifier = Modifier
             .clip(RoundedCornerShape(6.dp))
             .background(category.soft)
