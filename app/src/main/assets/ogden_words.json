@@ -598,11 +598,7 @@
         "en":  "definite article, specific",
         "ex":  "The book is on the desk.",
         "exz":  "那本书在桌上。",
-        "s":  [
-                  "this",
-                  "that",
-                  "said"
-              ]
+        "s":  []
     },
     {
         "w":  "all",
@@ -732,8 +728,7 @@
         "exz":  "那本书是我的。",
         "s":  [
                   "which",
-                  "the one",
-                  "yon"
+                  "the one"
               ]
     },
     {
@@ -743,11 +738,7 @@
         "en":  "referring to something near",
         "ex":  "This is my house.",
         "exz":  "这是我家。",
-        "s":  [
-                  "the present",
-                  "the current",
-                  "here"
-              ]
+        "s":  []
     },
     {
         "w":  "I",
@@ -782,11 +773,7 @@
         "en":  "the person spoken to",
         "ex":  "You are very kind.",
         "exz":  "你真好。",
-        "s":  [
-                  "thou",
-                  "ye",
-                  "one"
-              ]
+        "s":  []
     },
     {
         "w":  "who",
@@ -941,8 +928,7 @@
         "exz":  "你为什么难过?",
         "s":  [
                   "for what reason",
-                  "how come",
-                  "wherefore"
+                  "how come"
               ]
     },
     {
@@ -1002,7 +988,6 @@
         "exz":  "请到这里来。",
         "s":  [
                   "at this place",
-                  "hither",
                   "in this spot"
               ]
     },
@@ -1079,8 +1064,7 @@
         "ex":  "Sit over there.",
         "exz":  "坐到那边去。",
         "s":  [
-                  "at that place",
-                  "thither"
+                  "at that place"
               ]
     },
     {
@@ -1223,9 +1207,7 @@
         "ex":  "See you tomorrow.",
         "exz":  "明天见。",
         "s":  [
-                  "next day",
-                  "the morrow",
-                  "soon"
+                  "next day"
               ]
     },
     {
@@ -1249,9 +1231,7 @@
         "ex":  "Go north for two miles.",
         "exz":  "向北走两英里。",
         "s":  [
-                  "northward",
-                  "Arctic direction",
-                  "up"
+                  "northward"
               ]
     },
     {
@@ -1262,9 +1242,7 @@
         "ex":  "Birds fly south in winter.",
         "exz":  "鸟儿冬天飞向南方。",
         "s":  [
-                  "southward",
-                  "tropical direction",
-                  "down"
+                  "southward"
               ]
     },
     {
@@ -1275,9 +1253,7 @@
         "ex":  "The sun rises in the east.",
         "exz":  "太阳从东方升起。",
         "s":  [
-                  "eastward",
-                  "orient",
-                  "sunrise side"
+                  "eastward"
               ]
     },
     {
@@ -1288,9 +1264,7 @@
         "ex":  "Drive west to reach the coast.",
         "exz":  "向西开就到海岸了。",
         "s":  [
-                  "westward",
-                  "sunset side",
-                  "occident"
+                  "westward"
               ]
     },
     {
@@ -1302,8 +1276,7 @@
         "exz":  "请安静。",
         "s":  [
                   "kindly",
-                  "if you would",
-                  "pray"
+                  "if you would"
               ]
     },
     {
@@ -1695,11 +1668,7 @@
         "en":  "red liquid in the body",
         "ex":  "Blood flows through veins.",
         "exz":  "血液流经血管。",
-        "s":  [
-                  "plasma",
-                  "gore",
-                  "lifeblood"
-              ]
+        "s":  []
     },
     {
         "w":  "blow",
@@ -1912,10 +1881,12 @@
     {
         "w":  "change",
         "c":  "gt",
-        "zh":  "改变",
-        "en":  "becoming different",
+        "zh":  "改变;零钱",
+        "en":  "becoming different; or the money you get back when you pay",
         "ex":  "A change of plan is needed.",
         "exz":  "需要改变计划。",
+        "ex2":  "Here is your change.",
+        "exz2":  "这是找你的零钱。",
         "s":  [
                   "alteration",
                   "shift",
@@ -2091,8 +2062,7 @@
         "exz":  "铜线导电。",
         "s":  [
                   "metal",
-                  "penny",
-                  "cuprum"
+                  "penny"
               ]
     },
     {
@@ -2117,8 +2087,7 @@
         "exz":  "把瓶塞拔出来。",
         "s":  [
                   "stopper",
-                  "plug",
-                  "bung"
+                  "plug"
               ]
     },
     {
@@ -2329,7 +2298,6 @@
         "exz":  "他的去世很突然。",
         "s":  [
                   "dying",
-                  "demise",
                   "passing"
               ]
     },
@@ -2445,7 +2413,6 @@
         "ex":  "Slow eating helps digestion.",
         "exz":  "慢慢吃有助消化。",
         "s":  [
-                  "assimilation",
                   "absorption",
                   "breakdown"
               ]
@@ -2819,8 +2786,7 @@
         "exz":  "我父亲是老师。",
         "s":  [
                   "dad",
-                  "papa",
-                  "sire"
+                  "papa"
               ]
     },
     {
@@ -3056,8 +3022,7 @@
         "ex":  "The ring is pure gold.",
         "exz":  "戒指是纯金的。",
         "s":  [
-                  "treasure",
-                  "aurum"
+                  "treasure"
               ]
     },
     {
@@ -3525,7 +3490,6 @@
         "ex":  "Give the ball a kick.",
         "exz":  "踢一下球。",
         "s":  [
-                  "boot",
                   "strike",
                   "punt"
               ]
@@ -3690,10 +3654,12 @@
     {
         "w":  "light",
         "c":  "gt",
-        "zh":  "光,灯",
-        "en":  "brightness from sun or lamp",
+        "zh":  "光,灯;轻的",
+        "en":  "brightness from sun or lamp; or not heavy",
         "ex":  "Turn on the light.",
         "exz":  "开灯。",
+        "ex2":  "This bag is very light.",
+        "exz2":  "这个包很轻。",
         "s":  [
                   "lamp",
                   "brightness",
@@ -3882,8 +3848,7 @@
         "exz":  "晚餐是主餐。",
         "s":  [
                   "dinner",
-                  "feast",
-                  "repast"
+                  "feast"
               ]
     },
     {
@@ -3910,7 +3875,6 @@
         "exz":  "我不吃肉。",
         "s":  [
                   "flesh",
-                  "beef",
                   "protein"
               ]
     },
@@ -3973,8 +3937,7 @@
         "exz":  "把牛奶喝了。",
         "s":  [
                   "dairy",
-                  "cream",
-                  "lactation"
+                  "cream"
               ]
     },
     {
@@ -4074,8 +4037,7 @@
         "exz":  "我妈妈做饭很好吃。",
         "s":  [
                   "mom",
-                  "mama",
-                  "matron"
+                  "mama"
               ]
     },
     {
@@ -4179,8 +4141,7 @@
         "exz":  "你听说那消息了吗?",
         "s":  [
                   "report",
-                  "update",
-                  "tidings"
+                  "update"
               ]
     },
     {
@@ -4191,9 +4152,7 @@
         "ex":  "The stars shine at night.",
         "exz":  "星星在夜里闪亮。",
         "s":  [
-                  "nighttime",
-                  "dark",
-                  "evening"
+                  "nighttime"
               ]
     },
     {
@@ -4355,9 +4314,7 @@
         "ex":  "Turn to page 5.",
         "exz":  "翻到第5页。",
         "s":  [
-                  "sheet",
-                  "leaf",
-                  "folio"
+                  "sheet"
               ]
     },
     {
@@ -4860,7 +4817,6 @@
         "exz":  "阅读是我的爱好。",
         "s":  [
                   "study",
-                  "perusal",
                   "interpretation"
               ]
     },
@@ -5172,8 +5128,7 @@
         "exz":  "今天海面平静。",
         "s":  [
                   "ocean",
-                  "waters",
-                  "deep"
+                  "waters"
               ]
     },
     {
@@ -5263,9 +5218,7 @@
         "ex":  "What\u0027s the sex of the baby?",
         "exz":  "宝宝是男是女?",
         "s":  [
-                  "gender",
-                  "intercourse",
-                  "mating"
+                  "gender"
               ]
     },
     {
@@ -5370,7 +5323,6 @@
         "exz":  "戒指是银的。",
         "s":  [
                   "metal",
-                  "argent",
                   "sterling"
               ]
     },
@@ -5407,8 +5359,7 @@
         "ex":  "The sky is blue.",
         "exz":  "天是蓝的。",
         "s":  [
-                  "atmosphere",
-                  "air"
+                  "atmosphere"
               ]
     },
     {
@@ -5522,9 +5473,7 @@
         "ex":  "Snow covers the road.",
         "exz":  "雪覆盖了路面。",
         "s":  [
-                  "flakes",
-                  "frost",
-                  "powder"
+                  "flakes"
               ]
     },
     {
@@ -6311,7 +6260,6 @@
         "exz":  "多喝水。",
         "s":  [
                   "liquid",
-                  "H2O",
                   "fluid"
               ]
     },
@@ -6557,7 +6505,6 @@
         "exz":  "面包上有只蚂蚁。",
         "s":  [
                   "insect",
-                  "pismire",
                   "bug"
               ]
     },
@@ -6570,8 +6517,7 @@
         "exz":  "每天一苹果。",
         "s":  [
                   "fruit",
-                  "produce",
-                  "pome"
+                  "produce"
               ]
     },
     {
@@ -6688,8 +6634,7 @@
         "ex":  "A basket of apples.",
         "exz":  "一篮苹果。",
         "s":  [
-                  "hamper",
-                  "creel"
+                  "hamper"
               ]
     },
     {
@@ -6768,8 +6713,7 @@
         "exz":  "鸟飞走了。",
         "s":  [
                   "fowl",
-                  "creature",
-                  "avian"
+                  "creature"
               ]
     },
     {
@@ -6818,11 +6762,7 @@
         "en":  "hard part inside body",
         "ex":  "The dog has a bone.",
         "exz":  "狗有根骨头。",
-        "s":  [
-                  "skeleton",
-                  "ossicle",
-                  "frame"
-              ]
+        "s":  []
     },
     {
         "w":  "book",
@@ -6921,8 +6861,7 @@
         "ex":  "A branch broke off.",
         "exz":  "一根树枝断了。",
         "s":  [
-                  "limb",
-                  "arm"
+                  "limb"
               ]
     },
     {
@@ -6973,8 +6912,7 @@
         "exz":  "把桶装满。",
         "s":  [
                   "pail",
-                  "tub",
-                  "scuttle"
+                  "tub"
               ]
     },
     {
@@ -7037,7 +6975,6 @@
         "ex":  "Send me a card.",
         "exz":  "给我寄张卡。",
         "s":  [
-                  "note",
                   "ticket",
                   "pass"
               ]
@@ -7103,8 +7040,7 @@
         "ex":  "Bread and cheese, please.",
         "exz":  "请给我面包和奶酪。",
         "s":  [
-                  "dairy",
-                  "fromage"
+                  "dairy"
               ]
     },
     {
@@ -7129,8 +7065,7 @@
         "ex":  "He has a strong chin.",
         "exz":  "他下巴线条很硬。",
         "s":  [
-                  "jaw",
-                  "mandible"
+                  "jaw"
               ]
     },
     {
@@ -7243,8 +7178,7 @@
         "ex":  "The cow gives milk.",
         "exz":  "母牛产奶。",
         "s":  [
-                  "cattle",
-                  "bovine"
+                  "cattle"
               ]
     },
     {
@@ -7268,7 +7202,6 @@
         "exz":  "拉上窗帘。",
         "s":  [
                   "drape",
-                  "screen",
                   "blind"
               ]
     },
@@ -7380,9 +7313,7 @@
         "ex":  "Boil two eggs.",
         "exz":  "煮两个蛋。",
         "s":  [
-                  "ovum",
-                  "yolk",
-                  "ovoid"
+                  "yolk"
               ]
     },
     {
@@ -7407,8 +7338,7 @@
         "exz":  "闭上眼睛。",
         "s":  [
                   "sight",
-                  "orb",
-                  "peeper"
+                  "orb"
               ]
     },
     {
@@ -7419,7 +7349,6 @@
         "ex":  "Wash your face.",
         "exz":  "洗脸。",
         "s":  [
-                  "countenance",
                   "mug"
               ]
     },
@@ -7444,7 +7373,6 @@
         "exz":  "轻如鸿毛。",
         "s":  [
                   "plume",
-                  "down",
                   "quill"
               ]
     },
@@ -7456,9 +7384,7 @@
         "ex":  "Point with your finger.",
         "exz":  "用手指点。",
         "s":  [
-                  "digit",
-                  "thumb",
-                  "pinky"
+                  "digit"
               ]
     },
     {
@@ -7469,9 +7395,7 @@
         "ex":  "Catch a fish.",
         "exz":  "钓条鱼。",
         "s":  [
-                  "catch",
-                  "seafood",
-                  "trout"
+                  "seafood"
               ]
     },
     {
@@ -7523,8 +7447,7 @@
         "exz":  "我脚疼。",
         "s":  [
                   "sole",
-                  "paw",
-                  "base"
+                  "paw"
               ]
     },
     {
@@ -7610,8 +7533,7 @@
         "exz":  "山羊在吃草。",
         "s":  [
                   "livestock",
-                  "billy",
-                  "kid"
+                  "billy"
               ]
     },
     {
@@ -7683,8 +7605,7 @@
         "ex":  "My head hurts.",
         "exz":  "我头疼。",
         "s":  [
-                  "skull",
-                  "pate"
+                  "skull"
               ]
     },
     {
@@ -7747,8 +7668,7 @@
         "ex":  "Take her to hospital.",
         "exz":  "送她去医院。",
         "s":  [
-                  "clinic",
-                  "sanatorium"
+                  "clinic"
               ]
     },
     {
@@ -7771,8 +7691,7 @@
         "ex":  "The island is small.",
         "exz":  "这岛很小。",
         "s":  [
-                  "isle",
-                  "key"
+                  "isle"
               ]
     },
     {
@@ -7823,7 +7742,6 @@
         "exz":  "弯膝盖。",
         "s":  [
                   "joint",
-                  "patella",
                   "kneecap"
               ]
     },
@@ -7946,10 +7864,12 @@
     {
         "w":  "match",
         "c":  "pt",
-        "zh":  "火柴",
-        "en":  "short stick that lights fire",
+        "zh":  "火柴;比赛",
+        "en":  "short stick that lights fire; or a game between two teams",
         "ex":  "Light a match.",
         "exz":  "点根火柴。",
+        "ex2":  "We watched a football match.",
+        "exz2":  "我们看了一场足球比赛。",
         "s":  [
                   "light",
                   "fuse",
@@ -7964,8 +7884,7 @@
         "ex":  "The monkey climbed up.",
         "exz":  "猴子爬上去了。",
         "s":  [
-                  "ape",
-                  "simian"
+                  "ape"
               ]
     },
     {
@@ -8111,17 +8030,18 @@
         "exz":  "去办公室。",
         "s":  [
                   "workplace",
-                  "bureau",
-                  "study"
+                  "bureau"
               ]
     },
     {
         "w":  "orange",
         "c":  "pt",
-        "zh":  "橙子",
-        "en":  "round juicy fruit",
+        "zh":  "橙子;橙色的",
+        "en":  "round juicy fruit; or the color of an orange",
         "ex":  "Peel the orange.",
         "exz":  "剥橙子。",
+        "ex2":  "She has an orange hat.",
+        "exz2":  "她有一顶橙色的帽子。",
         "s":  [
                   "fruit",
                   "mandarin"
@@ -8365,10 +8285,12 @@
     {
         "w":  "ring",
         "c":  "pt",
-        "zh":  "戒指,环",
-        "en":  "round band of metal",
+        "zh":  "戒指,环;按（铃）,打电话",
+        "en":  "round band of metal; or to make a bell sound",
         "ex":  "She wears a gold ring.",
         "exz":  "她戴着金戒指。",
+        "ex2":  "Ring the bell, please.",
+        "exz2":  "请按门铃。",
         "s":  [
                   "band",
                   "loop",
@@ -8550,7 +8472,6 @@
         "exz":  "她皮肤很滑。",
         "s":  [
                   "hide",
-                  "epidermis",
                   "peel"
               ]
     },
@@ -8672,14 +8593,14 @@
     {
         "w":  "star",
         "c":  "pt",
-        "zh":  "星星",
-        "en":  "bright light in night sky",
+        "zh":  "星星;明星",
+        "en":  "bright light in night sky; or a famous person",
         "ex":  "Stars shine bright.",
         "exz":  "星光灿烂。",
+        "ex2":  "She is a movie star.",
+        "exz2":  "她是一位电影明星。",
         "s":  [
-                  "sun",
-                  "celestial body",
-                  "luminary"
+                  "celestial body"
               ]
     },
     {
@@ -8781,9 +8702,7 @@
         "ex":  "The sun is bright.",
         "exz":  "太阳很刺眼。",
         "s":  [
-                  "star",
-                  "sunlight",
-                  "sol"
+                  "sunlight"
               ]
     },
     {
@@ -8833,7 +8752,6 @@
         "ex":  "My throat is sore.",
         "exz":  "我嗓子疼。",
         "s":  [
-                  "pharynx",
                   "neck"
               ]
     },
@@ -8845,9 +8763,7 @@
         "ex":  "Thumbs up!",
         "exz":  "赞一个!",
         "s":  [
-                  "digit",
-                  "pollex",
-                  "finger"
+                  "digit"
               ]
     },
     {
@@ -8872,7 +8788,6 @@
         "exz":  "碰到脚趾。",
         "s":  [
                   "digit",
-                  "phalanx",
                   "tiptoe"
               ]
     },
@@ -8883,11 +8798,7 @@
         "en":  "organ in mouth",
         "ex":  "Stick out your tongue.",
         "exz":  "伸出舌头。",
-        "s":  [
-                  "lingua",
-                  "speech",
-                  "language"
-              ]
+        "s":  []
     },
     {
         "w":  "tooth",
@@ -8916,10 +8827,12 @@
     {
         "w":  "train",
         "c":  "pt",
-        "zh":  "火车",
-        "en":  "long vehicle on rails",
+        "zh":  "火车;训练",
+        "en":  "long vehicle on rails; or to practice to get better",
         "ex":  "Catch the train.",
         "exz":  "赶火车。",
+        "ex2":  "The players train every day.",
+        "exz2":  "队员们每天训练。",
         "s":  [
                   "locomotive",
                   "railway",
@@ -8935,7 +8848,6 @@
         "exz":  "把托盘端来。",
         "s":  [
                   "platter",
-                  "salver",
                   "plate"
               ]
     },
@@ -8984,8 +8896,7 @@
         "exz":  "挂在墙上。",
         "s":  [
                   "partition",
-                  "barrier",
-                  "screen"
+                  "barrier"
               ]
     },
     {
@@ -9024,8 +8935,7 @@
         "exz":  "挥鞭子。",
         "s":  [
                   "lash",
-                  "cane",
-                  "switch"
+                  "cane"
               ]
     },
     {
@@ -9035,11 +8945,7 @@
         "en":  "thing that makes high sound",
         "ex":  "Blow the whistle.",
         "exz":  "吹哨子。",
-        "s":  [
-                  "pipe",
-                  "flute",
-                  "blower"
-              ]
+        "s":  []
     },
     {
         "w":  "window",
@@ -9162,8 +9068,7 @@
         "ex":  "A black cat.",
         "exz":  "一只黑猫。",
         "s":  [
-                  "dark",
-                  "jet"
+                  "dark"
               ]
     },
     {
@@ -9212,8 +9117,7 @@
         "ex":  "Brown bread is healthier.",
         "exz":  "棕色面包更健康。",
         "s":  [
-                  "tan",
-                  "chocolate"
+                  "tan"
               ]
     },
     {
@@ -9343,7 +9247,6 @@
         "exz":  "一口深井。",
         "s":  [
                   "profound",
-                  "low",
                   "bottomless"
               ]
     },
@@ -9561,8 +9464,7 @@
         "ex":  "Grey clouds bring rain.",
         "exz":  "灰云带来雨。",
         "s":  [
-                  "gray",
-                  "silver"
+                  "gray"
               ]
     },
     {
@@ -9734,8 +9636,7 @@
         "ex":  "They are happily married.",
         "exz":  "他们婚姻幸福。",
         "s":  [
-                  "united",
-                  "spliced"
+                  "united"
               ]
     },
     {
@@ -10076,10 +9977,12 @@
     {
         "w":  "second",
         "c":  "qg",
-        "zh":  "第二的",
-        "en":  "after the first",
+        "zh":  "第二的;秒",
+        "en":  "after the first; or one of sixty parts of a minute",
         "ex":  "On the second day.",
         "exz":  "第二天。",
+        "ex2":  "There are sixty seconds in a minute.",
+        "exz2":  "一分钟有六十秒。",
         "s":  [
                   "next",
                   "runner-up",
@@ -10363,9 +10266,7 @@
         "ex":  "A yellow flower.",
         "exz":  "一朵黄花。",
         "s":  [
-                  "gold",
-                  "amber",
-                  "saffron"
+                  "amber"
               ]
     },
     {
@@ -10461,10 +10362,12 @@
     {
         "w":  "cold",
         "c":  "qo",
-        "zh":  "冷的",
-        "en":  "low temperature",
+        "zh":  "冷的;感冒",
+        "en":  "low temperature; or an illness that gives you a runny nose",
         "ex":  "Cold water.",
         "exz":  "冷水。",
+        "ex2":  "I have a cold today.",
+        "exz2":  "我今天感冒了。",
         "s":  [
                   "chilly",
                   "icy",
@@ -10701,20 +10604,20 @@
         "exz":  "抱歉我迟到了。",
         "s":  [
                   "tardy",
-                  "delayed",
-                  "behind"
+                  "delayed"
               ]
     },
     {
         "w":  "left",
         "c":  "qo",
-        "zh":  "左的",
-        "en":  "opposite of right",
+        "zh":  "左的;离开（leave 的过去式）",
+        "en":  "opposite of right; or past form of 'leave'",
         "ex":  "Turn left.",
         "exz":  "左转。",
+        "ex2":  "He left home at seven.",
+        "exz2":  "他七点离开了家。",
         "s":  [
-                  "port",
-                  "sinister"
+                  "left-hand"
               ]
     },
     {
@@ -10855,8 +10758,7 @@
         "exz":  "注意安全。",
         "s":  [
                   "secure",
-                  "protected",
-                  "sound"
+                  "protected"
               ]
     },
     {
@@ -12141,10 +12043,12 @@
     {
         "w": "capital",
         "c": "ex",
-        "zh": "首都",
-        "en": "the most important city of a country",
+        "zh": "首都;大写字母",
+        "en": "the most important city of a country; or a big letter like A or B",
         "ex": "Beijing is the capital of China.",
         "exz": "北京是中国的首都。",
+        "ex2": "Start your name with a capital letter.",
+        "exz2": "名字的第一个字母要大写。",
         "s": [
             "city",
             "country"
@@ -16279,10 +16183,12 @@
     {
         "w": "coach",
         "c": "ex",
-        "zh": "教练",
-        "en": "a person who trains a sports team",
+        "zh": "教练;大巴",
+        "en": "a person who trains a sports team; or a big bus for long trips",
         "ex": "Our coach helps us play better.",
         "exz": "我们的教练帮助我们打得更好。",
+        "ex2": "We went to the zoo by coach.",
+        "exz2": "我们坐大巴去了动物园。",
         "s": [
             "teacher",
             "team"
@@ -18747,10 +18653,12 @@
     {
         "w": "jam",
         "c": "ex",
-        "zh": "果酱",
-        "en": "a sweet food made from fruit and sugar",
+        "zh": "果酱;堵车",
+        "en": "a sweet food made from fruit and sugar; or too many cars on the road",
         "ex": "I like bread with jam.",
         "exz": "我喜欢面包抹果酱。",
+        "ex2": "We were stuck in a traffic jam.",
+        "exz2": "我们被堵在路上了。",
         "s": [
             "jelly",
             "bread"

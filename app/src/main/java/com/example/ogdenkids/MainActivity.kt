@@ -214,6 +214,9 @@ enum class Category(
     BabyTalk("kd", "Baby Talk", "儿语", Color(0xFFC2410C), Color(0xFFFFEDD5)),
     Informal("ky", "Informal", "口语", Color(0xFF475569), Color(0xFFE2E8F0));
 
+    /** 拓展词、变形词的 s 字段是相关词（one→two、teacher→student、me→I），不是近义词：不出近义词题，详情页标「相关词」 */
+    val hasTrueSynonyms get() = this != Extended && this != Forms
+
     companion object {
         fun from(code: String) = values().first { it.code == code }
     }
@@ -1668,9 +1671,11 @@ fun WordDetailScreen(
                     CollocationCard(c, zh, onSpeak, onSpeakZh)
                 }
             }
-            item {
-                SectionTitle("近义词", "点击听发音，长按查看")
-                FlowRowCompat(word.synonyms) { syn -> SynonymChip(syn, onSpeak) }
+            if (word.synonyms.isNotEmpty()) {
+                item {
+                    SectionTitle(if (word.category.hasTrueSynonyms) "近义词" else "相关词", "点击听发音，长按查看")
+                    FlowRowCompat(word.synonyms) { syn -> SynonymChip(syn, onSpeak) }
+                }
             }
             if (word.antonyms.isNotEmpty()) {
                 item {
@@ -1836,8 +1841,8 @@ fun WordCollectionScreen(
     }
 }
 
-private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "STEM")
-private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达", StemLevel to "学科")
+private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "数理")
+private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达", StemLevel to "启蒙")
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -4865,7 +4870,8 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             // 选项只用词表里的词：近义词列表里混有词表外的生僻词（scarlet、crease…），不拿来出题
             val headwords = allWords.associateBy { it.word.lowercase() }
             val answer = word.synonyms.firstNotNullOfOrNull { headwords[it.lowercase()]?.word }
-            if (answer == null) buildQuestion(PracticeType.Meaning, word, allWords) else {
+                .takeIf { word.category.hasTrueSynonyms }
+            if (answer == null) buildQuestion(PracticeType.Meaning, word, allWords).copy(title = PracticeType.Meaning.title) else {
                 // 干扰项不能和题目词互为近义词，否则出现两个正确答案
                 val related = (word.synonyms + word.word).map { it.lowercase() }.toSet()
                 val synOptions = allWords

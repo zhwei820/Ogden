@@ -2536,11 +2536,6 @@
   "ex": "Drink plenty of fluid when you are sick.",
   "exz": "生病时要多喝水。"
  },
- "flute": {
-  "zh": "长笛",
-  "ex": "She plays the flute at school.",
-  "exz": "她在学校吹长笛。"
- },
  "focus": {
   "zh": "专注；注意力",
   "ex": "Please focus on your homework.",
@@ -3666,11 +3661,6 @@
   "ex": "Please don't lie to me.",
   "exz": "请不要对我说谎。"
  },
- "lifeblood": {
-  "zh": "命脉；血液",
-  "ex": "Water is the lifeblood of the farm.",
-  "exz": "水是农场的命脉。"
- },
  "lifeless": {
   "zh": "无生命的",
   "ex": "The lifeless leaf fell from the tree.",
@@ -4670,11 +4660,6 @@
   "ex": "My pillow is soft.",
   "exz": "我的枕头很软。"
  },
- "pinky": {
-  "zh": "小指",
-  "ex": "Let's make a pinky promise.",
-  "exz": "我们拉钩约定吧。"
- },
  "pip": {
   "zh": "种子",
   "ex": "There is a pip in my orange.",
@@ -4702,11 +4687,6 @@
   "zh": "木板",
   "ex": "We walked on a wooden plank.",
   "exz": "我们走在一块木板上。"
- },
- "plasma": {
-  "zh": "血浆",
-  "ex": "Plasma is part of your blood.",
-  "exz": "血浆是血液的一部分。"
  },
  "platform": {
   "zh": "平台；站台",
@@ -5502,11 +5482,6 @@
   "zh": "麻袋",
   "ex": "He carried a sack of potatoes.",
   "exz": "他扛着一袋土豆。"
- },
- "saffron": {
-  "zh": "橘黄色",
-  "ex": "The monk wore a saffron robe.",
-  "exz": "僧人穿着橘黄色的长袍。"
  },
  "sage": {
   "zh": "智者；明智的",
@@ -6811,11 +6786,6 @@
  },
  "tropical direction": {
   "drop": true
- },
- "trout": {
-  "zh": "鳟鱼",
-  "ex": "Dad caught a trout.",
-  "exz": "爸爸钓到了一条鳟鱼。"
  },
  "trumpet": {
   "zh": "小号",
