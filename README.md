@@ -1,6 +1,6 @@
-# Panda English
+# Anna English
 
-一款面向中文英语学习者的原生 Android 单词 App，基于 Kotlin + Jetpack Compose 构建。它围绕 Panda English 的 850 个基础词展开，把词库、发音、闯关和复习都放在离线可用的移动端体验里。
+一款面向中文英语学习者的原生 Android 单词 App，基于 Kotlin + Jetpack Compose 构建。它围绕 Anna English 的 850 个基础词展开，把词库、发音、闯关和复习都放在离线可用的移动端体验里。
 
 > 本项目是一次二次创作。我在 X 上看到 [Ogden's Basic English](https://ogden.munch.love/) 的作品后很受触动，并在征得原网站作者同意的情况下，将其内容与气质重新设计为 Android 学习应用。原作地址：[https://ogden.munch.love/](https://ogden.munch.love/)
 
@@ -14,7 +14,7 @@
 
 ## Features
 
-- 内置 Panda English 850 词，另加 450 个儿童生活常用拓展词和 98 个变形词（my、went、is 等），支持离线学习。
+- 内置 Anna English 850 词，另加 450 个儿童生活常用拓展词和 98 个变形词（my、went、is 等），支持离线学习。
 - 词库分为 Operations、General Things、Things（物品词）、Qualities、Opposites。
 - 支持搜索、分类筛选、US/UK 发音切换、简体/繁体显示。
 - 课文：三级 × 10 个主题 × 5 单元，每课含课文、句型和本课单词；点句子朗读，长按单词查看释义（自动还原 boxes→box 等词形）并收藏；课文、译文和单词中文释义均有内置朗读音频；每个主题有主题练习。

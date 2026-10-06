@@ -1068,7 +1068,7 @@ fun MainScaffold(
         drawerContent = {
             ModalDrawerSheet(drawerContainerColor = PaperElevated) {
                 Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Panda English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 26.sp)
+                    Text("Anna English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 26.sp)
                     AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft, fontSize = 13.sp)
                     AppText("当前版本：${BuildConfig.VERSION_NAME}", color = InkFaint, fontSize = 12.sp)
                 }
@@ -1109,7 +1109,7 @@ fun MainScaffold(
                     IconButton(onClick = { scope.launch { drawerState.open() } }) {
                         Icon(Icons.Default.Menu, contentDescription = "菜单")
                     }
-                    AppText("Panda English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, color = InkSoft)
+                    AppText("Anna English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, color = InkSoft)
                 }
             },
             bottomBar = {
@@ -1175,7 +1175,7 @@ fun ChallengeScreen(
     ) {
         item {
             HeroCard(
-                title = "Panda English",
+                title = "Anna English",
                 subtitle = "850 + ${words.count { it.category == Category.Extended }} 拓展词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
@@ -3486,7 +3486,7 @@ fun LegalInfoScreen(
 fun privacySections() = listOf(
     LegalSection(
         "基本说明",
-        "Panda English 是一款面向英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
+        "Anna English 是一款面向英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
     ),
     LegalSection(
         "可能使用的权限",
@@ -3498,7 +3498,7 @@ fun privacySections() = listOf(
     ),
     LegalSection(
         "适用范围",
-        "本应用适合希望学习 Panda English 850 词及拓展词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
+        "本应用适合希望学习 Anna English 850 词及拓展词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
     ),
     LegalSection(
         "本地数据与删除",

@@ -37,7 +37,7 @@ object Feedback {
 
     fun message(content: String, contact: String, appVersion: String, device: String, android: String): String =
         buildString {
-            append("【Panda English 反馈】\n")
+            append("【Anna English 反馈】\n")
             append(content.trim().take(MAX_CONTENT_CHARS)).append("\n\n")
             contact.trim().take(MAX_CONTACT_CHARS).takeIf { it.isNotEmpty() }?.let { append("联系方式：").append(it).append('\n') }
             append("版本：").append(appVersion).append('\n')
