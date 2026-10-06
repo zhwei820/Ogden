@@ -43,6 +43,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Repeat
 import androidx.compose.material.icons.filled.Shuffle
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.ExpandLess
@@ -121,6 +122,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.json.JSONArray
 import org.json.JSONObject
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.math.ceil
@@ -1925,6 +1927,9 @@ fun SpeechReaderScreen(
     // 本课单词里最近点过的词，关掉词卡后仍保持选中，方便孩子知道读到哪了
     var pickedWord by rememberSaveable(speech.id) { mutableStateOf<String?>(null) }
     var playingAll by remember(speech.id) { mutableStateOf(false) }
+    // 正在反复朗读的句子；读完一遍停一会儿再读，直到被停止或被别的朗读打断
+    var repeatIndex by remember(speech.id) { mutableStateOf<Int?>(null) }
+    val repeatScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
     var showTranslation by remember(speech.id) { mutableStateOf(true) }
     var learned by remember(speech.id) { mutableStateOf(store.isSpeechLearned(speech.id)) }
@@ -1940,6 +1945,7 @@ fun SpeechReaderScreen(
 
     fun speakOne(index: Int, chinese: Boolean) {
         playingAll = false
+        repeatIndex = null
         speakingIndex = index
         val line = allLines[index]
         val onDone = { if (speakingIndex == index && !playingAll) speakingIndex = null }
@@ -1962,7 +1968,24 @@ fun SpeechReaderScreen(
     fun stopSpeaking() {
         onStopSpeaking()
         playingAll = false
+        repeatIndex = null
         speakingIndex = null
+    }
+
+    fun repeatLoop(index: Int) {
+        speakingIndex = index
+        onSpeakEnglish(allLines[index].en) {
+            if (repeatIndex == index) repeatScope.launch {
+                delay(700)
+                if (repeatIndex == index) repeatLoop(index)
+            }
+        }
+    }
+
+    fun startRepeat(index: Int) {
+        stopSpeaking()
+        repeatIndex = index
+        repeatLoop(index)
     }
 
     LaunchedEffect(speakingIndex, playingAll) {
@@ -1985,17 +2008,19 @@ fun SpeechReaderScreen(
             speaking = speakingIndex == index,
             onSpeakEnglish = { speakOne(index, chinese = false) },
             onSpeakChinese = { speakOne(index, chinese = true) },
-            onTokenClick = { selected = SelectedSpeechWord(index, it) }
+            onTokenClick = { selected = SelectedSpeechWord(index, it) },
+            repeating = repeatIndex == index,
+            onRepeat = { startRepeat(index) }
         )
     }
 
     Scaffold(containerColor = Paper, floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
-        // 全文朗读时滚动会把标题里的按钮滚出屏幕，停止按钮悬浮在底部始终可点；单句很短，不需要
-        if (playingAll) {
+        // 全文朗读、重复播放时悬浮在底部的停止按钮；单句很短，不需要
+        if (playingAll || repeatIndex != null) {
             ExtendedFloatingActionButton(
                 onClick = { stopSpeaking() },
                 icon = { Icon(Icons.Default.Close, contentDescription = null) },
-                text = { Text("停止朗读", fontSize = 18.sp) },
+                text = { Text(if (repeatIndex != null) "停止重复" else "停止朗读", fontSize = 18.sp) },
                 containerColor = Category.Operations.tint,
                 contentColor = Color.White
             )
@@ -2030,13 +2055,14 @@ fun SpeechReaderScreen(
             item {
                 SpeechTrackHeader(
                     title = "课文 · Listen and Read",
-                    subtitle = if (hasContraction) "点句子听朗读，长按选词可查词、翻译；带下划线的是缩写，查词看完整写法"
-                    else "点句子听朗读，长按选词可查词、翻译",
+                    subtitle = if (hasContraction) "点句子听朗读，长按喇叭重复播放，长按单词选词；带下划线的是缩写"
+                    else "点句子听朗读，长按喇叭重复播放，长按单词选词",
                     playingAll = playingAll,
                     onPlayAll = {
                         if (playingAll) {
                             stopSpeaking()
                         } else {
+                            stopSpeaking()
                             playingAll = true
                             playFrom(0)
                         }
@@ -2545,6 +2571,7 @@ private fun PhraseTranslationSheet(phrase: String) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SpeechLineRow(
     line: SpeechLine,
@@ -2555,8 +2582,12 @@ fun SpeechLineRow(
     speaking: Boolean,
     onSpeakEnglish: () -> Unit,
     onSpeakChinese: () -> Unit,
-    onTokenClick: (SpeechToken) -> Unit
+    onTokenClick: (SpeechToken) -> Unit,
+    repeating: Boolean = false,
+    /** 长按右侧喇叭：反复朗读这一句 */
+    onRepeat: (() -> Unit)? = null
 ) {
+    val haptic = LocalHapticFeedback.current
     val text = buildAnnotatedString {
         append(line.en)
         // 缩写加下划线，提示可以长按看完整写法
@@ -2598,9 +2629,30 @@ fun SpeechLineRow(
                         modifier = Modifier.clickable(onClick = onSpeakChinese)
                     )
                 }
+                if (repeating) AppText("🔁 重复播放中", color = accent.tint, fontSize = 14.sp, fontWeight = FontWeight.Bold)
             }
-            IconButton(onClick = onSpeakEnglish, modifier = Modifier.size(56.dp)) {
-                Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = Category.Operations.tint, modifier = Modifier.size(32.dp))
+            // 单击读一遍，长按反复朗读
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .combinedClickable(
+                        onClick = onSpeakEnglish,
+                        onLongClick = onRepeat?.let { repeat ->
+                            {
+                                haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                repeat()
+                            }
+                        }
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    if (repeating) Icons.Default.Repeat else Icons.Default.VolumeUp,
+                    contentDescription = "朗读，长按重复",
+                    tint = Category.Operations.tint,
+                    modifier = Modifier.size(32.dp)
+                )
             }
         }
     }
@@ -3440,12 +3492,25 @@ fun SpecialModuleScreen(
     var selected by remember(module.key) { mutableStateOf<SelectedSpeechWord?>(null) }
     var pickedWord by rememberSaveable(module.key) { mutableStateOf<String?>(null) }
     var speakingIndex by remember(module.key) { mutableStateOf<Int?>(null) }
+    var repeatIndex by remember(module.key) { mutableStateOf<Int?>(null) }
+    val repeatScope = rememberCoroutineScope()
     var sceneLevel by rememberSaveable(module.key) { mutableStateOf(level) }
     var favoriteVersion by remember { mutableStateOf(0) }
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
     fun stopSpeaking() {
         onStopSpeaking()
+        repeatIndex = null
         speakingIndex = null
+    }
+
+    fun repeatLoop(index: Int) {
+        speakingIndex = index
+        onSpeakEnglish(module.sentences[index].en) {
+            if (repeatIndex == index) repeatScope.launch {
+                delay(700)
+                if (repeatIndex == index) repeatLoop(index)
+            }
+        }
     }
 
     LaunchedEffect(selected) {
@@ -3461,7 +3526,17 @@ fun SpecialModuleScreen(
         }
     }
 
-    Scaffold(containerColor = Paper, topBar = {
+    Scaffold(containerColor = Paper, floatingActionButtonPosition = FabPosition.Center, floatingActionButton = {
+        if (repeatIndex != null) {
+            ExtendedFloatingActionButton(
+                onClick = { stopSpeaking() },
+                icon = { Icon(Icons.Default.Close, contentDescription = null) },
+                text = { Text("停止重复", fontSize = 18.sp) },
+                containerColor = Category.Operations.tint,
+                contentColor = Color.White
+            )
+        }
+    }, topBar = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -3548,7 +3623,7 @@ fun SpecialModuleScreen(
             }
             item {
                 Spacer(Modifier.height(8.dp))
-                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按选词可查词、翻译", playingAll = false, onPlayAll = null)
+                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按喇叭重复播放，长按单词选词", playingAll = false, onPlayAll = null)
             }
             items(module.sentences.size) { index ->
                 val line = module.sentences[index]
@@ -3561,14 +3636,22 @@ fun SpecialModuleScreen(
                     showTranslation = true,
                     speaking = speakingIndex == index,
                     onSpeakEnglish = {
+                        repeatIndex = null
                         speakingIndex = index
                         onSpeakEnglish(line.en) { if (speakingIndex == index) speakingIndex = null }
                     },
                     onSpeakChinese = {
+                        repeatIndex = null
                         speakingIndex = index
                         onSpeakChinese(line.zh) { if (speakingIndex == index) speakingIndex = null }
                     },
-                    onTokenClick = { selected = SelectedSpeechWord(index, it) }
+                    onTokenClick = { selected = SelectedSpeechWord(index, it) },
+                    repeating = repeatIndex == index,
+                    onRepeat = {
+                        stopSpeaking()
+                        repeatIndex = index
+                        repeatLoop(index)
+                    }
                 )
             }
         }
