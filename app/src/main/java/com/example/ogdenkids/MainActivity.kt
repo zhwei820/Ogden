@@ -1535,6 +1535,10 @@ fun WordListCard(
                 Column(Modifier.weight(1f)) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(word.word, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 28.sp)
+                        if (progress.favorite) {
+                            Spacer(Modifier.width(4.dp))
+                            Icon(Icons.Default.Favorite, contentDescription = "已收藏", tint = Error, modifier = Modifier.size(16.dp))
+                        }
                         Spacer(Modifier.width(8.dp))
                         // 音标让位：长音标省略，保证后面的口语标签不被挤成竖排
                         Text(
@@ -2238,6 +2242,7 @@ fun SpeechReaderScreen(
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         speech.words.forEach { w ->
                             val picked = pickedWord == w
+                            val saved = remember(w, favoriteVersion) { isSaved(SpeechToken(w, w.indices)) }
                             OutlinedButton(
                                 onClick = {
                                     stopSpeaking()
@@ -2251,7 +2256,17 @@ fun SpeechReaderScreen(
                                 modifier = Modifier.padding(bottom = 8.dp),
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
                             ) {
-                                Text(wordIndex[w.lowercase()]?.word ?: w, fontSize = 20.sp, fontFamily = FontFamily.Serif, color = Ink)
+                                if (saved) {
+                                    Icon(Icons.Default.Favorite, contentDescription = "已收藏", tint = Error, modifier = Modifier.size(14.dp))
+                                    Spacer(Modifier.width(4.dp))
+                                }
+                                Text(
+                                    wordIndex[w.lowercase()]?.word ?: w,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontFamily.Serif,
+                                    fontWeight = if (saved) FontWeight.Bold else null,
+                                    color = if (saved) Category.Opposites.tint else Ink
+                                )
                                 registerOf(w)?.let { Spacer(Modifier.width(6.dp)); RegisterBadge(it.tag) }
                             }
                         }
