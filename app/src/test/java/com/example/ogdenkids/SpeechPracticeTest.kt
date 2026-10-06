@@ -46,7 +46,7 @@ class SpeechPracticeTest {
 
     @Test
     fun everyThemeYieldsTenValidQuestions() {
-        for (level in 1..3) for (theme in SpeechTheme.values()) {
+        for (level in 1..StemLevel) for (theme in SpeechTheme.forLevel(level)) {
             val units = speeches.filter { it.level == level && it.theme == theme }
             val vocabulary = units.flatMap { it.words }.mapNotNull { wordIndex[it.lowercase()] }
             repeat(20) { seed ->
@@ -75,7 +75,7 @@ class SpeechPracticeTest {
                         assertTrue("$where contraction options", q.options.size == 4)
                     }
                     if (q.type == SentenceQuestionType.FillWord || q.type == SentenceQuestionType.Pattern) {
-                        assertEquals(where, q.sentence, q.prompt.replace("____", q.answer))
+                        assertEquals(where, q.sentence, q.prompt.replace(letterBlank(q.answer), q.answer))
                     }
                 }
             }

@@ -13586,5 +13586,1088 @@
       "new",
       "memory"
     ]
+  },
+  {
+    "id": "4-01",
+    "level": 4,
+    "unit": 1,
+    "theme": "algebra",
+    "title": "Let's Count",
+    "titleZh": "一起数数",
+    "lines": [
+      {
+        "en": "Let's count from one to ten.",
+        "zh": "我们从一数到十吧。"
+      },
+      {
+        "en": "One, two, three, four, five!",
+        "zh": "一、二、三、四、五！"
+      },
+      {
+        "en": "Two shoes make a pair.",
+        "zh": "两只鞋是一双。"
+      },
+      {
+        "en": "Two, four and six are even numbers.",
+        "zh": "二、四、六是偶数。"
+      },
+      {
+        "en": "One, three and five are odd numbers.",
+        "zh": "一、三、五是奇数。"
+      },
+      {
+        "en": "Double two is four.",
+        "zh": "二的两倍是四。"
+      },
+      {
+        "en": "Double five is ten.",
+        "zh": "五的两倍是十。"
+      },
+      {
+        "en": "Can you count to a hundred?",
+        "zh": "你能数到一百吗？"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Two, four, six are even numbers.",
+        "zh": "二、四、六是偶数。"
+      },
+      {
+        "en": "Seven, nine, eleven are odd numbers.",
+        "zh": "七、九、十一是奇数。"
+      },
+      {
+        "en": "Double three is six.",
+        "zh": "三的两倍是六。"
+      },
+      {
+        "en": "Double four is eight.",
+        "zh": "四的两倍是八。"
+      }
+    ],
+    "words": [
+      "count",
+      "number",
+      "pair",
+      "double",
+      "odd",
+      "even",
+      "hundred",
+      "five",
+      "ten"
+    ]
+  },
+  {
+    "id": "4-02",
+    "level": 4,
+    "unit": 2,
+    "theme": "algebra",
+    "title": "Plus and Minus",
+    "titleZh": "加和减",
+    "lines": [
+      {
+        "en": "I have three apples.",
+        "zh": "我有三个苹果。"
+      },
+      {
+        "en": "Mom gives me two more.",
+        "zh": "妈妈又给了我两个。"
+      },
+      {
+        "en": "Three plus two is five.",
+        "zh": "三加二等于五。"
+      },
+      {
+        "en": "Five is the sum.",
+        "zh": "五是它们的和。"
+      },
+      {
+        "en": "Then I eat one apple.",
+        "zh": "然后我吃掉一个苹果。"
+      },
+      {
+        "en": "Five minus one is four.",
+        "zh": "五减一等于四。"
+      },
+      {
+        "en": "Now I have four apples in total.",
+        "zh": "现在我一共有四个苹果。"
+      },
+      {
+        "en": "Four is less than five.",
+        "zh": "四比五小。"
+      },
+      {
+        "en": "Six is more than four.",
+        "zh": "六比四大。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Four plus four is eight.",
+        "zh": "四加四等于八。"
+      },
+      {
+        "en": "Six plus three is nine.",
+        "zh": "六加三等于九。"
+      },
+      {
+        "en": "Ten minus three is seven.",
+        "zh": "十减三等于七。"
+      },
+      {
+        "en": "Nine minus five is four.",
+        "zh": "九减五等于四。"
+      }
+    ],
+    "words": [
+      "plus",
+      "minus",
+      "sum",
+      "total",
+      "equal",
+      "more",
+      "less",
+      "apple"
+    ]
+  },
+  {
+    "id": "4-03",
+    "level": 4,
+    "unit": 3,
+    "theme": "algebra",
+    "title": "Times and Sharing",
+    "titleZh": "乘法和平分",
+    "lines": [
+      {
+        "en": "There are three groups of birds.",
+        "zh": "有三组小鸟。"
+      },
+      {
+        "en": "Every group has two birds.",
+        "zh": "每组有两只鸟。"
+      },
+      {
+        "en": "Three times two is six.",
+        "zh": "三乘二等于六。"
+      },
+      {
+        "en": "We have one cake and four friends.",
+        "zh": "我们有一个蛋糕和四个朋友。"
+      },
+      {
+        "en": "Let's divide the cake into four pieces.",
+        "zh": "我们把蛋糕分成四块吧。"
+      },
+      {
+        "en": "Every friend gets one piece.",
+        "zh": "每个朋友得到一块。"
+      },
+      {
+        "en": "The pieces are the same size.",
+        "zh": "每块一样大。"
+      },
+      {
+        "en": "Half of ten is five.",
+        "zh": "十的一半是五。"
+      },
+      {
+        "en": "Ten divided by two is five.",
+        "zh": "十除以二等于五。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Two times three is six.",
+        "zh": "二乘三等于六。"
+      },
+      {
+        "en": "Four times two is eight.",
+        "zh": "四乘二等于八。"
+      },
+      {
+        "en": "Half of six is three.",
+        "zh": "六的一半是三。"
+      },
+      {
+        "en": "Half of eight is four.",
+        "zh": "八的一半是四。"
+      }
+    ],
+    "words": [
+      "times",
+      "divide",
+      "share",
+      "half",
+      "piece",
+      "group",
+      "cake",
+      "friend"
+    ]
+  },
+  {
+    "id": "4-04",
+    "level": 4,
+    "unit": 4,
+    "theme": "algebra",
+    "title": "What Comes Next?",
+    "titleZh": "找规律",
+    "lines": [
+      {
+        "en": "Look at these colors.",
+        "zh": "看这些颜色。"
+      },
+      {
+        "en": "Red, blue, red, blue, red.",
+        "zh": "红、蓝、红、蓝、红。"
+      },
+      {
+        "en": "What comes next?",
+        "zh": "下一个是什么？"
+      },
+      {
+        "en": "Blue comes next!",
+        "zh": "下一个是蓝色！"
+      },
+      {
+        "en": "This is a pattern.",
+        "zh": "这就是一个规律。"
+      },
+      {
+        "en": "Two, four, six, eight.",
+        "zh": "二、四、六、八。"
+      },
+      {
+        "en": "Can you guess the next number?",
+        "zh": "你能猜出下一个数吗？"
+      },
+      {
+        "en": "The next number is ten.",
+        "zh": "下一个数是十。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Red, blue, red, blue. Red comes next.",
+        "zh": "红、蓝、红、蓝。下一个是红。"
+      },
+      {
+        "en": "One, two, one, two. One comes next.",
+        "zh": "一、二、一、二。下一个是一。"
+      },
+      {
+        "en": "Five, ten, fifteen. Twenty comes next.",
+        "zh": "五、十、十五。下一个是二十。"
+      },
+      {
+        "en": "Ten, twenty, thirty. Forty comes next.",
+        "zh": "十、二十、三十。下一个是四十。"
+      }
+    ],
+    "words": [
+      "pattern",
+      "guess",
+      "next",
+      "color",
+      "red",
+      "blue",
+      "number"
+    ]
+  },
+  {
+    "id": "4-05",
+    "level": 4,
+    "unit": 5,
+    "theme": "algebra",
+    "title": "Solve the Problem",
+    "titleZh": "解决问题",
+    "lines": [
+      {
+        "en": "Here is a problem for you.",
+        "zh": "这里有一道题给你。"
+      },
+      {
+        "en": "Tom has six pens.",
+        "zh": "汤姆有六支笔。"
+      },
+      {
+        "en": "He gives two pens to Amy.",
+        "zh": "他给了艾米两支笔。"
+      },
+      {
+        "en": "How many pens does Tom have now?",
+        "zh": "汤姆现在有几支笔？"
+      },
+      {
+        "en": "Let's think and solve it.",
+        "zh": "我们想一想，把它解出来。"
+      },
+      {
+        "en": "Six minus two is four.",
+        "zh": "六减二等于四。"
+      },
+      {
+        "en": "The answer is four.",
+        "zh": "答案是四。"
+      },
+      {
+        "en": "Now let's check the answer.",
+        "zh": "现在我们来检查答案。"
+      },
+      {
+        "en": "Four plus two is six. Yes!",
+        "zh": "四加二等于六。对了！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Tom has six pens. He gives away two.",
+        "zh": "汤姆有六支笔，送出了两支。"
+      },
+      {
+        "en": "Amy has five books. She gets three more.",
+        "zh": "艾米有五本书，又得到了三本。"
+      },
+      {
+        "en": "The answer is eight.",
+        "zh": "答案是八。"
+      },
+      {
+        "en": "The answer is two.",
+        "zh": "答案是二。"
+      }
+    ],
+    "words": [
+      "problem",
+      "solve",
+      "answer",
+      "question",
+      "check",
+      "pen",
+      "think"
+    ]
+  },
+  {
+    "id": "4-06",
+    "level": 4,
+    "unit": 6,
+    "theme": "geometry",
+    "title": "Points, Lines and Rays",
+    "titleZh": "点、线和射线",
+    "lines": [
+      {
+        "en": "This is a point.",
+        "zh": "这是一个点。"
+      },
+      {
+        "en": "A line goes on and on in both directions.",
+        "zh": "直线向两端无限延伸。"
+      },
+      {
+        "en": "A line segment has two endpoints.",
+        "zh": "线段有两个端点。"
+      },
+      {
+        "en": "A ray has only one endpoint.",
+        "zh": "射线只有一个端点。"
+      },
+      {
+        "en": "A ray goes on and on in one direction.",
+        "zh": "射线向一端无限延伸。"
+      },
+      {
+        "en": "Use a ruler to draw a straight line.",
+        "zh": "用尺子画一条直线。"
+      },
+      {
+        "en": "A curve is not straight.",
+        "zh": "曲线不是直的。"
+      },
+      {
+        "en": "A plane is flat, like the top of a desk.",
+        "zh": "平面是平的，就像桌面一样。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Draw a line segment.",
+        "zh": "画一条线段。"
+      },
+      {
+        "en": "Draw a ray.",
+        "zh": "画一条射线。"
+      },
+      {
+        "en": "Draw a long curve.",
+        "zh": "画一条长长的曲线。"
+      },
+      {
+        "en": "Mark the two endpoints.",
+        "zh": "标出两个端点。"
+      }
+    ],
+    "words": [
+      "point",
+      "line",
+      "segment",
+      "ray",
+      "endpoint",
+      "plane",
+      "straight",
+      "curve",
+      "ruler"
+    ]
+  },
+  {
+    "id": "4-07",
+    "level": 4,
+    "unit": 7,
+    "theme": "geometry",
+    "title": "Angles and Lines",
+    "titleZh": "角和线",
+    "lines": [
+      {
+        "en": "Two lines can intersect at a point.",
+        "zh": "两条线可以相交于一点。"
+      },
+      {
+        "en": "That point is the intersection.",
+        "zh": "那个点就是交点。"
+      },
+      {
+        "en": "Two rays from one endpoint make an angle.",
+        "zh": "从同一个端点出发的两条射线组成一个角。"
+      },
+      {
+        "en": "That endpoint is the vertex of the angle.",
+        "zh": "这个端点就是角的顶点。"
+      },
+      {
+        "en": "Perpendicular lines make a right angle.",
+        "zh": "互相垂直的线形成直角。"
+      },
+      {
+        "en": "A book has four right angles.",
+        "zh": "一本书有四个直角。"
+      },
+      {
+        "en": "Parallel lines never intersect.",
+        "zh": "平行线永远不相交。"
+      },
+      {
+        "en": "The two sides of a road are parallel.",
+        "zh": "马路的两边是平行的。"
+      },
+      {
+        "en": "Some angles are small, and some are big.",
+        "zh": "有些角小，有些角大。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "These two lines are parallel.",
+        "zh": "这两条线是平行的。"
+      },
+      {
+        "en": "These two lines are perpendicular.",
+        "zh": "这两条线互相垂直。"
+      },
+      {
+        "en": "This angle is small.",
+        "zh": "这个角很小。"
+      },
+      {
+        "en": "That angle is big.",
+        "zh": "那个角很大。"
+      }
+    ],
+    "words": [
+      "angle",
+      "vertex",
+      "intersect",
+      "intersection",
+      "parallel",
+      "perpendicular",
+      "right",
+      "corner",
+      "side"
+    ]
+  },
+  {
+    "id": "4-08",
+    "level": 4,
+    "unit": 8,
+    "theme": "geometry",
+    "title": "Flat Shapes",
+    "titleZh": "平面图形",
+    "lines": [
+      {
+        "en": "Shapes are all around us.",
+        "zh": "图形就在我们身边。"
+      },
+      {
+        "en": "The sun looks like a circle.",
+        "zh": "太阳看起来像一个圆。"
+      },
+      {
+        "en": "A circle is round.",
+        "zh": "圆是圆圆的。"
+      },
+      {
+        "en": "A triangle has three sides.",
+        "zh": "三角形有三条边。"
+      },
+      {
+        "en": "This window is a square.",
+        "zh": "这扇窗是正方形的。"
+      },
+      {
+        "en": "A door is a rectangle.",
+        "zh": "门是长方形的。"
+      },
+      {
+        "en": "A rectangle has two long sides and two short sides.",
+        "zh": "长方形有两条长边和两条短边。"
+      },
+      {
+        "en": "These shapes are flat.",
+        "zh": "这些图形是平的。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "The plate is a circle.",
+        "zh": "盘子是圆形的。"
+      },
+      {
+        "en": "The book is a rectangle.",
+        "zh": "书是长方形的。"
+      },
+      {
+        "en": "The sign is a triangle.",
+        "zh": "这个标志是三角形的。"
+      },
+      {
+        "en": "The cake is a square.",
+        "zh": "蛋糕是正方形的。"
+      }
+    ],
+    "words": [
+      "shape",
+      "circle",
+      "triangle",
+      "square",
+      "rectangle",
+      "flat",
+      "round",
+      "side"
+    ]
+  },
+  {
+    "id": "4-09",
+    "level": 4,
+    "unit": 9,
+    "theme": "geometry",
+    "title": "Solid Shapes",
+    "titleZh": "立体图形",
+    "lines": [
+      {
+        "en": "A ball is a sphere.",
+        "zh": "球是一个球体。"
+      },
+      {
+        "en": "A sphere is round all over.",
+        "zh": "球体每一面都是圆的。"
+      },
+      {
+        "en": "A sphere can roll.",
+        "zh": "球体会滚。"
+      },
+      {
+        "en": "A box is like a cube.",
+        "zh": "盒子像一个立方体。"
+      },
+      {
+        "en": "A cube has six faces.",
+        "zh": "立方体有六个面。"
+      },
+      {
+        "en": "Every face is a square.",
+        "zh": "每个面都是正方形。"
+      },
+      {
+        "en": "A cube can not roll.",
+        "zh": "立方体不会滚。"
+      },
+      {
+        "en": "These shapes are solid, not flat.",
+        "zh": "这些图形是立体的，不是平的。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "An orange is a sphere.",
+        "zh": "橙子是一个球体。"
+      },
+      {
+        "en": "The earth is a sphere.",
+        "zh": "地球是一个球体。"
+      },
+      {
+        "en": "This box is a cube.",
+        "zh": "这个盒子是立方体。"
+      },
+      {
+        "en": "An ice cube is a cube.",
+        "zh": "冰块是立方体。"
+      }
+    ],
+    "words": [
+      "sphere",
+      "cube",
+      "ball",
+      "box",
+      "face",
+      "solid",
+      "flat",
+      "roll"
+    ]
+  },
+  {
+    "id": "4-10",
+    "level": 4,
+    "unit": 10,
+    "theme": "geometry",
+    "title": "Let's Measure",
+    "titleZh": "测量",
+    "lines": [
+      {
+        "en": "Let's measure the desk.",
+        "zh": "我们来量一量桌子。"
+      },
+      {
+        "en": "We use a ruler.",
+        "zh": "我们用尺子。"
+      },
+      {
+        "en": "The length of the desk is one meter.",
+        "zh": "桌子的长度是一米。"
+      },
+      {
+        "en": "The width is fifty centimeters.",
+        "zh": "宽度是五十厘米。"
+      },
+      {
+        "en": "How tall are you?",
+        "zh": "你有多高？"
+      },
+      {
+        "en": "My height is one hundred and twenty centimeters.",
+        "zh": "我的身高是一百二十厘米。"
+      },
+      {
+        "en": "Area tells us how big a flat shape is.",
+        "zh": "面积告诉我们一个平面图形有多大。"
+      },
+      {
+        "en": "This square has an area of four square meters.",
+        "zh": "这个正方形的面积是四平方米。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "The desk is one meter long.",
+        "zh": "桌子长一米。"
+      },
+      {
+        "en": "The book is twenty centimeters long.",
+        "zh": "书长二十厘米。"
+      },
+      {
+        "en": "The door is two meters tall.",
+        "zh": "门高两米。"
+      },
+      {
+        "en": "The room is five meters wide.",
+        "zh": "房间宽五米。"
+      }
+    ],
+    "words": [
+      "measure",
+      "length",
+      "width",
+      "height",
+      "area",
+      "meter",
+      "centimeter",
+      "ruler",
+      "tall"
+    ]
+  },
+  {
+    "id": "4-11",
+    "level": 4,
+    "unit": 11,
+    "theme": "physics",
+    "title": "Push and Pull",
+    "titleZh": "推和拉",
+    "lines": [
+      {
+        "en": "A push or a pull is a force.",
+        "zh": "推或拉都是力。"
+      },
+      {
+        "en": "I push the door to open it.",
+        "zh": "我推门把它打开。"
+      },
+      {
+        "en": "I pull the box with a rope.",
+        "zh": "我用绳子拉箱子。"
+      },
+      {
+        "en": "A force can make things move.",
+        "zh": "力可以让东西动起来。"
+      },
+      {
+        "en": "A big push makes the ball go fast.",
+        "zh": "用力一推，球就跑得快。"
+      },
+      {
+        "en": "The toy car slides down the ramp.",
+        "zh": "玩具车从斜坡上滑下来。"
+      },
+      {
+        "en": "Its speed gets higher and higher.",
+        "zh": "它的速度越来越快。"
+      },
+      {
+        "en": "Gravity pulls things down to the earth.",
+        "zh": "重力把东西往地面拉。"
+      },
+      {
+        "en": "That is why an apple falls down.",
+        "zh": "所以苹果会掉下来。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I push the door.",
+        "zh": "我推门。"
+      },
+      {
+        "en": "I push the chair.",
+        "zh": "我推椅子。"
+      },
+      {
+        "en": "I pull the rope.",
+        "zh": "我拉绳子。"
+      },
+      {
+        "en": "I pull the box.",
+        "zh": "我拉箱子。"
+      }
+    ],
+    "words": [
+      "push",
+      "pull",
+      "force",
+      "move",
+      "speed",
+      "ramp",
+      "slide",
+      "gravity",
+      "fast",
+      "slow"
+    ]
+  },
+  {
+    "id": "4-12",
+    "level": 4,
+    "unit": 12,
+    "theme": "physics",
+    "title": "Hot and Cold",
+    "titleZh": "冷和热",
+    "lines": [
+      {
+        "en": "A thermometer tells us the temperature.",
+        "zh": "温度计告诉我们温度。"
+      },
+      {
+        "en": "The temperature is high on a hot day.",
+        "zh": "热天温度很高。"
+      },
+      {
+        "en": "The temperature is low on a cold day.",
+        "zh": "冷天温度很低。"
+      },
+      {
+        "en": "Heat makes ice melt.",
+        "zh": "热让冰融化。"
+      },
+      {
+        "en": "The ice turns into water.",
+        "zh": "冰变成了水。"
+      },
+      {
+        "en": "Water freezes when it is very cold.",
+        "zh": "水很冷时会结冰。"
+      },
+      {
+        "en": "Hot water turns into steam.",
+        "zh": "热水会变成水蒸气。"
+      },
+      {
+        "en": "Ice, water and steam are the same thing.",
+        "zh": "冰、水和水蒸气是同一种东西。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Ice melts in the sun.",
+        "zh": "冰在太阳下融化。"
+      },
+      {
+        "en": "Butter melts in a hot pan.",
+        "zh": "黄油在热锅里融化。"
+      },
+      {
+        "en": "Milk freezes in the cold.",
+        "zh": "牛奶遇冷会结冰。"
+      },
+      {
+        "en": "The river freezes in winter.",
+        "zh": "冬天河水会结冰。"
+      }
+    ],
+    "words": [
+      "hot",
+      "cold",
+      "heat",
+      "temperature",
+      "thermometer",
+      "melt",
+      "freeze",
+      "ice",
+      "steam",
+      "water"
+    ]
+  },
+  {
+    "id": "4-13",
+    "level": 4,
+    "unit": 13,
+    "theme": "physics",
+    "title": "Float and Sink",
+    "titleZh": "浮和沉",
+    "lines": [
+      {
+        "en": "Let's do an experiment with water.",
+        "zh": "我们用水做个实验吧。"
+      },
+      {
+        "en": "Put a leaf in the water.",
+        "zh": "把一片叶子放进水里。"
+      },
+      {
+        "en": "The leaf floats.",
+        "zh": "叶子浮起来了。"
+      },
+      {
+        "en": "Put a stone in the water.",
+        "zh": "把一块石头放进水里。"
+      },
+      {
+        "en": "The stone sinks.",
+        "zh": "石头沉下去了。"
+      },
+      {
+        "en": "Wood floats, but iron sinks.",
+        "zh": "木头会浮，铁会沉。"
+      },
+      {
+        "en": "A big boat is heavy, but it floats.",
+        "zh": "大船很重，但它能浮起来。"
+      },
+      {
+        "en": "What floats and what sinks? Let's guess!",
+        "zh": "什么会浮？什么会沉？猜一猜！"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "The ball floats on the water.",
+        "zh": "球浮在水上。"
+      },
+      {
+        "en": "The bottle floats on the water.",
+        "zh": "瓶子浮在水上。"
+      },
+      {
+        "en": "The key sinks in the water.",
+        "zh": "钥匙沉入水中。"
+      },
+      {
+        "en": "The coin sinks in the water.",
+        "zh": "硬币沉入水中。"
+      }
+    ],
+    "words": [
+      "experiment",
+      "float",
+      "sink",
+      "heavy",
+      "light",
+      "boat",
+      "stone",
+      "wood",
+      "iron"
+    ]
+  },
+  {
+    "id": "4-14",
+    "level": 4,
+    "unit": 14,
+    "theme": "physics",
+    "title": "Light and Sound",
+    "titleZh": "光和声音",
+    "lines": [
+      {
+        "en": "Light comes from the sun.",
+        "zh": "光来自太阳。"
+      },
+      {
+        "en": "Light goes in straight lines.",
+        "zh": "光沿直线传播。"
+      },
+      {
+        "en": "When something stops the light, we see a shadow.",
+        "zh": "东西挡住光，我们就看到影子。"
+      },
+      {
+        "en": "My shadow is long in the evening.",
+        "zh": "傍晚我的影子很长。"
+      },
+      {
+        "en": "A mirror sends the light back.",
+        "zh": "镜子把光反射回去。"
+      },
+      {
+        "en": "I can see my face in the mirror.",
+        "zh": "我能在镜子里看到我的脸。"
+      },
+      {
+        "en": "Sound comes from things that shake.",
+        "zh": "声音来自振动的东西。"
+      },
+      {
+        "en": "Shout in a big hall and you hear an echo.",
+        "zh": "在大厅里喊一声，你会听到回声。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "I see a shadow on the wall.",
+        "zh": "我看到墙上有个影子。"
+      },
+      {
+        "en": "I see a shadow on the ground.",
+        "zh": "我看到地上有个影子。"
+      },
+      {
+        "en": "I hear a sound in the room.",
+        "zh": "我听到房间里有声音。"
+      },
+      {
+        "en": "I hear an echo in the hall.",
+        "zh": "我在大厅里听到回声。"
+      }
+    ],
+    "words": [
+      "light",
+      "shadow",
+      "mirror",
+      "sound",
+      "echo",
+      "sun",
+      "dark",
+      "loud"
+    ]
+  },
+  {
+    "id": "4-15",
+    "level": 4,
+    "unit": 15,
+    "theme": "physics",
+    "title": "Electricity and Magnets",
+    "titleZh": "电和磁",
+    "lines": [
+      {
+        "en": "A battery gives electric power.",
+        "zh": "电池提供电力。"
+      },
+      {
+        "en": "Join the battery and the bulb with wires.",
+        "zh": "用电线把电池和灯泡连起来。"
+      },
+      {
+        "en": "Turn on the switch.",
+        "zh": "打开开关。"
+      },
+      {
+        "en": "The bulb gives light!",
+        "zh": "灯泡亮了！"
+      },
+      {
+        "en": "Turn off the switch and the light goes out.",
+        "zh": "关上开关，灯就灭了。"
+      },
+      {
+        "en": "Energy makes things work.",
+        "zh": "能量让东西工作。"
+      },
+      {
+        "en": "A magnet pulls iron things.",
+        "zh": "磁铁吸铁的东西。"
+      },
+      {
+        "en": "It does not pull wood or glass.",
+        "zh": "它不吸木头和玻璃。"
+      },
+      {
+        "en": "Magnets are fun to play with.",
+        "zh": "磁铁玩起来很有趣。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "Turn on the light.",
+        "zh": "开灯。"
+      },
+      {
+        "en": "Turn off the light.",
+        "zh": "关灯。"
+      },
+      {
+        "en": "The magnet pulls the pin.",
+        "zh": "磁铁吸住了别针。"
+      },
+      {
+        "en": "The magnet pulls the key.",
+        "zh": "磁铁吸住了钥匙。"
+      }
+    ],
+    "words": [
+      "electric",
+      "battery",
+      "switch",
+      "wire",
+      "bulb",
+      "energy",
+      "magnet",
+      "metal",
+      "iron",
+      "power"
+    ]
   }
 ]

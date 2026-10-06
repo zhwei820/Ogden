@@ -1835,8 +1835,8 @@ fun WordCollectionScreen(
     }
 }
 
-private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级")
-private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达")
+private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "STEM")
+private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达", StemLevel to "学科")
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -3612,7 +3612,7 @@ fun PracticeScreen(
                             }
                         } else {
                             CategoryBadge(word.category)
-                            AppText(type.title, color = word.category.tint, fontWeight = FontWeight.Bold)
+                            AppText(question.title ?: type.title, color = word.category.tint, fontWeight = FontWeight.Bold)
                             Text(convertZh(question.prompt, zh), fontSize = 24.sp, fontWeight = FontWeight.SemiBold, lineHeight = 30.sp)
                         }
                         if (type == PracticeType.Spelling) {
@@ -4085,7 +4085,7 @@ fun SpecialModuleScreen(
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
                             AppText("看图练习", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
                             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                                SpeechLevelNames.forEach { (value, name) ->
+                                SpeechLevelNames.filterKeys { it != StemLevel }.forEach { (value, name) ->
                                     val best = store.bestSpecialScore(topic.key, value)
                                     FilterChip(
                                         selected = sceneLevel == value,
@@ -4798,7 +4798,32 @@ private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, se
     }
 }
 
-data class Question(val prompt: String, val answer: String, val options: List<String>)
+/** [title] 覆盖题型标题（数字的近义词题改成算术题，标题不能还叫「近义词配对」） */
+data class Question(val prompt: String, val answer: String, val options: List<String>, val title: String? = null)
+
+private val NumberValues: Map<String, Int> = (0..99).associateBy(::numberWord) + ("hundred" to 100)
+
+/**
+ * 数字没有真正的近义词（词表里 nine 的近义词是 eight / ten），改出算术题：nine minus one = ?
+ * 答案和选项都取词表里的数字；凑不出 1–10 以内的加减就返回 null。
+ */
+private fun arithmeticQuestion(word: OgdenWord, allWords: List<OgdenWord>, random: Random): Question? {
+    val n = NumberValues[word.word.lowercase()] ?: return null
+    val numbers = allWords.mapNotNull { w -> NumberValues[w.word.lowercase()]?.let { w.word to it } }
+    val (answer, value) = numbers.filter { (_, v) -> v != n && kotlin.math.abs(v - n) in 1..10 }.randomOrNull(random) ?: return null
+    val op = if (value > n) "plus" else "minus"
+    val distractors = numbers
+        .filter { (w, _) -> w != answer }
+        .sortedBy { (_, v) -> kotlin.math.abs(v - value) }
+        .take(3)
+        .map { it.first }
+    return Question(
+        prompt = "${word.word} $op ${numberWord(kotlin.math.abs(value - n))} = ?",
+        answer = answer,
+        options = (distractors + answer).shuffled(random),
+        title = "算一算"
+    )
+}
 
 /**
  * 填空的空位：每个字母一条下划线，用不换行窄空格隔开，孩子能数出字母数；
@@ -4835,7 +4860,7 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             answer = word.word,
             options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
-        PracticeType.Synonym -> {
+        PracticeType.Synonym -> arithmeticQuestion(word, allWords, random) ?: run {
             // 选项只用词表里的词：近义词列表里混有词表外的生僻词（scarlet、crease…），不拿来出题
             val headwords = allWords.associateBy { it.word.lowercase() }
             val answer = word.synonyms.firstNotNullOfOrNull { headwords[it.lowercase()]?.word }

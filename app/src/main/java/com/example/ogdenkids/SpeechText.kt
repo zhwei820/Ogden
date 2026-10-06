@@ -13,12 +13,23 @@ enum class SpeechTheme(val key: String, val zh: String, val en: String) {
     Places("places", "家与旅行", "Home and Travel"),
     City("city", "城市", "My City"),
     Jobs("jobs", "职业", "Jobs"),
-    Festivals("festivals", "节日与成长", "Festivals and Growing Up");
+    Festivals("festivals", "节日与成长", "Festivals and Growing Up"),
+    Algebra("algebra", "代数", "Algebra"),
+    Geometry("geometry", "几何", "Geometry"),
+    Physics("physics", "物理", "Physics");
 
     companion object {
         fun from(key: String) = values().first { it.key == key }
+
+        /** 学科主题只在 [StemLevel] 里用，一到三级用其余的生活主题 */
+        val Stem = listOf(Algebra, Geometry, Physics)
+
+        fun forLevel(level: Int) = if (level == StemLevel) Stem else values().filter { it !in Stem }
     }
 }
+
+/** 课文第 4 级：按学科编排的 STEM 课文 */
+const val StemLevel = 4
 
 /** 一个单元：[lines] 是课文（一句一行），[patterns] 是替换句型，[words] 是可选的本课单词（词表原形）。 */
 data class Speech(

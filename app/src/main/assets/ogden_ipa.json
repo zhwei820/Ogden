@@ -4254,5 +4254,233 @@
     "ad":  {
         "uk":  "/æd/",
         "us":  "/æd/"
+    },
+    "experiment":  {
+        "uk":  "/ɪkˈspɛɹɪmənt/",
+        "us":  "/ɪkˈspɛɹəmənt/"
+    },
+    "energy":  {
+        "uk":  "/ˈɛnədʒi/",
+        "us":  "/ˈɛnɚdʒi/"
+    },
+    "magnet":  {
+        "uk":  "/ˈmæɡnɪt/",
+        "us":  "/ˈmæɡnət/"
+    },
+    "gas":  {
+        "uk":  "/ɡæs/",
+        "us":  "/ɡæs/"
+    },
+    "melt":  {
+        "uk":  "/mɛlt/",
+        "us":  "/mɛlt/"
+    },
+    "freeze":  {
+        "uk":  "/fɹiːz/",
+        "us":  "/fɹiz/"
+    },
+    "float":  {
+        "uk":  "/fləʊt/",
+        "us":  "/floʊt/"
+    },
+    "sink":  {
+        "uk":  "/sɪŋk/",
+        "us":  "/sɪŋk/"
+    },
+    "shadow":  {
+        "uk":  "/ˈʃædəʊ/",
+        "us":  "/ˈʃædoʊ/"
+    },
+    "mirror":  {
+        "uk":  "/ˈmɪɹə/",
+        "us":  "/ˈmɪɹɚ/"
+    },
+    "echo":  {
+        "uk":  "/ˈɛkəʊ/",
+        "us":  "/ˈɛkoʊ/"
+    },
+    "battery":  {
+        "uk":  "/ˈbætəɹi/",
+        "us":  "/ˈbætɚi/"
+    },
+    "switch":  {
+        "uk":  "/swɪtʃ/",
+        "us":  "/swɪtʃ/"
+    },
+    "speed":  {
+        "uk":  "/spiːd/",
+        "us":  "/spid/"
+    },
+    "ramp":  {
+        "uk":  "/ɹæmp/",
+        "us":  "/ɹæmp/"
+    },
+    "slide":  {
+        "uk":  "/slaɪd/",
+        "us":  "/slaɪd/"
+    },
+    "gravity":  {
+        "uk":  "/ˈɡɹævɪti/",
+        "us":  "/ˈɡɹævəti/"
+    },
+    "temperature":  {
+        "uk":  "/ˈtɛmpɹɪtʃə/",
+        "us":  "/ˈtɛmpɚətʃɚ/"
+    },
+    "thermometer":  {
+        "uk":  "/θəˈmɒmɪtə/",
+        "us":  "/θɚˈmɑmətɚ/"
+    },
+    "problem":  {
+        "uk":  "/ˈpɹɒbləm/",
+        "us":  "/ˈpɹɑbləm/"
+    },
+    "solve":  {
+        "uk":  "/sɒlv/",
+        "us":  "/sɑlv/"
+    },
+    "guess":  {
+        "uk":  "/ɡɛs/",
+        "us":  "/ɡɛs/"
+    },
+    "shape":  {
+        "uk":  "/ʃeɪp/",
+        "us":  "/ʃeɪp/"
+    },
+    "triangle":  {
+        "uk":  "/ˈtɹaɪæŋɡəl/",
+        "us":  "/ˈtɹaɪˌæŋɡəl/"
+    },
+    "rectangle":  {
+        "uk":  "/ˈɹɛktæŋɡəl/",
+        "us":  "/ˈɹɛkˌtæŋɡəl/"
+    },
+    "cube":  {
+        "uk":  "/kjuːb/",
+        "us":  "/kjub/"
+    },
+    "sphere":  {
+        "uk":  "/sfɪə/",
+        "us":  "/sfɪɹ/"
+    },
+    "area":  {
+        "uk":  "/ˈɛəɹiə/",
+        "us":  "/ˈɛɹiə/"
+    },
+    "height":  {
+        "uk":  "/haɪt/",
+        "us":  "/haɪt/"
+    },
+    "width":  {
+        "uk":  "/wɪdθ/",
+        "us":  "/wɪdθ/"
+    },
+    "length":  {
+        "uk":  "/lɛŋθ/",
+        "us":  "/lɛŋθ/"
+    },
+    "meter":  {
+        "uk":  "/ˈmiːtə/",
+        "us":  "/ˈmitɚ/"
+    },
+    "centimeter":  {
+        "uk":  "/ˈsɛntɪmiːtə/",
+        "us":  "/ˈsɛntəˌmitɚ/"
+    },
+    "plus":  {
+        "uk":  "/plʌs/",
+        "us":  "/plʌs/"
+    },
+    "minus":  {
+        "uk":  "/ˈmaɪnəs/",
+        "us":  "/ˈmaɪnəs/"
+    },
+    "times":  {
+        "uk":  "/taɪmz/",
+        "us":  "/taɪmz/"
+    },
+    "divide":  {
+        "uk":  "/dɪˈvaɪd/",
+        "us":  "/dɪˈvaɪd/"
+    },
+    "double":  {
+        "uk":  "/ˈdʌbəl/",
+        "us":  "/ˈdʌbəl/"
+    },
+    "odd":  {
+        "uk":  "/ɒd/",
+        "us":  "/ɑd/"
+    },
+    "sum":  {
+        "uk":  "/sʌm/",
+        "us":  "/sʌm/"
+    },
+    "total":  {
+        "uk":  "/ˈtəʊtəl/",
+        "us":  "/ˈtoʊtəl/"
+    },
+    "count":  {
+        "uk":  "/kaʊnt/",
+        "us":  "/kaʊnt/"
+    },
+    "pair":  {
+        "uk":  "/pɛə/",
+        "us":  "/pɛɹ/"
+    },
+    "piece":  {
+        "uk":  "/piːs/",
+        "us":  "/pis/"
+    },
+    "pattern":  {
+        "uk":  "/ˈpætən/",
+        "us":  "/ˈpætɚn/"
+    },
+    "segment":  {
+        "uk":  "/ˈsɛɡmənt/",
+        "us":  "/ˈsɛɡmənt/"
+    },
+    "endpoint":  {
+        "uk":  "/ˈɛndpɔɪnt/",
+        "us":  "/ˈɛndˌpɔɪnt/"
+    },
+    "intersect":  {
+        "uk":  "/ˌɪntəˈsɛkt/",
+        "us":  "/ˌɪntɚˈsɛkt/"
+    },
+    "intersection":  {
+        "uk":  "/ˌɪntəˈsɛkʃən/",
+        "us":  "/ˌɪntɚˈsɛkʃən/"
+    },
+    "perpendicular":  {
+        "uk":  "/ˌpɜːpənˈdɪkjʊlə/",
+        "us":  "/ˌpɝpənˈdɪkjəlɚ/"
+    },
+    "vertex":  {
+        "uk":  "/ˈvɜːtɛks/",
+        "us":  "/ˈvɝtɛks/"
+    },
+    "coconut":  {
+        "uk":  "/ˈkəʊkənʌt/",
+        "us":  "/ˈkoʊkəˌnʌt/"
+    },
+    "durian":  {
+        "uk":  "/ˈdjʊəɹiən/",
+        "us":  "/ˈdʊɹiən/"
+    },
+    "papaya":  {
+        "uk":  "/pəˈpaɪə/",
+        "us":  "/pəˈpaɪə/"
+    },
+    "lychee":  {
+        "uk":  "/ˌlaɪˈtʃiː/",
+        "us":  "/ˈlitʃi/"
+    },
+    "dragon fruit":  {
+        "uk":  "/ˈdɹæɡən fɹuːt/",
+        "us":  "/ˈdɹæɡən fɹut/"
+    },
+    "avocado":  {
+        "uk":  "/ˌævəˈkɑːdəʊ/",
+        "us":  "/ˌævəˈkɑdoʊ/"
     }
 }

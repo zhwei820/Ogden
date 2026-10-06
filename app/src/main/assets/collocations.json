@@ -15598,5 +15598,1013 @@
    "ex": "Bend at the hip and knee.",
    "exz": "弯曲髋部和膝盖。"
   }
+ ],
+ "count": [
+  {
+   "phrase": "count to ten",
+   "zh": "数到十",
+   "ex": "My little brother can count to ten.",
+   "exz": "我弟弟能数到十。"
+  },
+  {
+   "phrase": "count the stars",
+   "zh": "数星星",
+   "ex": "We count the stars at night.",
+   "exz": "我们晚上数星星。"
+  }
+ ],
+ "pair": [
+  {
+   "phrase": "a pair of shoes",
+   "zh": "一双鞋",
+   "ex": "I need a new pair of shoes.",
+   "exz": "我需要一双新鞋。"
+  },
+  {
+   "phrase": "in pairs",
+   "zh": "两人一组",
+   "ex": "Please work in pairs.",
+   "exz": "请两人一组练习。"
+  }
+ ],
+ "double": [
+  {
+   "phrase": "double the number",
+   "zh": "把数加倍",
+   "ex": "Double the number three and you get six.",
+   "exz": "把三加倍就得到六。"
+  },
+  {
+   "phrase": "a double bed",
+   "zh": "双人床",
+   "ex": "My parents sleep in a double bed.",
+   "exz": "我爸妈睡双人床。"
+  }
+ ],
+ "odd": [
+  {
+   "phrase": "odd number",
+   "zh": "奇数",
+   "ex": "Five is an odd number.",
+   "exz": "五是奇数。"
+  },
+  {
+   "phrase": "odd one out",
+   "zh": "不同类的那个",
+   "ex": "Find the odd one out: cat, dog, apple.",
+   "exz": "找出不同类的：猫、狗、苹果。"
+  }
+ ],
+ "even": [
+  {
+   "phrase": "even number",
+   "zh": "偶数",
+   "ex": "Eight is an even number.",
+   "exz": "八是偶数。"
+  },
+  {
+   "phrase": "even better",
+   "zh": "更好",
+   "ex": "Your drawing is even better today.",
+   "exz": "你今天画得更好了。"
+  }
+ ],
+ "plus": [
+  {
+   "phrase": "two plus two",
+   "zh": "二加二",
+   "ex": "Two plus two is four.",
+   "exz": "二加二等于四。"
+  },
+  {
+   "phrase": "plus sign",
+   "zh": "加号",
+   "ex": "Write a plus sign between the numbers.",
+   "exz": "在两个数之间写一个加号。"
+  }
+ ],
+ "minus": [
+  {
+   "phrase": "ten minus one",
+   "zh": "十减一",
+   "ex": "Ten minus one is nine.",
+   "exz": "十减一等于九。"
+  },
+  {
+   "phrase": "minus sign",
+   "zh": "减号",
+   "ex": "The minus sign is a short line.",
+   "exz": "减号是一条短横线。"
+  }
+ ],
+ "sum": [
+  {
+   "phrase": "the sum of",
+   "zh": "……的和",
+   "ex": "The sum of four and five is nine.",
+   "exz": "四和五的和是九。"
+  },
+  {
+   "phrase": "do sums",
+   "zh": "做算术题",
+   "ex": "We do sums in math class.",
+   "exz": "我们在数学课上做算术题。"
+  }
+ ],
+ "total": [
+  {
+   "phrase": "in total",
+   "zh": "总共",
+   "ex": "We have twelve pencils in total.",
+   "exz": "我们总共有十二支铅笔。"
+  },
+  {
+   "phrase": "the total number",
+   "zh": "总数",
+   "ex": "What is the total number of students?",
+   "exz": "学生总数是多少？"
+  }
+ ],
+ "equal": [
+  {
+   "phrase": "is equal to",
+   "zh": "等于",
+   "ex": "Three plus three is equal to six.",
+   "exz": "三加三等于六。"
+  },
+  {
+   "phrase": "equal parts",
+   "zh": "相等的几份",
+   "ex": "Cut the apple into two equal parts.",
+   "exz": "把苹果切成相等的两半。"
+  }
+ ],
+ "more": [
+  {
+   "phrase": "one more",
+   "zh": "再一个",
+   "ex": "Can I have one more cookie?",
+   "exz": "我能再吃一块饼干吗？"
+  },
+  {
+   "phrase": "more than",
+   "zh": "多于",
+   "ex": "Six is more than four.",
+   "exz": "六比四大。"
+  }
+ ],
+ "times": [
+  {
+   "phrase": "two times three",
+   "zh": "二乘三",
+   "ex": "Two times three is six.",
+   "exz": "二乘三等于六。"
+  },
+  {
+   "phrase": "three times",
+   "zh": "三次",
+   "ex": "Read the word three times.",
+   "exz": "把这个词读三遍。"
+  }
+ ],
+ "divide": [
+  {
+   "phrase": "divide into",
+   "zh": "分成",
+   "ex": "Divide the class into two groups.",
+   "exz": "把全班分成两组。"
+  },
+  {
+   "phrase": "divide by",
+   "zh": "除以",
+   "ex": "Eight divided by two is four.",
+   "exz": "八除以二等于四。"
+  }
+ ],
+ "piece": [
+  {
+   "phrase": "a piece of cake",
+   "zh": "一块蛋糕",
+   "ex": "Would you like a piece of cake?",
+   "exz": "你想吃一块蛋糕吗？"
+  },
+  {
+   "phrase": "a piece of paper",
+   "zh": "一张纸",
+   "ex": "Write your name on a piece of paper.",
+   "exz": "把你的名字写在一张纸上。"
+  }
+ ],
+ "pattern": [
+  {
+   "phrase": "find the pattern",
+   "zh": "找出规律",
+   "ex": "Can you find the pattern in these numbers?",
+   "exz": "你能找出这些数的规律吗？"
+  },
+  {
+   "phrase": "a flower pattern",
+   "zh": "花朵图案",
+   "ex": "My cup has a flower pattern.",
+   "exz": "我的杯子上有花朵图案。"
+  }
+ ],
+ "guess": [
+  {
+   "phrase": "make a guess",
+   "zh": "猜一猜",
+   "ex": "Make a guess, then check the answer.",
+   "exz": "先猜一猜，再看答案。"
+  },
+  {
+   "phrase": "guess what",
+   "zh": "你猜怎么着",
+   "ex": "Guess what? I got a new bike!",
+   "exz": "你猜怎么着？我有了一辆新自行车！"
+  }
+ ],
+ "problem": [
+  {
+   "phrase": "solve a problem",
+   "zh": "解决问题",
+   "ex": "We work together to solve a problem.",
+   "exz": "我们一起解决问题。"
+  },
+  {
+   "phrase": "no problem",
+   "zh": "没问题",
+   "ex": "Can you help me? No problem!",
+   "exz": "你能帮我吗？没问题！"
+  }
+ ],
+ "solve": [
+  {
+   "phrase": "solve a puzzle",
+   "zh": "解谜题",
+   "ex": "She likes to solve puzzles.",
+   "exz": "她喜欢解谜题。"
+  },
+  {
+   "phrase": "solve the problem",
+   "zh": "解出这道题",
+   "ex": "It took me five minutes to solve the problem.",
+   "exz": "我花了五分钟解出这道题。"
+  }
+ ],
+ "question": [
+  {
+   "phrase": "ask a question",
+   "zh": "提问",
+   "ex": "Put up your hand to ask a question.",
+   "exz": "举手提问。"
+  },
+  {
+   "phrase": "answer the question",
+   "zh": "回答问题",
+   "ex": "Who can answer the question?",
+   "exz": "谁能回答这个问题？"
+  }
+ ],
+ "point": [
+  {
+   "phrase": "point at",
+   "zh": "指着",
+   "ex": "Don't point at people.",
+   "exz": "不要用手指指着别人。"
+  },
+  {
+   "phrase": "a point on a line",
+   "zh": "线上的一点",
+   "ex": "Mark a point on the line.",
+   "exz": "在线上标出一个点。"
+  }
+ ],
+ "curve": [
+  {
+   "phrase": "a curve in the road",
+   "zh": "路的拐弯",
+   "ex": "Drive slowly at the curve in the road.",
+   "exz": "在弯道处开慢点。"
+  },
+  {
+   "phrase": "draw a curve",
+   "zh": "画曲线",
+   "ex": "Draw a curve like a smile.",
+   "exz": "画一条像笑脸一样的曲线。"
+  }
+ ],
+ "angle": [
+  {
+   "phrase": "right angle",
+   "zh": "直角",
+   "ex": "The corner of the book is a right angle.",
+   "exz": "书角是一个直角。"
+  },
+  {
+   "phrase": "from a different angle",
+   "zh": "从另一个角度",
+   "ex": "Look at the picture from a different angle.",
+   "exz": "换个角度看这幅画。"
+  }
+ ],
+ "shape": [
+  {
+   "phrase": "in the shape of",
+   "zh": "形状像",
+   "ex": "The cake is in the shape of a heart.",
+   "exz": "这个蛋糕是心形的。"
+  },
+  {
+   "phrase": "in good shape",
+   "zh": "身体好；状态好",
+   "ex": "Grandpa runs every day and is in good shape.",
+   "exz": "爷爷每天跑步，身体很好。"
+  }
+ ],
+ "triangle": [
+  {
+   "phrase": "draw a triangle",
+   "zh": "画三角形",
+   "ex": "Draw a triangle with three lines.",
+   "exz": "用三条线画一个三角形。"
+  },
+  {
+   "phrase": "a triangle shape",
+   "zh": "三角形状",
+   "ex": "This sandwich has a triangle shape.",
+   "exz": "这个三明治是三角形的。"
+  }
+ ],
+ "rectangle": [
+  {
+   "phrase": "draw a rectangle",
+   "zh": "画长方形",
+   "ex": "Draw a rectangle for the door.",
+   "exz": "画一个长方形当门。"
+  },
+  {
+   "phrase": "a long rectangle",
+   "zh": "长长的长方形",
+   "ex": "The table is a long rectangle.",
+   "exz": "这张桌子是个长长的长方形。"
+  }
+ ],
+ "flat": [
+  {
+   "phrase": "flat shape",
+   "zh": "平面图形",
+   "ex": "A circle is a flat shape.",
+   "exz": "圆是平面图形。"
+  },
+  {
+   "phrase": "flat tire",
+   "zh": "瘪了的轮胎",
+   "ex": "My bike has a flat tire.",
+   "exz": "我的自行车轮胎瘪了。"
+  }
+ ],
+ "sphere": [
+  {
+   "phrase": "a perfect sphere",
+   "zh": "一个完美的球体",
+   "ex": "The ball is a perfect sphere.",
+   "exz": "这个球是一个完美的球体。"
+  },
+  {
+   "phrase": "the shape of a sphere",
+   "zh": "球体的形状",
+   "ex": "The earth has the shape of a sphere.",
+   "exz": "地球是球体的形状。"
+  }
+ ],
+ "cube": [
+  {
+   "phrase": "ice cube",
+   "zh": "冰块",
+   "ex": "Put an ice cube in the water.",
+   "exz": "在水里放一块冰。"
+  },
+  {
+   "phrase": "sugar cube",
+   "zh": "方糖",
+   "ex": "She puts a sugar cube in her tea.",
+   "exz": "她在茶里放了一块方糖。"
+  }
+ ],
+ "solid": [
+  {
+   "phrase": "solid shape",
+   "zh": "立体图形",
+   "ex": "A cube is a solid shape.",
+   "exz": "立方体是立体图形。"
+  },
+  {
+   "phrase": "solid ice",
+   "zh": "坚硬的冰",
+   "ex": "The water turned into solid ice.",
+   "exz": "水变成了坚硬的冰。"
+  }
+ ],
+ "roll": [
+  {
+   "phrase": "roll down",
+   "zh": "滚下去",
+   "ex": "The ball rolls down the hill.",
+   "exz": "球滚下了山坡。"
+  },
+  {
+   "phrase": "roll over",
+   "zh": "翻身",
+   "ex": "The dog can roll over.",
+   "exz": "这只狗会翻身。"
+  }
+ ],
+ "measure": [
+  {
+   "phrase": "measure the length",
+   "zh": "量长度",
+   "ex": "Use a ruler to measure the length.",
+   "exz": "用尺子量长度。"
+  },
+  {
+   "phrase": "measure how tall",
+   "zh": "量身高",
+   "ex": "Mom measures how tall I am.",
+   "exz": "妈妈给我量身高。"
+  }
+ ],
+ "length": [
+  {
+   "phrase": "the length of",
+   "zh": "……的长度",
+   "ex": "What is the length of the room?",
+   "exz": "这个房间有多长？"
+  },
+  {
+   "phrase": "in length",
+   "zh": "长度上",
+   "ex": "The snake is two meters in length.",
+   "exz": "这条蛇有两米长。"
+  }
+ ],
+ "width": [
+  {
+   "phrase": "the width of",
+   "zh": "……的宽度",
+   "ex": "Measure the width of the door.",
+   "exz": "量一量门的宽度。"
+  },
+  {
+   "phrase": "in width",
+   "zh": "宽度上",
+   "ex": "The road is ten meters in width.",
+   "exz": "这条路有十米宽。"
+  }
+ ],
+ "height": [
+  {
+   "phrase": "the height of",
+   "zh": "……的高度",
+   "ex": "What is the height of that tree?",
+   "exz": "那棵树有多高？"
+  },
+  {
+   "phrase": "the same height",
+   "zh": "一样高",
+   "ex": "My sister and I are the same height.",
+   "exz": "我和姐姐一样高。"
+  }
+ ],
+ "area": [
+  {
+   "phrase": "the area of",
+   "zh": "……的面积",
+   "ex": "Find the area of the square.",
+   "exz": "求这个正方形的面积。"
+  },
+  {
+   "phrase": "play area",
+   "zh": "游乐区",
+   "ex": "The children are in the play area.",
+   "exz": "孩子们在游乐区。"
+  }
+ ],
+ "meter": [
+  {
+   "phrase": "one meter long",
+   "zh": "一米长",
+   "ex": "The stick is one meter long.",
+   "exz": "这根棍子一米长。"
+  },
+  {
+   "phrase": "meters high",
+   "zh": "……米高",
+   "ex": "The wall is three meters high.",
+   "exz": "这堵墙有三米高。"
+  }
+ ],
+ "centimeter": [
+  {
+   "phrase": "ten centimeters long",
+   "zh": "十厘米长",
+   "ex": "My pencil is ten centimeters long.",
+   "exz": "我的铅笔十厘米长。"
+  },
+  {
+   "phrase": "a few centimeters",
+   "zh": "几厘米",
+   "ex": "Move the box a few centimeters to the left.",
+   "exz": "把箱子往左挪几厘米。"
+  }
+ ],
+ "force": [
+  {
+   "phrase": "a strong force",
+   "zh": "很大的力",
+   "ex": "The wind is a strong force.",
+   "exz": "风是一种很大的力。"
+  },
+  {
+   "phrase": "use force",
+   "zh": "用力",
+   "ex": "You need to use force to open the jar.",
+   "exz": "你得用力才能打开罐子。"
+  }
+ ],
+ "speed": [
+  {
+   "phrase": "at high speed",
+   "zh": "高速地",
+   "ex": "The train goes at high speed.",
+   "exz": "火车高速行驶。"
+  },
+  {
+   "phrase": "speed up",
+   "zh": "加速",
+   "ex": "The car speeds up on the road.",
+   "exz": "汽车在路上加速。"
+  }
+ ],
+ "ramp": [
+  {
+   "phrase": "down the ramp",
+   "zh": "顺着斜坡下来",
+   "ex": "The ball rolls down the ramp.",
+   "exz": "球顺着斜坡滚下来。"
+  },
+  {
+   "phrase": "up the ramp",
+   "zh": "沿斜坡上去",
+   "ex": "Push the cart up the ramp.",
+   "exz": "把小车推上斜坡。"
+  }
+ ],
+ "slide": [
+  {
+   "phrase": "slide down",
+   "zh": "滑下来",
+   "ex": "The children slide down the hill.",
+   "exz": "孩子们从山坡上滑下来。"
+  },
+  {
+   "phrase": "go on the slide",
+   "zh": "玩滑梯",
+   "ex": "Let's go on the slide in the park.",
+   "exz": "我们去公园玩滑梯吧。"
+  }
+ ],
+ "gravity": [
+  {
+   "phrase": "the force of gravity",
+   "zh": "重力",
+   "ex": "The force of gravity pulls us down.",
+   "exz": "重力把我们往下拉。"
+  },
+  {
+   "phrase": "because of gravity",
+   "zh": "因为重力",
+   "ex": "Things fall because of gravity.",
+   "exz": "东西因为重力而掉落。"
+  }
+ ],
+ "slow": [
+  {
+   "phrase": "slow down",
+   "zh": "慢下来",
+   "ex": "Slow down, you are running too fast!",
+   "exz": "慢点，你跑得太快了！"
+  },
+  {
+   "phrase": "a slow walk",
+   "zh": "慢慢地散步",
+   "ex": "We take a slow walk after dinner.",
+   "exz": "我们晚饭后慢慢散步。"
+  }
+ ],
+ "heat": [
+  {
+   "phrase": "the heat of the sun",
+   "zh": "太阳的热量",
+   "ex": "The heat of the sun makes the ice melt.",
+   "exz": "太阳的热量让冰融化。"
+  },
+  {
+   "phrase": "heat up",
+   "zh": "加热",
+   "ex": "Mom heats up the milk for me.",
+   "exz": "妈妈给我热牛奶。"
+  }
+ ],
+ "temperature": [
+  {
+   "phrase": "high temperature",
+   "zh": "高温；发烧",
+   "ex": "The sick boy has a high temperature.",
+   "exz": "那个生病的男孩发烧了。"
+  },
+  {
+   "phrase": "take your temperature",
+   "zh": "量体温",
+   "ex": "The nurse takes my temperature.",
+   "exz": "护士给我量体温。"
+  }
+ ],
+ "thermometer": [
+  {
+   "phrase": "read the thermometer",
+   "zh": "看温度计",
+   "ex": "Can you read the thermometer?",
+   "exz": "你会看温度计吗？"
+  },
+  {
+   "phrase": "a thermometer outside",
+   "zh": "室外温度计",
+   "ex": "The thermometer outside says it is cold.",
+   "exz": "室外温度计显示天很冷。"
+  }
+ ],
+ "melt": [
+  {
+   "phrase": "melt in the sun",
+   "zh": "在太阳下融化",
+   "ex": "The snowman melts in the sun.",
+   "exz": "雪人在太阳下融化了。"
+  },
+  {
+   "phrase": "melt away",
+   "zh": "融化掉",
+   "ex": "The ice melts away in spring.",
+   "exz": "春天冰都融化了。"
+  }
+ ],
+ "freeze": [
+  {
+   "phrase": "freeze into ice",
+   "zh": "冻成冰",
+   "ex": "Water freezes into ice in winter.",
+   "exz": "冬天水会冻成冰。"
+  },
+  {
+   "phrase": "freeze to death",
+   "zh": "冻死",
+   "ex": "Birds can freeze to death in the snow.",
+   "exz": "鸟儿在雪中可能会冻死。"
+  }
+ ],
+ "steam": [
+  {
+   "phrase": "full of steam",
+   "zh": "满是蒸汽",
+   "ex": "The bathroom is full of steam.",
+   "exz": "浴室里满是蒸汽。"
+  },
+  {
+   "phrase": "steam rises",
+   "zh": "蒸汽升起",
+   "ex": "Steam rises from the hot soup.",
+   "exz": "热汤冒着蒸汽。"
+  }
+ ],
+ "experiment": [
+  {
+   "phrase": "do an experiment",
+   "zh": "做实验",
+   "ex": "We do an experiment in science class.",
+   "exz": "我们在科学课上做实验。"
+  },
+  {
+   "phrase": "a simple experiment",
+   "zh": "一个简单的实验",
+   "ex": "Here is a simple experiment with water.",
+   "exz": "这是一个用水做的简单实验。"
+  }
+ ],
+ "float": [
+  {
+   "phrase": "float on water",
+   "zh": "浮在水上",
+   "ex": "A leaf can float on water.",
+   "exz": "叶子能浮在水上。"
+  },
+  {
+   "phrase": "float in the air",
+   "zh": "飘在空中",
+   "ex": "The balloon floats in the air.",
+   "exz": "气球飘在空中。"
+  }
+ ],
+ "sink": [
+  {
+   "phrase": "sink to the bottom",
+   "zh": "沉到底部",
+   "ex": "The stone sinks to the bottom of the river.",
+   "exz": "石头沉到了河底。"
+  },
+  {
+   "phrase": "kitchen sink",
+   "zh": "厨房水槽",
+   "ex": "Put the cups in the kitchen sink.",
+   "exz": "把杯子放进厨房水槽。"
+  }
+ ],
+ "iron": [
+  {
+   "phrase": "made of iron",
+   "zh": "铁做的",
+   "ex": "This gate is made of iron.",
+   "exz": "这扇大门是铁做的。"
+  },
+  {
+   "phrase": "iron the shirt",
+   "zh": "熨衬衫",
+   "ex": "Dad irons his shirt every morning.",
+   "exz": "爸爸每天早上熨衬衫。"
+  }
+ ],
+ "shadow": [
+  {
+   "phrase": "in the shadow",
+   "zh": "在阴影里",
+   "ex": "The cat sleeps in the shadow of the tree.",
+   "exz": "猫在树荫下睡觉。"
+  },
+  {
+   "phrase": "cast a shadow",
+   "zh": "投下影子",
+   "ex": "The tall tree casts a long shadow.",
+   "exz": "高高的树投下长长的影子。"
+  }
+ ],
+ "mirror": [
+  {
+   "phrase": "look in the mirror",
+   "zh": "照镜子",
+   "ex": "She looks in the mirror and smiles.",
+   "exz": "她照着镜子笑了。"
+  },
+  {
+   "phrase": "a big mirror",
+   "zh": "一面大镜子",
+   "ex": "There is a big mirror on the wall.",
+   "exz": "墙上有一面大镜子。"
+  }
+ ],
+ "echo": [
+  {
+   "phrase": "hear an echo",
+   "zh": "听到回声",
+   "ex": "We hear an echo in the mountains.",
+   "exz": "我们在山里听到了回声。"
+  },
+  {
+   "phrase": "echo back",
+   "zh": "传回回声",
+   "ex": "My voice echoes back from the hill.",
+   "exz": "我的声音从山那边传了回来。"
+  }
+ ],
+ "electric": [
+  {
+   "phrase": "electric light",
+   "zh": "电灯",
+   "ex": "Turn on the electric light.",
+   "exz": "打开电灯。"
+  },
+  {
+   "phrase": "electric car",
+   "zh": "电动汽车",
+   "ex": "My uncle drives an electric car.",
+   "exz": "我叔叔开电动汽车。"
+  }
+ ],
+ "battery": [
+  {
+   "phrase": "a new battery",
+   "zh": "一节新电池",
+   "ex": "The clock needs a new battery.",
+   "exz": "这个钟需要换新电池。"
+  },
+  {
+   "phrase": "battery is low",
+   "zh": "电量低",
+   "ex": "My phone battery is low.",
+   "exz": "我的手机没电了。"
+  }
+ ],
+ "switch": [
+  {
+   "phrase": "switch on",
+   "zh": "打开",
+   "ex": "Switch on the light, please.",
+   "exz": "请把灯打开。"
+  },
+  {
+   "phrase": "switch off",
+   "zh": "关掉",
+   "ex": "Switch off the TV before bed.",
+   "exz": "睡前把电视关掉。"
+  }
+ ],
+ "wire": [
+  {
+   "phrase": "electric wire",
+   "zh": "电线",
+   "ex": "Don't touch the electric wire.",
+   "exz": "不要碰电线。"
+  },
+  {
+   "phrase": "a piece of wire",
+   "zh": "一段铁丝",
+   "ex": "Join them with a piece of wire.",
+   "exz": "用一段铁丝把它们连起来。"
+  }
+ ],
+ "energy": [
+  {
+   "phrase": "full of energy",
+   "zh": "精力充沛",
+   "ex": "The children are full of energy.",
+   "exz": "孩子们精力充沛。"
+  },
+  {
+   "phrase": "save energy",
+   "zh": "节约能源",
+   "ex": "Turn off the light to save energy.",
+   "exz": "关灯节约能源。"
+  }
+ ],
+ "magnet": [
+  {
+   "phrase": "a fridge magnet",
+   "zh": "冰箱贴",
+   "ex": "We have a fridge magnet from Beijing.",
+   "exz": "我们有一个北京的冰箱贴。"
+  },
+  {
+   "phrase": "like a magnet",
+   "zh": "像磁铁一样",
+   "ex": "The toy shop is like a magnet to children.",
+   "exz": "玩具店像磁铁一样吸引孩子们。"
+  }
+ ],
+ "metal": [
+  {
+   "phrase": "made of metal",
+   "zh": "金属做的",
+   "ex": "This spoon is made of metal.",
+   "exz": "这把勺子是金属做的。"
+  },
+  {
+   "phrase": "a metal box",
+   "zh": "一个金属盒子",
+   "ex": "Keep the coins in a metal box.",
+   "exz": "把硬币放在金属盒里。"
+  }
+ ],
+ "power": [
+  {
+   "phrase": "electric power",
+   "zh": "电力",
+   "ex": "The machine runs on electric power.",
+   "exz": "这台机器用电力运转。"
+  },
+  {
+   "phrase": "power cut",
+   "zh": "停电",
+   "ex": "There was a power cut last night.",
+   "exz": "昨晚停电了。"
+  }
+ ],
+ "segment": [
+  {
+   "phrase": "line segment",
+   "zh": "线段",
+   "ex": "Draw a line segment with a ruler.",
+   "exz": "用尺子画一条线段。"
+  },
+  {
+   "phrase": "a segment of an orange",
+   "zh": "一瓣橘子",
+   "ex": "Give me a segment of your orange.",
+   "exz": "给我一瓣你的橘子。"
+  }
+ ],
+ "ray": [
+  {
+   "phrase": "a ray of light",
+   "zh": "一束光",
+   "ex": "A ray of light comes through the window.",
+   "exz": "一束光从窗户照进来。"
+  },
+  {
+   "phrase": "draw a ray",
+   "zh": "画射线",
+   "ex": "Draw a ray from this point.",
+   "exz": "从这个点画一条射线。"
+  }
+ ],
+ "endpoint": [
+  {
+   "phrase": "two endpoints",
+   "zh": "两个端点",
+   "ex": "A line segment has two endpoints.",
+   "exz": "线段有两个端点。"
+  },
+  {
+   "phrase": "mark the endpoint",
+   "zh": "标出端点",
+   "ex": "Mark the endpoint with a dot.",
+   "exz": "用一个点标出端点。"
+  }
+ ],
+ "intersect": [
+  {
+   "phrase": "intersect at",
+   "zh": "在……相交",
+   "ex": "The two lines intersect at one point.",
+   "exz": "两条线相交于一点。"
+  },
+  {
+   "phrase": "roads intersect",
+   "zh": "道路交叉",
+   "ex": "The two roads intersect in the town.",
+   "exz": "两条路在镇上交叉。"
+  }
+ ],
+ "intersection": [
+  {
+   "phrase": "at the intersection",
+   "zh": "在十字路口",
+   "ex": "Turn left at the intersection.",
+   "exz": "在十字路口左转。"
+  },
+  {
+   "phrase": "point of intersection",
+   "zh": "交点",
+   "ex": "Mark the point of intersection.",
+   "exz": "标出交点。"
+  }
+ ],
+ "parallel": [
+  {
+   "phrase": "parallel lines",
+   "zh": "平行线",
+   "ex": "Railway lines are parallel lines.",
+   "exz": "铁轨是平行线。"
+  },
+  {
+   "phrase": "parallel to",
+   "zh": "与……平行",
+   "ex": "The road is parallel to the river.",
+   "exz": "这条路和河平行。"
+  }
+ ],
+ "perpendicular": [
+  {
+   "phrase": "perpendicular lines",
+   "zh": "互相垂直的线",
+   "ex": "Perpendicular lines make right angles.",
+   "exz": "互相垂直的线形成直角。"
+  },
+  {
+   "phrase": "perpendicular to",
+   "zh": "与……垂直",
+   "ex": "The pole is perpendicular to the ground.",
+   "exz": "杆子和地面垂直。"
+  }
+ ],
+ "vertex": [
+  {
+   "phrase": "the vertex of an angle",
+   "zh": "角的顶点",
+   "ex": "Put your finger on the vertex of the angle.",
+   "exz": "把手指放在角的顶点上。"
+  },
+  {
+   "phrase": "at the vertex",
+   "zh": "在顶点",
+   "ex": "The two sides meet at the vertex.",
+   "exz": "两条边在顶点相交。"
+  }
  ]
 }

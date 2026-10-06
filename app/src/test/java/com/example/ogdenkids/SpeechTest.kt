@@ -30,7 +30,7 @@ class SpeechTest {
             val item = speeches.getJSONObject(index)
             listOf("id", "title", "titleZh").forEach { assertFalse("Missing $it at $index", item.optString(it).isBlank()) }
             assertTrue("Duplicate id at $index", ids.add(item.getString("id")))
-            assertTrue("Bad level at $index", item.getInt("level") in 1..3)
+            assertTrue("Bad level at $index", item.getInt("level") in 1..StemLevel)
             listOf("lines", "patterns").forEach { key ->
                 val lines = item.getJSONArray(key)
                 assertTrue("Empty $key at $index", lines.length() > 0)
@@ -48,8 +48,8 @@ class SpeechTest {
             repeat(unitWords.length()) { assertTrue("Unit word not in list: ${unitWords.getString(it)}", unitWords.getString(it).lowercase() in headwords) }
         }
         // 单元按 SpeechTheme 声明顺序连续编号，每个主题 5 个
-        val expectedThemes = SpeechTheme.values().flatMap { theme -> List(5) { theme.key } }
-        (1..3).forEach { level ->
+        (1..StemLevel).forEach { level ->
+            val expectedThemes = SpeechTheme.forLevel(level).flatMap { theme -> List(5) { theme.key } }
             val units = List(speeches.length()) { speeches.getJSONObject(it) }
                 .filter { it.getInt("level") == level }
                 .sortedBy { it.getInt("unit") }

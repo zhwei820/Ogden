@@ -16,10 +16,11 @@ RULES = {
     1: ((6, 8), (2, 7), (4, 4)),
     2: ((8, 10), (3, 10), (4, 6)),
     3: ((10, 14), (3, 16), (4, 6)),
+    4: ((8, 10), (3, 10), (4, 6)),  # STEM：难度同二级
 }
-THEMES = ["me", "school", "food", "nature", "seasons", "hobbies", "places", "city", "jobs", "festivals"]
+LIFE_THEMES = ["me", "school", "food", "nature", "seasons", "hobbies", "places", "city", "jobs", "festivals"]
+THEMES = {1: LIFE_THEMES, 2: LIFE_THEMES, 3: LIFE_THEMES, 4: ["algebra", "geometry", "physics"]}
 UNITS_PER_THEME = 5
-UNITS_PER_LEVEL = len(THEMES) * UNITS_PER_THEME
 
 # 词表只收原形；这些代词变格 / be·do·have 变位 / 情态词按 Ogden 规则视为表内
 INFLECTED = set("""
@@ -63,7 +64,7 @@ def check(path, words):
             errors.append(f"{uid}: level={level} 不合法")
             continue
         seen.setdefault(level, []).append((u.get("unit"), u.get("theme")))
-        if u.get("theme") not in THEMES:
+        if u.get("theme") not in THEMES[level]:
             errors.append(f"{uid}: theme={u.get('theme')} 不合法")
         (lmin, lmax), (wmin, wmax), (pmin, pmax) = RULES[level]
         lines, patterns = u.get("lines", []), u.get("patterns", [])
@@ -82,12 +83,13 @@ def check(path, words):
         print(f"{uid:6} L{level} {u.get('title', '')[:28]:28} 表外词({len(extra)}): {' '.join(extra)}")
     for level, units_seen in sorted(seen.items()):
         units_seen.sort(key=lambda x: x[0] or 0)
-        if [n for n, _ in units_seen] != list(range(1, UNITS_PER_LEVEL + 1)):
-            errors.append(f"L{level}: 单元号应为 1-{UNITS_PER_LEVEL}，实际 {[n for n, _ in units_seen]}")
-        # 单元按主题顺序连续编号：第 1-5 单元属于 THEMES[0]，依此类推
-        expected = [t for t in THEMES for _ in range(UNITS_PER_THEME)]
+        units_per_level = len(THEMES[level]) * UNITS_PER_THEME
+        if [n for n, _ in units_seen] != list(range(1, units_per_level + 1)):
+            errors.append(f"L{level}: 单元号应为 1-{units_per_level}，实际 {[n for n, _ in units_seen]}")
+        # 单元按主题顺序连续编号：第 1-5 单元属于 THEMES[level][0]，依此类推
+        expected = [t for t in THEMES[level] for _ in range(UNITS_PER_THEME)]
         if [t for _, t in units_seen] != expected:
-            errors.append(f"L{level}: 主题应按 {THEMES} 顺序每个 {UNITS_PER_THEME} 单元连续排列")
+            errors.append(f"L{level}: 主题应按 {THEMES[level]} 顺序每个 {UNITS_PER_THEME} 单元连续排列")
     return errors
 
 
