@@ -144,6 +144,13 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.runtime.SideEffect
 import androidx.compose.foundation.combinedClickable
+import android.Manifest
+import android.content.pm.PackageManager
+import android.media.AudioTrack
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.compose.material.icons.filled.Mic
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
@@ -401,6 +408,14 @@ class ProgressStore(context: Context) {
 
     fun toggleSpeechLearned(id: String) = updateSet("speechLearned", id, !isSpeechLearned(id))
 
+    /** 跟读最好成绩，按句子英文存 */
+    fun readAlongScore(sentence: String): Int? =
+        prefs.getInt("readAlong.$sentence", -1).takeIf { it >= 0 }
+
+    fun saveReadAlongScore(sentence: String, score: Int) {
+        if (score > (readAlongScore(sentence) ?: -1)) prefs.edit().putInt("readAlong.$sentence", score).apply()
+    }
+
     fun bestSpecialScore(key: String, level: Int): Int? =
         prefs.getInt("special.$key.$level", -1).takeIf { it >= 0 }
 
@@ -526,7 +541,8 @@ fun OgdenKidsApp() {
                 azureSpeaker.stop()
                 screen = Screen.Detail(word, returnTo = screen)
             },
-            related = { relatedWords[it.lowercase()] }
+            related = { relatedWords[it.lowercase()] },
+            stopSpeaking = { azureSpeaker.stop() }
         )
     }
     val goBack: () -> Unit = {
@@ -1930,6 +1946,9 @@ fun SpeechReaderScreen(
     // 正在反复朗读的句子；读完一遍停一会儿再读，直到被停止或被别的朗读打断
     var repeatIndex by remember(speech.id) { mutableStateOf<Int?>(null) }
     val repeatScope = rememberCoroutineScope()
+    var readAlong by remember(speech.id) { mutableStateOf<SpeechLine?>(null) }
+    // 跟读成绩存在 SharedPreferences，不是 Compose 状态；保存后递增它让卡片重读
+    var readAlongVersion by remember { mutableStateOf(0) }
     val listState = rememberLazyListState()
     var showTranslation by remember(speech.id) { mutableStateOf(true) }
     var learned by remember(speech.id) { mutableStateOf(store.isSpeechLearned(speech.id)) }
@@ -2010,7 +2029,9 @@ fun SpeechReaderScreen(
             onSpeakChinese = { speakOne(index, chinese = true) },
             onTokenClick = { selected = SelectedSpeechWord(index, it) },
             repeating = repeatIndex == index,
-            onRepeat = { startRepeat(index) }
+            onRepeat = { startRepeat(index) },
+            onReadAlong = { stopSpeaking(); readAlong = line },
+            readAlongScore = remember(line.en, readAlongVersion) { store.readAlongScore(line.en) }
         )
     }
 
@@ -2055,8 +2076,8 @@ fun SpeechReaderScreen(
             item {
                 SpeechTrackHeader(
                     title = "课文 · Listen and Read",
-                    subtitle = if (hasContraction) "点句子听朗读，长按喇叭重复播放，长按单词选词；带下划线的是缩写"
-                    else "点句子听朗读，长按喇叭重复播放，长按单词选词",
+                    subtitle = if (hasContraction) "点句子听朗读，长按喇叭重复，长按单词选词，长按空白处跟读评分；带下划线的是缩写"
+                    else "点句子听朗读，长按喇叭重复，长按单词选词，长按空白处跟读评分",
                     playingAll = playingAll,
                     onPlayAll = {
                         if (playingAll) {
@@ -2133,6 +2154,10 @@ fun SpeechReaderScreen(
         }
     }
 
+    readAlong?.let { line ->
+        ReadAlongSheet(line, onScored = { store.saveReadAlongScore(line.en, it); readAlongVersion++ }) { readAlong = null }
+    }
+
     // 弹窗一出来就朗读标题上的词：词表词用离线录音，缩写和词表外的词读原文
     LaunchedEffect(selected) {
         val current = selected ?: return@LaunchedEffect
@@ -2197,7 +2222,8 @@ class SpeechServices(
     /** 打开词条详情页，返回时回到当前页面 */
     val openWord: (OgdenWord) -> Unit,
     /** 词库外近义词 / 反义词的离线释义与例句 */
-    val related: (String) -> RelatedWord? = { null }
+    val related: (String) -> RelatedWord? = { null },
+    val stopSpeaking: () -> Unit = {}
 )
 
 val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}, { null }, {}) }
@@ -2571,6 +2597,157 @@ private fun PhraseTranslationSheet(phrase: String) {
     }
 }
 
+private sealed class ReadAlongState {
+    object Idle : ReadAlongState()
+    object Recording : ReadAlongState()
+    object Scoring : ReadAlongState()
+    data class Done(val result: Assessment, val pcm: ByteArray) : ReadAlongState()
+    data class Failed(val message: String, val pcm: ByteArray?) : ReadAlongState()
+}
+
+/** 跟读评分：录一遍、交给 Azure 发音评估，按词标颜色并给出总分。 */
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: () -> Unit) {
+    val services = LocalSpeechServices.current
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var state by remember(line.en) { mutableStateOf<ReadAlongState>(ReadAlongState.Idle) }
+    var stopRequested by remember { mutableStateOf(false) }
+    var level by remember { mutableStateOf(0f) }
+    var playback by remember { mutableStateOf<AudioTrack?>(null) }
+    DisposableEffect(Unit) { onDispose { playback?.release() } }
+
+    fun startRecording() {
+        playback?.release()
+        playback = null
+        stopRequested = false
+        state = ReadAlongState.Recording
+        scope.launch {
+            val pcm = runCatching { PronunciationScorer.record({ stopRequested }) { level = it } }.getOrElse {
+                state = ReadAlongState.Failed("麦克风打不开，请检查录音权限", null)
+                return@launch
+            }
+            if (pcm.size < 16000) {
+                state = ReadAlongState.Failed("录音太短了，再试一次", null)
+                return@launch
+            }
+            state = ReadAlongState.Scoring
+            state = PronunciationScorer.assess(pcm, line.en).fold(
+                onSuccess = {
+                    onScored(it.pron.roundToInt())
+                    ReadAlongState.Done(it, pcm)
+                },
+                onFailure = { ReadAlongState.Failed(if (it.message == "没有听清楚") "没有听清楚，靠近一点再读一遍" else "评分暂时不可用，请检查网络", pcm) }
+            )
+        }
+    }
+
+    val permission = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        if (granted) startRecording() else state = ReadAlongState.Failed("需要麦克风权限才能跟读", null)
+    }
+    fun requestRecording() {
+        // 录音前停掉正在播放的朗读，免得录进去
+        services.stopSpeaking()
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) startRecording()
+        else permission.launch(Manifest.permission.RECORD_AUDIO)
+    }
+
+    ModalBottomSheet(onDismissRequest = { stopRequested = true; onDismiss() }, containerColor = PaperElevated) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 22.dp, end = 22.dp, bottom = 36.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AppText("跟读评分", color = InkFaint, fontSize = 13.sp, modifier = Modifier.fillMaxWidth())
+            val result = (state as? ReadAlongState.Done)?.result
+            // 句子：评分后按词上色
+            val tokens = remember(line.en) { tokenizeSpeech(line.en) }
+            val colored = buildAnnotatedString {
+                append(line.en)
+                result?.words?.takeIf { it.size == tokens.size }?.forEachIndexed { i, w ->
+                    val color = when {
+                        w.errorType == "Omission" -> InkFaint
+                        w.score >= 80 -> Success
+                        w.score >= 60 -> Category.Operations.tint
+                        else -> Error
+                    }
+                    addStyle(
+                        SpanStyle(color = color, textDecoration = if (w.errorType == "Omission") TextDecoration.LineThrough else null),
+                        tokens[i].range.first,
+                        tokens[i].range.last + 1
+                    )
+                }
+            }
+            Text(colored, fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, color = Ink)
+            AppText(line.zh, color = InkSoft, fontSize = 17.sp, textAlign = TextAlign.Center)
+            OutlinedButton(onClick = { services.speakEnglish(line.en) }) {
+                Icon(Icons.Default.VolumeUp, contentDescription = null)
+                Spacer(Modifier.width(6.dp))
+                Text("听原句")
+            }
+
+            when (val s = state) {
+                is ReadAlongState.Done -> {
+                    val pron = s.result.pron.roundToInt()
+                    val (stars, cheer) = when {
+                        pron >= 90 -> "★★★" to "太棒了！"
+                        pron >= 75 -> "★★☆" to "读得不错！"
+                        pron >= 60 -> "★☆☆" to "继续加油！"
+                        else -> "☆☆☆" to "再试一次吧"
+                    }
+                    Text("$pron", fontSize = 56.sp, fontWeight = FontWeight.Bold, color = if (pron >= 75) Success else if (pron >= 60) Category.Operations.tint else Error)
+                    AppText("$stars  $cheer", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                    AppText(
+                        "准确 ${s.result.accuracy.roundToInt()} · 流利 ${s.result.fluency.roundToInt()} · 完整 ${s.result.completeness.roundToInt()}",
+                        color = InkFaint,
+                        fontSize = 14.sp
+                    )
+                    if (s.result.words.isNotEmpty()) AppText("绿色读得好，橙色一般，红色要多练，灰色是漏读", color = InkFaint, fontSize = 12.sp)
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(s.pcm) }) { Text("听我的录音") }
+                        Button(onClick = { requestRecording() }) { Text("再读一遍") }
+                    }
+                }
+                is ReadAlongState.Failed -> {
+                    AppText(s.message, color = Error, fontSize = 16.sp, textAlign = TextAlign.Center)
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        s.pcm?.let { pcm -> OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(pcm) }) { Text("听我的录音") } }
+                        Button(onClick = { requestRecording() }) { Text("再读一遍") }
+                    }
+                }
+                ReadAlongState.Scoring -> AppText("评分中……", color = InkFaint, fontSize = 18.sp)
+                ReadAlongState.Idle, ReadAlongState.Recording -> {
+                    val recording = s == ReadAlongState.Recording
+                    Box(
+                        modifier = Modifier
+                            .size(96.dp + (if (recording) (level * 40).dp else 0.dp))
+                            .clip(CircleShape)
+                            .background(if (recording) Error else Category.Operations.tint)
+                            .clickable { if (recording) stopRequested = true else requestRecording() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            if (recording) Icons.Default.Close else Icons.Default.Mic,
+                            contentDescription = if (recording) "结束录音" else "开始录音",
+                            tint = Color.White,
+                            modifier = Modifier.size(44.dp)
+                        )
+                    }
+                    AppText(
+                        if (recording) "正在听……读完会自动结束，也可以点一下结束" else "点话筒，跟着读一遍",
+                        color = InkSoft,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SpeechLineRow(
@@ -2585,7 +2762,11 @@ fun SpeechLineRow(
     onTokenClick: (SpeechToken) -> Unit,
     repeating: Boolean = false,
     /** 长按右侧喇叭：反复朗读这一句 */
-    onRepeat: (() -> Unit)? = null
+    onRepeat: (() -> Unit)? = null,
+    /** 长按卡片空白处：跟读评分（长按在单词上仍是选词） */
+    onReadAlong: (() -> Unit)? = null,
+    /** 跟读最好成绩；跟读过的卡片换底色 */
+    readAlongScore: Int? = null
 ) {
     val haptic = LocalHapticFeedback.current
     val text = buildAnnotatedString {
@@ -2600,8 +2781,15 @@ fun SpeechLineRow(
         selectedRange?.let { addStyle(SpanStyle(background = Category.Picturable.soft), it.first, it.last + 1) }
     }
     val accent = Category.Operations
+    val background = when {
+        speaking -> accent.soft
+        readAlongScore == null -> PaperElevated
+        readAlongScore >= 75 -> Color(0xFFE8F5E9)
+        readAlongScore >= 60 -> Color(0xFFFFF3E0)
+        else -> Color(0xFFFFEBEE)
+    }
     Card(
-        colors = CardDefaults.cardColors(containerColor = if (speaking) accent.soft else PaperElevated),
+        colors = CardDefaults.cardColors(containerColor = background),
         shape = RoundedCornerShape(14.dp),
         modifier = Modifier
             .border(
@@ -2609,7 +2797,15 @@ fun SpeechLineRow(
                 if (speaking) accent.tint else Line,
                 RoundedCornerShape(14.dp)
             )
-            .clickable(onClick = onSpeakEnglish)
+            .combinedClickable(
+                onClick = onSpeakEnglish,
+                onLongClick = onReadAlong?.let { readAlong ->
+                    {
+                        haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                        readAlong()
+                    }
+                }
+            )
     ) {
         Row(Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
@@ -2630,6 +2826,16 @@ fun SpeechLineRow(
                     )
                 }
                 if (repeating) AppText("🔁 重复播放中", color = accent.tint, fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                readAlongScore?.let {
+                    AppText(
+                        "🎤 跟读最佳 $it",
+                        color = if (it >= 75) Success else if (it >= 60) accent.tint else Error,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
             // 单击读一遍，长按反复朗读
             Box(
@@ -3015,6 +3221,10 @@ fun privacySections() = listOf(
     LegalSection(
         "发音服务",
         "应用内置了单词（US / UK）、课文、例句、练习题与中文释义的全部朗读音频，离线即可播放。仅当个别音频缺失时，才会请求 Microsoft Azure 语音服务现场合成作为备用，请求仅包含需要朗读的英文或中文文本，不包含用户身份信息，合成的音频缓存在本机；网络不可用时使用系统自带的语音引擎。"
+    ),
+    LegalSection(
+        "跟读录音",
+        "使用「跟读评分」时，应用会请求麦克风权限并录下这一次跟读，录音连同参考句子发送到 Microsoft Azure 语音服务进行发音评估，评分完成后不在本机保存，也不包含用户身份信息。"
     )
 )
 
@@ -3494,6 +3704,8 @@ fun SpecialModuleScreen(
     var speakingIndex by remember(module.key) { mutableStateOf<Int?>(null) }
     var repeatIndex by remember(module.key) { mutableStateOf<Int?>(null) }
     val repeatScope = rememberCoroutineScope()
+    var readAlong by remember(module.key) { mutableStateOf<SpeechLine?>(null) }
+    var readAlongVersion by remember { mutableStateOf(0) }
     var sceneLevel by rememberSaveable(module.key) { mutableStateOf(level) }
     var favoriteVersion by remember { mutableStateOf(0) }
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
@@ -3511,6 +3723,10 @@ fun SpecialModuleScreen(
                 if (repeatIndex == index) repeatLoop(index)
             }
         }
+    }
+
+    readAlong?.let { line ->
+        ReadAlongSheet(line, onScored = { store.saveReadAlongScore(line.en, it); readAlongVersion++ }) { readAlong = null }
     }
 
     LaunchedEffect(selected) {
@@ -3623,7 +3839,7 @@ fun SpecialModuleScreen(
             }
             item {
                 Spacer(Modifier.height(8.dp))
-                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按喇叭重复播放，长按单词选词", playingAll = false, onPlayAll = null)
+                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按喇叭重复，长按单词选词，长按空白处跟读评分", playingAll = false, onPlayAll = null)
             }
             items(module.sentences.size) { index ->
                 val line = module.sentences[index]
@@ -3651,7 +3867,9 @@ fun SpecialModuleScreen(
                         stopSpeaking()
                         repeatIndex = index
                         repeatLoop(index)
-                    }
+                    },
+                    onReadAlong = { stopSpeaking(); readAlong = line },
+                    readAlongScore = remember(line.en, readAlongVersion) { store.readAlongScore(line.en) }
                 )
             }
         }
