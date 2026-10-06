@@ -192,7 +192,10 @@ data class WordProgress(
     val mastery: Int,
     val attempts: Int,
     val correct: Int
-)
+) {
+    /** 答对过且最近一次没答错（答错会进错词本）即算掌握；[mastery] 星级只用于展示熟练程度。 */
+    val mastered: Boolean get() = correct > 0 && !mistake
+}
 
 enum class Tab(val title: String, val icon: ImageVector) {
     Speech("课文", Icons.Default.RecordVoiceOver),
@@ -338,9 +341,9 @@ class ProgressStore(context: Context) {
         if (correct) bumpDailyStreak()
     }
 
-    fun masteredCount(words: List<OgdenWord>) = words.count { progress(it.word).mastery >= 3 }
+    fun masteredCount(words: List<OgdenWord>) = words.count { progress(it.word).mastered }
 
-    fun masteredWords(words: List<OgdenWord>) = words.filter { progress(it.word).mastery >= 3 }
+    fun masteredWords(words: List<OgdenWord>) = words.filter { progress(it.word).mastered }
 
     fun mistakeWords(words: List<OgdenWord>) = words.filter { progress(it.word).mistake }
 
@@ -624,6 +627,7 @@ fun OgdenKidsApp() {
                         reviewOnly = current.reviewOnly,
                         zh = chineseMode,
                         onSpeak = speak,
+                        onSpeakChinese = speakChinese,
                         onBack = goBack,
                         onComplete = {
                             if (!current.reviewOnly) progressStore.markLevelComplete(current.category, current.level)
@@ -697,6 +701,7 @@ fun OgdenKidsApp() {
                     reviewOnly = false,
                     zh = chineseMode,
                     onSpeak = speak,
+                    onSpeakChinese = speakChinese,
                     onBack = goBack,
                     onComplete = {},
                     onRecord = { word, correct ->
@@ -1023,7 +1028,7 @@ fun ChallengeScreen(
     ) {
         item {
             HeroCard(
-                title = "Ogden's Basic English",
+                title = "Panda English",
                 subtitle = "850 + ${words.count { it.category == Category.Extended }} 拓展词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
@@ -1043,7 +1048,7 @@ fun ChallengeScreen(
         }
         items(Category.values()) { category ->
             val categoryWords = words.filter { it.category == category }
-            val learned = categoryWords.count { store.progress(it.word).mastery >= 3 }
+            val learned = categoryWords.count { store.progress(it.word).mastered }
             CategoryProgressCard(
                 category = category,
                 learned = learned,
@@ -1197,7 +1202,7 @@ fun LevelSelectionScreen(
                 val unlocked = store.isLevelUnlocked(category, level)
                 val complete = store.isLevelComplete(category, level)
                 val levelWords = categoryWords.drop((level - 1) * 10).take(10)
-                val mastered = levelWords.count { store.progress(it.word).mastery >= 3 }
+                val mastered = levelWords.count { store.progress(it.word).mastered }
                 LevelCard(
                     category = category,
                     level = level,
@@ -2522,6 +2527,7 @@ fun PracticeScreen(
     reviewOnly: Boolean,
     zh: ChineseMode,
     onSpeak: (String) -> Unit,
+    onSpeakChinese: (String) -> Unit,
     onBack: () -> Unit,
     onComplete: () -> Unit,
     onRecord: (OgdenWord, Boolean) -> Unit,
@@ -2654,7 +2660,20 @@ fun PracticeScreen(
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppText(if (isCorrect) "答对了！" else "这题先记到错词本", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Text("${word.word} · ${convertZh(word.zh, zh)}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-                            Text(word.example, fontFamily = FontFamily.Serif, color = InkSoft)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text(word.example, fontFamily = FontFamily.Serif, fontSize = 19.sp, lineHeight = 26.sp, color = Ink, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { onSpeak(word.example) }) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = Category.Operations.tint)
+                                }
+                            }
+                            if (word.exampleZh.isNotBlank()) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    AppText(convertZh(word.exampleZh, zh), color = InkSoft, fontSize = 16.sp, modifier = Modifier.weight(1f))
+                                    IconButton(onClick = { onSpeakChinese(word.exampleZh) }) {
+                                        Icon(Icons.Default.VolumeUp, contentDescription = "读例句中文", tint = InkFaint)
+                                    }
+                                }
+                            }
                             Button(
                                 onClick = {
                                     if (index >= source.lastIndex) {
@@ -3544,7 +3563,7 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
 
 fun nextLevel(words: List<OgdenWord>, category: Category, store: ProgressStore): Int {
     val categoryWords = words.filter { it.category == category }
-    val firstUnmastered = categoryWords.indexOfFirst { store.progress(it.word).mastery < 3 }
+    val firstUnmastered = categoryWords.indexOfFirst { !store.progress(it.word).mastered }
     return if (firstUnmastered < 0) 1 else firstUnmastered / 10 + 1
 }
 
