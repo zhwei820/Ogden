@@ -59,7 +59,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -135,6 +134,14 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.ui.unit.IntOffset
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.runtime.SideEffect
+import androidx.compose.foundation.combinedClickable
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
@@ -486,8 +493,18 @@ fun OgdenKidsApp() {
     val speakEnglish: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.english(accent)) }
     val speakChinese: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.ZhCn) }
     val translator = remember { Translator(context) }
+    val selectionController = remember { SelectionController() }
     val speechServices = remember(accent) {
-        SpeechServices(translator, speakEnglish, speakChinese) { token -> lemmatize(token, lemmaVocabulary)?.let { wordIndex[it] } }
+        SpeechServices(
+            translator,
+            speakEnglish,
+            speakChinese,
+            lookup = { token -> lemmatize(token, lemmaVocabulary)?.let { wordIndex[it] } },
+            openWord = { word ->
+                azureSpeaker.stop()
+                screen = Screen.Detail(word, returnTo = screen)
+            }
+        )
     }
     val goBack: () -> Unit = {
         when (val current = screen) {
@@ -532,8 +549,12 @@ fun OgdenKidsApp() {
             titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Serif)
         )
     ) {
-        CompositionLocalProvider(LocalChineseMode provides chineseMode, LocalSpeechServices provides speechServices) {
-        Surface(color = Paper, modifier = Modifier.fillMaxSize()) {
+        CompositionLocalProvider(
+            LocalChineseMode provides chineseMode,
+            LocalSpeechServices provides speechServices,
+            LocalSelectionController provides selectionController
+        ) {
+        Surface(color = Paper, modifier = Modifier.fillMaxSize().dismissSelectionOnOutsideTap(selectionController)) {
             BackHandler(onBack = goBack)
             if (confirmExit) {
                 AlertDialog(
@@ -1408,7 +1429,7 @@ fun WordListCard(
             TranslatableText(AnnotatedString(word.example), TextStyle(color = InkSoft, fontFamily = FontFamily.Serif, fontSize = 16.sp))
             if (word.exampleZh.isNotBlank()) AppText(convertZh(word.exampleZh, zh), color = InkFaint, fontSize = 14.sp)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                word.synonyms.take(3).forEach { AssistChip(onClick = { onSpeak(it) }, label = { Text(it) }) }
+                word.synonyms.take(3).forEach { SynonymChip(it, onSpeak) }
                 repeat(progress.mastery) {
                     Icon(Icons.Default.Star, contentDescription = null, tint = Category.Picturable.tint, modifier = Modifier.size(18.dp))
                 }
@@ -1431,6 +1452,8 @@ fun WordDetailScreen(
     var visibleProgress by remember(word.word, progress.favorite, progress.mastery, progress.attempts, progress.correct) {
         mutableStateOf(progress)
     }
+    // 一进详情页就读一遍单词；换词时重新读
+    LaunchedEffect(word.word) { onSpeak(word.word) }
     Scaffold(containerColor = Paper, topBar = {
         Row(
             modifier = Modifier
@@ -1495,10 +1518,8 @@ fun WordDetailScreen(
                 }
             }
             item {
-                SectionTitle("近义词", "点击可听发音")
-                FlowRowCompat(word.synonyms) { syn ->
-                    AssistChip(onClick = { onSpeak(syn) }, label = { Text(syn) })
-                }
+                SectionTitle("近义词", "点击听发音，长按查看")
+                FlowRowCompat(word.synonyms) { syn -> SynonymChip(syn, onSpeak) }
             }
             item {
                 SectionTitle("熟练度", "答对会增加星星，答错会进入复习")
@@ -2120,10 +2141,44 @@ class SpeechServices(
     val speakEnglish: (String) -> Unit,
     val speakChinese: (String) -> Unit,
     /** 原文词 → 词库词条（含词形还原），查不到为 null */
-    val lookup: (String) -> OgdenWord?
+    val lookup: (String) -> OgdenWord?,
+    /** 打开词条详情页，返回时回到当前页面 */
+    val openWord: (OgdenWord) -> Unit
 )
 
-val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}, { null }) }
+val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}, { null }, {}) }
+
+/** 当前处于选词状态的那段文字：根部据此判断「点在外面」并取消选中。同一时间只有一处选中。 */
+class SelectionController {
+    var owner: Any? = null
+    var bounds: Rect? = null
+    var clear: (() -> Unit)? = null
+
+    fun release(who: Any) {
+        if (owner === who) {
+            owner = null
+            bounds = null
+            clear = null
+        }
+    }
+}
+
+val LocalSelectionController = staticCompositionLocalOf { SelectionController() }
+
+/** 有选中时，点在选区（含工具条）外面只取消选中，整次点击被吞掉，不触发底下的按钮或滚动。 */
+private fun Modifier.dismissSelectionOnOutsideTap(controller: SelectionController) = pointerInput(controller) {
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        val clear = controller.clear ?: return@awaitEachGesture
+        if (controller.bounds?.contains(down.position) == true) return@awaitEachGesture
+        clear()
+        down.consume()
+        do {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            event.changes.forEach { it.consume() }
+        } while (event.changes.any { it.pressed })
+    }
+}
 
 /**
  * 可划词的英文。点击走 [onTap]；长按一个词进入选词状态（高亮 + 震动 + 下方工具条），
@@ -2140,6 +2195,9 @@ fun TranslatableText(
     onWord: ((SpeechToken) -> Unit)? = null
 ) {
     val services = LocalSpeechServices.current
+    val controller = LocalSelectionController.current
+    val owner = remember { Any() }
+    var myBounds by remember { mutableStateOf<Rect?>(null) }
     val haptic = LocalHapticFeedback.current
     val density = LocalDensity.current
     val tokens = remember(text.text) { tokenizeSpeech(text.text) }
@@ -2209,7 +2267,20 @@ fun TranslatableText(
         }
     }
 
-    Column(modifier) {
+    SideEffect {
+        if (active) {
+            // 别处已有选中时先取消它
+            if (controller.owner !== owner) controller.clear?.invoke()
+            controller.owner = owner
+            controller.bounds = myBounds
+            controller.clear = { clear() }
+        } else {
+            controller.release(owner)
+        }
+    }
+    DisposableEffect(owner) { onDispose { controller.release(owner) } }
+
+    Column(modifier.onGloballyPositioned { myBounds = it.boundsInRoot() }) {
         Box {
             Text(
                 text = shown,
@@ -2296,8 +2367,16 @@ fun TranslatableText(
                         overflow = TextOverflow.Ellipsis
                     )
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        if (first == last && onWord != null) {
-                            Button(onClick = { val t = tokens[first]; clear(); onWord(t) }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("查词") }
+                        // 有查词弹窗的地方用弹窗；其余地方词库里的词直接打开词典详情
+                        if (first == last && (onWord != null || dictionaryWord != null)) {
+                            Button(
+                                onClick = {
+                                    val t = tokens[first]
+                                    clear()
+                                    if (onWord != null) onWord(t) else dictionaryWord?.let(services.openWord)
+                                },
+                                contentPadding = PaddingValues(horizontal = 14.dp)
+                            ) { Text("查词") }
                         }
                         if (dictionaryWord == null) {
                             Button(onClick = { phrase = selectedText }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("翻译") }
@@ -2312,6 +2391,37 @@ fun TranslatableText(
     phrase?.let { selected ->
         ModalBottomSheet(onDismissRequest = { phrase = null; clear() }, containerColor = PaperElevated) {
             PhraseTranslationSheet(selected)
+        }
+    }
+}
+
+/** 近义词：单击朗读；长按进入词典详情，不在词库里的弹出翻译。 */
+@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun SynonymChip(text: String, onSpeak: (String) -> Unit) {
+    val services = LocalSpeechServices.current
+    val haptic = LocalHapticFeedback.current
+    var translating by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .border(1.dp, Line, RoundedCornerShape(8.dp))
+            .combinedClickable(
+                onClick = { onSpeak(text) },
+                onLongClick = {
+                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                    val entry = services.lookup(text)
+                    if (entry != null) services.openWord(entry) else translating = true
+                }
+            )
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+    ) {
+        Text(text, fontSize = 15.sp, color = Ink)
+    }
+    if (translating) {
+        ModalBottomSheet(onDismissRequest = { translating = false }, containerColor = PaperElevated) {
+            PhraseTranslationSheet(text)
         }
     }
 }
