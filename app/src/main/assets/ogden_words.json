@@ -9687,8 +9687,8 @@
     {
         "w":  "like",
         "c":  "qg",
-        "zh":  "相似的",
-        "en":  "similar to",
+        "zh":  "喜欢；像，相似的",
+        "en":  "to enjoy; similar to",
         "ex":  "He\u0027s like his father.",
         "exz":  "他像他父亲。",
         "s":  [
@@ -18607,6 +18607,621 @@
         "s": [
             "down",
             "upstairs"
+        ]
+    },
+    {
+        "w": "sausage",
+        "c": "ex",
+        "zh": "香肠",
+        "en": "meat in a long thin skin",
+        "ex": "I eat a sausage for breakfast.",
+        "exz": "我早餐吃一根香肠。",
+        "s": [
+            "meat",
+            "pork"
+        ]
+    },
+    {
+        "w": "honey",
+        "c": "ex",
+        "zh": "蜂蜜",
+        "en": "a sweet food that bees make",
+        "ex": "Bees make honey.",
+        "exz": "蜜蜂酿蜂蜜。",
+        "s": [
+            "sugar",
+            "sweet"
+        ]
+    },
+    {
+        "w": "jam",
+        "c": "ex",
+        "zh": "果酱",
+        "en": "a sweet food made from fruit and sugar",
+        "ex": "I like bread with jam.",
+        "exz": "我喜欢面包抹果酱。",
+        "s": [
+            "jelly",
+            "bread"
+        ]
+    },
+    {
+        "w": "tofu",
+        "c": "ex",
+        "zh": "豆腐",
+        "en": "a soft white food made from beans",
+        "ex": "Grandma cooks tofu soup.",
+        "exz": "奶奶做豆腐汤。",
+        "s": [
+            "bean",
+            "food"
+        ]
+    },
+    {
+        "w": "eggplant",
+        "c": "ex",
+        "zh": "茄子",
+        "en": "a long purple vegetable",
+        "ex": "The eggplant is purple.",
+        "exz": "茄子是紫色的。",
+        "s": [
+            "vegetable",
+            "tomato"
+        ]
+    },
+    {
+        "w": "cola",
+        "c": "ex",
+        "zh": "可乐",
+        "en": "a sweet brown drink with bubbles",
+        "ex": "Too much cola is bad for your teeth.",
+        "exz": "可乐喝多了对牙齿不好。",
+        "s": [
+            "drink",
+            "juice"
+        ]
+    },
+    {
+        "w": "popcorn",
+        "c": "ex",
+        "zh": "爆米花",
+        "en": "corn that is heated until it pops",
+        "ex": "We eat popcorn at the cinema.",
+        "exz": "我们在电影院吃爆米花。",
+        "s": [
+            "corn",
+            "snack"
+        ]
+    },
+    {
+        "w": "spicy",
+        "c": "ex",
+        "zh": "辣的",
+        "en": "with a hot, strong taste",
+        "ex": "The noodles are too spicy for me.",
+        "exz": "这面条对我来说太辣了。",
+        "s": [
+            "hot",
+            "pepper"
+        ]
+    },
+    {
+        "w": "yummy",
+        "c": "ex",
+        "zh": "好吃的",
+        "en": "very good to eat",
+        "ex": "Yummy! I love this cake.",
+        "exz": "好吃！我爱这个蛋糕。",
+        "s": [
+            "delicious",
+            "tasty"
+        ]
+    },
+    {
+        "w": "tasty",
+        "c": "ex",
+        "zh": "可口的",
+        "en": "having a good taste",
+        "ex": "The apple pie is tasty.",
+        "exz": "苹果派很可口。",
+        "s": [
+            "delicious",
+            "yummy"
+        ]
+    },
+    {
+        "w": "juicy",
+        "c": "ex",
+        "zh": "多汁的",
+        "en": "full of juice",
+        "ex": "The peach is big and juicy.",
+        "exz": "这个桃子又大又多汁。",
+        "s": [
+            "juice",
+            "fresh"
+        ]
+    },
+    {
+        "w": "icy",
+        "c": "ex",
+        "zh": "冰冷的,结冰的",
+        "en": "very cold, or covered with ice",
+        "ex": "The road is icy today.",
+        "exz": "今天路面结冰了。",
+        "s": [
+            "ice",
+            "cold"
+        ]
+    },
+    {
+        "w": "fluffy",
+        "c": "ex",
+        "zh": "毛茸茸的,松软的",
+        "en": "soft and light, like fur",
+        "ex": "The little chick is fluffy.",
+        "exz": "小鸡毛茸茸的。",
+        "s": [
+            "soft",
+            "warm"
+        ]
+    },
+    {
+        "w": "bored",
+        "c": "ex",
+        "zh": "无聊的",
+        "en": "not happy because nothing is fun",
+        "ex": "I am bored at home.",
+        "exz": "我在家很无聊。",
+        "s": [
+            "tired",
+            "sad"
+        ]
+    },
+    {
+        "w": "scared",
+        "c": "ex",
+        "zh": "害怕的",
+        "en": "afraid",
+        "ex": "I am scared of big dogs.",
+        "exz": "我害怕大狗。",
+        "s": [
+            "afraid",
+            "fear"
+        ]
+    },
+    {
+        "w": "nervous",
+        "c": "ex",
+        "zh": "紧张的",
+        "en": "a little afraid before something",
+        "ex": "I feel nervous before the race.",
+        "exz": "比赛前我觉得紧张。",
+        "s": [
+            "afraid",
+            "worry"
+        ]
+    },
+    {
+        "w": "glad",
+        "c": "ex",
+        "zh": "高兴的",
+        "en": "happy about something",
+        "ex": "I am glad you are here.",
+        "exz": "你来了我很高兴。",
+        "s": [
+            "happy",
+            "pleased"
+        ]
+    },
+    {
+        "w": "upset",
+        "c": "ex",
+        "zh": "难过的,心烦的",
+        "en": "sad or worried because something bad happened",
+        "ex": "She is upset about her lost cat.",
+        "exz": "她因为猫丢了而难过。",
+        "s": [
+            "sad",
+            "angry"
+        ]
+    },
+    {
+        "w": "unhappy",
+        "c": "ex",
+        "zh": "不开心的",
+        "en": "not happy",
+        "ex": "The boy is unhappy today.",
+        "exz": "这个男孩今天不开心。",
+        "s": [
+            "sad",
+            "upset"
+        ]
+    },
+    {
+        "w": "grandmother",
+        "c": "ex",
+        "zh": "祖母,外祖母",
+        "en": "the mother of your father or mother",
+        "ex": "My grandmother tells me stories.",
+        "exz": "我奶奶给我讲故事。",
+        "s": [
+            "grandma",
+            "grandfather",
+            "family"
+        ]
+    },
+    {
+        "w": "grandfather",
+        "c": "ex",
+        "zh": "祖父,外祖父",
+        "en": "the father of your father or mother",
+        "ex": "My grandfather likes to fish.",
+        "exz": "我爷爷喜欢钓鱼。",
+        "s": [
+            "grandpa",
+            "grandmother",
+            "family"
+        ]
+    },
+    {
+        "w": "storm",
+        "c": "ex",
+        "zh": "暴风雨",
+        "en": "very bad weather with strong wind and rain",
+        "ex": "Stay at home in a storm.",
+        "exz": "暴风雨时待在家里。",
+        "s": [
+            "rain",
+            "wind",
+            "thunder"
+        ]
+    },
+    {
+        "w": "fog",
+        "c": "ex",
+        "zh": "雾",
+        "en": "thick cloud near the ground",
+        "ex": "I can not see in the fog.",
+        "exz": "雾里我看不清。",
+        "s": [
+            "foggy",
+            "cloud",
+            "weather"
+        ]
+    },
+    {
+        "w": "foggy",
+        "c": "ex",
+        "zh": "有雾的",
+        "en": "with a lot of fog",
+        "ex": "It is foggy today.",
+        "exz": "今天有雾。",
+        "s": [
+            "fog",
+            "cloudy",
+            "weather"
+        ]
+    },
+    {
+        "w": "hill",
+        "c": "ex",
+        "zh": "小山,山丘",
+        "en": "a small mountain",
+        "ex": "We walk up the hill.",
+        "exz": "我们走上小山。",
+        "s": [
+            "mountain",
+            "field"
+        ]
+    },
+    {
+        "w": "hen",
+        "c": "ex",
+        "zh": "母鸡",
+        "en": "a female chicken",
+        "ex": "The hen has five eggs.",
+        "exz": "母鸡有五个蛋。",
+        "s": [
+            "chicken",
+            "egg",
+            "farm"
+        ]
+    },
+    {
+        "w": "fox",
+        "c": "ex",
+        "zh": "狐狸",
+        "en": "a wild animal like a small dog with a long tail",
+        "ex": "The fox has a red tail.",
+        "exz": "狐狸有一条红尾巴。",
+        "s": [
+            "wolf",
+            "dog"
+        ]
+    },
+    {
+        "w": "wolf",
+        "c": "ex",
+        "zh": "狼",
+        "en": "a wild animal like a big dog",
+        "ex": "The wolf lives in the forest.",
+        "exz": "狼住在森林里。",
+        "s": [
+            "fox",
+            "dog",
+            "forest"
+        ]
+    },
+    {
+        "w": "whale",
+        "c": "ex",
+        "zh": "鲸",
+        "en": "a very big animal that lives in the sea",
+        "ex": "The whale is very big.",
+        "exz": "鲸非常大。",
+        "s": [
+            "dolphin",
+            "sea",
+            "fish"
+        ]
+    },
+    {
+        "w": "dolphin",
+        "c": "ex",
+        "zh": "海豚",
+        "en": "a clever sea animal",
+        "ex": "The dolphin can jump.",
+        "exz": "海豚会跳。",
+        "s": [
+            "whale",
+            "sea"
+        ]
+    },
+    {
+        "w": "shark",
+        "c": "ex",
+        "zh": "鲨鱼",
+        "en": "a big fish with sharp teeth",
+        "ex": "The shark has big teeth.",
+        "exz": "鲨鱼有大牙齿。",
+        "s": [
+            "fish",
+            "whale",
+            "sea"
+        ]
+    },
+    {
+        "w": "crab",
+        "c": "ex",
+        "zh": "螃蟹",
+        "en": "a sea animal with a hard shell and ten legs",
+        "ex": "The crab is on the beach.",
+        "exz": "螃蟹在海滩上。",
+        "s": [
+            "fish",
+            "sea",
+            "beach"
+        ]
+    },
+    {
+        "w": "butterfly",
+        "c": "ex",
+        "zh": "蝴蝶",
+        "en": "an insect with big bright wings",
+        "ex": "A butterfly is on the flower.",
+        "exz": "一只蝴蝶停在花上。",
+        "s": [
+            "insect",
+            "bee",
+            "flower"
+        ]
+    },
+    {
+        "w": "spider",
+        "c": "ex",
+        "zh": "蜘蛛",
+        "en": "a small animal with eight legs",
+        "ex": "The spider has eight legs.",
+        "exz": "蜘蛛有八条腿。",
+        "s": [
+            "insect",
+            "ant"
+        ]
+    },
+    {
+        "w": "puppy",
+        "c": "ex",
+        "zh": "小狗",
+        "en": "a young dog",
+        "ex": "The puppy is very cute.",
+        "exz": "这只小狗很可爱。",
+        "s": [
+            "dog",
+            "kitten",
+            "pet"
+        ]
+    },
+    {
+        "w": "kitten",
+        "c": "ex",
+        "zh": "小猫",
+        "en": "a young cat",
+        "ex": "The kitten likes milk.",
+        "exz": "小猫喜欢牛奶。",
+        "s": [
+            "cat",
+            "puppy",
+            "pet"
+        ]
+    },
+    {
+        "w": "throw",
+        "c": "ex",
+        "zh": "扔,抛",
+        "en": "send something through the air with your hand",
+        "ex": "Throw the ball to me.",
+        "exz": "把球扔给我。",
+        "s": [
+            "catch",
+            "kick",
+            "ball"
+        ]
+    },
+    {
+        "w": "skate",
+        "c": "ex",
+        "zh": "滑冰",
+        "en": "move on ice with special shoes",
+        "ex": "I can skate on the ice.",
+        "exz": "我会在冰上滑冰。",
+        "s": [
+            "ice",
+            "swim"
+        ]
+    },
+    {
+        "w": "schoolbag",
+        "c": "ex",
+        "zh": "书包",
+        "en": "a bag you carry books in for school",
+        "ex": "My schoolbag is heavy.",
+        "exz": "我的书包很重。",
+        "s": [
+            "bag",
+            "book"
+        ]
+    },
+    {
+        "w": "sharpener",
+        "c": "ex",
+        "zh": "卷笔刀",
+        "en": "a small tool that makes a pencil sharp",
+        "ex": "I need a pencil sharpener.",
+        "exz": "我需要一个卷笔刀。",
+        "s": [
+            "pencil",
+            "knife"
+        ]
+    },
+    {
+        "w": "storybook",
+        "c": "ex",
+        "zh": "故事书",
+        "en": "a book of stories for children",
+        "ex": "Mom reads me a storybook.",
+        "exz": "妈妈给我读故事书。",
+        "s": [
+            "book",
+            "story"
+        ]
+    },
+    {
+        "w": "blackboard",
+        "c": "ex",
+        "zh": "黑板",
+        "en": "a big dark board in a classroom you write on with chalk",
+        "ex": "Look at the blackboard, please.",
+        "exz": "请看黑板。",
+        "s": [
+            "chalk",
+            "classroom"
+        ]
+    },
+    {
+        "w": "bookstore",
+        "c": "ex",
+        "zh": "书店",
+        "en": "a shop that sells books",
+        "ex": "There is a bookstore near my home.",
+        "exz": "我家附近有一家书店。",
+        "s": [
+            "shop",
+            "book",
+            "library"
+        ]
+    },
+    {
+        "w": "cap",
+        "c": "ex",
+        "zh": "帽子,鸭舌帽",
+        "en": "a soft hat with a hard part at the front",
+        "ex": "He has a red cap.",
+        "exz": "他有一顶红色的鸭舌帽。",
+        "s": [
+            "hat"
+        ]
+    },
+    {
+        "w": "jeans",
+        "c": "ex",
+        "zh": "牛仔裤",
+        "en": "blue cotton pants",
+        "ex": "My jeans are blue.",
+        "exz": "我的牛仔裤是蓝色的。",
+        "s": [
+            "pants",
+            "trousers"
+        ]
+    },
+    {
+        "w": "raincoat",
+        "c": "ex",
+        "zh": "雨衣",
+        "en": "a coat that keeps you dry in the rain",
+        "ex": "Take your raincoat. It may rain.",
+        "exz": "带上雨衣，可能会下雨。",
+        "s": [
+            "coat",
+            "umbrella",
+            "rain"
+        ]
+    },
+    {
+        "w": "pajamas",
+        "c": "ex",
+        "zh": "睡衣",
+        "en": "soft clothes you wear in bed",
+        "ex": "I put on my pajamas at night.",
+        "exz": "我晚上穿上睡衣。",
+        "s": [
+            "bed",
+            "clothes"
+        ]
+    },
+    {
+        "w": "sneaker",
+        "c": "ex",
+        "zh": "运动鞋",
+        "en": "a soft shoe for sport",
+        "ex": "My new sneakers are white.",
+        "exz": "我的新运动鞋是白色的。",
+        "s": [
+            "shoe",
+            "sport"
+        ]
+    },
+    {
+        "w": "sandal",
+        "c": "ex",
+        "zh": "凉鞋",
+        "en": "an open shoe for hot days",
+        "ex": "I wear sandals in summer.",
+        "exz": "我夏天穿凉鞋。",
+        "s": [
+            "shoe",
+            "summer"
+        ]
+    },
+    {
+        "w": "slipper",
+        "c": "ex",
+        "zh": "拖鞋",
+        "en": "a soft shoe you wear at home",
+        "ex": "Where are my slippers?",
+        "exz": "我的拖鞋在哪儿？",
+        "s": [
+            "shoe",
+            "home"
         ]
     }
 ]

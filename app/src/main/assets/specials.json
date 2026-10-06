@@ -215,6 +215,7 @@
           "rice",
           "bread",
           "noodle",
+          "dumpling",
           "pasta",
           "cake",
           "biscuit",
@@ -222,7 +223,23 @@
           "wheat",
           "grain",
           "flour",
-          "potato"
+          "potato",
+          "mooncake"
+        ]
+      },
+      {
+        "zh": "三餐",
+        "en": "Meals",
+        "words": [
+          "meal",
+          "breakfast",
+          "lunch",
+          "dinner",
+          "hamburger",
+          "sandwich",
+          "salad",
+          "pizza",
+          "sausage"
         ]
       },
       {
@@ -242,7 +259,9 @@
           "bean",
           "pea",
           "mushroom",
-          "pumpkin"
+          "pumpkin",
+          "eggplant",
+          "tofu"
         ]
       },
       {
@@ -253,6 +272,7 @@
           "beef",
           "pork",
           "chicken",
+          "duck",
           "fish",
           "egg",
           "milk",
@@ -274,7 +294,12 @@
           "nut",
           "chip",
           "cookie",
-          "pie"
+          "pie",
+          "popcorn",
+          "jelly",
+          "ice",
+          "honey",
+          "jam"
         ]
       },
       {
@@ -286,6 +311,7 @@
           "tea",
           "coffee",
           "juice",
+          "cola",
           "soup",
           "drink"
         ]
@@ -303,6 +329,8 @@
           "sour",
           "bitter",
           "salty",
+          "spicy",
+          "delicious",
           "hot",
           "fresh",
           "cook",
@@ -383,6 +411,38 @@
       {
         "en": "We have noodles for lunch.",
         "zh": "我们午饭吃面条。"
+      },
+      {
+        "en": "I have eggs and a sausage for breakfast.",
+        "zh": "我早餐吃鸡蛋和一根香肠。"
+      },
+      {
+        "en": "We eat dumplings for dinner.",
+        "zh": "我们晚饭吃饺子。"
+      },
+      {
+        "en": "Can I have a hamburger, please?",
+        "zh": "请问我可以要一个汉堡吗？"
+      },
+      {
+        "en": "Mom puts jam on my bread.",
+        "zh": "妈妈在我的面包上抹果酱。"
+      },
+      {
+        "en": "Grandma makes mooncakes for us.",
+        "zh": "奶奶给我们做月饼。"
+      },
+      {
+        "en": "I like tofu and eggplant.",
+        "zh": "我喜欢豆腐和茄子。"
+      },
+      {
+        "en": "The pizza is spicy and delicious.",
+        "zh": "比萨又辣又好吃。"
+      },
+      {
+        "en": "Let's eat popcorn and drink cola.",
+        "zh": "我们吃爆米花、喝可乐吧。"
       }
     ]
   },
@@ -493,26 +553,43 @@
         "en": "Taste",
         "words": [
           "taste",
+          "smell",
           "sweet",
           "sour",
           "bitter",
-          "salty"
+          "salty",
+          "spicy",
+          "delicious",
+          "yummy",
+          "tasty",
+          "juicy",
+          "fresh"
         ]
       },
       {
-        "zh": "触感与温度",
-        "en": "Touch & Temperature",
+        "zh": "温度",
+        "en": "Temperature",
         "words": [
           "hot",
           "cold",
           "warm",
           "cool",
+          "icy"
+        ]
+      },
+      {
+        "zh": "触感",
+        "en": "Touch",
+        "words": [
           "soft",
           "hard",
           "rough",
           "smooth",
           "wet",
-          "dry"
+          "dry",
+          "sticky",
+          "sharp",
+          "fluffy"
         ]
       }
     ],
@@ -580,6 +657,38 @@
       {
         "en": "Taste the soup, please.",
         "zh": "请尝一尝汤。"
+      },
+      {
+        "en": "The chicken is too spicy.",
+        "zh": "鸡肉太辣了。"
+      },
+      {
+        "en": "Yummy! The cake is delicious.",
+        "zh": "好吃！蛋糕真美味。"
+      },
+      {
+        "en": "This soup is very tasty.",
+        "zh": "这汤很好喝。"
+      },
+      {
+        "en": "The orange is sweet and juicy.",
+        "zh": "橙子又甜又多汁。"
+      },
+      {
+        "en": "The water is icy cold.",
+        "zh": "水冰凉冰凉的。"
+      },
+      {
+        "en": "My cat is soft and fluffy.",
+        "zh": "我的猫又软又蓬松。"
+      },
+      {
+        "en": "The honey is sticky.",
+        "zh": "蜂蜜黏黏的。"
+      },
+      {
+        "en": "Be careful. The knife is sharp.",
+        "zh": "小心，刀很锋利。"
       }
     ]
   },
@@ -591,29 +700,60 @@
     "scene": null,
     "groups": [
       {
-        "zh": "情感与感觉",
-        "en": "Feelings",
+        "zh": "心情",
+        "en": "Moods",
         "words": [
           "feel",
           "happy",
+          "glad",
           "sad",
+          "unhappy",
+          "upset",
           "angry",
           "afraid",
+          "scared",
+          "excited",
+          "worry",
+          "bored",
+          "proud",
+          "shy",
+          "nervous",
+          "lonely",
+          "sorry",
+          "calm",
+          "surprise",
+          "joy",
+          "fear"
+        ]
+      },
+      {
+        "zh": "身体感觉",
+        "en": "Body Feelings",
+        "words": [
           "tired",
+          "sleepy",
           "hungry",
           "thirsty",
+          "full",
           "sick",
+          "ill",
           "well",
+          "fine",
+          "pain",
+          "hurt"
+        ]
+      },
+      {
+        "zh": "喜好与愿望",
+        "en": "Likes & Wishes",
+        "words": [
           "love",
           "like",
+          "hate",
           "want",
           "need",
           "hope",
-          "fear",
-          "joy",
-          "pain",
-          "calm",
-          "surprise"
+          "miss"
         ]
       }
     ],
@@ -689,6 +829,38 @@
       {
         "en": "The dog jumps with joy.",
         "zh": "小狗高兴得跳起来。"
+      },
+      {
+        "en": "I am so excited about my birthday!",
+        "zh": "我对我的生日好兴奋！"
+      },
+      {
+        "en": "Mom is proud of me.",
+        "zh": "妈妈为我感到骄傲。"
+      },
+      {
+        "en": "I am unhappy. My kite is broken.",
+        "zh": "我不开心，我的风筝坏了。"
+      },
+      {
+        "en": "Don't be upset. I can help you.",
+        "zh": "别难过，我能帮你。"
+      },
+      {
+        "en": "I am bored. Let's play a game.",
+        "zh": "我好无聊，我们玩个游戏吧。"
+      },
+      {
+        "en": "The little dog is scared of the cat.",
+        "zh": "小狗害怕那只猫。"
+      },
+      {
+        "en": "I feel nervous before the test.",
+        "zh": "考试前我很紧张。"
+      },
+      {
+        "en": "I am glad to see you.",
+        "zh": "见到你我很高兴。"
       }
     ]
   },
@@ -707,15 +879,17 @@
           "hair",
           "face",
           "eye",
+          "eyebrow",
           "ear",
           "nose",
           "mouth",
+          "lip",
           "tooth",
           "tongue",
-          "neck",
           "cheek",
           "chin",
-          "eyebrow"
+          "neck",
+          "throat"
         ]
       },
       {
@@ -723,19 +897,33 @@
         "en": "Body",
         "words": [
           "body",
+          "back",
+          "chest",
+          "stomach",
+          "tummy",
+          "heart",
+          "brain",
+          "bone",
+          "muscle",
+          "skin",
+          "blood"
+        ]
+      },
+      {
+        "zh": "四肢",
+        "en": "Arms & Legs",
+        "words": [
+          "shoulder",
           "arm",
+          "elbow",
           "hand",
           "finger",
+          "thumb",
+          "nail",
           "leg",
-          "foot",
-          "back",
-          "heart",
-          "skin",
-          "blood",
-          "shoulder",
           "knee",
-          "toe",
-          "elbow"
+          "foot",
+          "toe"
         ]
       }
     ],
@@ -807,6 +995,34 @@
       {
         "en": "Put your arms up.",
         "zh": "把手臂举起来。"
+      },
+      {
+        "en": "My tummy hurts. I am sick.",
+        "zh": "我肚子疼，我生病了。"
+      },
+      {
+        "en": "Cut your nails every week.",
+        "zh": "每周都要剪指甲。"
+      },
+      {
+        "en": "Milk is good for your bones.",
+        "zh": "牛奶对你的骨头有好处。"
+      },
+      {
+        "en": "I have a cold and my throat hurts.",
+        "zh": "我感冒了，喉咙疼。"
+      },
+      {
+        "en": "Put your thumbs up!",
+        "zh": "竖起你的大拇指！"
+      },
+      {
+        "en": "Put your hand on your chest.",
+        "zh": "把手放在胸口上。"
+      },
+      {
+        "en": "Ice cream is cold on my lips.",
+        "zh": "冰淇淋碰到嘴唇凉凉的。"
       }
     ]
   },
@@ -818,24 +1034,58 @@
     "scene": null,
     "groups": [
       {
-        "zh": "家庭与人称",
-        "en": "Family",
+        "zh": "家庭成员",
+        "en": "Family Members",
         "words": [
+          "family",
           "father",
           "mother",
+          "dad",
+          "mom",
+          "parent",
           "brother",
           "sister",
-          "grandma",
+          "son",
+          "daughter",
+          "baby"
+        ]
+      },
+      {
+        "zh": "亲戚",
+        "en": "Relatives",
+        "words": [
           "grandpa",
+          "grandma",
+          "grandfather",
+          "grandmother",
+          "grandparent",
           "aunt",
           "uncle",
-          "cousin",
-          "baby",
-          "family",
+          "cousin"
+        ]
+      },
+      {
+        "zh": "人们",
+        "en": "People",
+        "words": [
+          "man",
+          "woman",
+          "boy",
+          "girl",
+          "child",
+          "friend",
+          "people"
+        ]
+      },
+      {
+        "zh": "人称",
+        "en": "Pronouns",
+        "words": [
           "I",
           "you",
           "he",
           "she",
+          "it",
           "we",
           "they"
         ]
@@ -905,6 +1155,38 @@
       {
         "en": "Are you hungry?",
         "zh": "你饿了吗？"
+      },
+      {
+        "en": "Dad and Mom love me.",
+        "zh": "爸爸妈妈爱我。"
+      },
+      {
+        "en": "My grandmother lives in a small house.",
+        "zh": "我奶奶住在一座小房子里。"
+      },
+      {
+        "en": "My grandfather has a big garden.",
+        "zh": "我爷爷有一个大花园。"
+      },
+      {
+        "en": "The boy and the girl are friends.",
+        "zh": "那个男孩和那个女孩是朋友。"
+      },
+      {
+        "en": "My parents work on a farm.",
+        "zh": "我爸爸妈妈在农场工作。"
+      },
+      {
+        "en": "She is their daughter.",
+        "zh": "她是他们的女儿。"
+      },
+      {
+        "en": "The man has a son and a daughter.",
+        "zh": "那个男人有一个儿子和一个女儿。"
+      },
+      {
+        "en": "Many people are in the park.",
+        "zh": "公园里有很多人。"
       }
     ]
   },
@@ -1211,13 +1493,40 @@
           "snow",
           "cloud",
           "sky",
+          "storm",
+          "thunder",
+          "rainbow",
+          "fog",
+          "ice"
+        ]
+      },
+      {
+        "zh": "天气描述",
+        "en": "Describing Weather",
+        "words": [
           "hot",
           "cold",
+          "warm",
+          "cool",
+          "wet",
+          "dry",
           "sunny",
           "rainy",
           "windy",
           "cloudy",
-          "snowy"
+          "snowy",
+          "foggy"
+        ]
+      },
+      {
+        "zh": "季节",
+        "en": "Seasons",
+        "words": [
+          "season",
+          "spring",
+          "summer",
+          "autumn",
+          "winter"
         ]
       },
       {
@@ -1227,9 +1536,20 @@
           "tree",
           "flower",
           "grass",
+          "leaf",
           "river",
+          "lake",
           "sea",
-          "mountain"
+          "beach",
+          "island",
+          "mountain",
+          "hill",
+          "forest",
+          "field",
+          "stone",
+          "sand",
+          "moon",
+          "star"
         ]
       }
     ],
@@ -1301,6 +1621,38 @@
       {
         "en": "The grass is wet after the rain.",
         "zh": "雨后草地是湿的。"
+      },
+      {
+        "en": "I see a rainbow after the rain.",
+        "zh": "雨后我看见一道彩虹。"
+      },
+      {
+        "en": "It is foggy this morning.",
+        "zh": "今天早上有雾。"
+      },
+      {
+        "en": "We play on the beach in summer.",
+        "zh": "夏天我们在海滩上玩。"
+      },
+      {
+        "en": "There is ice on the lake in winter.",
+        "zh": "冬天湖面上有冰。"
+      },
+      {
+        "en": "The moon and the stars are bright.",
+        "zh": "月亮和星星很亮。"
+      },
+      {
+        "en": "The thunder is loud in a storm.",
+        "zh": "暴风雨里雷声很响。"
+      },
+      {
+        "en": "Spring is warm and green.",
+        "zh": "春天温暖又绿意盎然。"
+      },
+      {
+        "en": "A red leaf is on the stone.",
+        "zh": "一片红叶落在石头上。"
       }
     ]
   },
@@ -1312,27 +1664,74 @@
     "scene": null,
     "groups": [
       {
-        "zh": "动物",
-        "en": "Animals",
+        "zh": "宠物与小动物",
+        "en": "Pets",
         "words": [
           "animal",
+          "pet",
           "dog",
           "cat",
+          "rabbit",
+          "mouse",
           "bird",
+          "puppy",
+          "kitten"
+        ]
+      },
+      {
+        "zh": "农场动物",
+        "en": "Farm Animals",
+        "words": [
           "horse",
           "cow",
           "pig",
           "sheep",
+          "goat",
           "duck",
           "chicken",
-          "fish",
-          "rabbit",
-          "mouse",
+          "hen"
+        ]
+      },
+      {
+        "zh": "野生动物",
+        "en": "Wild Animals",
+        "words": [
           "tiger",
           "lion",
           "panda",
           "elephant",
-          "monkey"
+          "monkey",
+          "bear",
+          "giraffe",
+          "zebra",
+          "kangaroo",
+          "fox",
+          "wolf",
+          "snake"
+        ]
+      },
+      {
+        "zh": "海洋动物",
+        "en": "Sea Animals",
+        "words": [
+          "fish",
+          "whale",
+          "dolphin",
+          "shark",
+          "crab",
+          "turtle"
+        ]
+      },
+      {
+        "zh": "昆虫与小虫",
+        "en": "Insects & Small Creatures",
+        "words": [
+          "insect",
+          "ant",
+          "bee",
+          "butterfly",
+          "spider",
+          "frog"
         ]
       }
     ],
@@ -1404,6 +1803,38 @@
       {
         "en": "I love animals.",
         "zh": "我爱动物。"
+      },
+      {
+        "en": "The giraffe has a long neck.",
+        "zh": "长颈鹿有长长的脖子。"
+      },
+      {
+        "en": "The bear sleeps in winter.",
+        "zh": "熊在冬天睡觉。"
+      },
+      {
+        "en": "A butterfly is on the flower.",
+        "zh": "一只蝴蝶停在花上。"
+      },
+      {
+        "en": "The whale is very big.",
+        "zh": "鲸非常大。"
+      },
+      {
+        "en": "The frog can jump high.",
+        "zh": "青蛙能跳得很高。"
+      },
+      {
+        "en": "My puppy plays with the kitten.",
+        "zh": "我的小狗和小猫一起玩。"
+      },
+      {
+        "en": "The dolphin swims in the sea.",
+        "zh": "海豚在海里游泳。"
+      },
+      {
+        "en": "Ants are small but strong.",
+        "zh": "蚂蚁很小但很有力气。"
       }
     ]
   },
@@ -1415,30 +1846,82 @@
     "scene": null,
     "groups": [
       {
-        "zh": "动作",
-        "en": "Actions",
+        "zh": "日常动作",
+        "en": "Everyday Actions",
         "words": [
           "go",
           "come",
           "eat",
           "drink",
+          "sleep",
+          "wake",
+          "wash",
+          "clean",
+          "cook",
+          "help",
+          "open",
+          "close",
+          "sit",
+          "stand"
+        ]
+      },
+      {
+        "zh": "看听说",
+        "en": "Look, Listen & Talk",
+        "words": [
           "see",
+          "look",
+          "watch",
           "hear",
+          "listen",
           "speak",
+          "talk",
+          "laugh",
+          "smile",
+          "cry"
+        ]
+      },
+      {
+        "zh": "手的动作",
+        "en": "Hand Actions",
+        "words": [
           "take",
           "give",
+          "carry",
+          "push",
+          "pull",
+          "catch",
+          "throw"
+        ]
+      },
+      {
+        "zh": "运动",
+        "en": "Moving & Sports",
+        "words": [
           "run",
           "walk",
           "jump",
-          "sit",
-          "stand",
+          "swim",
+          "climb",
+          "fly",
+          "ride",
+          "kick",
+          "play",
+          "skate"
+        ]
+      },
+      {
+        "zh": "学习活动",
+        "en": "Learning Activities",
+        "words": [
           "read",
           "write",
+          "draw",
           "sing",
           "dance",
-          "swim",
-          "open",
-          "close"
+          "ask",
+          "answer",
+          "think"
         ]
       }
     ],
@@ -1522,6 +2005,42 @@
       {
         "en": "Speak slowly, please.",
         "zh": "请说慢一点。"
+      },
+      {
+        "en": "Throw the ball to me, please.",
+        "zh": "请把球扔给我。"
+      },
+      {
+        "en": "I can climb the tree.",
+        "zh": "我会爬树。"
+      },
+      {
+        "en": "The baby cries and Mom smiles.",
+        "zh": "宝宝哭了，妈妈笑了。"
+      },
+      {
+        "en": "Wash your hands before dinner.",
+        "zh": "晚饭前洗手。"
+      },
+      {
+        "en": "Push the door, please.",
+        "zh": "请推门。"
+      },
+      {
+        "en": "I draw a picture of my cat.",
+        "zh": "我画了一张我的猫的画。"
+      },
+      {
+        "en": "Birds fly in the sky.",
+        "zh": "鸟儿在天空中飞。"
+      },
+      {
+        "en": "We skate on the ice in winter.",
+        "zh": "冬天我们在冰上滑冰。"
+      },
+      {
+        "en": "I wake up at seven every day.",
+        "zh": "我每天七点醒来。"
       }
     ]
   },
@@ -1533,24 +2052,54 @@
     "scene": null,
     "groups": [
       {
-        "zh": "学习与工具",
-        "en": "School",
+        "zh": "文具",
+        "en": "Stationery",
         "words": [
           "book",
+          "notebook",
+          "storybook",
           "pen",
           "pencil",
+          "crayon",
+          "ruler",
+          "eraser",
+          "sharpener",
+          "scissors",
           "paper",
+          "bag",
+          "schoolbag"
+        ]
+      },
+      {
+        "zh": "学科与学习",
+        "en": "Subjects & Lessons",
+        "words": [
+          "subject",
+          "Chinese",
+          "English",
+          "math",
+          "music",
+          "art",
+          "science",
+          "class",
+          "lesson",
+          "homework",
+          "test"
+        ]
+      },
+      {
+        "zh": "学校",
+        "en": "At School",
+        "words": [
           "school",
+          "classroom",
           "teacher",
           "student",
           "desk",
           "chair",
-          "ruler",
-          "eraser",
-          "bag",
-          "class",
-          "lesson",
-          "homework"
+          "blackboard",
+          "playground",
+          "computer"
         ]
       }
     ],
@@ -1614,6 +2163,38 @@
       {
         "en": "The student puts up his hand.",
         "zh": "那个学生举起了手。"
+      },
+      {
+        "en": "I have a new schoolbag.",
+        "zh": "我有一个新书包。"
+      },
+      {
+        "en": "My crayons are in my schoolbag.",
+        "zh": "我的蜡笔在书包里。"
+      },
+      {
+        "en": "Can I use your sharpener?",
+        "zh": "我可以用你的卷笔刀吗？"
+      },
+      {
+        "en": "The teacher writes on the blackboard.",
+        "zh": "老师在黑板上写字。"
+      },
+      {
+        "en": "I read a storybook in the library.",
+        "zh": "我在图书馆看故事书。"
+      },
+      {
+        "en": "We have math and English today.",
+        "zh": "我们今天有数学课和英语课。"
+      },
+      {
+        "en": "Our classroom is big and clean.",
+        "zh": "我们的教室又大又干净。"
+      },
+      {
+        "en": "We play on the playground after class.",
+        "zh": "我们下课后在操场上玩。"
       }
     ]
   },
@@ -1633,22 +2214,53 @@
           "train",
           "bike",
           "plane",
-          "boat"
+          "boat",
+          "ship",
+          "taxi",
+          "subway",
+          "truck"
         ]
       },
       {
-        "zh": "地点",
-        "en": "Places",
+        "zh": "城市与道路",
+        "en": "City & Roads",
         "words": [
+          "city",
+          "town",
+          "village",
           "road",
+          "street",
+          "bridge",
           "station",
+          "airport"
+        ]
+      },
+      {
+        "zh": "城市地点",
+        "en": "Around Town",
+        "words": [
           "house",
-          "shop",
           "school",
           "park",
           "hospital",
           "library",
-          "street"
+          "museum",
+          "zoo",
+          "cinema",
+          "farm"
+        ]
+      },
+      {
+        "zh": "商店与服务",
+        "en": "Shops & Services",
+        "words": [
+          "shop",
+          "supermarket",
+          "bookstore",
+          "bakery",
+          "restaurant",
+          "hotel",
+          "bank"
         ]
       }
     ],
@@ -1712,6 +2324,38 @@
       {
         "en": "There are many shops on this street.",
         "zh": "这条街上有很多商店。"
+      },
+      {
+        "en": "We go to the zoo by subway.",
+        "zh": "我们坐地铁去动物园。"
+      },
+      {
+        "en": "I buy a storybook at the bookstore.",
+        "zh": "我在书店买了一本故事书。"
+      },
+      {
+        "en": "The museum is next to the bank.",
+        "zh": "博物馆在银行旁边。"
+      },
+      {
+        "en": "Let's see a movie at the cinema.",
+        "zh": "我们去电影院看电影吧。"
+      },
+      {
+        "en": "Mom buys bread at the bakery.",
+        "zh": "妈妈在面包店买面包。"
+      },
+      {
+        "en": "The plane lands at the airport.",
+        "zh": "飞机降落在机场。"
+      },
+      {
+        "en": "We eat noodles at a restaurant.",
+        "zh": "我们在餐馆吃面条。"
+      },
+      {
+        "en": "The taxi goes over the bridge.",
+        "zh": "出租车开过了桥。"
       }
     ]
   },
@@ -1723,23 +2367,37 @@
     "scene": null,
     "groups": [
       {
-        "zh": "衣物",
+        "zh": "衣服",
         "en": "Clothes",
         "words": [
-          "hat",
           "coat",
-          "shoe",
           "shirt",
           "T-shirt",
           "dress",
           "skirt",
-          "sock",
           "jacket",
           "sweater",
           "pants",
-          "scarf",
-          "glove",
+          "jeans",
+          "raincoat",
+          "pajamas",
           "uniform"
+        ]
+      },
+      {
+        "zh": "鞋帽配饰",
+        "en": "Shoes, Hats & More",
+        "words": [
+          "hat",
+          "cap",
+          "shoe",
+          "sneaker",
+          "boot",
+          "sandal",
+          "slipper",
+          "sock",
+          "scarf",
+          "glove"
         ]
       }
     ],
@@ -1803,6 +2461,34 @@
       {
         "en": "Is your coat dry now?",
         "zh": "你的外套现在干了吗？"
+      },
+      {
+        "en": "Put on your raincoat. It is rainy.",
+        "zh": "穿上雨衣，下雨了。"
+      },
+      {
+        "en": "I wear jeans and sneakers.",
+        "zh": "我穿牛仔裤和运动鞋。"
+      },
+      {
+        "en": "My cap is blue.",
+        "zh": "我的鸭舌帽是蓝色的。"
+      },
+      {
+        "en": "Take off your shoes and put on your slippers.",
+        "zh": "脱掉鞋子，穿上拖鞋。"
+      },
+      {
+        "en": "I wear pajamas at night.",
+        "zh": "我晚上穿睡衣。"
+      },
+      {
+        "en": "These sandals are new.",
+        "zh": "这双凉鞋是新的。"
+      },
+      {
+        "en": "My boots are under the bed.",
+        "zh": "我的靴子在床底下。"
       }
     ]
   },
@@ -1814,19 +2500,62 @@
     "scene": null,
     "groups": [
       {
-        "zh": "职业",
-        "en": "Jobs",
+        "zh": "帮助他人",
+        "en": "Helpers",
         "words": [
           "doctor",
-          "teacher",
-          "worker",
-          "farmer",
           "nurse",
-          "cook",
-          "driver",
+          "dentist",
           "police",
           "officer",
-          "pilot"
+          "firefighter",
+          "cleaner"
+        ]
+      },
+      {
+        "zh": "交通与服务",
+        "en": "Travel & Service",
+        "words": [
+          "driver",
+          "pilot",
+          "astronaut",
+          "waiter",
+          "cook",
+          "baker"
+        ]
+      },
+      {
+        "zh": "建造与种植",
+        "en": "Building & Growing",
+        "words": [
+          "worker",
+          "builder",
+          "engineer",
+          "farmer",
+          "gardener"
+        ]
+      },
+      {
+        "zh": "学习与知识",
+        "en": "Learning",
+        "words": [
+          "teacher",
+          "librarian",
+          "scientist",
+          "writer",
+          "reporter"
+        ]
+      },
+      {
+        "zh": "文艺与体育",
+        "en": "Arts & Sports",
+        "words": [
+          "artist",
+          "singer",
+          "dancer",
+          "actor",
+          "player",
+          "coach"
         ]
       }
     ],
@@ -1886,6 +2615,38 @@
       {
         "en": "The driver stops at the station.",
         "zh": "司机在车站停车。"
+      },
+      {
+        "en": "My aunt is a firefighter.",
+        "zh": "我阿姨是消防员。"
+      },
+      {
+        "en": "The singer sings a happy song.",
+        "zh": "歌手唱了一首欢快的歌。"
+      },
+      {
+        "en": "The dentist looks at my teeth.",
+        "zh": "牙医检查我的牙齿。"
+      },
+      {
+        "en": "The waiter brings us some water.",
+        "zh": "服务员给我们端来一些水。"
+      },
+      {
+        "en": "I want to be a scientist.",
+        "zh": "我想当科学家。"
+      },
+      {
+        "en": "The artist draws a beautiful picture.",
+        "zh": "画家画了一幅漂亮的画。"
+      },
+      {
+        "en": "The librarian helps me find a book.",
+        "zh": "图书管理员帮我找书。"
+      },
+      {
+        "en": "The builder makes a new bridge.",
+        "zh": "建筑工人在造一座新桥。"
       }
     ]
   }

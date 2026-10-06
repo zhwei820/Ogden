@@ -1029,10 +1029,10 @@
    "exz": "我把书包背在背上。"
   },
   {
-   "phrase": "go back",
-   "zh": "回去",
-   "ex": "Let's go back to the classroom.",
-   "exz": "我们回教室吧。"
+   "phrase": "at the back of",
+   "zh": "在……的后部",
+   "ex": "I sit at the back of the bus.",
+   "exz": "我坐在公交车的后排。"
   }
  ],
  "chest": [
@@ -12277,6 +12277,3214 @@
    "zh": "好记性",
    "ex": "My grandpa has a good memory.",
    "exz": "我爷爷记性很好。"
+  }
+ ],
+ "next": [
+  {
+   "phrase": "next to",
+   "zh": "在……旁边",
+   "ex": "The cat is sitting next to the dog.",
+   "exz": "猫坐在狗的旁边。"
+  },
+  {
+   "phrase": "next week",
+   "zh": "下周",
+   "ex": "We will go to the zoo next week.",
+   "exz": "我们下周去动物园。"
+  },
+  {
+   "phrase": "next time",
+   "zh": "下次",
+   "ex": "Next time, I will run faster.",
+   "exz": "下次我会跑得更快。"
+  }
+ ],
+ "behind": [
+  {
+   "phrase": "behind the door",
+   "zh": "在门后",
+   "ex": "My shoes are behind the door.",
+   "exz": "我的鞋在门后面。"
+  },
+  {
+   "phrase": "behind me",
+   "zh": "在我后面",
+   "ex": "My little sister is standing behind me.",
+   "exz": "妹妹站在我后面。"
+  },
+  {
+   "phrase": "fall behind",
+   "zh": "落后",
+   "ex": "Don't fall behind, walk with us.",
+   "exz": "别落在后面，跟我们一起走。"
+  }
+ ],
+ "between": [
+  {
+   "phrase": "between A and B",
+   "zh": "在A和B之间",
+   "ex": "The ball is between the box and the chair.",
+   "exz": "球在箱子和椅子之间。"
+  },
+  {
+   "phrase": "between us",
+   "zh": "我们之间",
+   "ex": "Let's put the cake between us.",
+   "exz": "我们把蛋糕放在我们俩中间吧。"
+  }
+ ],
+ "among": [
+  {
+   "phrase": "among the trees",
+   "zh": "在树林中",
+   "ex": "A little bird is singing among the trees.",
+   "exz": "一只小鸟在树林里唱歌。"
+  },
+  {
+   "phrase": "among friends",
+   "zh": "在朋友中间",
+   "ex": "I feel happy among friends.",
+   "exz": "和朋友在一起我很开心。"
+  }
+ ],
+ "across": [
+  {
+   "phrase": "across the road",
+   "zh": "在马路对面；穿过马路",
+   "ex": "The shop is across the road.",
+   "exz": "商店在马路对面。"
+  },
+  {
+   "phrase": "walk across",
+   "zh": "走过去",
+   "ex": "We walk across the bridge.",
+   "exz": "我们走过这座桥。"
+  }
+ ],
+ "through": [
+  {
+   "phrase": "through the window",
+   "zh": "透过窗户",
+   "ex": "The sun comes in through the window.",
+   "exz": "阳光从窗户照进来。"
+  },
+  {
+   "phrase": "go through",
+   "zh": "穿过",
+   "ex": "The train goes through a long tunnel.",
+   "exz": "火车穿过一条长长的隧道。"
+  }
+ ],
+ "over": [
+  {
+   "phrase": "over the bridge",
+   "zh": "过桥",
+   "ex": "We walk over the bridge to the park.",
+   "exz": "我们过桥去公园。"
+  },
+  {
+   "phrase": "jump over",
+   "zh": "跳过",
+   "ex": "The dog can jump over the wall.",
+   "exz": "这只狗能跳过墙。"
+  },
+  {
+   "phrase": "over there",
+   "zh": "在那边",
+   "ex": "My school is over there.",
+   "exz": "我的学校在那边。"
+  }
+ ],
+ "under": [
+  {
+   "phrase": "under the bed",
+   "zh": "在床底下",
+   "ex": "My ball is under the bed.",
+   "exz": "我的球在床底下。"
+  },
+  {
+   "phrase": "under the tree",
+   "zh": "在树下",
+   "ex": "We sit under the tree and read.",
+   "exz": "我们坐在树下看书。"
+  }
+ ],
+ "up": [
+  {
+   "phrase": "stand up",
+   "zh": "站起来",
+   "ex": "Please stand up and say hello.",
+   "exz": "请站起来打个招呼。"
+  },
+  {
+   "phrase": "go up",
+   "zh": "上去",
+   "ex": "We go up the hill.",
+   "exz": "我们爬上小山。"
+  },
+  {
+   "phrase": "look up",
+   "zh": "抬头看",
+   "ex": "Look up! There is a plane.",
+   "exz": "抬头看！有一架飞机。"
+  }
+ ],
+ "down": [
+  {
+   "phrase": "sit down",
+   "zh": "坐下",
+   "ex": "Please sit down.",
+   "exz": "请坐下。"
+  },
+  {
+   "phrase": "go down",
+   "zh": "下去",
+   "ex": "We go down the stairs.",
+   "exz": "我们走下楼梯。"
+  },
+  {
+   "phrase": "look down",
+   "zh": "往下看",
+   "ex": "Look down at your feet.",
+   "exz": "低头看看你的脚。"
+  }
+ ],
+ "on": [
+  {
+   "phrase": "on the table",
+   "zh": "在桌子上",
+   "ex": "The book is on the table.",
+   "exz": "书在桌子上。"
+  },
+  {
+   "phrase": "turn on",
+   "zh": "打开",
+   "ex": "Please turn on the light.",
+   "exz": "请把灯打开。"
+  },
+  {
+   "phrase": "on the wall",
+   "zh": "在墙上",
+   "ex": "There is a picture on the wall.",
+   "exz": "墙上有一幅画。"
+  }
+ ],
+ "off": [
+  {
+   "phrase": "turn off",
+   "zh": "关掉",
+   "ex": "Turn off the TV, please.",
+   "exz": "请把电视关掉。"
+  },
+  {
+   "phrase": "get off",
+   "zh": "下车",
+   "ex": "We get off the bus here.",
+   "exz": "我们在这里下公交车。"
+  },
+  {
+   "phrase": "take off",
+   "zh": "脱下",
+   "ex": "Take off your shoes at the door.",
+   "exz": "在门口把鞋脱掉。"
+  }
+ ],
+ "out": [
+  {
+   "phrase": "go out",
+   "zh": "出去",
+   "ex": "Let's go out and play.",
+   "exz": "我们出去玩吧。"
+  },
+  {
+   "phrase": "out of",
+   "zh": "从……出来",
+   "ex": "A cat jumps out of the box.",
+   "exz": "一只猫从箱子里跳出来。"
+  },
+  {
+   "phrase": "look out",
+   "zh": "小心",
+   "ex": "Look out! A car is coming.",
+   "exz": "小心！有车来了。"
+  }
+ ],
+ "in": [
+  {
+   "phrase": "in the box",
+   "zh": "在箱子里",
+   "ex": "The toy is in the box.",
+   "exz": "玩具在箱子里。"
+  },
+  {
+   "phrase": "come in",
+   "zh": "进来",
+   "ex": "Come in, please.",
+   "exz": "请进。"
+  },
+  {
+   "phrase": "in the morning",
+   "zh": "在早上",
+   "ex": "I drink milk in the morning.",
+   "exz": "我早上喝牛奶。"
+  }
+ ],
+ "at": [
+  {
+   "phrase": "at home",
+   "zh": "在家",
+   "ex": "I am at home today.",
+   "exz": "我今天在家。"
+  },
+  {
+   "phrase": "at school",
+   "zh": "在学校",
+   "ex": "We read books at school.",
+   "exz": "我们在学校读书。"
+  },
+  {
+   "phrase": "look at",
+   "zh": "看",
+   "ex": "Look at the bird!",
+   "exz": "看那只鸟！"
+  }
+ ],
+ "by": [
+  {
+   "phrase": "by the window",
+   "zh": "在窗边",
+   "ex": "My desk is by the window.",
+   "exz": "我的书桌在窗边。"
+  },
+  {
+   "phrase": "by bus",
+   "zh": "坐公交车",
+   "ex": "I go to school by bus.",
+   "exz": "我坐公交车上学。"
+  }
+ ],
+ "against": [
+  {
+   "phrase": "against the wall",
+   "zh": "靠着墙",
+   "ex": "The bike is against the wall.",
+   "exz": "自行车靠在墙上。"
+  },
+  {
+   "phrase": "lean against",
+   "zh": "倚靠",
+   "ex": "He leans against the tree.",
+   "exz": "他靠在树上。"
+  }
+ ],
+ "along": [
+  {
+   "phrase": "along the river",
+   "zh": "沿着河",
+   "ex": "We walk along the river.",
+   "exz": "我们沿着河边散步。"
+  },
+  {
+   "phrase": "come along",
+   "zh": "一起来",
+   "ex": "Come along with us!",
+   "exz": "跟我们一起来吧！"
+  }
+ ],
+ "around": [
+  {
+   "phrase": "around the table",
+   "zh": "围着桌子",
+   "ex": "We sit around the table.",
+   "exz": "我们围着桌子坐。"
+  },
+  {
+   "phrase": "look around",
+   "zh": "四处看看",
+   "ex": "Look around. Where is my cat?",
+   "exz": "四处看看，我的猫在哪儿？"
+  },
+  {
+   "phrase": "turn around",
+   "zh": "转过身",
+   "ex": "Turn around and wave goodbye.",
+   "exz": "转过身挥手说再见。"
+  }
+ ],
+ "beside": [
+  {
+   "phrase": "beside me",
+   "zh": "在我旁边",
+   "ex": "Come and sit beside me.",
+   "exz": "过来坐在我旁边。"
+  },
+  {
+   "phrase": "beside the river",
+   "zh": "在河边",
+   "ex": "There is a small house beside the river.",
+   "exz": "河边有一座小房子。"
+  }
+ ],
+ "inside": [
+  {
+   "phrase": "go inside",
+   "zh": "进去",
+   "ex": "It's raining. Let's go inside.",
+   "exz": "下雨了，我们进去吧。"
+  },
+  {
+   "phrase": "inside the box",
+   "zh": "在箱子里面",
+   "ex": "What is inside the box?",
+   "exz": "箱子里面是什么？"
+  }
+ ],
+ "above": [
+  {
+   "phrase": "above the door",
+   "zh": "在门上方",
+   "ex": "There is a clock above the door.",
+   "exz": "门上方有一个钟。"
+  },
+  {
+   "phrase": "above the clouds",
+   "zh": "在云层之上",
+   "ex": "The plane flies above the clouds.",
+   "exz": "飞机在云层上面飞。"
+  }
+ ],
+ "below": [
+  {
+   "phrase": "below the window",
+   "zh": "在窗户下面",
+   "ex": "There are flowers below the window.",
+   "exz": "窗户下面有花。"
+  },
+  {
+   "phrase": "below zero",
+   "zh": "零度以下",
+   "ex": "It is below zero today.",
+   "exz": "今天气温在零度以下。"
+  }
+ ],
+ "into": [
+  {
+   "phrase": "go into",
+   "zh": "走进",
+   "ex": "We go into the classroom.",
+   "exz": "我们走进教室。"
+  },
+  {
+   "phrase": "jump into",
+   "zh": "跳进",
+   "ex": "The frog jumps into the water.",
+   "exz": "青蛙跳进水里。"
+  }
+ ],
+ "onto": [
+  {
+   "phrase": "jump onto",
+   "zh": "跳到……上",
+   "ex": "The cat jumps onto the bed.",
+   "exz": "猫跳到床上。"
+  },
+  {
+   "phrase": "climb onto",
+   "zh": "爬上",
+   "ex": "The boy climbs onto the chair.",
+   "exz": "男孩爬上椅子。"
+  }
+ ],
+ "opposite": [
+  {
+   "phrase": "opposite the school",
+   "zh": "在学校对面",
+   "ex": "The park is opposite the school.",
+   "exz": "公园在学校对面。"
+  },
+  {
+   "phrase": "the opposite of",
+   "zh": "……的反义词",
+   "ex": "Hot is the opposite of cold.",
+   "exz": "热是冷的反义词。"
+  }
+ ],
+ "top": [
+  {
+   "phrase": "on top of",
+   "zh": "在……顶上",
+   "ex": "The cat is on top of the box.",
+   "exz": "猫在箱子顶上。"
+  },
+  {
+   "phrase": "at the top",
+   "zh": "在顶部",
+   "ex": "Write your name at the top.",
+   "exz": "把名字写在最上面。"
+  }
+ ],
+ "bottom": [
+  {
+   "phrase": "at the bottom",
+   "zh": "在底部",
+   "ex": "The fish is at the bottom of the river.",
+   "exz": "鱼在河底。"
+  },
+  {
+   "phrase": "the bottom of",
+   "zh": "……的底部",
+   "ex": "There is a coin at the bottom of my bag.",
+   "exz": "我的包底有一枚硬币。"
+  }
+ ],
+ "middle": [
+  {
+   "phrase": "in the middle",
+   "zh": "在中间",
+   "ex": "I sit in the middle.",
+   "exz": "我坐在中间。"
+  },
+  {
+   "phrase": "in the middle of",
+   "zh": "在……中间",
+   "ex": "There is a tree in the middle of the garden.",
+   "exz": "花园中间有一棵树。"
+  }
+ ],
+ "close": [
+  {
+   "phrase": "close to",
+   "zh": "靠近",
+   "ex": "My home is close to the school.",
+   "exz": "我家离学校很近。"
+  },
+  {
+   "phrase": "close the door",
+   "zh": "关门",
+   "ex": "Please close the door.",
+   "exz": "请把门关上。"
+  }
+ ],
+ "away": [
+  {
+   "phrase": "go away",
+   "zh": "走开",
+   "ex": "Go away, bad dog!",
+   "exz": "走开，坏狗！"
+  },
+  {
+   "phrase": "far away",
+   "zh": "很远",
+   "ex": "My grandma lives far away.",
+   "exz": "我奶奶住得很远。"
+  },
+  {
+   "phrase": "run away",
+   "zh": "跑开",
+   "ex": "The little rabbit runs away.",
+   "exz": "小兔子跑开了。"
+  }
+ ],
+ "toward": [
+  {
+   "phrase": "walk toward",
+   "zh": "朝……走去",
+   "ex": "The boy walks toward his mother.",
+   "exz": "男孩朝妈妈走去。"
+  },
+  {
+   "phrase": "toward the sea",
+   "zh": "朝着大海",
+   "ex": "The bird flies toward the sea.",
+   "exz": "鸟朝着大海飞去。"
+  }
+ ],
+ "forward": [
+  {
+   "phrase": "step forward",
+   "zh": "向前一步",
+   "ex": "Please step forward.",
+   "exz": "请向前走一步。"
+  },
+  {
+   "phrase": "look forward to",
+   "zh": "期待",
+   "ex": "I look forward to my birthday.",
+   "exz": "我很期待我的生日。"
+  }
+ ],
+ "upstairs": [
+  {
+   "phrase": "go upstairs",
+   "zh": "上楼",
+   "ex": "Go upstairs and wash your hands.",
+   "exz": "上楼去洗手。"
+  },
+  {
+   "phrase": "live upstairs",
+   "zh": "住在楼上",
+   "ex": "My friend lives upstairs.",
+   "exz": "我的朋友住在楼上。"
+  }
+ ],
+ "downstairs": [
+  {
+   "phrase": "go downstairs",
+   "zh": "下楼",
+   "ex": "Let's go downstairs for dinner.",
+   "exz": "我们下楼吃晚饭吧。"
+  },
+  {
+   "phrase": "come downstairs",
+   "zh": "下楼来",
+   "ex": "Come downstairs, Tom!",
+   "exz": "汤姆，下楼来！"
+  }
+ ],
+ "before": [
+  {
+   "phrase": "before school",
+   "zh": "上学前",
+   "ex": "I eat breakfast before school.",
+   "exz": "我上学前吃早饭。"
+  },
+  {
+   "phrase": "before bed",
+   "zh": "睡觉前",
+   "ex": "I brush my teeth before bed.",
+   "exz": "我睡前刷牙。"
+  }
+ ],
+ "after": [
+  {
+   "phrase": "after school",
+   "zh": "放学后",
+   "ex": "We play football after school.",
+   "exz": "我们放学后踢足球。"
+  },
+  {
+   "phrase": "after dinner",
+   "zh": "晚饭后",
+   "ex": "We take a walk after dinner.",
+   "exz": "我们晚饭后散步。"
+  }
+ ],
+ "here": [
+  {
+   "phrase": "come here",
+   "zh": "过来",
+   "ex": "Come here and look!",
+   "exz": "过来看！"
+  },
+  {
+   "phrase": "over here",
+   "zh": "在这边",
+   "ex": "Your bag is over here.",
+   "exz": "你的包在这边。"
+  }
+ ],
+ "there": [
+  {
+   "phrase": "over there",
+   "zh": "在那边",
+   "ex": "Look over there!",
+   "exz": "看那边！"
+  },
+  {
+   "phrase": "there is",
+   "zh": "有",
+   "ex": "There is a cat on the bed.",
+   "exz": "床上有一只猫。"
+  }
+ ],
+ "where": [
+  {
+   "phrase": "where is",
+   "zh": "……在哪里",
+   "ex": "Where is my pencil?",
+   "exz": "我的铅笔在哪里？"
+  },
+  {
+   "phrase": "where are you",
+   "zh": "你在哪里",
+   "ex": "Where are you, Mom?",
+   "exz": "妈妈，你在哪里？"
+  }
+ ],
+ "edge": [
+  {
+   "phrase": "the edge of",
+   "zh": "……的边缘",
+   "ex": "Don't stand at the edge of the pool.",
+   "exz": "别站在泳池边上。"
+  },
+  {
+   "phrase": "on the edge",
+   "zh": "在边上",
+   "ex": "The cup is on the edge of the table.",
+   "exz": "杯子在桌子边上。"
+  }
+ ],
+ "end": [
+  {
+   "phrase": "at the end of",
+   "zh": "在……的尽头",
+   "ex": "The shop is at the end of the street.",
+   "exz": "商店在街道尽头。"
+  },
+  {
+   "phrase": "the end",
+   "zh": "结束",
+   "ex": "The end. Did you like the story?",
+   "exz": "完。你喜欢这个故事吗？"
+  }
+ ],
+ "plum": [
+  {
+   "phrase": "a sweet plum",
+   "zh": "甜李子",
+   "ex": "This plum is very sweet.",
+   "exz": "这个李子很甜。"
+  },
+  {
+   "phrase": "plum tree",
+   "zh": "李子树",
+   "ex": "There is a plum tree in our garden.",
+   "exz": "我们的花园里有一棵李子树。"
+  }
+ ],
+ "melon": [
+  {
+   "phrase": "a slice of melon",
+   "zh": "一片瓜",
+   "ex": "Can I have a slice of melon?",
+   "exz": "我能吃一片瓜吗？"
+  },
+  {
+   "phrase": "sweet melon",
+   "zh": "甜瓜",
+   "ex": "We eat sweet melon in summer.",
+   "exz": "我们夏天吃甜瓜。"
+  }
+ ],
+ "pasta": [
+  {
+   "phrase": "cook pasta",
+   "zh": "煮意大利面",
+   "ex": "Dad can cook pasta.",
+   "exz": "爸爸会煮意大利面。"
+  },
+  {
+   "phrase": "a bowl of pasta",
+   "zh": "一碗意大利面",
+   "ex": "I want a bowl of pasta.",
+   "exz": "我想要一碗意大利面。"
+  }
+ ],
+ "biscuit": [
+  {
+   "phrase": "a box of biscuits",
+   "zh": "一盒饼干",
+   "ex": "Grandma gives me a box of biscuits.",
+   "exz": "奶奶给了我一盒饼干。"
+  },
+  {
+   "phrase": "eat a biscuit",
+   "zh": "吃块饼干",
+   "ex": "I eat a biscuit with my milk.",
+   "exz": "我就着牛奶吃块饼干。"
+  }
+ ],
+ "wheat": [
+  {
+   "phrase": "a field of wheat",
+   "zh": "一片麦田",
+   "ex": "There is a big field of wheat.",
+   "exz": "那里有一大片麦田。"
+  },
+  {
+   "phrase": "wheat bread",
+   "zh": "全麦面包",
+   "ex": "I like wheat bread.",
+   "exz": "我喜欢全麦面包。"
+  }
+ ],
+ "grain": [
+  {
+   "phrase": "a grain of rice",
+   "zh": "一粒米",
+   "ex": "Don't waste a grain of rice.",
+   "exz": "一粒米也不要浪费。"
+  },
+  {
+   "phrase": "a grain of sand",
+   "zh": "一粒沙子",
+   "ex": "There is a grain of sand in my shoe.",
+   "exz": "我鞋里有一粒沙子。"
+  }
+ ],
+ "flour": [
+  {
+   "phrase": "a bag of flour",
+   "zh": "一袋面粉",
+   "ex": "Mom buys a bag of flour.",
+   "exz": "妈妈买了一袋面粉。"
+  },
+  {
+   "phrase": "flour and water",
+   "zh": "面粉和水",
+   "ex": "We mix flour and water to make bread.",
+   "exz": "我们把面粉和水混在一起做面包。"
+  }
+ ],
+ "lettuce": [
+  {
+   "phrase": "a head of lettuce",
+   "zh": "一棵生菜",
+   "ex": "Please wash a head of lettuce.",
+   "exz": "请洗一棵生菜。"
+  },
+  {
+   "phrase": "lettuce leaf",
+   "zh": "生菜叶",
+   "ex": "The rabbit eats a lettuce leaf.",
+   "exz": "兔子在吃生菜叶。"
+  }
+ ],
+ "spinach": [
+  {
+   "phrase": "eat spinach",
+   "zh": "吃菠菜",
+   "ex": "Eat your spinach, it's good for you.",
+   "exz": "把菠菜吃了，对你身体好。"
+  },
+  {
+   "phrase": "spinach soup",
+   "zh": "菠菜汤",
+   "ex": "We have spinach soup for dinner.",
+   "exz": "我们晚饭喝菠菜汤。"
+  }
+ ],
+ "garlic": [
+  {
+   "phrase": "a clove of garlic",
+   "zh": "一瓣大蒜",
+   "ex": "Mom puts a clove of garlic in the soup.",
+   "exz": "妈妈往汤里放了一瓣大蒜。"
+  },
+  {
+   "phrase": "garlic bread",
+   "zh": "蒜香面包",
+   "ex": "I love garlic bread.",
+   "exz": "我爱吃蒜香面包。"
+  }
+ ],
+ "pepper": [
+  {
+   "phrase": "salt and pepper",
+   "zh": "盐和胡椒",
+   "ex": "Pass me the salt and pepper, please.",
+   "exz": "请把盐和胡椒递给我。"
+  },
+  {
+   "phrase": "green pepper",
+   "zh": "青椒",
+   "ex": "I don't like green peppers.",
+   "exz": "我不喜欢青椒。"
+  }
+ ],
+ "mushroom": [
+  {
+   "phrase": "mushroom soup",
+   "zh": "蘑菇汤",
+   "ex": "This mushroom soup is hot.",
+   "exz": "这碗蘑菇汤很烫。"
+  },
+  {
+   "phrase": "pick mushrooms",
+   "zh": "采蘑菇",
+   "ex": "We pick mushrooms in the forest.",
+   "exz": "我们在森林里采蘑菇。"
+  }
+ ],
+ "beef": [
+  {
+   "phrase": "beef noodles",
+   "zh": "牛肉面",
+   "ex": "I want beef noodles for lunch.",
+   "exz": "我午饭想吃牛肉面。"
+  },
+  {
+   "phrase": "a piece of beef",
+   "zh": "一块牛肉",
+   "ex": "Give the dog a piece of beef.",
+   "exz": "给狗一块牛肉。"
+  }
+ ],
+ "pork": [
+  {
+   "phrase": "pork and rice",
+   "zh": "猪肉饭",
+   "ex": "We have pork and rice today.",
+   "exz": "我们今天吃猪肉饭。"
+  },
+  {
+   "phrase": "pork bun",
+   "zh": "猪肉包子",
+   "ex": "I eat a pork bun for breakfast.",
+   "exz": "我早饭吃了一个猪肉包子。"
+  }
+ ],
+ "yogurt": [
+  {
+   "phrase": "a cup of yogurt",
+   "zh": "一杯酸奶",
+   "ex": "I drink a cup of yogurt every day.",
+   "exz": "我每天喝一杯酸奶。"
+  },
+  {
+   "phrase": "fruit yogurt",
+   "zh": "水果酸奶",
+   "ex": "Strawberry is my favorite fruit yogurt.",
+   "exz": "草莓是我最爱的水果酸奶。"
+  }
+ ],
+ "snack": [
+  {
+   "phrase": "have a snack",
+   "zh": "吃点零食",
+   "ex": "Let's have a snack after school.",
+   "exz": "放学后我们吃点零食吧。"
+  },
+  {
+   "phrase": "snack time",
+   "zh": "点心时间",
+   "ex": "It's snack time!",
+   "exz": "点心时间到啦！"
+  }
+ ],
+ "chip": [
+  {
+   "phrase": "a bag of chips",
+   "zh": "一袋薯片",
+   "ex": "Can I have a bag of chips?",
+   "exz": "我能要一袋薯片吗？"
+  },
+  {
+   "phrase": "fish and chips",
+   "zh": "炸鱼薯条",
+   "ex": "We eat fish and chips by the sea.",
+   "exz": "我们在海边吃炸鱼薯条。"
+  }
+ ],
+ "cookie": [
+  {
+   "phrase": "bake cookies",
+   "zh": "烤饼干",
+   "ex": "Mom and I bake cookies.",
+   "exz": "我和妈妈一起烤饼干。"
+  },
+  {
+   "phrase": "a jar of cookies",
+   "zh": "一罐饼干",
+   "ex": "There is a jar of cookies on the table.",
+   "exz": "桌上有一罐饼干。"
+  }
+ ],
+ "pie": [
+  {
+   "phrase": "apple pie",
+   "zh": "苹果派",
+   "ex": "Grandma makes apple pie.",
+   "exz": "奶奶做苹果派。"
+  },
+  {
+   "phrase": "a piece of pie",
+   "zh": "一块派",
+   "ex": "Can I have a piece of pie?",
+   "exz": "我能吃一块派吗？"
+  }
+ ],
+ "coffee": [
+  {
+   "phrase": "a cup of coffee",
+   "zh": "一杯咖啡",
+   "ex": "Dad drinks a cup of coffee every morning.",
+   "exz": "爸爸每天早上喝一杯咖啡。"
+  },
+  {
+   "phrase": "make coffee",
+   "zh": "冲咖啡",
+   "ex": "Mom is making coffee.",
+   "exz": "妈妈在冲咖啡。"
+  }
+ ],
+ "taste": [
+  {
+   "phrase": "taste good",
+   "zh": "尝起来很好",
+   "ex": "This cake tastes good.",
+   "exz": "这个蛋糕很好吃。"
+  },
+  {
+   "phrase": "have a taste",
+   "zh": "尝一尝",
+   "ex": "Have a taste of my soup.",
+   "exz": "尝尝我做的汤。"
+  }
+ ],
+ "sour": [
+  {
+   "phrase": "taste sour",
+   "zh": "尝起来酸",
+   "ex": "This lemon tastes sour.",
+   "exz": "这个柠檬很酸。"
+  },
+  {
+   "phrase": "sour milk",
+   "zh": "变酸的牛奶",
+   "ex": "Don't drink the sour milk.",
+   "exz": "别喝那变酸的牛奶。"
+  }
+ ],
+ "bitter": [
+  {
+   "phrase": "taste bitter",
+   "zh": "尝起来苦",
+   "ex": "The medicine tastes bitter.",
+   "exz": "这药很苦。"
+  },
+  {
+   "phrase": "bitter coffee",
+   "zh": "苦咖啡",
+   "ex": "Dad likes bitter coffee.",
+   "exz": "爸爸喜欢喝苦咖啡。"
+  }
+ ],
+ "salty": [
+  {
+   "phrase": "too salty",
+   "zh": "太咸了",
+   "ex": "The soup is too salty.",
+   "exz": "这汤太咸了。"
+  },
+  {
+   "phrase": "salty water",
+   "zh": "咸水",
+   "ex": "Sea water is salty water.",
+   "exz": "海水是咸的。"
+  }
+ ],
+ "raw": [
+  {
+   "phrase": "raw meat",
+   "zh": "生肉",
+   "ex": "Don't eat raw meat.",
+   "exz": "不要吃生肉。"
+  },
+  {
+   "phrase": "raw carrot",
+   "zh": "生胡萝卜",
+   "ex": "The rabbit likes raw carrots.",
+   "exz": "兔子喜欢吃生胡萝卜。"
+  }
+ ],
+ "dry": [
+  {
+   "phrase": "dry clothes",
+   "zh": "干衣服",
+   "ex": "Put on some dry clothes.",
+   "exz": "换上干衣服吧。"
+  },
+  {
+   "phrase": "keep dry",
+   "zh": "保持干燥",
+   "ex": "Keep your feet dry.",
+   "exz": "让你的脚保持干燥。"
+  }
+ ],
+ "rough": [
+  {
+   "phrase": "rough hands",
+   "zh": "粗糙的手",
+   "ex": "Grandpa has rough hands.",
+   "exz": "爷爷的手很粗糙。"
+  },
+  {
+   "phrase": "feel rough",
+   "zh": "摸起来粗糙",
+   "ex": "The tree feels rough.",
+   "exz": "这棵树摸起来很粗糙。"
+  }
+ ],
+ "smooth": [
+  {
+   "phrase": "smooth skin",
+   "zh": "光滑的皮肤",
+   "ex": "The baby has smooth skin.",
+   "exz": "宝宝的皮肤很光滑。"
+  },
+  {
+   "phrase": "feel smooth",
+   "zh": "摸起来光滑",
+   "ex": "This stone feels smooth.",
+   "exz": "这块石头摸起来很光滑。"
+  }
+ ],
+ "thirsty": [
+  {
+   "phrase": "feel thirsty",
+   "zh": "感到口渴",
+   "ex": "I feel thirsty after running.",
+   "exz": "跑完步我觉得口渴。"
+  },
+  {
+   "phrase": "thirsty for water",
+   "zh": "想喝水",
+   "ex": "The dog is thirsty for water.",
+   "exz": "狗想喝水了。"
+  }
+ ],
+ "sick": [
+  {
+   "phrase": "feel sick",
+   "zh": "感觉不舒服",
+   "ex": "I feel sick today.",
+   "exz": "我今天不太舒服。"
+  },
+  {
+   "phrase": "get sick",
+   "zh": "生病",
+   "ex": "Wear a coat, or you'll get sick.",
+   "exz": "穿上外套，不然会生病的。"
+  }
+ ],
+ "like": [
+  {
+   "phrase": "like to",
+   "zh": "喜欢做",
+   "ex": "I like to draw pictures.",
+   "exz": "我喜欢画画。"
+  },
+  {
+   "phrase": "look like",
+   "zh": "看起来像",
+   "ex": "You look like your mom.",
+   "exz": "你长得像你妈妈。"
+  },
+  {
+   "phrase": "would like",
+   "zh": "想要",
+   "ex": "I would like some water, please.",
+   "exz": "我想要点水，谢谢。"
+  }
+ ],
+ "want": [
+  {
+   "phrase": "want to",
+   "zh": "想要做",
+   "ex": "I want to go to the park.",
+   "exz": "我想去公园。"
+  },
+  {
+   "phrase": "want some",
+   "zh": "想要一些",
+   "ex": "Do you want some cake?",
+   "exz": "你想吃点蛋糕吗？"
+  }
+ ],
+ "need": [
+  {
+   "phrase": "need to",
+   "zh": "需要做",
+   "ex": "I need to wash my hands.",
+   "exz": "我需要洗手。"
+  },
+  {
+   "phrase": "need help",
+   "zh": "需要帮助",
+   "ex": "Do you need help?",
+   "exz": "你需要帮忙吗？"
+  }
+ ],
+ "hope": [
+  {
+   "phrase": "I hope",
+   "zh": "我希望",
+   "ex": "I hope it is sunny tomorrow.",
+   "exz": "我希望明天是晴天。"
+  },
+  {
+   "phrase": "hope so",
+   "zh": "希望如此",
+   "ex": "Will you come? I hope so.",
+   "exz": "你会来吗？希望如此。"
+  }
+ ],
+ "joy": [
+  {
+   "phrase": "jump for joy",
+   "zh": "高兴得跳起来",
+   "ex": "The children jump for joy.",
+   "exz": "孩子们高兴得跳了起来。"
+  },
+  {
+   "phrase": "full of joy",
+   "zh": "充满快乐",
+   "ex": "Her face is full of joy.",
+   "exz": "她满脸都是快乐。"
+  }
+ ],
+ "calm": [
+  {
+   "phrase": "calm down",
+   "zh": "冷静下来",
+   "ex": "Calm down and take a deep breath.",
+   "exz": "冷静下来，深呼吸。"
+  },
+  {
+   "phrase": "keep calm",
+   "zh": "保持冷静",
+   "ex": "Keep calm and wait for Mom.",
+   "exz": "保持冷静，等妈妈来。"
+  }
+ ],
+ "heart": [
+  {
+   "phrase": "by heart",
+   "zh": "凭记忆",
+   "ex": "I know this song by heart.",
+   "exz": "这首歌我会背了。"
+  },
+  {
+   "phrase": "a kind heart",
+   "zh": "善良的心",
+   "ex": "My teacher has a kind heart.",
+   "exz": "我的老师心地善良。"
+  }
+ ],
+ "blood": [
+  {
+   "phrase": "red blood",
+   "zh": "红色的血",
+   "ex": "Blood is red.",
+   "exz": "血是红色的。"
+  },
+  {
+   "phrase": "lose blood",
+   "zh": "流血",
+   "ex": "Don't worry, you didn't lose much blood.",
+   "exz": "别担心，你没流多少血。"
+  }
+ ],
+ "I": [
+  {
+   "phrase": "I am",
+   "zh": "我是",
+   "ex": "I am seven years old.",
+   "exz": "我七岁了。"
+  },
+  {
+   "phrase": "I can",
+   "zh": "我会",
+   "ex": "I can swim.",
+   "exz": "我会游泳。"
+  }
+ ],
+ "you": [
+  {
+   "phrase": "thank you",
+   "zh": "谢谢你",
+   "ex": "Thank you for the gift.",
+   "exz": "谢谢你的礼物。"
+  },
+  {
+   "phrase": "you are",
+   "zh": "你是",
+   "ex": "You are my best friend.",
+   "exz": "你是我最好的朋友。"
+  }
+ ],
+ "he": [
+  {
+   "phrase": "he is",
+   "zh": "他是",
+   "ex": "He is my brother.",
+   "exz": "他是我哥哥。"
+  },
+  {
+   "phrase": "he can",
+   "zh": "他会",
+   "ex": "He can ride a bike.",
+   "exz": "他会骑自行车。"
+  }
+ ],
+ "she": [
+  {
+   "phrase": "she is",
+   "zh": "她是",
+   "ex": "She is my sister.",
+   "exz": "她是我姐姐。"
+  },
+  {
+   "phrase": "she likes",
+   "zh": "她喜欢",
+   "ex": "She likes dancing.",
+   "exz": "她喜欢跳舞。"
+  }
+ ],
+ "we": [
+  {
+   "phrase": "we are",
+   "zh": "我们是",
+   "ex": "We are good friends.",
+   "exz": "我们是好朋友。"
+  },
+  {
+   "phrase": "we can",
+   "zh": "我们可以",
+   "ex": "We can play together.",
+   "exz": "我们可以一起玩。"
+  }
+ ],
+ "they": [
+  {
+   "phrase": "they are",
+   "zh": "他们是",
+   "ex": "They are my classmates.",
+   "exz": "他们是我的同学。"
+  },
+  {
+   "phrase": "they like",
+   "zh": "他们喜欢",
+   "ex": "They like playing football.",
+   "exz": "他们喜欢踢足球。"
+  }
+ ],
+ "thirteen": [
+  {
+   "phrase": "thirteen years old",
+   "zh": "十三岁",
+   "ex": "My brother is thirteen years old.",
+   "exz": "我哥哥十三岁。"
+  },
+  {
+   "phrase": "thirteen apples",
+   "zh": "十三个苹果",
+   "ex": "There are thirteen apples in the box.",
+   "exz": "箱子里有十三个苹果。"
+  }
+ ],
+ "fourteen": [
+  {
+   "phrase": "fourteen days",
+   "zh": "十四天",
+   "ex": "Two weeks is fourteen days.",
+   "exz": "两周是十四天。"
+  },
+  {
+   "phrase": "fourteen students",
+   "zh": "十四个学生",
+   "ex": "There are fourteen students in the room.",
+   "exz": "房间里有十四个学生。"
+  }
+ ],
+ "fifteen": [
+  {
+   "phrase": "fifteen minutes",
+   "zh": "十五分钟",
+   "ex": "I read for fifteen minutes.",
+   "exz": "我读了十五分钟书。"
+  },
+  {
+   "phrase": "fifteen years old",
+   "zh": "十五岁",
+   "ex": "My cousin is fifteen years old.",
+   "exz": "我表姐十五岁。"
+  }
+ ],
+ "sixteen": [
+  {
+   "phrase": "sixteen pages",
+   "zh": "十六页",
+   "ex": "This book has sixteen pages.",
+   "exz": "这本书有十六页。"
+  },
+  {
+   "phrase": "sixteen years old",
+   "zh": "十六岁",
+   "ex": "She is sixteen years old.",
+   "exz": "她十六岁。"
+  }
+ ],
+ "seventeen": [
+  {
+   "phrase": "seventeen birds",
+   "zh": "十七只鸟",
+   "ex": "I can see seventeen birds.",
+   "exz": "我能看到十七只鸟。"
+  },
+  {
+   "phrase": "seventeen years old",
+   "zh": "十七岁",
+   "ex": "He is seventeen years old.",
+   "exz": "他十七岁。"
+  }
+ ],
+ "eighteen": [
+  {
+   "phrase": "eighteen years old",
+   "zh": "十八岁",
+   "ex": "My big sister is eighteen years old.",
+   "exz": "我大姐十八岁。"
+  },
+  {
+   "phrase": "eighteen eggs",
+   "zh": "十八个鸡蛋",
+   "ex": "Mom buys eighteen eggs.",
+   "exz": "妈妈买了十八个鸡蛋。"
+  }
+ ],
+ "nineteen": [
+  {
+   "phrase": "nineteen years old",
+   "zh": "十九岁",
+   "ex": "He is nineteen years old.",
+   "exz": "他十九岁。"
+  },
+  {
+   "phrase": "nineteen cars",
+   "zh": "十九辆车",
+   "ex": "There are nineteen cars on the road.",
+   "exz": "路上有十九辆车。"
+  }
+ ],
+ "twenty": [
+  {
+   "phrase": "twenty minutes",
+   "zh": "二十分钟",
+   "ex": "Wait for twenty minutes.",
+   "exz": "等二十分钟。"
+  },
+  {
+   "phrase": "twenty years old",
+   "zh": "二十岁",
+   "ex": "My aunt is twenty years old.",
+   "exz": "我阿姨二十岁。"
+  }
+ ],
+ "thirty": [
+  {
+   "phrase": "thirty days",
+   "zh": "三十天",
+   "ex": "April has thirty days.",
+   "exz": "四月有三十天。"
+  },
+  {
+   "phrase": "thirty minutes",
+   "zh": "三十分钟",
+   "ex": "The film is thirty minutes long.",
+   "exz": "这部电影有三十分钟长。"
+  }
+ ],
+ "forty": [
+  {
+   "phrase": "forty students",
+   "zh": "四十个学生",
+   "ex": "There are forty students in my class.",
+   "exz": "我们班有四十个学生。"
+  },
+  {
+   "phrase": "forty years old",
+   "zh": "四十岁",
+   "ex": "My dad is forty years old.",
+   "exz": "我爸爸四十岁。"
+  }
+ ],
+ "fifty": [
+  {
+   "phrase": "fifty years old",
+   "zh": "五十岁",
+   "ex": "My uncle is fifty years old.",
+   "exz": "我叔叔五十岁。"
+  },
+  {
+   "phrase": "fifty yuan",
+   "zh": "五十元",
+   "ex": "This bag is fifty yuan.",
+   "exz": "这个包五十元。"
+  }
+ ],
+ "sixty": [
+  {
+   "phrase": "sixty minutes",
+   "zh": "六十分钟",
+   "ex": "An hour has sixty minutes.",
+   "exz": "一小时有六十分钟。"
+  },
+  {
+   "phrase": "sixty seconds",
+   "zh": "六十秒",
+   "ex": "A minute has sixty seconds.",
+   "exz": "一分钟有六十秒。"
+  }
+ ],
+ "seventy": [
+  {
+   "phrase": "seventy years old",
+   "zh": "七十岁",
+   "ex": "My grandma is seventy years old.",
+   "exz": "我奶奶七十岁。"
+  },
+  {
+   "phrase": "seventy pages",
+   "zh": "七十页",
+   "ex": "I read seventy pages today.",
+   "exz": "我今天读了七十页。"
+  }
+ ],
+ "eighty": [
+  {
+   "phrase": "eighty years old",
+   "zh": "八十岁",
+   "ex": "My grandpa is eighty years old.",
+   "exz": "我爷爷八十岁。"
+  },
+  {
+   "phrase": "eighty people",
+   "zh": "八十个人",
+   "ex": "Eighty people are in the hall.",
+   "exz": "大厅里有八十个人。"
+  }
+ ],
+ "ninety": [
+  {
+   "phrase": "ninety points",
+   "zh": "九十分",
+   "ex": "I got ninety points in the test.",
+   "exz": "我考试得了九十分。"
+  },
+  {
+   "phrase": "ninety years old",
+   "zh": "九十岁",
+   "ex": "My great-grandma is ninety years old.",
+   "exz": "我太奶奶九十岁。"
+  }
+ ],
+ "hundred": [
+  {
+   "phrase": "one hundred",
+   "zh": "一百",
+   "ex": "I can count to one hundred.",
+   "exz": "我能数到一百。"
+  },
+  {
+   "phrase": "hundreds of",
+   "zh": "成百上千的",
+   "ex": "There are hundreds of stars in the sky.",
+   "exz": "天上有成百上千颗星星。"
+  }
+ ],
+ "fourth": [
+  {
+   "phrase": "the fourth day",
+   "zh": "第四天",
+   "ex": "Thursday is the fourth day of the school week.",
+   "exz": "星期四是上学的第四天。"
+  },
+  {
+   "phrase": "fourth floor",
+   "zh": "四楼",
+   "ex": "We live on the fourth floor.",
+   "exz": "我们住在四楼。"
+  }
+ ],
+ "fifth": [
+  {
+   "phrase": "the fifth grade",
+   "zh": "五年级",
+   "ex": "My brother is in the fifth grade.",
+   "exz": "我哥哥上五年级。"
+  },
+  {
+   "phrase": "fifth birthday",
+   "zh": "五岁生日",
+   "ex": "Today is my sister's fifth birthday.",
+   "exz": "今天是我妹妹的五岁生日。"
+  }
+ ],
+ "sixth": [
+  {
+   "phrase": "the sixth day",
+   "zh": "第六天",
+   "ex": "Saturday is the sixth day.",
+   "exz": "星期六是第六天。"
+  },
+  {
+   "phrase": "sixth floor",
+   "zh": "六楼",
+   "ex": "My classroom is on the sixth floor.",
+   "exz": "我的教室在六楼。"
+  }
+ ],
+ "seventh": [
+  {
+   "phrase": "seventh birthday",
+   "zh": "七岁生日",
+   "ex": "This is my seventh birthday.",
+   "exz": "这是我的七岁生日。"
+  },
+  {
+   "phrase": "the seventh day",
+   "zh": "第七天",
+   "ex": "Sunday is the seventh day.",
+   "exz": "星期天是第七天。"
+  }
+ ],
+ "eighth": [
+  {
+   "phrase": "eighth birthday",
+   "zh": "八岁生日",
+   "ex": "I am having my eighth birthday party.",
+   "exz": "我在开八岁生日派对。"
+  },
+  {
+   "phrase": "the eighth floor",
+   "zh": "八楼",
+   "ex": "Grandma lives on the eighth floor.",
+   "exz": "奶奶住在八楼。"
+  }
+ ],
+ "ninth": [
+  {
+   "phrase": "the ninth day",
+   "zh": "第九天",
+   "ex": "Today is the ninth day of our trip.",
+   "exz": "今天是我们旅行的第九天。"
+  },
+  {
+   "phrase": "ninth floor",
+   "zh": "九楼",
+   "ex": "The lift goes up to the ninth floor.",
+   "exz": "电梯上到九楼。"
+  }
+ ],
+ "today": [
+  {
+   "phrase": "today is",
+   "zh": "今天是",
+   "ex": "Today is Monday.",
+   "exz": "今天是星期一。"
+  },
+  {
+   "phrase": "see you today",
+   "zh": "今天见",
+   "ex": "See you today after school!",
+   "exz": "今天放学后见！"
+  }
+ ],
+ "tomorrow": [
+  {
+   "phrase": "see you tomorrow",
+   "zh": "明天见",
+   "ex": "Goodbye, see you tomorrow!",
+   "exz": "再见，明天见！"
+  },
+  {
+   "phrase": "tomorrow morning",
+   "zh": "明天早上",
+   "ex": "We will leave tomorrow morning.",
+   "exz": "我们明天早上出发。"
+  }
+ ],
+ "month": [
+  {
+   "phrase": "next month",
+   "zh": "下个月",
+   "ex": "My birthday is next month.",
+   "exz": "我的生日在下个月。"
+  },
+  {
+   "phrase": "every month",
+   "zh": "每个月",
+   "ex": "We visit Grandma every month.",
+   "exz": "我们每个月都去看奶奶。"
+  }
+ ],
+ "o'clock": [
+  {
+   "phrase": "seven o'clock",
+   "zh": "七点钟",
+   "ex": "I get up at seven o'clock.",
+   "exz": "我七点钟起床。"
+  },
+  {
+   "phrase": "at three o'clock",
+   "zh": "在三点钟",
+   "ex": "School ends at three o'clock.",
+   "exz": "学校三点钟放学。"
+  }
+ ],
+ "quarter": [
+  {
+   "phrase": "a quarter past",
+   "zh": "……点过一刻",
+   "ex": "It's a quarter past nine.",
+   "exz": "现在九点一刻。"
+  },
+  {
+   "phrase": "a quarter to",
+   "zh": "差一刻……点",
+   "ex": "It's a quarter to eight.",
+   "exz": "现在差一刻八点。"
+  }
+ ],
+ "to": [
+  {
+   "phrase": "go to school",
+   "zh": "去上学",
+   "ex": "I go to school by bike.",
+   "exz": "我骑车去上学。"
+  },
+  {
+   "phrase": "a quarter to",
+   "zh": "差一刻……点",
+   "ex": "It's a quarter to six.",
+   "exz": "现在差一刻六点。"
+  },
+  {
+   "phrase": "from A to B",
+   "zh": "从A到B",
+   "ex": "I walk from home to school.",
+   "exz": "我从家走到学校。"
+  }
+ ],
+ "Monday": [
+  {
+   "phrase": "on Monday",
+   "zh": "在星期一",
+   "ex": "We have music on Monday.",
+   "exz": "我们星期一有音乐课。"
+  },
+  {
+   "phrase": "Monday morning",
+   "zh": "星期一早上",
+   "ex": "I feel sleepy on Monday morning.",
+   "exz": "星期一早上我总是很困。"
+  }
+ ],
+ "Tuesday": [
+  {
+   "phrase": "on Tuesday",
+   "zh": "在星期二",
+   "ex": "We play football on Tuesday.",
+   "exz": "我们星期二踢足球。"
+  },
+  {
+   "phrase": "next Tuesday",
+   "zh": "下周二",
+   "ex": "See you next Tuesday.",
+   "exz": "下周二见。"
+  }
+ ],
+ "Wednesday": [
+  {
+   "phrase": "on Wednesday",
+   "zh": "在星期三",
+   "ex": "I go swimming on Wednesday.",
+   "exz": "我星期三去游泳。"
+  },
+  {
+   "phrase": "Wednesday afternoon",
+   "zh": "星期三下午",
+   "ex": "We have art on Wednesday afternoon.",
+   "exz": "我们星期三下午有美术课。"
+  }
+ ],
+ "Thursday": [
+  {
+   "phrase": "on Thursday",
+   "zh": "在星期四",
+   "ex": "Grandma visits us on Thursday.",
+   "exz": "奶奶星期四来看我们。"
+  },
+  {
+   "phrase": "every Thursday",
+   "zh": "每周四",
+   "ex": "I have a piano lesson every Thursday.",
+   "exz": "我每周四上钢琴课。"
+  }
+ ],
+ "January": [
+  {
+   "phrase": "in January",
+   "zh": "在一月",
+   "ex": "It snows in January.",
+   "exz": "一月会下雪。"
+  },
+  {
+   "phrase": "January first",
+   "zh": "一月一日",
+   "ex": "January first is New Year's Day.",
+   "exz": "一月一日是元旦。"
+  }
+ ],
+ "February": [
+  {
+   "phrase": "in February",
+   "zh": "在二月",
+   "ex": "My birthday is in February.",
+   "exz": "我的生日在二月。"
+  },
+  {
+   "phrase": "cold February",
+   "zh": "寒冷的二月",
+   "ex": "It is a cold February.",
+   "exz": "这是一个寒冷的二月。"
+  }
+ ],
+ "March": [
+  {
+   "phrase": "in March",
+   "zh": "在三月",
+   "ex": "Flowers come out in March.",
+   "exz": "三月花开了。"
+  },
+  {
+   "phrase": "March wind",
+   "zh": "三月的风",
+   "ex": "The March wind is soft.",
+   "exz": "三月的风很温柔。"
+  }
+ ],
+ "April": [
+  {
+   "phrase": "in April",
+   "zh": "在四月",
+   "ex": "It often rains in April.",
+   "exz": "四月经常下雨。"
+  },
+  {
+   "phrase": "April Fool's Day",
+   "zh": "愚人节",
+   "ex": "April Fool's Day is April first.",
+   "exz": "愚人节是四月一日。"
+  }
+ ],
+ "may": [
+  {
+   "phrase": "in May",
+   "zh": "在五月",
+   "ex": "We fly kites in May.",
+   "exz": "我们五月放风筝。"
+  },
+  {
+   "phrase": "may I",
+   "zh": "我可以……吗",
+   "ex": "May I come in?",
+   "exz": "我可以进来吗？"
+  }
+ ],
+ "July": [
+  {
+   "phrase": "in July",
+   "zh": "在七月",
+   "ex": "It is very hot in July.",
+   "exz": "七月非常热。"
+  },
+  {
+   "phrase": "July holiday",
+   "zh": "七月假期",
+   "ex": "We go to the sea in the July holiday.",
+   "exz": "七月放假我们去海边。"
+  }
+ ],
+ "August": [
+  {
+   "phrase": "in August",
+   "zh": "在八月",
+   "ex": "We go to the beach in August.",
+   "exz": "我们八月去海滩。"
+  },
+  {
+   "phrase": "hot August",
+   "zh": "炎热的八月",
+   "ex": "Hot August days are long.",
+   "exz": "炎热的八月白天很长。"
+  }
+ ],
+ "September": [
+  {
+   "phrase": "in September",
+   "zh": "在九月",
+   "ex": "School starts in September.",
+   "exz": "九月开学。"
+  },
+  {
+   "phrase": "September first",
+   "zh": "九月一日",
+   "ex": "September first is the first day of school.",
+   "exz": "九月一日是开学第一天。"
+  }
+ ],
+ "October": [
+  {
+   "phrase": "in October",
+   "zh": "在十月",
+   "ex": "The leaves turn red in October.",
+   "exz": "十月树叶变红了。"
+  },
+  {
+   "phrase": "October holiday",
+   "zh": "十月假期",
+   "ex": "We visit Grandpa in the October holiday.",
+   "exz": "十月放假我们去看爷爷。"
+  }
+ ],
+ "November": [
+  {
+   "phrase": "in November",
+   "zh": "在十一月",
+   "ex": "It gets cold in November.",
+   "exz": "十一月天气变冷了。"
+  },
+  {
+   "phrase": "late November",
+   "zh": "十一月底",
+   "ex": "The first snow comes in late November.",
+   "exz": "十一月底下了第一场雪。"
+  }
+ ],
+ "December": [
+  {
+   "phrase": "in December",
+   "zh": "在十二月",
+   "ex": "Christmas is in December.",
+   "exz": "圣诞节在十二月。"
+  },
+  {
+   "phrase": "December twenty-fifth",
+   "zh": "十二月二十五日",
+   "ex": "Christmas Day is December twenty-fifth.",
+   "exz": "圣诞节是十二月二十五日。"
+  }
+ ],
+ "go": [
+  {
+   "phrase": "go home",
+   "zh": "回家",
+   "ex": "It's late. Let's go home.",
+   "exz": "很晚了，我们回家吧。"
+  },
+  {
+   "phrase": "go to bed",
+   "zh": "上床睡觉",
+   "ex": "I go to bed at nine.",
+   "exz": "我九点上床睡觉。"
+  },
+  {
+   "phrase": "let's go",
+   "zh": "我们走吧",
+   "ex": "Let's go to the park!",
+   "exz": "我们去公园吧！"
+  }
+ ],
+ "come": [
+  {
+   "phrase": "come here",
+   "zh": "过来",
+   "ex": "Come here, Tom!",
+   "exz": "汤姆，过来！"
+  },
+  {
+   "phrase": "come home",
+   "zh": "回家",
+   "ex": "Dad comes home at six.",
+   "exz": "爸爸六点回家。"
+  },
+  {
+   "phrase": "come on",
+   "zh": "加油；快点",
+   "ex": "Come on, you can do it!",
+   "exz": "加油，你能行！"
+  }
+ ],
+ "see": [
+  {
+   "phrase": "see you",
+   "zh": "再见",
+   "ex": "See you tomorrow!",
+   "exz": "明天见！"
+  },
+  {
+   "phrase": "let me see",
+   "zh": "让我想想",
+   "ex": "Let me see... it's red!",
+   "exz": "让我想想……是红色的！"
+  }
+ ],
+ "hear": [
+  {
+   "phrase": "hear a sound",
+   "zh": "听到声音",
+   "ex": "I hear a sound outside.",
+   "exz": "我听到外面有声音。"
+  },
+  {
+   "phrase": "hear about",
+   "zh": "听说",
+   "ex": "Did you hear about the new park?",
+   "exz": "你听说新公园的事了吗？"
+  }
+ ],
+ "take": [
+  {
+   "phrase": "take a photo",
+   "zh": "拍照",
+   "ex": "Let's take a photo together.",
+   "exz": "我们一起拍张照吧。"
+  },
+  {
+   "phrase": "take a bus",
+   "zh": "坐公交车",
+   "ex": "We take a bus to the zoo.",
+   "exz": "我们坐公交车去动物园。"
+  },
+  {
+   "phrase": "take a rest",
+   "zh": "休息一下",
+   "ex": "I'm tired. Let's take a rest.",
+   "exz": "我累了，休息一下吧。"
+  }
+ ],
+ "give": [
+  {
+   "phrase": "give me",
+   "zh": "给我",
+   "ex": "Give me the ball, please.",
+   "exz": "请把球给我。"
+  },
+  {
+   "phrase": "give up",
+   "zh": "放弃",
+   "ex": "Don't give up!",
+   "exz": "不要放弃！"
+  }
+ ],
+ "stand": [
+  {
+   "phrase": "stand up",
+   "zh": "站起来",
+   "ex": "Stand up, please.",
+   "exz": "请站起来。"
+  },
+  {
+   "phrase": "stand in line",
+   "zh": "排队",
+   "ex": "We stand in line for lunch.",
+   "exz": "我们排队吃午饭。"
+  }
+ ],
+ "open": [
+  {
+   "phrase": "open the door",
+   "zh": "开门",
+   "ex": "Please open the door.",
+   "exz": "请把门打开。"
+  },
+  {
+   "phrase": "open your book",
+   "zh": "打开书",
+   "ex": "Open your book to page ten.",
+   "exz": "把书翻到第十页。"
+  },
+  {
+   "phrase": "the door is open",
+   "zh": "门开着",
+   "ex": "The door is open. Come in!",
+   "exz": "门开着，进来吧！"
+  }
+ ],
+ "sausage": [
+  {
+   "phrase": "hot sausage",
+   "zh": "热香肠",
+   "ex": "I eat a hot sausage for breakfast.",
+   "exz": "我早饭吃了一根热香肠。"
+  },
+  {
+   "phrase": "sausage and eggs",
+   "zh": "香肠煎蛋",
+   "ex": "Dad makes sausage and eggs.",
+   "exz": "爸爸做了香肠煎蛋。"
+  }
+ ],
+ "eggplant": [
+  {
+   "phrase": "a purple eggplant",
+   "zh": "紫色的茄子",
+   "ex": "This is a big purple eggplant.",
+   "exz": "这是一个紫色的大茄子。"
+  },
+  {
+   "phrase": "cook eggplant",
+   "zh": "做茄子",
+   "ex": "Grandma can cook eggplant very well.",
+   "exz": "奶奶做茄子很好吃。"
+  }
+ ],
+ "tofu": [
+  {
+   "phrase": "a piece of tofu",
+   "zh": "一块豆腐",
+   "ex": "Put a piece of tofu in the soup.",
+   "exz": "在汤里放一块豆腐。"
+  },
+  {
+   "phrase": "soft tofu",
+   "zh": "嫩豆腐",
+   "ex": "Soft tofu is easy to eat.",
+   "exz": "嫩豆腐很好入口。"
+  }
+ ],
+ "popcorn": [
+  {
+   "phrase": "eat popcorn",
+   "zh": "吃爆米花",
+   "ex": "We eat popcorn at the cinema.",
+   "exz": "我们在电影院吃爆米花。"
+  },
+  {
+   "phrase": "a bag of popcorn",
+   "zh": "一袋爆米花",
+   "ex": "Can I have a bag of popcorn?",
+   "exz": "我能要一袋爆米花吗？"
+  }
+ ],
+ "jelly": [
+  {
+   "phrase": "strawberry jelly",
+   "zh": "草莓果冻",
+   "ex": "I love strawberry jelly.",
+   "exz": "我爱吃草莓果冻。"
+  },
+  {
+   "phrase": "a cup of jelly",
+   "zh": "一杯果冻",
+   "ex": "There is a cup of jelly in the fridge.",
+   "exz": "冰箱里有一杯果冻。"
+  }
+ ],
+ "honey": [
+  {
+   "phrase": "sweet honey",
+   "zh": "甜甜的蜂蜜",
+   "ex": "Bees make sweet honey.",
+   "exz": "蜜蜂酿出甜甜的蜂蜜。"
+  },
+  {
+   "phrase": "a jar of honey",
+   "zh": "一罐蜂蜜",
+   "ex": "The bear finds a jar of honey.",
+   "exz": "小熊找到了一罐蜂蜜。"
+  }
+ ],
+ "jam": [
+  {
+   "phrase": "bread and jam",
+   "zh": "果酱面包",
+   "ex": "I have bread and jam for breakfast.",
+   "exz": "我早饭吃果酱面包。"
+  },
+  {
+   "phrase": "strawberry jam",
+   "zh": "草莓酱",
+   "ex": "Mom makes strawberry jam.",
+   "exz": "妈妈做草莓酱。"
+  }
+ ],
+ "cola": [
+  {
+   "phrase": "a can of cola",
+   "zh": "一罐可乐",
+   "ex": "Can I have a can of cola?",
+   "exz": "我能要一罐可乐吗？"
+  },
+  {
+   "phrase": "too much cola",
+   "zh": "太多可乐",
+   "ex": "Too much cola is bad for your teeth.",
+   "exz": "喝太多可乐对牙齿不好。"
+  }
+ ],
+ "spicy": [
+  {
+   "phrase": "spicy food",
+   "zh": "辣的食物",
+   "ex": "My dad likes spicy food.",
+   "exz": "我爸爸喜欢吃辣。"
+  },
+  {
+   "phrase": "too spicy",
+   "zh": "太辣了",
+   "ex": "This soup is too spicy for me.",
+   "exz": "这汤对我来说太辣了。"
+  }
+ ],
+ "yummy": [
+  {
+   "phrase": "yummy cake",
+   "zh": "好吃的蛋糕",
+   "ex": "What a yummy cake!",
+   "exz": "多好吃的蛋糕啊！"
+  },
+  {
+   "phrase": "so yummy",
+   "zh": "真好吃",
+   "ex": "The ice cream is so yummy.",
+   "exz": "冰淇淋真好吃。"
+  }
+ ],
+ "tasty": [
+  {
+   "phrase": "tasty food",
+   "zh": "可口的食物",
+   "ex": "Grandma cooks tasty food.",
+   "exz": "奶奶做的饭很可口。"
+  },
+  {
+   "phrase": "look tasty",
+   "zh": "看起来很好吃",
+   "ex": "These apples look tasty.",
+   "exz": "这些苹果看起来很好吃。"
+  }
+ ],
+ "juicy": [
+  {
+   "phrase": "a juicy orange",
+   "zh": "多汁的橙子",
+   "ex": "This is a juicy orange.",
+   "exz": "这是一个多汁的橙子。"
+  },
+  {
+   "phrase": "juicy watermelon",
+   "zh": "多汁的西瓜",
+   "ex": "We eat juicy watermelon in summer.",
+   "exz": "我们夏天吃多汁的西瓜。"
+  }
+ ],
+ "icy": [
+  {
+   "phrase": "icy water",
+   "zh": "冰冷的水",
+   "ex": "Don't swim in the icy water.",
+   "exz": "别在冰冷的水里游泳。"
+  },
+  {
+   "phrase": "icy road",
+   "zh": "结冰的路",
+   "ex": "Walk slowly on the icy road.",
+   "exz": "在结冰的路上慢慢走。"
+  }
+ ],
+ "sticky": [
+  {
+   "phrase": "sticky hands",
+   "zh": "黏糊糊的手",
+   "ex": "Wash your sticky hands.",
+   "exz": "把黏糊糊的手洗干净。"
+  },
+  {
+   "phrase": "sticky rice",
+   "zh": "糯米",
+   "ex": "We eat sticky rice at the festival.",
+   "exz": "过节我们吃糯米。"
+  }
+ ],
+ "sharp": [
+  {
+   "phrase": "a sharp knife",
+   "zh": "锋利的刀",
+   "ex": "Be careful with the sharp knife.",
+   "exz": "小心那把锋利的刀。"
+  },
+  {
+   "phrase": "a sharp pencil",
+   "zh": "削尖的铅笔",
+   "ex": "I need a sharp pencil.",
+   "exz": "我需要一支削尖的铅笔。"
+  }
+ ],
+ "fluffy": [
+  {
+   "phrase": "a fluffy cat",
+   "zh": "毛茸茸的猫",
+   "ex": "I have a fluffy white cat.",
+   "exz": "我有一只毛茸茸的白猫。"
+  },
+  {
+   "phrase": "fluffy clouds",
+   "zh": "松软的白云",
+   "ex": "Look at the fluffy clouds!",
+   "exz": "看那些松软的白云！"
+  }
+ ],
+ "glad": [
+  {
+   "phrase": "glad to see you",
+   "zh": "很高兴见到你",
+   "ex": "I'm glad to see you.",
+   "exz": "很高兴见到你。"
+  },
+  {
+   "phrase": "I'm glad",
+   "zh": "我很高兴",
+   "ex": "I'm glad you like it.",
+   "exz": "你喜欢我很高兴。"
+  }
+ ],
+ "unhappy": [
+  {
+   "phrase": "feel unhappy",
+   "zh": "感到不开心",
+   "ex": "I feel unhappy when it rains.",
+   "exz": "下雨的时候我不开心。"
+  },
+  {
+   "phrase": "look unhappy",
+   "zh": "看起来不开心",
+   "ex": "Why do you look unhappy?",
+   "exz": "你为什么看起来不开心？"
+  }
+ ],
+ "upset": [
+  {
+   "phrase": "feel upset",
+   "zh": "感到难过",
+   "ex": "She feels upset about her lost toy.",
+   "exz": "她因为玩具丢了很难过。"
+  },
+  {
+   "phrase": "don't be upset",
+   "zh": "别难过",
+   "ex": "Don't be upset, we can try again.",
+   "exz": "别难过，我们可以再试一次。"
+  }
+ ],
+ "scared": [
+  {
+   "phrase": "scared of",
+   "zh": "害怕",
+   "ex": "I am scared of the dark.",
+   "exz": "我怕黑。"
+  },
+  {
+   "phrase": "feel scared",
+   "zh": "感到害怕",
+   "ex": "I feel scared in the storm.",
+   "exz": "暴风雨中我觉得害怕。"
+  }
+ ],
+ "worry": [
+  {
+   "phrase": "don't worry",
+   "zh": "别担心",
+   "ex": "Don't worry, I can help you.",
+   "exz": "别担心，我能帮你。"
+  },
+  {
+   "phrase": "worry about",
+   "zh": "担心",
+   "ex": "Mom worries about me.",
+   "exz": "妈妈担心我。"
+  }
+ ],
+ "bored": [
+  {
+   "phrase": "feel bored",
+   "zh": "感到无聊",
+   "ex": "I feel bored at home.",
+   "exz": "我在家觉得很无聊。"
+  },
+  {
+   "phrase": "bored with",
+   "zh": "对……感到厌烦",
+   "ex": "He is bored with this game.",
+   "exz": "他玩腻了这个游戏。"
+  }
+ ],
+ "nervous": [
+  {
+   "phrase": "feel nervous",
+   "zh": "感到紧张",
+   "ex": "I feel nervous before the test.",
+   "exz": "考试前我很紧张。"
+  },
+  {
+   "phrase": "nervous about",
+   "zh": "对……紧张",
+   "ex": "She is nervous about the show.",
+   "exz": "她对演出感到紧张。"
+  }
+ ],
+ "fine": [
+  {
+   "phrase": "I'm fine",
+   "zh": "我很好",
+   "ex": "I'm fine, thank you.",
+   "exz": "我很好，谢谢。"
+  },
+  {
+   "phrase": "a fine day",
+   "zh": "晴朗的一天",
+   "ex": "It is a fine day today.",
+   "exz": "今天天气晴朗。"
+  }
+ ],
+ "hate": [
+  {
+   "phrase": "hate to",
+   "zh": "讨厌做",
+   "ex": "I hate to get up early.",
+   "exz": "我讨厌早起。"
+  },
+  {
+   "phrase": "hate bugs",
+   "zh": "讨厌虫子",
+   "ex": "My sister hates bugs.",
+   "exz": "我妹妹讨厌虫子。"
+  }
+ ],
+ "miss": [
+  {
+   "phrase": "miss you",
+   "zh": "想你",
+   "ex": "I miss you, Grandma.",
+   "exz": "奶奶，我想你。"
+  },
+  {
+   "phrase": "miss the bus",
+   "zh": "错过公交车",
+   "ex": "Hurry, or we will miss the bus.",
+   "exz": "快点，不然我们要错过公交车了。"
+  }
+ ],
+ "brain": [
+  {
+   "phrase": "use your brain",
+   "zh": "动动脑筋",
+   "ex": "Use your brain to solve it.",
+   "exz": "动动脑筋把它解出来。"
+  },
+  {
+   "phrase": "a big brain",
+   "zh": "聪明的脑袋",
+   "ex": "The owl has a big brain.",
+   "exz": "猫头鹰有个聪明的脑袋。"
+  }
+ ],
+ "muscle": [
+  {
+   "phrase": "strong muscles",
+   "zh": "强壮的肌肉",
+   "ex": "Dad has strong muscles.",
+   "exz": "爸爸肌肉很结实。"
+  },
+  {
+   "phrase": "build muscle",
+   "zh": "锻炼肌肉",
+   "ex": "Running helps build muscle.",
+   "exz": "跑步能锻炼肌肉。"
+  }
+ ],
+ "grandfather": [
+  {
+   "phrase": "my grandfather",
+   "zh": "我的爷爷",
+   "ex": "My grandfather is seventy.",
+   "exz": "我爷爷七十岁了。"
+  },
+  {
+   "phrase": "visit grandfather",
+   "zh": "看望爷爷",
+   "ex": "We visit grandfather every Sunday.",
+   "exz": "我们每周日去看爷爷。"
+  }
+ ],
+ "grandmother": [
+  {
+   "phrase": "my grandmother",
+   "zh": "我的奶奶",
+   "ex": "My grandmother tells me stories.",
+   "exz": "奶奶给我讲故事。"
+  },
+  {
+   "phrase": "live with grandmother",
+   "zh": "和奶奶住",
+   "ex": "I live with my grandmother.",
+   "exz": "我和奶奶住在一起。"
+  }
+ ],
+ "it": [
+  {
+   "phrase": "it is",
+   "zh": "它是；这是",
+   "ex": "It is a red ball.",
+   "exz": "这是一个红色的球。"
+  },
+  {
+   "phrase": "it's time to",
+   "zh": "该……了",
+   "ex": "It's time to go to bed.",
+   "exz": "该睡觉了。"
+  }
+ ],
+ "storm": [
+  {
+   "phrase": "a big storm",
+   "zh": "一场大暴风雨",
+   "ex": "There is a big storm tonight.",
+   "exz": "今晚有一场大暴风雨。"
+  },
+  {
+   "phrase": "after the storm",
+   "zh": "暴风雨过后",
+   "ex": "The sky is blue after the storm.",
+   "exz": "暴风雨过后天空很蓝。"
+  }
+ ],
+ "thunder": [
+  {
+   "phrase": "hear thunder",
+   "zh": "听到打雷",
+   "ex": "I hear thunder outside.",
+   "exz": "我听到外面在打雷。"
+  },
+  {
+   "phrase": "thunder and lightning",
+   "zh": "雷电",
+   "ex": "Thunder and lightning come with the rain.",
+   "exz": "雷电随着雨一起来了。"
+  }
+ ],
+ "fog": [
+  {
+   "phrase": "thick fog",
+   "zh": "浓雾",
+   "ex": "There is thick fog this morning.",
+   "exz": "今天早上有浓雾。"
+  },
+  {
+   "phrase": "in the fog",
+   "zh": "在雾里",
+   "ex": "I can't see the road in the fog.",
+   "exz": "雾里我看不清路。"
+  }
+ ],
+ "foggy": [
+  {
+   "phrase": "a foggy morning",
+   "zh": "有雾的早晨",
+   "ex": "It is a foggy morning.",
+   "exz": "这是一个有雾的早晨。"
+  },
+  {
+   "phrase": "foggy weather",
+   "zh": "雾天",
+   "ex": "Drive slowly in foggy weather.",
+   "exz": "雾天要慢慢开车。"
+  }
+ ],
+ "island": [
+  {
+   "phrase": "on the island",
+   "zh": "在岛上",
+   "ex": "Many birds live on the island.",
+   "exz": "岛上住着很多鸟。"
+  },
+  {
+   "phrase": "a small island",
+   "zh": "一座小岛",
+   "ex": "We take a boat to a small island.",
+   "exz": "我们坐船去一座小岛。"
+  }
+ ],
+ "hill": [
+  {
+   "phrase": "up the hill",
+   "zh": "上山",
+   "ex": "We walk up the hill.",
+   "exz": "我们走上小山。"
+  },
+  {
+   "phrase": "on the hill",
+   "zh": "在山上",
+   "ex": "There is a house on the hill.",
+   "exz": "山上有一座房子。"
+  }
+ ],
+ "stone": [
+  {
+   "phrase": "a small stone",
+   "zh": "一块小石头",
+   "ex": "I find a small stone by the river.",
+   "exz": "我在河边找到一块小石头。"
+  },
+  {
+   "phrase": "throw a stone",
+   "zh": "扔石头",
+   "ex": "Don't throw stones at the birds.",
+   "exz": "别向鸟扔石头。"
+  }
+ ],
+ "puppy": [
+  {
+   "phrase": "a cute puppy",
+   "zh": "可爱的小狗",
+   "ex": "Look at the cute puppy!",
+   "exz": "看那只可爱的小狗！"
+  },
+  {
+   "phrase": "play with the puppy",
+   "zh": "和小狗玩",
+   "ex": "I play with the puppy in the garden.",
+   "exz": "我在花园里和小狗玩。"
+  }
+ ],
+ "kitten": [
+  {
+   "phrase": "a little kitten",
+   "zh": "一只小猫",
+   "ex": "A little kitten is sleeping.",
+   "exz": "一只小猫在睡觉。"
+  },
+  {
+   "phrase": "feed the kitten",
+   "zh": "喂小猫",
+   "ex": "I feed the kitten milk.",
+   "exz": "我给小猫喂牛奶。"
+  }
+ ],
+ "hen": [
+  {
+   "phrase": "a mother hen",
+   "zh": "母鸡妈妈",
+   "ex": "The mother hen looks after her chicks.",
+   "exz": "母鸡妈妈照顾她的小鸡。"
+  },
+  {
+   "phrase": "hens lay eggs",
+   "zh": "母鸡下蛋",
+   "ex": "Our hens lay eggs every day.",
+   "exz": "我们的母鸡每天下蛋。"
+  }
+ ],
+ "fox": [
+  {
+   "phrase": "a clever fox",
+   "zh": "一只聪明的狐狸",
+   "ex": "The clever fox runs into the woods.",
+   "exz": "聪明的狐狸跑进了树林。"
+  },
+  {
+   "phrase": "a red fox",
+   "zh": "一只红狐狸",
+   "ex": "I see a red fox in the snow.",
+   "exz": "我在雪地里看到一只红狐狸。"
+  }
+ ],
+ "wolf": [
+  {
+   "phrase": "a big bad wolf",
+   "zh": "大灰狼",
+   "ex": "The big bad wolf knocks on the door.",
+   "exz": "大灰狼来敲门了。"
+  },
+  {
+   "phrase": "a wolf howls",
+   "zh": "狼嚎叫",
+   "ex": "A wolf howls at the moon.",
+   "exz": "一只狼对着月亮嚎叫。"
+  }
+ ],
+ "whale": [
+  {
+   "phrase": "a blue whale",
+   "zh": "一头蓝鲸",
+   "ex": "A blue whale is very big.",
+   "exz": "蓝鲸非常大。"
+  },
+  {
+   "phrase": "whale watching",
+   "zh": "观鲸",
+   "ex": "We go whale watching by boat.",
+   "exz": "我们坐船去看鲸鱼。"
+  }
+ ],
+ "dolphin": [
+  {
+   "phrase": "a smart dolphin",
+   "zh": "聪明的海豚",
+   "ex": "The smart dolphin can jump high.",
+   "exz": "聪明的海豚能跳得很高。"
+  },
+  {
+   "phrase": "swim with dolphins",
+   "zh": "和海豚一起游",
+   "ex": "I want to swim with dolphins.",
+   "exz": "我想和海豚一起游泳。"
+  }
+ ],
+ "shark": [
+  {
+   "phrase": "a big shark",
+   "zh": "一条大鲨鱼",
+   "ex": "A big shark swims in the sea.",
+   "exz": "一条大鲨鱼在海里游。"
+  },
+  {
+   "phrase": "shark teeth",
+   "zh": "鲨鱼牙齿",
+   "ex": "Shark teeth are very sharp.",
+   "exz": "鲨鱼的牙齿非常锋利。"
+  }
+ ],
+ "crab": [
+  {
+   "phrase": "catch a crab",
+   "zh": "抓螃蟹",
+   "ex": "We catch a crab on the beach.",
+   "exz": "我们在海滩上抓了一只螃蟹。"
+  },
+  {
+   "phrase": "a red crab",
+   "zh": "一只红螃蟹",
+   "ex": "A red crab walks sideways.",
+   "exz": "一只红螃蟹横着走。"
+  }
+ ],
+ "insect": [
+  {
+   "phrase": "a small insect",
+   "zh": "一只小昆虫",
+   "ex": "There is a small insect on the leaf.",
+   "exz": "叶子上有一只小昆虫。"
+  },
+  {
+   "phrase": "insect bite",
+   "zh": "虫咬",
+   "ex": "I have an insect bite on my arm.",
+   "exz": "我胳膊上被虫子咬了一口。"
+  }
+ ],
+ "ant": [
+  {
+   "phrase": "a little ant",
+   "zh": "一只小蚂蚁",
+   "ex": "A little ant carries food.",
+   "exz": "一只小蚂蚁在搬食物。"
+  },
+  {
+   "phrase": "a line of ants",
+   "zh": "一队蚂蚁",
+   "ex": "I see a line of ants on the ground.",
+   "exz": "我看到地上有一队蚂蚁。"
+  }
+ ],
+ "butterfly": [
+  {
+   "phrase": "a beautiful butterfly",
+   "zh": "一只漂亮的蝴蝶",
+   "ex": "A beautiful butterfly is on the flower.",
+   "exz": "一只漂亮的蝴蝶停在花上。"
+  },
+  {
+   "phrase": "catch a butterfly",
+   "zh": "捉蝴蝶",
+   "ex": "Let's catch a butterfly in the garden.",
+   "exz": "我们去花园捉蝴蝶吧。"
+  }
+ ],
+ "spider": [
+  {
+   "phrase": "spider web",
+   "zh": "蜘蛛网",
+   "ex": "There is a spider web in the corner.",
+   "exz": "角落里有一张蜘蛛网。"
+  },
+  {
+   "phrase": "afraid of spiders",
+   "zh": "害怕蜘蛛",
+   "ex": "My sister is afraid of spiders.",
+   "exz": "我妹妹害怕蜘蛛。"
+  }
+ ],
+ "look": [
+  {
+   "phrase": "look at",
+   "zh": "看",
+   "ex": "Look at the rainbow!",
+   "exz": "看那道彩虹！"
+  },
+  {
+   "phrase": "look for",
+   "zh": "寻找",
+   "ex": "I am looking for my pen.",
+   "exz": "我在找我的笔。"
+  },
+  {
+   "phrase": "have a look",
+   "zh": "看一看",
+   "ex": "Can I have a look?",
+   "exz": "我能看一看吗？"
+  }
+ ],
+ "push": [
+  {
+   "phrase": "push the door",
+   "zh": "推门",
+   "ex": "Push the door to open it.",
+   "exz": "推门就能打开。"
+  },
+  {
+   "phrase": "push a cart",
+   "zh": "推车",
+   "ex": "Mom pushes a cart in the shop.",
+   "exz": "妈妈在商店里推着购物车。"
+  }
+ ],
+ "catch": [
+  {
+   "phrase": "catch the ball",
+   "zh": "接住球",
+   "ex": "Catch the ball!",
+   "exz": "接住球！"
+  },
+  {
+   "phrase": "catch a cold",
+   "zh": "感冒",
+   "ex": "Wear a coat or you'll catch a cold.",
+   "exz": "穿上外套，不然会感冒的。"
+  }
+ ],
+ "throw": [
+  {
+   "phrase": "throw the ball",
+   "zh": "扔球",
+   "ex": "Throw the ball to me.",
+   "exz": "把球扔给我。"
+  },
+  {
+   "phrase": "throw away",
+   "zh": "扔掉",
+   "ex": "Throw away the rubbish, please.",
+   "exz": "请把垃圾扔掉。"
+  }
+ ],
+ "skate": [
+  {
+   "phrase": "go skating",
+   "zh": "去滑冰",
+   "ex": "We go skating in winter.",
+   "exz": "我们冬天去滑冰。"
+  },
+  {
+   "phrase": "learn to skate",
+   "zh": "学滑冰",
+   "ex": "I want to learn to skate.",
+   "exz": "我想学滑冰。"
+  }
+ ],
+ "ask": [
+  {
+   "phrase": "ask a question",
+   "zh": "问问题",
+   "ex": "Can I ask a question?",
+   "exz": "我可以问个问题吗？"
+  },
+  {
+   "phrase": "ask for help",
+   "zh": "求助",
+   "ex": "Ask your teacher for help.",
+   "exz": "向老师求助吧。"
+  }
+ ],
+ "answer": [
+  {
+   "phrase": "answer the question",
+   "zh": "回答问题",
+   "ex": "Who can answer the question?",
+   "exz": "谁能回答这个问题？"
+  },
+  {
+   "phrase": "the right answer",
+   "zh": "正确答案",
+   "ex": "That is the right answer!",
+   "exz": "这就是正确答案！"
+  }
+ ],
+ "storybook": [
+  {
+   "phrase": "read a storybook",
+   "zh": "读故事书",
+   "ex": "I read a storybook before bed.",
+   "exz": "我睡前读故事书。"
+  },
+  {
+   "phrase": "my favorite storybook",
+   "zh": "我最喜欢的故事书",
+   "ex": "This is my favorite storybook.",
+   "exz": "这是我最喜欢的故事书。"
+  }
+ ],
+ "sharpener": [
+  {
+   "phrase": "pencil sharpener",
+   "zh": "卷笔刀",
+   "ex": "Can I use your pencil sharpener?",
+   "exz": "我能用一下你的卷笔刀吗？"
+  },
+  {
+   "phrase": "a small sharpener",
+   "zh": "一个小卷笔刀",
+   "ex": "I have a small sharpener in my bag.",
+   "exz": "我书包里有一个小卷笔刀。"
+  }
+ ],
+ "schoolbag": [
+  {
+   "phrase": "pack my schoolbag",
+   "zh": "收拾书包",
+   "ex": "I pack my schoolbag at night.",
+   "exz": "我晚上收拾书包。"
+  },
+  {
+   "phrase": "a heavy schoolbag",
+   "zh": "沉重的书包",
+   "ex": "My schoolbag is very heavy.",
+   "exz": "我的书包很重。"
+  }
+ ],
+ "subject": [
+  {
+   "phrase": "favorite subject",
+   "zh": "最喜欢的科目",
+   "ex": "What is your favorite subject?",
+   "exz": "你最喜欢哪门课？"
+  },
+  {
+   "phrase": "school subjects",
+   "zh": "学校科目",
+   "ex": "Music and art are school subjects.",
+   "exz": "音乐和美术都是学校的科目。"
+  }
+ ],
+ "Chinese": [
+  {
+   "phrase": "speak Chinese",
+   "zh": "说中文",
+   "ex": "Can you speak Chinese?",
+   "exz": "你会说中文吗？"
+  },
+  {
+   "phrase": "Chinese class",
+   "zh": "语文课",
+   "ex": "We have Chinese class in the morning.",
+   "exz": "我们早上有语文课。"
+  }
+ ],
+ "blackboard": [
+  {
+   "phrase": "on the blackboard",
+   "zh": "在黑板上",
+   "ex": "The teacher writes on the blackboard.",
+   "exz": "老师在黑板上写字。"
+  },
+  {
+   "phrase": "clean the blackboard",
+   "zh": "擦黑板",
+   "ex": "I help clean the blackboard.",
+   "exz": "我帮忙擦黑板。"
+  }
+ ],
+ "truck": [
+  {
+   "phrase": "a big truck",
+   "zh": "一辆大卡车",
+   "ex": "A big truck is on the road.",
+   "exz": "路上有一辆大卡车。"
+  },
+  {
+   "phrase": "drive a truck",
+   "zh": "开卡车",
+   "ex": "My uncle drives a truck.",
+   "exz": "我叔叔开卡车。"
+  }
+ ],
+ "bookstore": [
+  {
+   "phrase": "go to the bookstore",
+   "zh": "去书店",
+   "ex": "Let's go to the bookstore.",
+   "exz": "我们去书店吧。"
+  },
+  {
+   "phrase": "in the bookstore",
+   "zh": "在书店里",
+   "ex": "I buy a book in the bookstore.",
+   "exz": "我在书店里买了一本书。"
+  }
+ ],
+ "bakery": [
+  {
+   "phrase": "at the bakery",
+   "zh": "在面包店",
+   "ex": "We buy bread at the bakery.",
+   "exz": "我们在面包店买面包。"
+  },
+  {
+   "phrase": "a new bakery",
+   "zh": "一家新面包店",
+   "ex": "There is a new bakery near my home.",
+   "exz": "我家附近开了一家新面包店。"
+  }
+ ],
+ "hotel": [
+  {
+   "phrase": "stay at a hotel",
+   "zh": "住酒店",
+   "ex": "We stay at a hotel by the sea.",
+   "exz": "我们住在海边的酒店。"
+  },
+  {
+   "phrase": "hotel room",
+   "zh": "酒店房间",
+   "ex": "Our hotel room is very big.",
+   "exz": "我们的酒店房间很大。"
+  }
+ ],
+ "jeans": [
+  {
+   "phrase": "a pair of jeans",
+   "zh": "一条牛仔裤",
+   "ex": "I have a new pair of jeans.",
+   "exz": "我有一条新牛仔裤。"
+  },
+  {
+   "phrase": "blue jeans",
+   "zh": "蓝色牛仔裤",
+   "ex": "He wears blue jeans.",
+   "exz": "他穿着蓝色牛仔裤。"
+  }
+ ],
+ "raincoat": [
+  {
+   "phrase": "put on a raincoat",
+   "zh": "穿上雨衣",
+   "ex": "Put on your raincoat. It's raining.",
+   "exz": "下雨了，穿上雨衣。"
+  },
+  {
+   "phrase": "a yellow raincoat",
+   "zh": "一件黄色雨衣",
+   "ex": "I have a yellow raincoat.",
+   "exz": "我有一件黄色的雨衣。"
+  }
+ ],
+ "pajamas": [
+  {
+   "phrase": "put on pajamas",
+   "zh": "穿上睡衣",
+   "ex": "Put on your pajamas and go to bed.",
+   "exz": "穿上睡衣去睡觉吧。"
+  },
+  {
+   "phrase": "in pajamas",
+   "zh": "穿着睡衣",
+   "ex": "I eat breakfast in my pajamas.",
+   "exz": "我穿着睡衣吃早饭。"
+  }
+ ],
+ "cap": [
+  {
+   "phrase": "a baseball cap",
+   "zh": "棒球帽",
+   "ex": "He wears a baseball cap.",
+   "exz": "他戴着一顶棒球帽。"
+  },
+  {
+   "phrase": "put on a cap",
+   "zh": "戴上帽子",
+   "ex": "Put on a cap. It's sunny.",
+   "exz": "太阳很大，戴上帽子。"
+  }
+ ],
+ "sneaker": [
+  {
+   "phrase": "a pair of sneakers",
+   "zh": "一双运动鞋",
+   "ex": "I need a new pair of sneakers.",
+   "exz": "我需要一双新运动鞋。"
+  },
+  {
+   "phrase": "white sneakers",
+   "zh": "白色运动鞋",
+   "ex": "She wears white sneakers.",
+   "exz": "她穿着白色运动鞋。"
+  }
+ ],
+ "sandal": [
+  {
+   "phrase": "a pair of sandals",
+   "zh": "一双凉鞋",
+   "ex": "I wear a pair of sandals in summer.",
+   "exz": "我夏天穿一双凉鞋。"
+  },
+  {
+   "phrase": "beach sandals",
+   "zh": "沙滩凉鞋",
+   "ex": "Take your beach sandals.",
+   "exz": "带上你的沙滩凉鞋。"
+  }
+ ],
+ "slipper": [
+  {
+   "phrase": "a pair of slippers",
+   "zh": "一双拖鞋",
+   "ex": "Put on a pair of slippers at home.",
+   "exz": "在家穿上一双拖鞋。"
+  },
+  {
+   "phrase": "soft slippers",
+   "zh": "软拖鞋",
+   "ex": "My slippers are soft and warm.",
+   "exz": "我的拖鞋又软又暖和。"
+  }
+ ],
+ "dentist": [
+  {
+   "phrase": "go to the dentist",
+   "zh": "去看牙医",
+   "ex": "I go to the dentist twice a year.",
+   "exz": "我一年看两次牙医。"
+  },
+  {
+   "phrase": "a kind dentist",
+   "zh": "和蔼的牙医",
+   "ex": "The dentist is very kind.",
+   "exz": "牙医很和蔼。"
+  }
+ ],
+ "baker": [
+  {
+   "phrase": "a good baker",
+   "zh": "手艺好的面包师",
+   "ex": "The baker makes good bread.",
+   "exz": "这位面包师做的面包很好吃。"
+  },
+  {
+   "phrase": "the baker's shop",
+   "zh": "面包师的店",
+   "ex": "We buy cakes at the baker's shop.",
+   "exz": "我们在面包店买蛋糕。"
+  }
+ ],
+ "builder": [
+  {
+   "phrase": "a house builder",
+   "zh": "盖房子的工人",
+   "ex": "The builder is building a new house.",
+   "exz": "建筑工人在盖新房子。"
+  },
+  {
+   "phrase": "work as a builder",
+   "zh": "当建筑工人",
+   "ex": "My uncle works as a builder.",
+   "exz": "我叔叔是一名建筑工人。"
+  }
+ ],
+ "gardener": [
+  {
+   "phrase": "a busy gardener",
+   "zh": "忙碌的园丁",
+   "ex": "The gardener waters the flowers.",
+   "exz": "园丁在给花浇水。"
+  },
+  {
+   "phrase": "the school gardener",
+   "zh": "学校的园丁",
+   "ex": "The school gardener plants trees.",
+   "exz": "学校的园丁在种树。"
+  }
+ ],
+ "writer": [
+  {
+   "phrase": "a famous writer",
+   "zh": "著名作家",
+   "ex": "She wants to be a famous writer.",
+   "exz": "她想成为一位著名作家。"
+  },
+  {
+   "phrase": "a story writer",
+   "zh": "故事作家",
+   "ex": "The story writer writes for children.",
+   "exz": "这位作家给孩子们写故事。"
+  }
+ ],
+ "reporter": [
+  {
+   "phrase": "a news reporter",
+   "zh": "新闻记者",
+   "ex": "My mom is a news reporter.",
+   "exz": "我妈妈是一名新闻记者。"
+  },
+  {
+   "phrase": "TV reporter",
+   "zh": "电视记者",
+   "ex": "The TV reporter talks to us.",
+   "exz": "电视记者在采访我们。"
+  }
+ ],
+ "dancer": [
+  {
+   "phrase": "a good dancer",
+   "zh": "跳舞好的人",
+   "ex": "She is a good dancer.",
+   "exz": "她舞跳得很好。"
+  },
+  {
+   "phrase": "ballet dancer",
+   "zh": "芭蕾舞演员",
+   "ex": "I want to be a ballet dancer.",
+   "exz": "我想当一名芭蕾舞演员。"
+  }
+ ],
+ "actor": [
+  {
+   "phrase": "a famous actor",
+   "zh": "著名演员",
+   "ex": "He is a famous actor.",
+   "exz": "他是一位著名演员。"
+  },
+  {
+   "phrase": "film actor",
+   "zh": "电影演员",
+   "ex": "The film actor waves to us.",
+   "exz": "那位电影演员向我们挥手。"
+  }
+ ],
+ "coach": [
+  {
+   "phrase": "football coach",
+   "zh": "足球教练",
+   "ex": "Our football coach is very strict.",
+   "exz": "我们的足球教练很严格。"
+  },
+  {
+   "phrase": "swimming coach",
+   "zh": "游泳教练",
+   "ex": "My swimming coach helps me a lot.",
+   "exz": "我的游泳教练帮了我很多。"
   }
  ]
 }
