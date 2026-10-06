@@ -19,6 +19,8 @@
         "en":  "obtain, become, or receive",
         "ex":  "I\u0027ll get a new book tomorrow.",
         "exz":  "我明天会买本新书。",
+        "ex2":  "It gets cold in winter.",
+        "exz2":  "冬天天气变冷了。",
         "s":  [
                   "obtain",
                   "receive",
@@ -188,6 +190,8 @@
         "en":  "perceive with eyes or mind",
         "ex":  "I see what you mean.",
         "exz":  "我明白你的意思了。",
+        "ex2":  "I can see a bird in the tree.",
+        "exz2":  "我能看见树上有一只鸟。",
         "s":  [
                   "look",
                   "view",
@@ -214,6 +218,8 @@
         "en":  "possibility or permission",
         "ex":  "You may go now.",
         "exz":  "你现在可以走了。",
+        "ex2":  "My birthday is in May.",
+        "exz2":  "我的生日在五月。",
         "s":  [
                   "can",
                   "might",
@@ -240,6 +246,8 @@
         "en":  "concerning or approximately",
         "ex":  "Tell me about your trip.",
         "exz":  "跟我说说你的旅行。",
+        "ex2":  "It is about five o\u0027clock.",
+        "exz2":  "现在大约五点钟。",
         "s":  [
                   "concerning",
                   "regarding",
@@ -279,6 +287,8 @@
         "en":  "in opposition to or touching",
         "ex":  "The ladder leans against the wall.",
         "exz":  "梯子靠在墙上。",
+        "ex2":  "I am against this plan.",
+        "exz2":  "我反对这个计划。",
         "s":  [
                   "opposing",
                   "versus",
@@ -344,6 +354,8 @@
         "en":  "via, near, or no later than",
         "ex":  "The book was written by her.",
         "exz":  "这本书是她写的。",
+        "ex2":  "Come and sit by me.",
+        "exz2":  "过来坐在我旁边。",
         "s":  [
                   "via",
                   "through",
@@ -396,6 +408,8 @@
         "en":  "away from or disconnected",
         "ex":  "Turn off the light.",
         "exz":  "把灯关掉。",
+        "ex2":  "The bird flew off.",
+        "exz2":  "小鸟飞走了。",
         "s":  [
                   "away",
                   "apart",
@@ -409,6 +423,8 @@
         "en":  "in contact with the surface",
         "ex":  "The cat is on the chair.",
         "exz":  "猫在椅子上。",
+        "ex2":  "Is the TV on?",
+        "exz2":  "电视开着吗？",
         "s":  [
                   "upon",
                   "atop",
@@ -422,6 +438,8 @@
         "en":  "above or more than",
         "ex":  "The plane flew over the city.",
         "exz":  "飞机飞过城市上空。",
+        "ex2":  "He is over ten years old.",
+        "exz2":  "他十岁多了。",
         "s":  [
                   "above",
                   "beyond",
@@ -500,6 +518,8 @@
         "en":  "in the role of or while",
         "ex":  "He works as a teacher.",
         "exz":  "他当老师。",
+        "ex2":  "As I walked home, it began to rain.",
+        "exz2":  "我走回家的时候，开始下雨了。",
         "s":  [
                   "like",
                   "while",
@@ -630,6 +650,8 @@
         "en":  "small in amount or size",
         "ex":  "Add a little salt.",
         "exz":  "加一点点盐。",
+        "ex2":  "A little cat is sleeping.",
+        "exz2":  "一只小猫在睡觉。",
         "s":  [
                   "small",
                   "slight",
@@ -864,6 +886,8 @@
         "en":  "during the time that",
         "ex":  "Read while you eat.",
         "exz":  "边吃边读。",
+        "ex2":  "While I like cats, I like dogs more.",
+        "exz2":  "虽然我喜欢猫，但我更喜欢狗。",
         "s":  [
                   "during",
                   "whereas",
@@ -1085,6 +1109,8 @@
         "en":  "in a good way",
         "ex":  "She speaks English well.",
         "exz":  "她英语说得好。",
+        "ex2":  "I don\u0027t feel well today.",
+        "exz2":  "我今天身体不太舒服。",
         "s":  [
                   "good",
                   "nicely",
@@ -1176,6 +1202,8 @@
         "en":  "to such a degree, therefore",
         "ex":  "I\u0027m so tired.",
         "exz":  "我太累了。",
+        "ex2":  "It was late, so we went home.",
+        "exz2":  "天晚了，所以我们回家了。",
         "s":  [
                   "very",
                   "therefore",
@@ -1306,6 +1334,8 @@
         "en":  "record of money or events",
         "ex":  "Open a bank account.",
         "exz":  "开一个银行账户。",
+        "ex2":  "He gave an account of his trip.",
+        "exz2":  "他讲述了这次旅行的经过。",
         "s":  [
                   "record",
                   "report",
@@ -1332,6 +1362,8 @@
         "en":  "the act of adding",
         "ex":  "In addition, she sings.",
         "exz":  "此外,她还唱歌。",
+        "ex2":  "We learn addition at school.",
+        "exz2":  "我们在学校学加法。",
         "s":  [
                   "adding",
                   "increase",
@@ -1371,6 +1403,8 @@
         "en":  "shared decision between parties",
         "ex":  "We reached an agreement.",
         "exz":  "我们达成了协议。",
+        "ex2":  "We nodded in agreement.",
+        "exz2":  "我们点头表示同意。",
         "s":  [
                   "deal",
                   "contract",
@@ -1436,6 +1470,8 @@
         "en":  "a reply to a question",
         "ex":  "Give me your answer.",
         "exz":  "给我你的回答。",
+        "ex2":  "Please answer my question.",
+        "exz2":  "请回答我的问题。",
         "s":  [
                   "reply",
                   "response",
@@ -1566,6 +1602,8 @@
         "en":  "the rear part of a body",
         "ex":  "My back is sore.",
         "exz":  "我背疼。",
+        "ex2":  "Sit at the back of the room.",
+        "exz2":  "坐在房间的后面。",
         "s":  [
                   "rear",
                   "spine",
@@ -1657,6 +1695,8 @@
         "en":  "act of cutting with teeth",
         "ex":  "Take a bite of the apple.",
         "exz":  "咬一口苹果。",
+        "ex2":  "Be careful, the dog may bite.",
+        "exz2":  "小心，这只狗可能会咬人。",
         "s":  [
                   "nibble",
                   "chomp",
@@ -1683,6 +1723,8 @@
         "en":  "a strong hit or air movement",
         "ex":  "The blow knocked him down.",
         "exz":  "那一击把他打倒了。",
+        "ex2":  "Blow out the candles!",
+        "exz2":  "吹灭蜡烛吧！",
         "s":  [
                   "hit",
                   "strike",
@@ -1774,6 +1816,8 @@
         "en":  "injury or destruction by fire",
         "ex":  "The burn on her hand healed.",
         "exz":  "她手上的烧伤好了。",
+        "ex2":  "The fire burns all night.",
+        "exz2":  "火烧了一整夜。",
         "s":  [
                   "scorch",
                   "blister",
@@ -1878,6 +1922,8 @@
         "en":  "possibility or opportunity",
         "ex":  "Give me a chance.",
         "exz":  "给我一个机会。",
+        "ex2":  "There is a chance of rain today.",
+        "exz2":  "今天可能会下雨。",
         "s":  [
                   "opportunity",
                   "luck",
@@ -1943,6 +1989,8 @@
         "en":  "physical ease or solace",
         "ex":  "This chair gives me comfort.",
         "exz":  "这把椅子让我舒适。",
+        "ex2":  "Mom gave me comfort when I was sad.",
+        "exz2":  "我难过的时候妈妈安慰我。",
         "s":  [
                   "ease",
                   "solace",
@@ -1969,6 +2017,8 @@
         "en":  "a business or being with others",
         "ex":  "She works for a tech company.",
         "exz":  "她在一家科技公司工作。",
+        "ex2":  "Thank you for your company.",
+        "exz2":  "谢谢你陪着我。",
         "s":  [
                   "firm",
                   "business",
@@ -2047,6 +2097,8 @@
         "en":  "a person who prepares food",
         "ex":  "The cook made dinner.",
         "exz":  "厨师做了晚餐。",
+        "ex2":  "Mom cooks dinner every day.",
+        "exz2":  "妈妈每天做晚饭。",
         "s":  [
                   "chef",
                   "baker",
@@ -2125,6 +2177,8 @@
         "en":  "a nation or rural area",
         "ex":  "China is a large country.",
         "exz":  "中国是一个大国。",
+        "ex2":  "My grandpa lives in the country.",
+        "exz2":  "我爷爷住在乡下。",
         "s":  [
                   "nation",
                   "land",
@@ -2164,6 +2218,8 @@
         "en":  "trust to pay later or praise",
         "ex":  "Buy on credit.",
         "exz":  "赊账买。",
+        "ex2":  "She got credit for her good work.",
+        "exz2":  "她因为做得好而受到称赞。",
         "s":  [
                   "loan",
                   "praise",
@@ -2203,6 +2259,8 @@
         "en":  "shedding tears or shouting",
         "ex":  "The baby gave a loud cry.",
         "exz":  "宝宝大哭一声。",
+        "ex2":  "Don\u0027t cry, little one.",
+        "exz2":  "别哭，小宝贝。",
         "s":  [
                   "weep",
                   "shout",
@@ -2216,6 +2274,8 @@
         "en":  "flow of water or electricity",
         "ex":  "The river current is strong.",
         "exz":  "河水的水流很急。",
+        "ex2":  "Electric current runs through the wire.",
+        "exz2":  "电流从电线里通过。",
         "s":  [
                   "flow",
                   "stream",
@@ -2580,6 +2640,8 @@
         "en":  "our planet or soil",
         "ex":  "Plant the seed in the earth.",
         "exz":  "把种子种到土里。",
+        "ex2":  "We live on the Earth.",
+        "exz2":  "我们住在地球上。",
         "s":  [
                   "soil",
                   "ground",
@@ -2762,6 +2824,8 @@
         "en":  "dropping down or autumn",
         "ex":  "He had a bad fall.",
         "exz":  "他摔得很重。",
+        "ex2":  "The leaves turn red in fall.",
+        "exz2":  "秋天树叶变红了。",
         "s":  [
                   "drop",
                   "tumble",
@@ -2840,6 +2904,8 @@
         "en":  "open land or area of study",
         "ex":  "The field is full of flowers.",
         "exz":  "田里开满了花。",
+        "ex2":  "She is an expert in this field.",
+        "exz2":  "她是这个领域的专家。",
         "s":  [
                   "meadow",
                   "domain",
@@ -2918,6 +2984,8 @@
         "en":  "bending one part over another",
         "ex":  "There\u0027s a fold in the paper.",
         "exz":  "纸上有道折痕。",
+        "ex2":  "Fold the paper in half.",
+        "exz2":  "把纸对折。",
         "s":  [
                   "crease",
                   "bend",
@@ -3009,6 +3077,8 @@
         "en":  "hard clear material or cup",
         "ex":  "Pour water in the glass.",
         "exz":  "把水倒进杯子。",
+        "ex2":  "The window is made of glass.",
+        "exz2":  "窗户是玻璃做的。",
         "s":  [
                   "cup",
                   "tumbler",
@@ -3386,6 +3456,8 @@
         "en":  "curiosity or money gained",
         "ex":  "She has interest in art.",
         "exz":  "她对艺术有兴趣。",
+        "ex2":  "The bank pays interest on my money.",
+        "exz2":  "银行给我的存款付利息。",
         "s":  [
                   "curiosity",
                   "attention",
@@ -3412,6 +3484,8 @@
         "en":  "strong gray metal or tool to smooth clothes",
         "ex":  "The gate is made of iron.",
         "exz":  "大门是铁做的。",
+        "ex2":  "Mom uses an iron on my shirt.",
+        "exz2":  "妈妈用熨斗熨我的衬衫。",
         "s":  [
                   "metal",
                   "steel",
@@ -3438,6 +3512,8 @@
         "en":  "a place where things meet",
         "ex":  "The join is smooth.",
         "exz":  "接缝平滑。",
+        "ex2":  "Can I join your game?",
+        "exz2":  "我能加入你们的游戏吗？",
         "s":  [
                   "seam",
                   "junction",
@@ -3464,6 +3540,8 @@
         "en":  "one who decides cases",
         "ex":  "The judge made his ruling.",
         "exz":  "法官做出了裁决。",
+        "ex2":  "The judge gave her ten points.",
+        "exz2":  "裁判给她打了十分。",
         "s":  [
                   "arbiter",
                   "referee",
@@ -3620,6 +3698,8 @@
         "en":  "written message or alphabet sign",
         "ex":  "Write me a letter.",
         "exz":  "给我写封信。",
+        "ex2":  "A is the first letter.",
+        "exz2":  "A 是第一个字母。",
         "s":  [
                   "note",
                   "mail",
@@ -3646,6 +3726,8 @@
         "en":  "raising up or elevator",
         "ex":  "Take the lift to the top.",
         "exz":  "坐电梯上顶楼。",
+        "ex2":  "Can you lift this box?",
+        "exz2":  "你能抬起这个箱子吗？",
         "s":  [
                   "elevator",
                   "raise",
@@ -3724,6 +3806,8 @@
         "en":  "appearance or act of seeing",
         "ex":  "Have a look at this.",
         "exz":  "看看这个。",
+        "ex2":  "I like the look of this hat.",
+        "exz2":  "我喜欢这顶帽子的样子。",
         "s":  [
                   "glance",
                   "gaze",
@@ -3828,6 +3912,8 @@
         "en":  "amount of matter or large group",
         "ex":  "A mass of people gathered.",
         "exz":  "一大群人聚集。",
+        "ex2":  "Mass is measured in kilograms.",
+        "exz2":  "质量用千克来计量。",
         "s":  [
                   "bulk",
                   "quantity",
@@ -3854,6 +3940,8 @@
         "en":  "size or action taken",
         "ex":  "Take measures to fix it.",
         "exz":  "采取措施去解决。",
+        "ex2":  "Measure the table with a ruler.",
+        "exz2":  "用尺子量一量桌子。",
         "s":  [
                   "gauge",
                   "amount",
@@ -4127,6 +4215,8 @@
         "en":  "thing required",
         "ex":  "His needs are simple.",
         "exz":  "他的需求很简单。",
+        "ex2":  "I need some water.",
+        "exz2":  "我需要一点水。",
         "s":  [
                   "requirement",
                   "want",
@@ -4413,6 +4503,8 @@
         "en":  "absence of war or quiet",
         "ex":  "They want peace.",
         "exz":  "他们渴望和平。",
+        "ex2":  "Let me read in peace.",
+        "exz2":  "让我安安静静地看书。",
         "s":  [
                   "calm",
                   "quiet",
@@ -4465,6 +4557,8 @@
         "en":  "recreation or drama",
         "ex":  "We watched a great play.",
         "exz":  "我们看了一出好戏。",
+        "ex2":  "Let\u0027s play outside.",
+        "exz2":  "我们去外面玩吧。",
         "s":  [
                   "game",
                   "drama",
@@ -5037,6 +5131,8 @@
         "en":  "part of building or space",
         "ex":  "There\u0027s no room here.",
         "exz":  "这没地方了。",
+        "ex2":  "This is my room.",
+        "exz2":  "这是我的房间。",
         "s":  [
                   "chamber",
                   "space",
@@ -5076,6 +5172,8 @@
         "en":  "act of moving fast on foot",
         "ex":  "Go for a run.",
         "exz":  "去跑步吧。",
+        "ex2":  "The machine runs well.",
+        "exz2":  "这台机器运行得很好。",
         "s":  [
                   "jog",
                   "sprint",
@@ -5206,6 +5304,8 @@
         "en":  "feeling or meaning",
         "ex":  "It makes sense.",
         "exz":  "这说得通。",
+        "ex2":  "Dogs have a good sense of smell.",
+        "exz2":  "狗的嗅觉很灵敏。",
         "s":  [
                   "feeling",
                   "meaning",
@@ -5310,6 +5410,8 @@
         "en":  "mark or indication",
         "ex":  "It\u0027s a good sign.",
         "exz":  "这是个好兆头。",
+        "ex2":  "Look at the sign: Stop!",
+        "exz2":  "看那个标志：停！",
         "s":  [
                   "mark",
                   "symbol",
@@ -5401,6 +5503,8 @@
         "en":  "sliding accident or small paper",
         "ex":  "Be careful, don\u0027t slip.",
         "exz":  "小心,别滑倒。",
+        "ex2":  "Write your name on a slip of paper.",
+        "exz2":  "把你的名字写在一张小纸条上。",
         "s":  [
                   "slide",
                   "mistake",
@@ -5596,6 +5700,8 @@
         "en":  "empty area or the universe",
         "ex":  "There\u0027s not enough space.",
         "exz":  "空间不够。",
+        "ex2":  "Astronauts travel into space.",
+        "exz2":  "宇航员飞向太空。",
         "s":  [
                   "room",
                   "area",
@@ -5674,6 +5780,8 @@
         "en":  "one foot move or stair",
         "ex":  "Take a small step.",
         "exz":  "迈一小步。",
+        "ex2":  "We sit on the steps.",
+        "exz2":  "我们坐在台阶上。",
         "s":  [
                   "stride",
                   "pace",
@@ -6012,6 +6120,8 @@
         "en":  "soft silver metal or can",
         "ex":  "A tin of beans.",
         "exz":  "一罐豆子。",
+        "ex2":  "This old toy is made of tin.",
+        "exz2":  "这个旧玩具是锡做的。",
         "s":  [
                   "can",
                   "metal",
@@ -6077,6 +6187,8 @@
         "en":  "clever or deceptive act",
         "ex":  "He played a trick on me.",
         "exz":  "他耍了我一下。",
+        "ex2":  "My dog can do tricks.",
+        "exz2":  "我的狗会表演把戏。",
         "s":  [
                   "prank",
                   "ruse",
@@ -6103,6 +6215,8 @@
         "en":  "act of rotating or one\u0027s chance",
         "ex":  "It\u0027s your turn.",
         "exz":  "轮到你了。",
+        "ex2":  "Turn left at the shop.",
+        "exz2":  "在商店那里向左转。",
         "s":  [
                   "rotation",
                   "spin",
@@ -6181,6 +6295,8 @@
         "en":  "container or large boat",
         "ex":  "The vessel sailed at dawn.",
         "exz":  "船黎明启航。",
+        "ex2":  "A cup is a small vessel for water.",
+        "exz2":  "杯子是盛水的小容器。",
         "s":  [
                   "container",
                   "ship",
@@ -6194,6 +6310,8 @@
         "en":  "sight or opinion",
         "ex":  "The view is amazing.",
         "exz":  "景色真美。",
+        "ex2":  "What is your view on this?",
+        "exz2":  "你对这件事有什么看法？",
         "s":  [
                   "sight",
                   "opinion",
@@ -6311,6 +6429,8 @@
         "en":  "method or route",
         "ex":  "What\u0027s the best way?",
         "exz":  "哪种方法最好?",
+        "ex2":  "Is this the way to the park?",
+        "exz2":  "这是去公园的路吗？",
         "s":  [
                   "method",
                   "path",
@@ -6623,6 +6743,8 @@
         "en":  "strip or music group",
         "ex":  "A band of gold.",
         "exz":  "一条金色带子。",
+        "ex2":  "My brother plays in a band.",
+        "exz2":  "我哥哥在一个乐队里演奏。",
         "s":  [
                   "strip",
                   "group",
@@ -6662,6 +6784,8 @@
         "en":  "tub or act of washing body",
         "ex":  "Take a warm bath.",
         "exz":  "洗个热水澡。",
+        "ex2":  "The bath is full of water.",
+        "exz2":  "浴缸里装满了水。",
         "s":  [
                   "tub",
                   "soak",
@@ -6948,6 +7072,8 @@
         "en":  "glass for light or plant root",
         "ex":  "Change the bulb.",
         "exz":  "换灯泡。",
+        "ex2":  "Plant the tulip bulbs in autumn.",
+        "exz2":  "秋天把郁金香的球茎种下去。",
         "s":  [
                   "lamp",
                   "globe",
@@ -7026,6 +7152,8 @@
         "en":  "vehicle pulled by horses",
         "ex":  "A horse-drawn carriage.",
         "exz":  "马拉的车。",
+        "ex2":  "Our train has ten carriages.",
+        "exz2":  "我们的火车有十节车厢。",
         "s":  [
                   "coach",
                   "cart",
@@ -7078,6 +7206,8 @@
         "en":  "upper body or storage box",
         "ex":  "A pain in the chest.",
         "exz":  "胸口疼。",
+        "ex2":  "The pirate found a chest of gold.",
+        "exz2":  "海盗找到了一箱金子。",
         "s":  [
                   "torso",
                   "trunk",
@@ -7481,6 +7611,8 @@
         "en":  "small flying insect",
         "ex":  "There\u0027s a fly on the window.",
         "exz":  "窗上有只苍蝇。",
+        "ex2":  "Birds fly in the sky.",
+        "exz2":  "鸟儿在天上飞。",
         "s":  [
                   "insect",
                   "bug",
@@ -7702,6 +7834,8 @@
         "en":  "hard growth on animal head",
         "ex":  "The bull has horns.",
         "exz":  "公牛有角。",
+        "ex2":  "The driver sounds the horn.",
+        "exz2":  "司机按了喇叭。",
         "s":  [
                   "antler",
                   "trumpet",
@@ -8001,6 +8135,8 @@
         "en":  "metal pin or finger end",
         "ex":  "Hammer the nail.",
         "exz":  "锤钉子。",
+        "ex2":  "Please cut your nails.",
+        "exz2":  "请剪剪你的指甲。",
         "s":  [
                   "pin",
                   "tack",
@@ -8079,6 +8215,8 @@
         "en":  "hard-shelled seed or fastener",
         "ex":  "Crack the nut.",
         "exz":  "敲开坚果。",
+        "ex2":  "Dad tightens the nut on my bike.",
+        "exz2":  "爸爸拧紧了我自行车上的螺母。",
         "s":  [
                   "seed",
                   "kernel",
@@ -8274,6 +8412,8 @@
         "en":  "deep round container",
         "ex":  "A pot of tea.",
         "exz":  "一壶茶。",
+        "ex2":  "Mom cooks soup in a pot.",
+        "exz2":  "妈妈用锅煮汤。",
         "s":  [
                   "jar",
                   "kettle",
@@ -8638,6 +8778,8 @@
         "en":  "coiled metal or season",
         "ex":  "The spring is broken.",
         "exz":  "弹簧坏了。",
+        "ex2":  "Flowers come out in spring.",
+        "exz2":  "春天花开了。",
         "s":  [
                   "coil",
                   "season",
@@ -9002,6 +9144,8 @@
         "en":  "small clock for wrist",
         "ex":  "My watch is fast.",
         "exz":  "我表快了。",
+        "ex2":  "We watch TV after dinner.",
+        "exz2":  "我们晚饭后看电视。",
         "s":  [
                   "timepiece",
                   "clock",
@@ -9275,6 +9419,8 @@
         "en":  "free from dirt; to make something clean",
         "ex":  "Wash your hands clean.",
         "exz":  "把手洗干净。",
+        "ex2":  "Let\u0027s clean the room together.",
+        "exz2":  "我们一起打扫房间吧。",
         "s":  [
                   "spotless",
                   "pure",
@@ -9496,6 +9642,8 @@
         "en":  "not controlled or no cost",
         "ex":  "Free of charge.",
         "exz":  "免费。",
+        "ex2":  "The bird is free now.",
+        "exz2":  "小鸟现在自由了。",
         "s":  [
                   "liberated",
                   "loose",
@@ -9613,6 +9761,8 @@
         "en":  "firm or difficult",
         "ex":  "A hard rock.",
         "exz":  "硬石头。",
+        "ex2":  "This question is hard.",
+        "exz2":  "这道题很难。",
         "s":  [
                   "firm",
                   "tough",
@@ -9678,6 +9828,8 @@
         "en":  "caring or a type",
         "ex":  "She is very kind.",
         "exz":  "她非常善良。",
+        "ex2":  "What kind of fruit do you like?",
+        "exz2":  "你喜欢哪种水果？",
         "s":  [
                   "nice",
                   "good",
@@ -9940,6 +10092,8 @@
         "en":  "current or here",
         "ex":  "All are present today.",
         "exz":  "今天全都到了。",
+        "ex2":  "This present is for you.",
+        "exz2":  "这份礼物是给你的。",
         "s":  [
                   "current",
                   "here",
@@ -10057,6 +10211,8 @@
         "en":  "correct or opposite of left",
         "ex":  "You are right.",
         "exz":  "你对了。",
+        "ex2":  "Turn right at the corner.",
+        "exz2":  "在拐角处向右转。",
         "s":  [
                   "correct",
                   "proper",
@@ -10551,6 +10707,8 @@
         "en":  "loved or costly",
         "ex":  "My dear friend.",
         "exz":  "我亲爱的朋友。",
+        "ex2":  "This coat is too dear for me.",
+        "exz2":  "这件外套对我来说太贵了。",
         "s":  [
                   "beloved",
                   "precious",
@@ -11019,6 +11177,8 @@
         "en":  "not thick",
         "ex":  "A thin slice.",
         "exz":  "薄薄一片。",
+        "ex2":  "The little cat is very thin.",
+        "exz2":  "这只小猫很瘦。",
         "s":  [
                   "slim",
                   "slender",
@@ -11058,6 +11218,8 @@
         "en": "a word you say when you meet someone",
         "ex": "Hello, I am Amy.",
         "exz": "你好，我是埃米。",
+        "ex2":  "Hello? Who is this?",
+        "exz2":  "喂？请问是谁？",
         "s": [
             "hi",
             "goodbye"
@@ -11370,6 +11532,8 @@
         "en": "a day or time when you do not go to school or work",
         "ex": "We went to the beach for the holiday.",
         "exz": "假期我们去了海边。",
+        "ex2":  "Spring Festival is a big holiday in China.",
+        "exz2":  "春节是中国的一个重大节日。",
         "s": [
             "vacation",
             "festival"
@@ -11454,6 +11618,8 @@
         "en": "a small paper bag",
         "ex": "I got red packets from my grandpa.",
         "exz": "我从爷爷那里得到了红包。",
+        "ex2":  "I bought a packet of seeds.",
+        "exz2":  "我买了一小包种子。",
         "s": [
             "bag",
             "envelope"
@@ -11526,6 +11692,8 @@
         "en": "a little cold, but nice",
         "ex": "It is cool in autumn.",
         "exz": "秋天很凉爽。",
+        "ex2":  "Your new bike is so cool!",
+        "exz2":  "你的新自行车真酷！",
         "s": [
             "cold",
             "warm"
@@ -11550,6 +11718,8 @@
         "en": "a short fall of rain; washing under falling water",
         "ex": "There will be showers this afternoon.",
         "exz": "今天下午有阵雨。",
+        "ex2":  "I take a shower every night.",
+        "exz2":  "我每天晚上洗淋浴。",
         "s": [
             "rain",
             "bath"
@@ -11754,6 +11924,8 @@
         "en": "a very small animal with a long tail",
         "ex": "The cat is looking at a mouse.",
         "exz": "猫在看着一只老鼠。",
+        "ex2":  "Click the mouse to start the game.",
+        "exz2":  "点一下鼠标开始游戏。",
         "s": [
             "rat",
             "cat"
@@ -11874,6 +12046,8 @@
         "en": "a group of students; a lesson",
         "ex": "We have an English class today.",
         "exz": "我们今天有英语课。",
+        "ex2":  "There are thirty students in my class.",
+        "exz2":  "我们班有三十个学生。",
         "s": [
             "lesson",
             "school"
@@ -12174,6 +12348,8 @@
         "en": "a place where you buy things; to buy things",
         "ex": "Let's go shopping.",
         "exz": "我们去购物吧。",
+        "ex2":  "The shop opens at nine.",
+        "exz2":  "这家商店九点开门。",
         "s": [
             "store",
             "market"
@@ -12342,6 +12518,8 @@
         "en": "something that makes you happy",
         "ex": "The party was fun.",
         "exz": "聚会很有趣。",
+        "ex2":  "We had a lot of fun.",
+        "exz2":  "我们玩得很开心。",
         "s": [
             "play",
             "joy"
@@ -12534,6 +12712,8 @@
         "en": "to say a question",
         "ex": "Can I ask a question?",
         "exz": "我可以问个问题吗？",
+        "ex2":  "Ask Dad to help you.",
+        "exz2":  "请爸爸帮帮你。",
         "s": [
             "question",
             "answer"
@@ -12570,6 +12750,8 @@
         "en": "to make something go into pieces; a short rest",
         "ex": "Don't break the cup.",
         "exz": "别打碎杯子。",
+        "ex2":  "Let\u0027s take a break.",
+        "exz2":  "我们休息一下吧。",
         "s": [
             "crack",
             "rest"
@@ -12582,6 +12764,8 @@
         "en": "to take and hold something that is moving",
         "ex": "Catch the ball!",
         "exz": "接住球！",
+        "ex2":  "The cat catches a mouse.",
+        "exz2":  "猫抓住了一只老鼠。",
         "s": [
             "take",
             "hold"
@@ -12618,6 +12802,8 @@
         "en": "pictures in your mind when you sleep; something you hope for",
         "ex": "My dream is to be a teacher.",
         "exz": "我的梦想是当老师。",
+        "ex2":  "I had a bad dream last night.",
+        "exz2":  "我昨晚做了个噩梦。",
         "s": [
             "hope",
             "sleep"
@@ -12654,6 +12840,8 @@
         "en": "to get bigger",
         "ex": "Plants grow in spring.",
         "exz": "植物在春天生长。",
+        "ex2":  "We grow vegetables in the garden.",
+        "exz2":  "我们在菜园里种菜。",
         "s": [
             "become",
             "plant"
@@ -12690,6 +12878,8 @@
         "en": "to give pain to",
         "ex": "My leg hurts.",
         "exz": "我的腿疼。",
+        "ex2":  "Don\u0027t hurt the cat.",
+        "exz2":  "别伤害小猫。",
         "s": [
             "pain",
             "cut"
@@ -12702,6 +12892,8 @@
         "en": "to have something in your mind",
         "ex": "I know the answer.",
         "exz": "我知道答案。",
+        "ex2":  "Do you know my sister?",
+        "exz2":  "你认识我姐姐吗？",
         "s": [
             "think",
             "understand"
@@ -12738,6 +12930,8 @@
         "en": "to not have something any more; to not win",
         "ex": "I lost my pen.",
         "exz": "我的钢笔丢了。",
+        "ex2":  "We lost the game.",
+        "exz2":  "我们输了比赛。",
         "s": [
             "win",
             "miss"
@@ -12750,6 +12944,8 @@
         "en": "to feel sad that someone is not with you; to not catch",
         "ex": "I miss my grandma.",
         "exz": "我想念奶奶。",
+        "ex2":  "Don\u0027t miss the bus!",
+        "exz2":  "别错过公交车！",
         "s": [
             "lose",
             "love"
@@ -12762,6 +12958,8 @@
         "en": "to go by; to give to someone",
         "ex": "Please pass me the salt.",
         "exz": "请把盐递给我。",
+        "ex2":  "We pass the park on the way to school.",
+        "exz2":  "我们上学路上经过公园。",
         "s": [
             "give",
             "go"
@@ -12774,6 +12972,8 @@
         "en": "to take a flower or fruit from a plant; to choose",
         "ex": "We pick apples on the farm.",
         "exz": "我们在农场摘苹果。",
+        "ex2":  "Pick a card, any card.",
+        "exz2":  "随便挑一张卡片。",
         "s": [
             "choose",
             "take"
@@ -12822,6 +13022,8 @@
         "en": "to keep for later; to keep from danger",
         "ex": "Turn off the tap to save water.",
         "exz": "关上水龙头节约用水。",
+        "ex2":  "The fire fighter saved the cat.",
+        "exz2":  "消防员救了那只猫。",
         "s": [
             "keep",
             "help"
@@ -12846,6 +13048,8 @@
         "en": "to let someone see; a play or program",
         "ex": "Show me your picture.",
         "exz": "给我看看你的画。",
+        "ex2":  "We watched a magic show.",
+        "exz2":  "我们看了一场魔术表演。",
         "s": [
             "see",
             "play"
@@ -12882,6 +13086,8 @@
         "en": "to use money or time",
         "ex": "I spend my weekend with my family.",
         "exz": "我和家人一起度过周末。",
+        "ex2":  "Don\u0027t spend all your money.",
+        "exz2":  "别把钱都花光了。",
         "s": [
             "use",
             "pay"
@@ -12894,6 +13100,8 @@
         "en": "a thing you turn to get water",
         "ex": "Turn off the tap.",
         "exz": "关上水龙头。",
+        "ex2":  "Tap me on the shoulder.",
+        "exz2":  "轻轻拍一下我的肩膀。",
         "s": [
             "water",
             "pipe"
@@ -13170,6 +13378,8 @@
         "en": "able to wait without getting angry; a sick person",
         "ex": "Be patient with your little brother.",
         "exz": "对你弟弟要有耐心。",
+        "ex2":  "The doctor is seeing a patient.",
+        "exz2":  "医生正在给一位病人看病。",
         "s": [
             "calm",
             "kind"
@@ -13470,6 +13680,8 @@
         "en": "a very short time ago; only",
         "ex": "I just finished my homework.",
         "exz": "我刚做完作业。",
+        "ex2":  "It\u0027s just a game.",
+        "exz2":  "这只是个游戏。",
         "s": [
             "only",
             "now"
@@ -13482,6 +13694,8 @@
         "en": "also; more than is good",
         "ex": "It is too hot today.",
         "exz": "今天太热了。",
+        "ex2":  "I like apples too.",
+        "exz2":  "我也喜欢苹果。",
         "s": [
             "also",
             "very"
@@ -13842,6 +14056,8 @@
         "en": "the third month of the year; to walk like soldiers",
         "ex": "Trees grow green in March.",
         "exz": "三月树木变绿。",
+        "ex2":  "The soldiers march down the street.",
+        "exz2":  "士兵们沿着街道行进。",
         "s": [
             "april",
             "walk"
@@ -14286,6 +14502,8 @@
         "en": "well; good",
         "ex": "I'm fine, thank you.",
         "exz": "我很好，谢谢。",
+        "ex2":  "It is a fine day today.",
+        "exz2":  "今天天气晴朗。",
         "s": [
             "good",
             "well"
@@ -14442,6 +14660,8 @@
         "en": "a farm bird; its meat",
         "ex": "We have chicken for dinner.",
         "exz": "我们晚饭吃鸡肉。",
+        "ex2":  "The chicken lays an egg.",
+        "exz2":  "那只鸡下了一个蛋。",
         "s": [
             "duck",
             "fowl"
@@ -14658,6 +14878,8 @@
         "en": "the language of China; from China",
         "ex": "We have Chinese every day.",
         "exz": "我们每天都有语文课。",
+        "ex2":  "I love Chinese food.",
+        "exz2":  "我喜欢中国菜。",
         "s": [
             "english",
             "language"
@@ -15162,6 +15384,8 @@
         "en": "to phone someone; to say someone's name loudly",
         "ex": "Call me tonight.",
         "exz": "今晚给我打电话。",
+        "ex2":  "We call our dog Lucky.",
+        "exz2":  "我们叫我们的狗 Lucky。",
         "s": [
             "phone",
             "name"
@@ -15174,6 +15398,8 @@
         "en": "to shut; near",
         "ex": "Close the door, please.",
         "exz": "请关门。",
+        "ex2":  "The school is close to my home.",
+        "exz2":  "学校离我家很近。",
         "s": [
             "shut",
             "open"
@@ -15294,6 +15520,8 @@
         "en": "at the back of",
         "ex": "The cat is behind the door.",
         "exz": "猫在门后面。",
+        "ex2":  "He is behind in his homework.",
+        "exz2":  "他的作业落后了。",
         "s": [
             "after",
             "back"
@@ -15425,6 +15653,8 @@
         "en": "a plate or bowl; food made for a meal",
         "ex": "I help wash the dishes.",
         "exz": "我帮忙洗碗碟。",
+        "ex2":  "Dumplings are my favorite dish.",
+        "exz2":  "饺子是我最爱吃的菜。",
         "s": [
             "plate",
             "bowl"
@@ -15485,6 +15715,8 @@
         "en": "a person who fights; a fire fighter puts out fires",
         "ex": "The fire fighter is very brave.",
         "exz": "消防员非常勇敢。",
+        "ex2":  "He is a brave fighter.",
+        "exz2":  "他是一名勇敢的战士。",
         "s": [
             "firefighter",
             "fight"
@@ -15509,6 +15741,8 @@
         "en": "to go after someone; to do what a rule says",
         "ex": "Please follow me.",
         "exz": "请跟我来。",
+        "ex2":  "Follow the rules in class.",
+        "exz2":  "在课堂上要遵守规则。",
         "s": [
             "rule",
             "after"
@@ -15606,6 +15840,8 @@
         "en": "the way you behave with other people",
         "ex": "Saying please shows good manners.",
         "exz": "说「请」体现良好的礼貌。",
+        "ex2":  "She speaks in a gentle manner.",
+        "exz2":  "她说话的方式很温柔。",
         "s": [
             "polite",
             "habit"
@@ -15630,6 +15866,8 @@
         "en": "a very short time",
         "ex": "Please wait a moment.",
         "exz": "请稍等一下。",
+        "ex2":  "At that moment, the bell rang.",
+        "exz2":  "就在那时，铃声响了。",
         "s": [
             "minute",
             "time"
@@ -15666,6 +15904,8 @@
         "en": "a person with an important job, like a police officer",
         "ex": "The police officer helped me.",
         "exz": "警察帮助了我。",
+        "ex2":  "An officer from the city visited our school.",
+        "exz2":  "一位市里的官员来我们学校参观。",
         "s": [
             "police",
             "guard"
@@ -15678,6 +15918,8 @@
         "en": "a person who paints pictures or walls",
         "ex": "I want to be a painter.",
         "exz": "我想当画家。",
+        "ex2":  "The painter paints our walls white.",
+        "exz2":  "油漆工把我们的墙刷成白色。",
         "s": [
             "paint",
             "artist"
@@ -15786,6 +16028,8 @@
         "en": "from a time in the past until now",
         "ex": "I have lived here since I was five.",
         "exz": "我从五岁起就住在这里。",
+        "ex2":  "Since it is raining, let\u0027s stay home.",
+        "exz2":  "因为在下雨，我们待在家里吧。",
         "s": [
             "from",
             "because"
@@ -15870,6 +16114,8 @@
         "en": "to stop sleeping",
         "ex": "I wake up at seven.",
         "exz": "我七点醒来。",
+        "ex2":  "Please wake me up at seven.",
+        "exz2":  "请七点叫醒我。",
         "s": [
             "sleep",
             "morning"
@@ -15882,6 +16128,8 @@
         "en": "something you hope for; to hope for something",
         "ex": "Make a wish!",
         "exz": "许个愿吧！",
+        "ex2":  "I wish I could fly.",
+        "exz2":  "我希望我能飞。",
         "s": [
             "hope",
             "want"
@@ -15894,6 +16142,8 @@
         "en": "very nice or beautiful",
         "ex": "What a lovely day!",
         "exz": "多么美好的一天！",
+        "ex2":  "What a lovely baby!",
+        "exz2":  "多可爱的宝宝啊！",
         "s": [
             "beautiful",
             "nice"
@@ -15906,6 +16156,8 @@
         "en": "a person whose job is to clean; more clean",
         "ex": "The street cleaners start work early.",
         "exz": "街道清洁工很早就开始工作。",
+        "ex2":  "My room is cleaner than yours.",
+        "exz2":  "我的房间比你的干净。",
         "s": [
             "clean",
             "worker"
@@ -16074,6 +16326,8 @@
         "en": "a place that keeps money for people",
         "ex": "Dad puts money in the bank.",
         "exz": "爸爸把钱存进银行。",
+        "ex2":  "We sit on the river bank.",
+        "exz2":  "我们坐在河岸上。",
         "s": [
             "money",
             "save"
@@ -16110,6 +16364,8 @@
         "en": "the place where two streets or walls meet",
         "ex": "The shop is on the corner.",
         "exz": "商店在街角。",
+        "ex2":  "Put the chair in the corner.",
+        "exz2":  "把椅子放在角落里。",
         "s": [
             "street",
             "turn"
@@ -16493,6 +16749,8 @@
         "en": "that girl or woman; belonging to her",
         "ex": "I like her hat.",
         "exz": "我喜欢她的帽子。",
+        "ex2":  "I gave her a pen.",
+        "exz2":  "我给了她一支笔。",
         "s": [
             "she",
             "hers"
@@ -16923,6 +17181,8 @@
         "en": "past form of 'fall'",
         "ex": "The apple fell from the tree.",
         "exz": "苹果从树上掉了下来。",
+        "ex2":  "He fell off his bike.",
+        "exz2":  "他从自行车上摔了下来。",
         "s": [
             "fall"
         ]
@@ -16991,6 +17251,8 @@
         "en": "past form of 'lose'; not able to find your way",
         "ex": "I lost my key.",
         "exz": "我把钥匙弄丢了。",
+        "ex2":  "The little dog is lost.",
+        "exz2":  "小狗迷路了。",
         "s": [
             "lose",
             "find"
@@ -17048,6 +17310,8 @@
         "en": "past form of 'spend'",
         "ex": "I spent a day at the farm.",
         "exz": "我在农场待了一天。",
+        "ex2":  "I spent ten yuan on a book.",
+        "exz2":  "我花了十元买一本书。",
         "s": [
             "spend"
         ]
@@ -17115,6 +17379,8 @@
         "en": "past form of 'can'; also used to ask politely",
         "ex": "When I was small, I could not walk.",
         "exz": "我小时候还不会走路。",
+        "ex2":  "Could you help me, please?",
+        "exz2":  "你能帮帮我吗？",
         "s": [
             "can"
         ]
@@ -17126,6 +17392,8 @@
         "en": "past form of 'will'; would like: want",
         "ex": "Would you like some tea?",
         "exz": "你想喝点茶吗？",
+        "ex2":  "He said he would come.",
+        "exz2":  "他说他会来的。",
         "s": [
             "will"
         ]
@@ -17171,6 +17439,8 @@
         "en": "past form of 'get'",
         "ex": "I got a new bike.",
         "exz": "我得到了一辆新自行车。",
+        "ex2":  "It got dark outside.",
+        "exz2":  "外面天黑了。",
         "s": [
             "get"
         ]
@@ -17182,6 +17452,8 @@
         "en": "past form of 'keep'",
         "ex": "I kept the box.",
         "exz": "我留下了那个盒子。",
+        "ex2":  "We kept quiet in the library.",
+        "exz2":  "我们在图书馆里保持安静。",
         "s": [
             "keep"
         ]
@@ -17239,6 +17511,8 @@
         "en": "past form of 'take'",
         "ex": "I took my dog to the park.",
         "exz": "我带我的狗去了公园。",
+        "ex2":  "She took a cookie from the box.",
+        "exz2":  "她从盒子里拿了一块饼干。",
         "s": [
             "take"
         ]
@@ -17341,6 +17615,8 @@
         "en": "less heavy; more bright",
         "ex": "Paper is lighter than wood.",
         "exz": "纸比木头轻。",
+        "ex2":  "The room is lighter in the morning.",
+        "exz2":  "早上房间更亮一些。",
         "s": [
             "light"
         ]
@@ -17495,6 +17771,8 @@
         "en": "past form of 'grow'",
         "ex": "We grew tomatoes in the garden.",
         "exz": "我们在花园里种了西红柿。",
+        "ex2":  "The baby grew very fast.",
+        "exz2":  "宝宝长得很快。",
         "s": [
             "grow",
             "grown"
@@ -18237,6 +18515,8 @@
         "en": "fifteen minutes, or one of four equal parts",
         "ex": "It's a quarter past three.",
         "exz": "现在是三点一刻。",
+        "ex2":  "A quarter of the cake is left.",
+        "exz2":  "蛋糕还剩四分之一。",
         "s": [
             "half",
             "hour"
@@ -18357,6 +18637,8 @@
         "en": "a hot powder, or a red or green vegetable",
         "ex": "Dad puts pepper in the soup.",
         "exz": "爸爸往汤里放胡椒。",
+        "ex2":  "Mom cuts a red pepper.",
+        "exz2":  "妈妈切了一个红辣椒。",
         "s": [
             "salt",
             "vegetable"
@@ -18558,6 +18840,8 @@
         "en": "on every side of something, or moving in a circle",
         "ex": "We walk around the lake.",
         "exz": "我们绕着湖散步。",
+        "ex2":  "There are trees around the house.",
+        "exz2":  "房子周围有树。",
         "s": [
             "round",
             "about"
@@ -18594,6 +18878,8 @@
         "en": "on or to a higher floor of a building",
         "ex": "My bedroom is upstairs.",
         "exz": "我的卧室在楼上。",
+        "ex2":  "Go upstairs and get your book.",
+        "exz2":  "上楼去拿你的书。",
         "s": [
             "up",
             "downstairs"
@@ -18606,6 +18892,8 @@
         "en": "on or to a lower floor of a building",
         "ex": "Grandma is cooking downstairs.",
         "exz": "奶奶在楼下做饭。",
+        "ex2":  "Run downstairs and open the door.",
+        "exz2":  "跑下楼去开门。",
         "s": [
             "down",
             "upstairs"
@@ -18750,6 +19038,8 @@
         "en": "very cold, or covered with ice",
         "ex": "The road is icy today.",
         "exz": "今天路面结冰了。",
+        "ex2":  "The water is icy cold.",
+        "exz2":  "水冰冷冰冷的。",
         "s": [
             "ice",
             "cold"
@@ -18762,6 +19052,8 @@
         "en": "soft and light, like fur",
         "ex": "The little chick is fluffy.",
         "exz": "小鸡毛茸茸的。",
+        "ex2":  "The pancake is soft and fluffy.",
+        "exz2":  "这张松饼又软又松。",
         "s": [
             "soft",
             "warm"

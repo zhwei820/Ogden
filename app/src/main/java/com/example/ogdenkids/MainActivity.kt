@@ -61,6 +61,7 @@ import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Menu
@@ -294,6 +295,7 @@ sealed class Screen {
     object SpeechWords : Screen()
     object Settings : Screen()
     object Privacy : Screen()
+    object Feedback : Screen()
 }
 
 class OgdenRepository(private val context: Context) {
@@ -653,6 +655,7 @@ fun OgdenKidsApp() {
                     onTab = { selectedTab = it },
                     onSettings = { screen = Screen.Settings },
                     onPrivacy = { screen = Screen.Privacy },
+                    onFeedback = { screen = Screen.Feedback },
                     content = { padding ->
                         stateHolder.SaveableStateProvider("tab-${selectedTab.name}") {
                         when (selectedTab) {
@@ -892,6 +895,7 @@ fun OgdenKidsApp() {
                     sections = privacySections(),
                     links = emptyList()
                 )
+                Screen.Feedback -> FeedbackScreen(onBack = goBack)
             }
             }
         }
@@ -962,6 +966,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.SpeechWords -> "speech-words"
     Screen.Settings -> "settings"
     Screen.Privacy -> "privacy"
+    Screen.Feedback -> "feedback"
 }
 
 private fun localAudioPath(text: String, accent: Accent): String? {
@@ -1009,9 +1014,10 @@ fun MainScaffold(
     onTab: (Tab) -> Unit,
     onSettings: () -> Unit,
     onPrivacy: () -> Unit,
+    onFeedback: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
-    // 设置、隐私声明不常用，收进侧边抽屉，不占底部标签
+    // 设置、隐私声明、反馈不常用，收进侧边抽屉，不占底部标签
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     fun closeThen(action: () -> Unit) {
@@ -1040,6 +1046,13 @@ fun MainScaffold(
                     icon = { Icon(Icons.Default.Info, contentDescription = null) },
                     selected = false,
                     onClick = { closeThen(onPrivacy) },
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
+                NavigationDrawerItem(
+                    label = { AppText("意见反馈", fontSize = 16.sp) },
+                    icon = { Icon(Icons.Default.Feedback, contentDescription = null) },
+                    selected = false,
+                    onClick = { closeThen(onFeedback) },
                     modifier = Modifier.padding(horizontal = 12.dp)
                 )
             }
@@ -2001,7 +2014,7 @@ fun SpeechReaderScreen(
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
     fun isSaved(token: SpeechToken): Boolean {
         val word = ogdenWordOf(token)
-        return store.isSpeechWordSaved(lessonWordKey(token, word))
+        return (word != null && store.progress(word.word).favorite) || store.isSpeechWordSaved(lessonWordKey(token, word))
     }
     val allLines = speech.lines + speech.patterns
     val hasContraction = remember(speech.id) { allLines.any { line -> tokenizeSpeech(line.en).any { contractionOf(it.text) != null } } }
@@ -3201,6 +3214,101 @@ fun SettingsScreen(
 }
 
 @Composable
+fun FeedbackScreen(onBack: () -> Unit) {
+    val scope = rememberCoroutineScope()
+    var content by rememberSaveable { mutableStateOf("") }
+    var contact by rememberSaveable { mutableStateOf("") }
+    var sending by remember { mutableStateOf(false) }
+    var sent by rememberSaveable { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    Scaffold(containerColor = Paper, topBar = {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(PaperElevated)
+                .border(1.dp, Line)
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
+            AppText("意见反馈", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+        }
+    }) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(18.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
+        ) {
+            item {
+                SectionTitle("意见反馈", "遇到问题或有建议，直接写给作者")
+            }
+            if (sent) {
+                item {
+                    AppText("已收到，谢谢你的反馈！", fontSize = 18.sp)
+                }
+                item {
+                    OutlinedButton(onClick = onBack, shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+                        AppText("返回")
+                    }
+                }
+            } else {
+                item {
+                    OutlinedTextField(
+                        value = content,
+                        onValueChange = { content = it.take(Feedback.MAX_CONTENT_CHARS); error = null },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 160.dp),
+                        placeholder = { AppText("请描述问题或建议，例如哪一课、哪个单词、发生了什么") },
+                        supportingText = { AppText("${content.length} / ${Feedback.MAX_CONTENT_CHARS}", color = InkFaint, fontSize = 12.sp) },
+                        enabled = !sending,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                }
+                item {
+                    OutlinedTextField(
+                        value = contact,
+                        onValueChange = { contact = it.take(Feedback.MAX_CONTACT_CHARS) },
+                        modifier = Modifier.fillMaxWidth(),
+                        placeholder = { AppText("联系方式（选填，微信 / 邮箱）") },
+                        singleLine = true,
+                        enabled = !sending,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                }
+                item {
+                    AppText("提交时会附带应用版本、手机型号和系统版本，便于定位问题。", color = InkFaint, fontSize = 12.sp)
+                }
+                error?.let { message ->
+                    item { AppText(message, color = MaterialTheme.colorScheme.error, fontSize = 14.sp) }
+                }
+                item {
+                    Button(
+                        onClick = {
+                            sending = true
+                            error = null
+                            scope.launch {
+                                Feedback.send(content, contact)
+                                    .onSuccess { sent = true }
+                                    .onFailure { error = if (Feedback.isConfigured) "发送失败，请检查网络后重试" else "当前版本未开通反馈" }
+                                sending = false
+                            }
+                        },
+                        enabled = content.isNotBlank() && !sending,
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        AppText(if (sending) "正在提交…" else "提交反馈")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
 fun LegalInfoScreen(
     title: String,
     onBack: () -> Unit,
@@ -3298,6 +3406,10 @@ fun privacySections() = listOf(
     LegalSection(
         "发音服务",
         "应用内置了单词（US / UK）、课文、例句、练习题与中文释义的全部朗读音频，离线即可播放。仅当个别音频缺失时，才会请求 Microsoft Azure 语音服务现场合成作为备用，请求仅包含需要朗读的英文或中文文本，不包含用户身份信息，合成的音频缓存在本机；网络不可用时使用系统自带的语音引擎。"
+    ),
+    LegalSection(
+        "意见反馈",
+        "仅在你主动提交「意见反馈」时，应用会把你填写的内容、选填的联系方式，以及应用版本、手机型号和系统版本发送给开发者（经企业微信），用于处理反馈，不做其他用途。"
     ),
     LegalSection(
         "跟读录音",
@@ -3786,6 +3898,11 @@ fun SpecialModuleScreen(
     var sceneLevel by rememberSaveable(module.key) { mutableStateOf(level) }
     var favoriteVersion by remember { mutableStateOf(0) }
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
+    /** 收藏夹里的词或「课文生词」里的词都算已收藏，用紫色标出 */
+    fun isMarked(token: SpeechToken): Boolean {
+        val word = ogdenWordOf(token)
+        return (word != null && store.progress(word.word).favorite) || store.isSpeechWordSaved(lessonWordKey(token, word))
+    }
     fun stopSpeaking() {
         onStopSpeaking()
         repeatIndex = null
@@ -3900,6 +4017,7 @@ fun SpecialModuleScreen(
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         group.words.forEach { w ->
                             val picked = pickedWord == w
+                            val marked = remember(w, favoriteVersion) { isMarked(SpeechToken(w, w.indices)) }
                             OutlinedButton(
                                 onClick = {
                                     pickedWord = w
@@ -3909,7 +4027,19 @@ fun SpecialModuleScreen(
                                 border = BorderStroke(if (picked) 2.dp else 1.dp, if (picked) Category.Operations.tint else Line),
                                 modifier = Modifier.padding(bottom = 8.dp),
                                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 10.dp)
-                            ) { Text(wordIndex[w.lowercase()]?.word ?: w, fontSize = 20.sp, fontFamily = FontFamily.Serif, color = Ink) }
+                            ) {
+                                if (marked) {
+                                    Icon(Icons.Default.Favorite, contentDescription = "已收藏", tint = Error, modifier = Modifier.size(14.dp))
+                                    Spacer(Modifier.width(4.dp))
+                                }
+                                Text(
+                                    wordIndex[w.lowercase()]?.word ?: w,
+                                    fontSize = 20.sp,
+                                    fontFamily = FontFamily.Serif,
+                                    fontWeight = if (marked) FontWeight.Bold else null,
+                                    color = if (marked) Category.Opposites.tint else Ink
+                                )
+                            }
                         }
                     }
                 }
@@ -3924,7 +4054,7 @@ fun SpecialModuleScreen(
                 SpeechLineRow(
                     line = line,
                     tokens = tokens,
-                    savedRanges = emptyList(),
+                    savedRanges = remember(line.en, favoriteVersion) { tokens.filter { isMarked(it) }.map { it.range } },
                     selectedRange = selected?.takeIf { it.line == index }?.token?.range,
                     showTranslation = true,
                     speaking = speakingIndex == index,

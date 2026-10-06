@@ -27,6 +27,8 @@ android {
         buildConfigField "String", "AZURE_SPEECH_REGION", "\"${localProps.getProperty("azure.speech.region", "")}\""
         buildConfigField "String", "AZURE_TRANSLATOR_KEY", "\"${localProps.getProperty("azure.translator.key", "")}\""
         buildConfigField "String", "AZURE_TRANSLATOR_REGION", "\"${localProps.getProperty("azure.translator.region", "")}\""
+        // 未配置时反馈入口提示不可用
+        buildConfigField "String", "WECOM_FEEDBACK_WEBHOOK", "\"${localProps.getProperty("wecom.feedback.webhook", "")}\""
     }
 
     signingConfigs {
