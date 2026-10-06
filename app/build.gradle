@@ -29,6 +29,26 @@ android {
         buildConfigField "String", "AZURE_TRANSLATOR_REGION", "\"${localProps.getProperty("azure.translator.region", "")}\""
     }
 
+    signingConfigs {
+        release {
+            // 密钥库与密码只在 local.properties，不进 git；丢了就无法给已安装的手机升级
+            def storePath = localProps.getProperty("release.store.file")
+            if (storePath != null) {
+                storeFile rootProject.file(storePath)
+                storePassword localProps.getProperty("release.store.password")
+                keyAlias localProps.getProperty("release.key.alias")
+                keyPassword localProps.getProperty("release.key.password")
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
     buildFeatures {
         compose true
         buildConfig true

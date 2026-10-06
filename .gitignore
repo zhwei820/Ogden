@@ -9,3 +9,5 @@ captures/
 tools/
 *.apk
 **/.DS_Store
+keystore/
+dist/
