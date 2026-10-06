@@ -9,7 +9,7 @@ enum class SpecialTopic(val key: String, val zh: String, val en: String, val ico
     Time("time", "时间", "What Time Is It?", "⏰")
 }
 
-data class Thing(val emoji: String, val name: String)
+data class Thing(val emoji: String, val name: String, val zh: String)
 
 /** 界面按区域摆放物体；同区域的方位在「点一点放在哪」题里不会同时出现。 */
 enum class Region { Top, Bottom, Center, Left, Right, Front, Back }
@@ -72,10 +72,10 @@ private fun color(word: String) = Colors.first { it.word == word }
 
 /** 颜色固定、孩子一眼认得的东西，用于「The apple is red.」 */
 private val ColoredThings = listOf(
-    Thing("🍎", "apple") to "red", Thing("🍌", "banana") to "yellow", Thing("🐸", "frog") to "green",
-    Thing("🌊", "sea") to "blue", Thing("☁️", "cloud") to "white", Thing("🍊", "orange") to "orange",
-    Thing("🐷", "pig") to "pink", Thing("🍇", "grape") to "purple", Thing("🐻", "bear") to "brown",
-    Thing("🐘", "elephant") to "grey"
+    Thing("🍎", "apple", "苹果") to "red", Thing("🍌", "banana", "香蕉") to "yellow", Thing("🐸", "frog", "青蛙") to "green",
+    Thing("🌊", "sea", "大海") to "blue", Thing("☁️", "cloud", "云") to "white", Thing("🍊", "orange", "橙子") to "orange",
+    Thing("🐷", "pig", "小猪") to "pink", Thing("🍇", "grape", "葡萄") to "purple", Thing("🐻", "bear", "熊") to "brown",
+    Thing("🐘", "elephant", "大象") to "grey"
 )
 
 private val ColorMixes = listOf(
@@ -124,7 +124,10 @@ data class SpecialQuestion(
     val sentence: String,
     val sentenceZh: String,
     val question: String = ""
-)
+) {
+    /** 朗读用的答案：「7 = seven」只读 seven。 */
+    val spoken: String get() = sentence.substringAfter("= ")
+}
 
 /** 按题型和场景生成英文问句；在出题后统一补上，免得每个出题分支各写一遍。 */
 private fun englishQuestion(topic: SpecialTopic, q: SpecialQuestion): String {
@@ -165,15 +168,15 @@ private fun englishQuestion(topic: SpecialTopic, q: SpecialQuestion): String {
 }
 
 private val Items = listOf(
-    Thing("🐱", "cat"), Thing("🐶", "dog"), Thing("⚽", "ball"), Thing("🐦", "bird"),
-    Thing("🐭", "mouse"), Thing("🍎", "apple"), Thing("🦆", "duck"), Thing("🐰", "rabbit")
+    Thing("🐱", "cat", "猫"), Thing("🐶", "dog", "狗"), Thing("⚽", "ball", "球"), Thing("🐦", "bird", "小鸟"),
+    Thing("🐭", "mouse", "老鼠"), Thing("🍎", "apple", "苹果"), Thing("🦆", "duck", "鸭子"), Thing("🐰", "rabbit", "兔子")
 )
-private val Box = Thing("📦", "box")
-private val Basket = Thing("🧺", "basket")
-private val Chair = Thing("🪑", "chair")
-private val Bed = Thing("🛏️", "bed")
-private val Car = Thing("🚗", "car")
-private val House = Thing("🏠", "house")
+private val Box = Thing("📦", "box", "箱子")
+private val Basket = Thing("🧺", "basket", "篮子")
+private val Chair = Thing("🪑", "chair", "椅子")
+private val Bed = Thing("🛏️", "bed", "床")
+private val Car = Thing("🚗", "car", "汽车")
+private val House = Thing("🏠", "house", "房子")
 
 private fun refsFor(relation: Relation): List<Thing> = when (relation) {
     // 「里面」「后面」要靠参照物挡住一部分来表现，只用不透明的箱子、篮子
@@ -188,7 +191,9 @@ fun positionSentence(scene: Scene.Place): String =
     if (scene.relation == Relation.Between) "The ${scene.item.name} is between the ${scene.ref.name} and the ${scene.ref2!!.name}."
     else "The ${scene.item.name} is ${scene.relation.phrase} the ${scene.ref.name}."
 
-private fun positionZh(scene: Scene.Place): String = "${scene.item.emoji} ${scene.relation.zh.replace("……", " ${scene.ref.emoji}${scene.ref2?.let { " 和 ${it.emoji} " } ?: " "}")}"
+/** 「猫在箱子下面」：会被朗读，所以用中文名而不是表情符号，并去掉「（不挨着）」这类括注。 */
+private fun positionZh(scene: Scene.Place): String =
+    scene.item.zh + scene.relation.zh.substringBefore("（").replace("……", scene.ref.zh + (scene.ref2?.let { "和${it.zh}" } ?: "")) + "。"
 
 private fun randomPlace(relation: Relation, random: Random, item: Thing = Items.random(random), ref: Thing? = null): Scene.Place {
     val r = ref?.takeIf { it in refsFor(relation) } ?: refsFor(relation).random(random)
@@ -254,11 +259,13 @@ private fun positionQuestion(kind: SpecialKind, level: Int, random: Random): Spe
             val placed = Scene.Place(item, ref, target)
             val command = "Put the ${item.name} ${target.phrase} the ${ref.name}."
             SpecialQuestion(kind, "听指令，点一点 ${item.emoji} 该放在哪", Scene.Place(item, ref, target), command,
-                options.map { SpecialOption(scene = Scene.Place(item, ref, it)) }, answer, command, "把 ${positionZh(placed)}")
+                options.map { SpecialOption(scene = Scene.Place(item, ref, it)) }, answer, command, placeZh(placed))
         }
         else -> null
     }
 }
+
+private fun placeZh(scene: Scene.Place) = "把" + positionZh(scene).replaceFirst("在", "放在")
 
 // ---------- 数字 ----------
 
@@ -355,7 +362,7 @@ private fun colorQuestion(kind: SpecialKind, level: Int, random: Random): Specia
         val wrong = pool.filter { it.word != word && " " !in it.word }.shuffled(random).take(3).map { it.word }
         val (options, answer) = withAnswer(word, wrong, random)
         val sentence = "The ${thing.name} is $word."
-        return SpecialQuestion(kind, "The ${thing.name} is ____.", Scene.Emoji(thing.emoji), null, options.map { SpecialOption(text = it) }, answer, sentence, "${thing.emoji} 是${color(word).zh}的。")
+        return SpecialQuestion(kind, "The ${thing.name} is ____.", Scene.Emoji(thing.emoji), null, options.map { SpecialOption(text = it) }, answer, sentence, "${thing.zh}是${color(word).zh}的。")
     }
     val target = (pool.filter { it.level == level } + pool).random(random)
     val wrong = pool.filter { it != target }.shuffled(random).take(3)
@@ -461,4 +468,87 @@ data class SpecialModule(
         id = "special-$key", level = 0, unit = 0, theme = SpeechTheme.Me,
         title = en, titleZh = zh, lines = sentences, patterns = emptyList(), words = words
     )
+}
+
+private val PlaceableRelations = Relation.values().filter {
+    it.region in setOf(Region.Top, Region.Bottom, Region.Center, Region.Left, Region.Right) &&
+        it != Relation.Between && it != Relation.Inside && it != Relation.Outside
+}
+
+/**
+ * 看图练习可能朗读的全部英文 / 中文（穷举所有物体 × 方位 × 参照物等组合），用于预生成 TTS 音频。
+ * 出题逻辑新增句式时要同步加到这里，否则 TtsCoverageTest 会报缺音频。
+ */
+fun allSpecialUtterances(): Pair<Set<String>, Set<String>> {
+    val en = mutableSetOf<String>()
+    val zh = mutableSetOf<String>()
+    // 方位
+    for (relation in Relation.values()) for (item in Items) for (ref in refsFor(relation)) {
+        val ref2s = if (relation == Relation.Between) refsFor(relation) - ref else listOf(null)
+        for (ref2 in ref2s) {
+            val scene = Scene.Place(item, ref, relation, ref2)
+            en += positionSentence(scene)
+            zh += positionZh(scene)
+        }
+    }
+    for (item in Items) {
+        en += "Where is the ${item.name}?"
+        en += "Where do you put the ${item.name}?"
+        for (target in PlaceableRelations) for (ref in refsFor(Relation.In)) {
+            en += "Put the ${item.name} ${target.phrase} the ${ref.name}."
+            zh += placeZh(Scene.Place(item, ref, target))
+        }
+    }
+    en += "Which picture is right?"
+    en += "Which way do you go?"
+    Direction.values().forEach { en += it.sentence; zh += it.zh }
+    // 数字
+    for (n in 1..100) en += numberWord(n)
+    for (n in 1..10) {
+        en += Ordinals[n]
+        en += "How do you say ${ordinalMark(n)}?"
+        zh += "第 $n"
+    }
+    for (n in 1..100) zh += "数字 $n"
+    en += "Which number do you hear?"
+    en += "How do you say this number?"
+    for (emoji in CountEmojis) {
+        val noun = CountNouns.getValue(emoji)
+        en += "How many $noun are there?"
+        en += "How many $noun do you have?"
+        for (n in 1..20) {
+            val word = numberWord(n)
+            en += "There ${if (n == 1) "is" else "are"} $word ${if (n == 1) noun.removeSuffix("s") else noun}."
+            en += "I have $word ${if (n == 1) noun.removeSuffix("s") else noun}."
+            zh += "一共有 $n 个"
+            zh += "我有 $n 个"
+        }
+    }
+    // 颜色
+    for (c in Colors) {
+        en += c.word
+        en += "It's ${c.word}."
+        zh += "这是${c.zh}。"
+    }
+    for ((thing, word) in ColoredThings) {
+        en += "The ${thing.name} is $word."
+        en += "What color is the ${thing.name}?"
+        zh += "${thing.zh}是${color(word).zh}的。"
+    }
+    for ((a, b, result) in ColorMixes) {
+        en += "${a.replaceFirstChar { it.uppercaseChar() }} and $b make $result."
+        en += "What color do $a and $b make?"
+        zh += "${color(a).zh}和${color(b).zh}调成${color(result).zh}。"
+    }
+    en += "What color is it?"
+    en += "Which color do you hear?"
+    // 时间
+    for (hour in 1..12) for (minute in listOf(0, 30, 15, 45)) {
+        en += timeSentence(hour, minute)
+        en += "What time is $hour:${"%02d".format(minute)}?"
+        zh += timeZh(hour, minute)
+    }
+    en += "What time is it?"
+    en += "Which clock is right?"
+    return en to zh
 }

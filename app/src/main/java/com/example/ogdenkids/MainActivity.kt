@@ -8,7 +8,6 @@ import android.net.Uri
 import android.icu.text.Transliterator
 import android.os.Build
 import android.os.Bundle
-import android.speech.tts.TextToSpeech
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -123,7 +122,6 @@ import androidx.compose.ui.unit.sp
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlinx.coroutines.launch
-import java.net.URLEncoder
 import java.util.Locale
 import kotlin.math.ceil
 import kotlin.random.Random
@@ -466,8 +464,8 @@ fun OgdenKidsApp() {
     // 每个页面 / 标签各自保存 rememberSaveable 状态（含列表滚动位置），切回来时恢复
     val stateHolder = rememberSaveableStateHolder()
     var speechLevel by remember { mutableStateOf(1) }
-    val speak = rememberSpeaker(accent)
     val azureSpeaker = remember { AzureSpeaker(context) }
+    val speak = rememberSpeaker(accent, azureSpeaker)
     DisposableEffect(azureSpeaker) {
         onDispose { azureSpeaker.release() }
     }
@@ -788,70 +786,30 @@ fun OgdenKidsApp() {
     }
 }
 
+/**
+ * 单词朗读：有 assets/audio 离线录音的直接播放；其余文本（例句、近义词）交给 [azure]，
+ * 它会先用预生成的 assets/tts 音频，缺失时才在线合成。
+ */
 @Composable
-fun rememberSpeaker(accent: Accent): (String) -> Unit {
+fun rememberSpeaker(accent: Accent, azure: AzureSpeaker): (String) -> Unit {
     val context = LocalContext.current
-    var tts by remember { mutableStateOf<TextToSpeech?>(null) }
     var player by remember { mutableStateOf<MediaPlayer?>(null) }
-    var ready by remember { mutableStateOf(false) }
-
     DisposableEffect(Unit) {
-        val engine = TextToSpeech(context) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                ready = true
-            }
-        }
-        tts = engine
-        onDispose {
-            player?.release()
-            engine.shutdown()
-        }
+        onDispose { player?.release() }
     }
-    LaunchedEffect(accent, tts) {
-        tts?.setBestLanguage(accent)
-    }
-    return remember(accent, tts, ready, player) {
+    return remember(accent, azure) {
         { rawText: String ->
             val text = rawText.trim()
-            val engine = tts
             if (text.isNotEmpty()) {
                 player?.release()
-                fun fallbackTts() {
-                    if (engine != null) {
-                        engine.setBestLanguage(accent)
-                        engine.setSpeechRate(0.82f)
-                        engine.setPitch(1.04f)
-                        val params = Bundle().apply {
-                            putFloat(TextToSpeech.Engine.KEY_PARAM_VOLUME, 1.0f)
-                        }
-                        engine.speak(text, TextToSpeech.QUEUE_FLUSH, params, "ogden-${System.nanoTime()}")
-                    }
-                }
-                fun playOnline() {
-                    runCatching {
-                        val mediaPlayer = MediaPlayer()
-                        player = mediaPlayer
-                        mediaPlayer.setDataSource(ogdenTtsUrl(text, accent))
-                        mediaPlayer.setOnPreparedListener { it.start() }
-                        mediaPlayer.setOnCompletionListener {
-                            it.release()
-                            if (player === it) player = null
-                        }
-                        mediaPlayer.setOnErrorListener { mp, _, _ ->
-                            mp.release()
-                            if (player === mp) player = null
-                            fallbackTts()
-                            true
-                        }
-                        mediaPlayer.prepareAsync()
-                    }.onFailure { fallbackTts() }
-                }
+                player = null
                 val localPath = localAudioPath(text, accent)
-                if (localPath == null) {
-                    playOnline()
+                val fd = localPath?.let { runCatching { context.assets.openFd(it) }.getOrNull() }
+                if (fd == null) {
+                    azure.speak(text, AzureVoice.english(accent))
                 } else {
+                    azure.stop()
                     runCatching {
-                        val fd = context.assets.openFd(localPath)
                         val mediaPlayer = MediaPlayer()
                         player = mediaPlayer
                         mediaPlayer.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
@@ -864,11 +822,11 @@ fun rememberSpeaker(accent: Accent): (String) -> Unit {
                         mediaPlayer.setOnErrorListener { mp, _, _ ->
                             mp.release()
                             if (player === mp) player = null
-                            playOnline()
+                            azure.speak(text, AzureVoice.english(accent))
                             true
                         }
                         mediaPlayer.prepareAsync()
-                    }.onFailure { playOnline() }
+                    }.onFailure { azure.speak(text, AzureVoice.english(accent)) }
                 }
             }
         }
@@ -899,20 +857,6 @@ private fun localAudioPath(text: String, accent: Accent): String? {
     if (file.isBlank()) return null
     val dir = if (accent == Accent.US) "us" else "uk"
     return "audio/$dir/$file.mp3"
-}
-
-private fun ogdenTtsUrl(text: String, accent: Accent): String {
-    val encoded = URLEncoder.encode(text, "UTF-8")
-    val accentParam = if (accent == Accent.US) "us" else "uk"
-    val rate = if (text.split(Regex("\\s+")).size <= 1) "+0%" else "-6%"
-    return "https://ogden.munch.love/api/tts?text=$encoded&accent=$accentParam&rate=${URLEncoder.encode(rate, "UTF-8")}&v=android"
-}
-
-private fun TextToSpeech.setBestLanguage(accent: Accent) {
-    val result = setLanguage(accent.locale)
-    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED || result == TextToSpeech.ERROR) {
-        setLanguage(Locale.ENGLISH)
-    }
 }
 
 @Composable
@@ -2564,7 +2508,7 @@ fun privacySections() = listOf(
     ),
     LegalSection(
         "发音服务",
-        "应用已内置 US / UK 两套单词发音音频，用于离线播放。对于例句、长文本或本地音频不可用的情况，应用可能访问在线发音服务作为备用，该请求仅包含需要发音的英文文本，不包含用户身份信息。课文与中文释义的朗读使用 Microsoft Azure 语音服务，请求仅包含需要朗读的英文或中文文本，合成的音频缓存在本机。"
+        "应用内置了单词（US / UK）、课文、例句、练习题与中文释义的全部朗读音频，离线即可播放。仅当个别音频缺失时，才会请求 Microsoft Azure 语音服务现场合成作为备用，请求仅包含需要朗读的英文或中文文本，不包含用户身份信息，合成的音频缓存在本机；网络不可用时使用系统自带的语音引擎。"
     )
 )
 
@@ -3365,8 +3309,7 @@ fun SpecialPracticeScreen(
         selected = i
         if (i == question.answer) {
             correctCount++
-            // 「7 = seven」这类只读等号后的英文
-            onSpeak(question.sentence.substringAfter("= "))
+            onSpeak(question.spoken)
         }
     }
 
@@ -3495,7 +3438,7 @@ fun SpecialPracticeScreen(
                             AppText(if (isCorrect) "答对了！" else "再看看正确答案", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Text(question.sentence, fontFamily = FontFamily.Serif, fontSize = 22.sp, modifier = Modifier.weight(1f))
-                                IconButton(onClick = { onSpeak(question.sentence) }) {
+                                IconButton(onClick = { onSpeak(question.spoken) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = accent.tint)
                                 }
                             }

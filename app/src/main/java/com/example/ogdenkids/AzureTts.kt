@@ -11,7 +11,6 @@ import java.io.File
 import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
-import java.security.MessageDigest
 import java.util.Locale
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
@@ -27,10 +26,11 @@ enum class AzureVoice(val voiceName: String, val lang: String, val fallbackLocal
 }
 
 /**
- * Microsoft Azure 语音合成：先查本地缓存，未命中再请求 REST 接口；
+ * Microsoft Azure 语音：先放 assets/tts 里预生成的音频，其次查运行时缓存，再请求 REST 接口；
  * 未配置 key、断网、额度耗尽等任何失败都回退到系统 TTS，保证有声音。
  */
 class AzureSpeaker(context: Context) {
+    private val assets = context.assets
     private val cacheDir = File(context.cacheDir, "azure-tts")
     private val executor = Executors.newSingleThreadExecutor()
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -64,6 +64,18 @@ class AzureSpeaker(context: Context) {
         stop()
         val seq = requestSeq.incrementAndGet()
         onFinished = onDone
+        val bundled = runCatching { assets.openFd(ttsAssetPath(voice, text)) }.getOrNull()
+        if (bundled != null) {
+            playPrepared(seq, text, onBroken = { synthesizeAndPlay(seq, text, voice) }) {
+                it.setDataSource(bundled.fileDescriptor, bundled.startOffset, bundled.length)
+                bundled.close()
+            }
+            return
+        }
+        synthesizeAndPlay(seq, text, voice)
+    }
+
+    private fun synthesizeAndPlay(seq: Int, text: String, voice: AzureVoice) {
         executor.execute {
             val file = cachedOrSynthesize(text, voice)
             mainHandler.post {
@@ -89,7 +101,7 @@ class AzureSpeaker(context: Context) {
     }
 
     private fun cachedOrSynthesize(text: String, voice: AzureVoice): File? {
-        val target = File(cacheDir, sha1("${voice.voiceName}|$text") + ".mp3")
+        val target = File(cacheDir, ttsKey(voice.voiceName, text) + ".mp3")
         if (target.length() > 0) return target
         return if (synthesizeToFile(text, voice, target)) target else null
     }
@@ -147,10 +159,19 @@ class AzureSpeaker(context: Context) {
     }
 
     private fun playFile(file: File, text: String, voice: AzureVoice, seq: Int) {
+        playPrepared(seq, text, onBroken = {
+            Log.w(TAG, "Cached audio unplayable, deleting ${file.name}")
+            file.delete()
+            speakWithSystemTts(text, voice, seq)
+        }) { it.setDataSource(file.path) }
+    }
+
+    /** [onBroken]：音频放不出来时的退路（预生成音频 → 在线合成；缓存文件 → 系统 TTS）。 */
+    private fun playPrepared(seq: Int, text: String, onBroken: () -> Unit, setSource: (MediaPlayer) -> Unit) {
         runCatching {
             val mediaPlayer = MediaPlayer()
             player = mediaPlayer
-            mediaPlayer.setDataSource(file.path)
+            setSource(mediaPlayer)
             mediaPlayer.setOnPreparedListener { it.start() }
             mediaPlayer.setOnCompletionListener {
                 it.release()
@@ -158,17 +179,16 @@ class AzureSpeaker(context: Context) {
                 finish(seq)
             }
             mediaPlayer.setOnErrorListener { mp, what, _ ->
-                Log.w(TAG, "Cached audio unplayable what=$what, deleting ${file.name}")
+                Log.w(TAG, "Audio unplayable what=$what text=${text.take(30)}")
                 mp.release()
                 if (player === mp) player = null
-                file.delete()
-                speakWithSystemTts(text, voice, seq)
+                if (seq == requestSeq.get()) onBroken()
                 true
             }
             mediaPlayer.prepareAsync()
         }.onFailure {
             Log.w(TAG, "MediaPlayer setup failed", it)
-            speakWithSystemTts(text, voice, seq)
+            if (seq == requestSeq.get()) onBroken()
         }
     }
 
@@ -189,9 +209,6 @@ class AzureSpeaker(context: Context) {
             finish(seq)
         }
     }
-
-    private fun sha1(value: String): String =
-        MessageDigest.getInstance("SHA-1").digest(value.toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
 
     private companion object {
         const val TAG = "AzureSpeaker"
