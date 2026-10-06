@@ -4134,5 +4134,85 @@
     "jammies":  {
         "uk":  "/ˈdʒæmiz/",
         "us":  "/ˈdʒæmiz/"
+    },
+    "mum":  {
+        "uk":  "/mʌm/",
+        "us":  "/mʌm/"
+    },
+    "kid":  {
+        "uk":  "/kɪd/",
+        "us":  "/kɪd/"
+    },
+    "guy":  {
+        "uk":  "/ɡaɪ/",
+        "us":  "/ɡaɪ/"
+    },
+    "yeah":  {
+        "uk":  "/jeə/",
+        "us":  "/jɛə/"
+    },
+    "yep":  {
+        "uk":  "/jep/",
+        "us":  "/jɛp/"
+    },
+    "nope":  {
+        "uk":  "/nəʊp/",
+        "us":  "/noʊp/"
+    },
+    "hi":  {
+        "uk":  "/haɪ/",
+        "us":  "/haɪ/"
+    },
+    "hey":  {
+        "uk":  "/heɪ/",
+        "us":  "/heɪ/"
+    },
+    "bye":  {
+        "uk":  "/baɪ/",
+        "us":  "/baɪ/"
+    },
+    "buddy":  {
+        "uk":  "/ˈbʌdi/",
+        "us":  "/ˈbʌdi/"
+    },
+    "pal":  {
+        "uk":  "/pæl/",
+        "us":  "/pæl/"
+    },
+    "bro":  {
+        "uk":  "/bɹəʊ/",
+        "us":  "/bɹoʊ/"
+    },
+    "sis":  {
+        "uk":  "/sɪs/",
+        "us":  "/sɪs/"
+    },
+    "cop":  {
+        "uk":  "/kɒp/",
+        "us":  "/kɑp/"
+    },
+    "veggie":  {
+        "uk":  "/ˈvedʒi/",
+        "us":  "/ˈvɛdʒi/"
+    },
+    "stuff":  {
+        "uk":  "/stʌf/",
+        "us":  "/stʌf/"
+    },
+    "awesome":  {
+        "uk":  "/ˈɔːsəm/",
+        "us":  "/ˈɔsəm/"
+    },
+    "okay":  {
+        "uk":  "/əʊˈkeɪ/",
+        "us":  "/oʊˈkeɪ/"
+    },
+    "thanks":  {
+        "uk":  "/θæŋks/",
+        "us":  "/θæŋks/"
+    },
+    "folks":  {
+        "uk":  "/fəʊks/",
+        "us":  "/foʊks/"
     }
 }

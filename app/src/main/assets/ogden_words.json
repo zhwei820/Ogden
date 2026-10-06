@@ -19739,5 +19739,235 @@
         "s": [
             "pajamas"
         ]
+    },
+    {
+        "w": "mum",
+        "c": "ky",
+        "zh": "妈妈",
+        "en": "an informal British word for mother",
+        "ex": "My mum is in the kitchen.",
+        "exz": "我妈妈在厨房里。",
+        "s": [
+            "mom",
+            "mother"
+        ]
+    },
+    {
+        "w": "kid",
+        "c": "ky",
+        "zh": "小孩",
+        "en": "an informal word for a child",
+        "ex": "The kids are playing in the park.",
+        "exz": "孩子们在公园里玩。",
+        "s": [
+            "child"
+        ]
+    },
+    {
+        "w": "guy",
+        "c": "ky",
+        "zh": "家伙,小伙子",
+        "en": "an informal word for a man",
+        "ex": "He is a nice guy.",
+        "exz": "他是个好人。",
+        "s": [
+            "man"
+        ]
+    },
+    {
+        "w": "yeah",
+        "c": "ky",
+        "zh": "是啊,嗯",
+        "en": "an informal way to say yes",
+        "ex": "Yeah, I like it a lot.",
+        "exz": "嗯，我很喜欢。",
+        "s": [
+            "yes",
+            "yep"
+        ]
+    },
+    {
+        "w": "yep",
+        "c": "ky",
+        "zh": "嗯,对",
+        "en": "an informal way to say yes",
+        "ex": "Yep, that is my bag.",
+        "exz": "对，那是我的包。",
+        "s": [
+            "yes",
+            "yeah"
+        ]
+    },
+    {
+        "w": "nope",
+        "c": "ky",
+        "zh": "不,没有",
+        "en": "an informal way to say no",
+        "ex": "Nope, I am not tired.",
+        "exz": "不，我不累。",
+        "s": [
+            "no"
+        ]
+    },
+    {
+        "w": "hi",
+        "c": "ky",
+        "zh": "嗨,你好",
+        "en": "an informal way to say hello",
+        "ex": "Hi, Tom! How are you?",
+        "exz": "嗨，汤姆！你好吗？",
+        "s": [
+            "hello",
+            "hey"
+        ]
+    },
+    {
+        "w": "hey",
+        "c": "ky",
+        "zh": "嘿",
+        "en": "an informal way to say hello or get attention",
+        "ex": "Hey, look at this!",
+        "exz": "嘿，看这个！",
+        "s": [
+            "hello",
+            "hi"
+        ]
+    },
+    {
+        "w": "bye",
+        "c": "ky",
+        "zh": "再见,拜",
+        "en": "an informal way to say goodbye",
+        "ex": "Bye, see you tomorrow!",
+        "exz": "拜拜，明天见！",
+        "s": [
+            "goodbye",
+            "bye-bye"
+        ]
+    },
+    {
+        "w": "buddy",
+        "c": "ky",
+        "zh": "伙伴,哥们",
+        "en": "an informal word for a friend",
+        "ex": "He is my best buddy.",
+        "exz": "他是我最好的伙伴。",
+        "s": [
+            "friend",
+            "pal"
+        ]
+    },
+    {
+        "w": "pal",
+        "c": "ky",
+        "zh": "朋友,伙伴",
+        "en": "an informal word for a friend",
+        "ex": "Come and play, pal!",
+        "exz": "来玩吧，伙伴！",
+        "s": [
+            "friend",
+            "buddy"
+        ]
+    },
+    {
+        "w": "bro",
+        "c": "ky",
+        "zh": "哥哥,弟弟",
+        "en": "an informal word for a brother",
+        "ex": "My bro is ten years old.",
+        "exz": "我哥哥十岁了。",
+        "s": [
+            "brother"
+        ]
+    },
+    {
+        "w": "sis",
+        "c": "ky",
+        "zh": "姐姐,妹妹",
+        "en": "an informal word for a sister",
+        "ex": "My sis can sing very well.",
+        "exz": "我姐姐唱歌很好听。",
+        "s": [
+            "sister"
+        ]
+    },
+    {
+        "w": "cop",
+        "c": "ky",
+        "zh": "警察",
+        "en": "an informal word for a police officer",
+        "ex": "The cop helped the lost boy.",
+        "exz": "警察帮助了那个迷路的男孩。",
+        "s": [
+            "police"
+        ]
+    },
+    {
+        "w": "veggie",
+        "c": "ky",
+        "zh": "蔬菜",
+        "en": "an informal word for a vegetable",
+        "ex": "Eat your veggies, please.",
+        "exz": "请把蔬菜吃了。",
+        "s": [
+            "vegetable"
+        ]
+    },
+    {
+        "w": "stuff",
+        "c": "ky",
+        "zh": "东西",
+        "en": "an informal word for things",
+        "ex": "Put your stuff in the box.",
+        "exz": "把你的东西放进盒子里。",
+        "s": [
+            "thing"
+        ]
+    },
+    {
+        "w": "awesome",
+        "c": "ky",
+        "zh": "太棒了,极好的",
+        "en": "informal: very good",
+        "ex": "This game is awesome!",
+        "exz": "这个游戏太棒了！",
+        "s": [
+            "great",
+            "cool"
+        ]
+    },
+    {
+        "w": "okay",
+        "c": "ky",
+        "zh": "好的,可以",
+        "en": "informal: all right, fine",
+        "ex": "Okay, let us go home.",
+        "exz": "好的，我们回家吧。",
+        "s": [
+            "fine",
+            "yes"
+        ]
+    },
+    {
+        "w": "thanks",
+        "c": "ky",
+        "zh": "谢谢",
+        "en": "an informal way to say thank you",
+        "ex": "Thanks for the gift!",
+        "exz": "谢谢你的礼物！",
+        "s": [
+            "thank"
+        ]
+    },
+    {
+        "w": "folks",
+        "c": "ky",
+        "zh": "爸妈,家里人",
+        "en": "an informal word for parents or family",
+        "ex": "My folks are coming to the show.",
+        "exz": "我爸妈会来看演出。",
+        "s": [
+            "parent"
+        ]
     }
 ]

@@ -20,7 +20,27 @@ private val Registers = mapOf(
     "mom" to Register("口语", "mother"),
     "dad" to Register("口语", "father"),
     "grandma" to Register("口语", "grandmother"),
-    "grandpa" to Register("口语", "grandfather")
+    "grandpa" to Register("口语", "grandfather"),
+    "mum" to Register("口语", "mother"),
+    "kid" to Register("口语", "child"),
+    "guy" to Register("口语", "man"),
+    "yeah" to Register("口语", "yes"),
+    "yep" to Register("口语", "yes"),
+    "nope" to Register("口语", "no"),
+    "hi" to Register("口语", "hello"),
+    "hey" to Register("口语", "hello"),
+    "bye" to Register("口语", "goodbye"),
+    "buddy" to Register("口语", "friend"),
+    "pal" to Register("口语", "friend"),
+    "bro" to Register("口语", "brother"),
+    "sis" to Register("口语", "sister"),
+    "cop" to Register("口语", "police"),
+    "veggie" to Register("口语", "vegetable"),
+    "stuff" to Register("口语", "thing"),
+    "awesome" to Register("口语", "great"),
+    "okay" to Register("口语", "fine"),
+    "thanks" to Register("口语", "thank"),
+    "folks" to Register("口语", "parent")
 )
 
 fun registerOf(word: String): Register? = Registers[word.lowercase()]
