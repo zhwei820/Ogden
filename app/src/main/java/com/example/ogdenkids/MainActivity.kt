@@ -746,7 +746,13 @@ fun OgdenKidsApp() {
                         onRecord = { word, correct ->
                             progressStore.record(word.word, correct)
                             version++
-                        }
+                        },
+                        onNextLevel = if (!current.reviewOnly && current.level * 10 < words.count { it.category == current.category }) {
+                            {
+                                version++
+                                screen = Screen.Practice(current.category, current.level + 1)
+                            }
+                        } else null
                     )
                 }
                 is Screen.SpecialModulePage -> specialModules.firstOrNull { it.key == current.key }?.let { module ->
@@ -3465,7 +3471,8 @@ fun PracticeScreen(
     onComplete: () -> Unit,
     onRecord: (OgdenWord, Boolean) -> Unit,
     customWords: List<OgdenWord>? = null,
-    customTitle: String? = null
+    customTitle: String? = null,
+    onNextLevel: (() -> Unit)? = null
 ) {
     val source = remember(version, category, level, reviewOnly, customWords) {
         val reviewWords = store.mistakeWords(allWords)
@@ -3492,7 +3499,16 @@ fun PracticeScreen(
     }
 
     Scaffold(containerColor = Paper, bottomBar = {
-        if (answerShown && word != null) NextQuestionBar(if (index >= source.lastIndex) "完成并返回" else "下一题", ::goNext)
+        if (answerShown && word != null) {
+            if (index >= source.lastIndex && onNextLevel != null) {
+                FinishLevelBar(
+                    onBack = { onComplete(); onBack() },
+                    onNext = { onComplete(); onNextLevel() }
+                )
+            } else {
+                NextQuestionBar(if (index >= source.lastIndex) "完成并返回" else "下一题", ::goNext)
+            }
+        }
     }, topBar = {
         Row(
             modifier = Modifier
@@ -4686,6 +4702,27 @@ private fun NextQuestionBar(label: String, onClick: () -> Unit) {
 }
 
 @Composable
+private fun FinishLevelBar(onBack: () -> Unit, onNext: () -> Unit) {
+    Surface(color = PaperElevated, shadowElevation = 8.dp) {
+        Row(
+            modifier = Modifier.padding(horizontal = 18.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            OutlinedButton(
+                onClick = onBack,
+                modifier = Modifier.weight(1f).height(56.dp),
+                shape = RoundedCornerShape(16.dp)
+            ) { Text("完成并返回", fontSize = 18.sp) }
+            Button(
+                onClick = onNext,
+                modifier = Modifier.weight(1f).height(56.dp),
+                shape = RoundedCornerShape(16.dp)
+            ) { Text("下一关", fontSize = 20.sp, fontWeight = FontWeight.Bold) }
+        }
+    }
+}
+
+@Composable
 private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, selected: Int?, modifier: Modifier, onClick: () -> Unit) {
     val answered = selected != null
     val color = when {
@@ -4748,13 +4785,23 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
         PracticeType.Synonym -> {
-            val answer = word.synonyms.firstOrNull() ?: word.word
-            val synOptions = distractors.flatMap { it.synonyms.take(1) }.take(3)
-            Question(
-                prompt = "哪个词接近 ${word.word} 的意思？",
-                answer = answer,
-                options = (synOptions + answer).distinct().shuffled(random)
-            )
+            // 选项只用词表里的词：近义词列表里混有词表外的生僻词（scarlet、crease…），不拿来出题
+            val headwords = allWords.associateBy { it.word.lowercase() }
+            val answer = word.synonyms.firstNotNullOfOrNull { headwords[it.lowercase()]?.word }
+            if (answer == null) buildQuestion(PracticeType.Meaning, word, allWords) else {
+                // 干扰项不能和题目词互为近义词，否则出现两个正确答案
+                val related = (word.synonyms + word.word).map { it.lowercase() }.toSet()
+                val synOptions = allWords
+                    .shuffled(random)
+                    .filter { it.word.lowercase() !in related && it.synonyms.none { s -> s.lowercase() == word.word.lowercase() } }
+                    .map { it.word }
+                    .take(3)
+                Question(
+                    prompt = "哪个词接近 ${word.word} 的意思？",
+                    answer = answer,
+                    options = (synOptions + answer).shuffled(random)
+                )
+            }
         }
     }
 }
