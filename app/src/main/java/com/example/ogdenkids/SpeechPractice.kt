@@ -154,7 +154,7 @@ private fun fillWord(lines: List<SpeechLine>, used: Set<String>, random: Random)
         if (distractors.size < 3) continue
         return SentenceQuestion(
             type = SentenceQuestionType.FillWord,
-            prompt = line.en.replaceRange(token.range, "____"),
+            prompt = line.en.replaceRange(token.range, letterBlank(token.text)),
             hint = line.zh,
             answer = token.text,
             options = (distractors + token.text).shuffled(random),
@@ -186,7 +186,7 @@ private fun pattern(units: List<Speech>, used: Set<String>, random: Random): Sen
             if (distractors.size < 2) continue
             return SentenceQuestion(
                 type = SentenceQuestionType.Pattern,
-                prompt = line.en.replaceRange(slot.range, "____"),
+                prompt = line.en.replaceRange(slot.range, letterBlank(slot.text)),
                 hint = line.zh,
                 answer = slot.text,
                 options = (distractors + slot.text).shuffled(random),

@@ -250,7 +250,7 @@ private fun positionQuestion(kind: SpecialKind, level: Int, random: Random, fixe
         SpecialKind.FillBlank -> {
             val (options, answer) = withAnswer(relation, distinctRelations(relation, pool, 3, random), random)
             if (options.size < 4) return null
-            SpecialQuestion(kind, sentence.replace(" ${relation.phrase} ", " ____ "), scene, null, options.map { SpecialOption(text = it.phrase) }, answer, sentence, positionZh(scene))
+            SpecialQuestion(kind, sentence.replace(" ${relation.phrase} ", " ${letterBlank(relation.phrase)} "), scene, null, options.map { SpecialOption(text = it.phrase) }, answer, sentence, positionZh(scene))
         }
         SpecialKind.Place -> {
             // 只用画得出独立落点的区域，每个区域一个方位
@@ -351,7 +351,7 @@ private fun numberQuestion(kind: SpecialKind, level: Int, random: Random, fixedN
             val noun = CountNouns.getValue(emoji)
             val (options, answer) = withAnswer(countWord, confusableNumbers(count, level, random).map(::numberWord), random)
             val sentence = "I have $countWord ${if (count == 1) noun.removeSuffix("s") else noun}."
-            SpecialQuestion(kind, sentence.replace(countWord, "____"), Scene.Count(emoji, count), null, options.map { SpecialOption(text = it) }, answer, sentence, "我有 $count 个")
+            SpecialQuestion(kind, sentence.replace(countWord, letterBlank(countWord)), Scene.Count(emoji, count), null, options.map { SpecialOption(text = it) }, answer, sentence, "我有 $count 个")
         }
         else -> null
     }
@@ -375,7 +375,7 @@ private fun colorQuestion(kind: SpecialKind, level: Int, random: Random, fixedCo
         val wrong = pool.filter { it.word != word && " " !in it.word }.shuffled(random).take(3).map { it.word }
         val (options, answer) = withAnswer(word, wrong, random)
         val sentence = "The ${thing.name} is $word."
-        return SpecialQuestion(kind, "The ${thing.name} is ____.", Scene.Emoji(thing.emoji), null, options.map { SpecialOption(text = it) }, answer, sentence, "${thing.zh}是${color(word).zh}的。")
+        return SpecialQuestion(kind, "The ${thing.name} is ${letterBlank(word)}.", Scene.Emoji(thing.emoji), null, options.map { SpecialOption(text = it) }, answer, sentence, "${thing.zh}是${color(word).zh}的。")
     }
     val target = fixedColor ?: (pool.filter { it.level == level } + pool).random(random)
     val wrong = pool.filter { it != target }.shuffled(random).take(3)
@@ -421,7 +421,7 @@ private fun timeQuestion(kind: SpecialKind, level: Int, random: Random, fixed: P
             val hourWord = numberWord(if (minute == 45) hour % 12 + 1 else hour)
             val wrongHours = (1..12).map(::numberWord).filter { it != hourWord }.shuffled(random).take(3)
             val (hourOptions, hourAnswer) = withAnswer(hourWord, wrongHours, random)
-            SpecialQuestion(kind, sentence.replace(Regex("\\b$hourWord\\b"), "____"), Scene.Clock(hour, minute), null, hourOptions.map { SpecialOption(text = it) }, hourAnswer, sentence, timeZh(hour, minute))
+            SpecialQuestion(kind, sentence.replace(Regex("\\b$hourWord\\b"), letterBlank(hourWord)), Scene.Clock(hour, minute), null, hourOptions.map { SpecialOption(text = it) }, hourAnswer, sentence, timeZh(hour, minute))
         }
         SpecialKind.ReadNumber -> {
             // 三级：电子钟 3:45 对应说法

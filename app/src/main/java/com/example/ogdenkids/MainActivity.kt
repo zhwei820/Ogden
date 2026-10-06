@@ -2964,6 +2964,15 @@ fun SpeechLineRow(
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
+                if (onReadAlong != null && readAlongScore == null) {
+                    AppText(
+                        "长按跟读",
+                        color = InkFaint.copy(alpha = 0.5f),
+                        fontSize = 11.sp,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
             // 单击读一遍，长按反复朗读
             Box(
@@ -4629,10 +4638,10 @@ fun SpecialPracticeScreen(
                         }
                         Text(
                             question.prompt,
-                            fontSize = if ("____" in question.prompt) 26.sp else 18.sp,
-                            fontFamily = if ("____" in question.prompt) FontFamily.Serif else null,
-                            fontWeight = if ("____" in question.prompt) FontWeight.SemiBold else null,
-                            color = if ("____" in question.prompt) Ink else InkSoft,
+                            fontSize = if (question.kind == SpecialKind.FillBlank) 26.sp else 18.sp,
+                            fontFamily = if (question.kind == SpecialKind.FillBlank) FontFamily.Serif else null,
+                            fontWeight = if (question.kind == SpecialKind.FillBlank) FontWeight.SemiBold else null,
+                            color = if (question.kind == SpecialKind.FillBlank) Ink else InkSoft,
                             lineHeight = 34.sp,
                             textAlign = TextAlign.Center
                         )
@@ -4756,6 +4765,13 @@ private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, se
 
 data class Question(val prompt: String, val answer: String, val options: List<String>)
 
+/**
+ * 填空的空位：每个字母一条下划线，用不换行窄空格隔开，孩子能数出字母数；
+ * 词组（in front of）的词间保留普通空格，也看得出有几个词。
+ */
+fun letterBlank(text: String): String =
+    text.split(' ').joinToString(" ") { part -> List(part.length) { "_" }.joinToString("\u202F") }
+
 fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>): Question {
     // 选项顺序也用固定种子：本函数随界面重组反复调用，未加种子的 shuffled() 会让选项每次刷新都换位置
     val random = Random(word.word.hashCode() + type.ordinal)
@@ -4775,7 +4791,7 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
         PracticeType.Example -> Question(
-            prompt = word.example.replace(Regex("\\b${Regex.escape(word.word)}\\b", RegexOption.IGNORE_CASE), "____"),
+            prompt = word.example.replace(Regex("\\b${Regex.escape(word.word)}\\b", RegexOption.IGNORE_CASE)) { letterBlank(it.value) },
             answer = word.word,
             options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
