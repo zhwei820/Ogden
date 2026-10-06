@@ -1438,12 +1438,13 @@ fun LibraryScreen(
     // 随机模式：打乱当前筛选结果；「换一批」换种子重新打乱
     var randomOrder by rememberSaveable { mutableStateOf(false) }
     var shuffleSeed by rememberSaveable { mutableStateOf(0) }
+    // 前缀匹配：英文按单词开头，中文按任一义项开头（zh 形如「来,前来」）
+    val prefix = query.trim()
     val matched = words.filter { word ->
         (category == null || word.category == category) &&
-            (query.isBlank() ||
-                word.word.contains(query, ignoreCase = true) ||
-                word.zh.contains(query) ||
-                word.englishDefinition.contains(query, ignoreCase = true))
+            (prefix.isEmpty() ||
+                word.word.startsWith(prefix, ignoreCase = true) ||
+                word.zh.split(',', '，', ';', '；').any { it.trim().startsWith(prefix) })
     }
     val filtered = remember(matched, randomOrder, shuffleSeed) {
         if (randomOrder) matched.shuffled(Random(shuffleSeed)) else matched
