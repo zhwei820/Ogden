@@ -124,6 +124,10 @@ import org.json.JSONObject
 import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.math.ceil
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.layout.heightIn
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
@@ -474,6 +478,8 @@ fun OgdenKidsApp() {
     }
     val speakEnglish: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.english(accent)) }
     val speakChinese: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.ZhCn) }
+    val translator = remember { Translator(context) }
+    val speechServices = remember(accent) { SpeechServices(translator, speakEnglish, speakChinese) }
     val goBack: () -> Unit = {
         when (val current = screen) {
             Screen.Main -> confirmExit = true
@@ -517,7 +523,7 @@ fun OgdenKidsApp() {
             titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Serif)
         )
     ) {
-        CompositionLocalProvider(LocalChineseMode provides chineseMode) {
+        CompositionLocalProvider(LocalChineseMode provides chineseMode, LocalSpeechServices provides speechServices) {
         Surface(color = Paper, modifier = Modifier.fillMaxSize()) {
             BackHandler(onBack = goBack)
             if (confirmExit) {
@@ -1384,7 +1390,7 @@ fun WordListCard(
                 }
             }
             Text(word.englishDefinition, color = InkFaint, fontStyle = FontStyle.Italic)
-            Text(word.example, color = InkSoft, fontFamily = FontFamily.Serif)
+            TranslatableText(AnnotatedString(word.example), TextStyle(color = InkSoft, fontFamily = FontFamily.Serif, fontSize = 16.sp))
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
                 word.synonyms.take(3).forEach { AssistChip(onClick = { onSpeak(it) }, label = { Text(it) }) }
                 repeat(progress.mastery) {
@@ -2092,6 +2098,144 @@ private fun SpeechTrackHeader(title: String, subtitle: String, playingAll: Boole
     }
 }
 
+/** 划词翻译与弹窗朗读要用的服务，由根部提供，避免一层层传参。 */
+class SpeechServices(val translator: Translator?, val speakEnglish: (String) -> Unit, val speakChinese: (String) -> Unit)
+
+val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}) }
+
+/**
+ * 可划词的英文：点击走 [onTap]；长按后拖动选中连续的词，松手弹出翻译。
+ * 只长按一个词且给了 [onWord] 时交给调用方（查词弹窗），否则单个词也走翻译。
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TranslatableText(
+    text: AnnotatedString,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+    onTap: (() -> Unit)? = null,
+    onWord: ((SpeechToken) -> Unit)? = null
+) {
+    val tokens = remember(text.text) { tokenizeSpeech(text.text) }
+    var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
+    var dragFrom by remember { mutableStateOf<Int?>(null) }
+    var dragTo by remember { mutableStateOf<Int?>(null) }
+    var phrase by remember { mutableStateOf<String?>(null) }
+    var phraseRange by remember { mutableStateOf<IntRange?>(null) }
+
+    fun tokenAt(position: Offset): Int? {
+        val offset = layout?.getOffsetForPosition(position) ?: return null
+        if (tokens.isEmpty()) return null
+        // 落在空格或标点上时取最近的词
+        return tokens.indices.minByOrNull { i ->
+            val r = tokens[i].range
+            when {
+                offset < r.first -> r.first - offset
+                offset > r.last -> offset - r.last
+                else -> 0
+            }
+        }
+    }
+
+    fun finish() {
+        val a = dragFrom
+        val b = dragTo
+        dragFrom = null
+        dragTo = null
+        if (a == null || b == null) return
+        val (from, to) = minOf(a, b) to maxOf(a, b)
+        if (from == to && onWord != null) {
+            onWord(tokens[from])
+        } else {
+            val range = tokens[from].range.first..tokens[to].range.last
+            phraseRange = range
+            phrase = text.text.substring(range)
+        }
+    }
+
+    val dragRange = dragFrom?.let { a -> dragTo?.let { b -> tokens[minOf(a, b)].range.first..tokens[maxOf(a, b)].range.last } }
+    val shown = remember(text, dragRange, phraseRange) {
+        buildAnnotatedString {
+            append(text)
+            (dragRange ?: phraseRange)?.let {
+                addStyle(SpanStyle(background = Category.Qualities.soft, color = Category.Qualities.tint), it.first, it.last + 1)
+            }
+        }
+    }
+    Text(
+        text = shown,
+        style = style,
+        onTextLayout = { layout = it },
+        modifier = modifier
+            .then(if (onTap != null) Modifier.pointerInput(tokens) { detectTapGestures(onTap = { onTap() }) } else Modifier)
+            .pointerInput(tokens) {
+                detectDragGesturesAfterLongPress(
+                    onDragStart = { position -> tokenAt(position)?.let { dragFrom = it; dragTo = it } },
+                    onDrag = { change, _ ->
+                        change.consume()
+                        tokenAt(change.position)?.let { dragTo = it }
+                    },
+                    onDragEnd = { finish() },
+                    onDragCancel = { dragFrom = null; dragTo = null }
+                )
+            }
+    )
+
+    phrase?.let { selected ->
+        ModalBottomSheet(onDismissRequest = { phrase = null; phraseRange = null }, containerColor = PaperElevated) {
+            PhraseTranslationSheet(selected)
+        }
+    }
+}
+
+@Composable
+private fun PhraseTranslationSheet(phrase: String) {
+    val services = LocalSpeechServices.current
+    var result by remember(phrase) { mutableStateOf<Result<String>?>(null) }
+    LaunchedEffect(phrase) {
+        services.speakEnglish(phrase)
+        result = services.translator?.translate(phrase) ?: Result.failure(IllegalStateException("未配置翻译"))
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 22.dp, end = 22.dp, bottom = 36.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        AppText("划词翻译", color = InkFaint, fontSize = 13.sp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                phrase,
+                fontFamily = FontFamily.Serif,
+                fontWeight = FontWeight.Bold,
+                fontSize = 26.sp,
+                lineHeight = 34.sp,
+                color = Ink,
+                modifier = Modifier.weight(1f).clickable { services.speakEnglish(phrase) }
+            )
+            IconButton(onClick = { services.speakEnglish(phrase) }) {
+                Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = Category.Operations.tint)
+            }
+        }
+        Card(colors = CardDefaults.cardColors(containerColor = Paper), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+            val current = result
+            Row(Modifier.padding(start = 14.dp, top = 6.dp, bottom = 6.dp).heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
+                when {
+                    current == null -> AppText("翻译中……", color = InkFaint, fontSize = 18.sp, modifier = Modifier.weight(1f))
+                    current.isSuccess -> {
+                        val zh = current.getOrThrow()
+                        AppText(zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, lineHeight = 30.sp, modifier = Modifier.weight(1f).clickable { services.speakChinese(zh) })
+                        IconButton(onClick = { services.speakChinese(zh) }) {
+                            Icon(Icons.Default.VolumeUp, contentDescription = "朗读中文", tint = InkFaint)
+                        }
+                    }
+                    else -> AppText("翻译暂时不可用，请检查网络或翻译密钥", color = Error, fontSize = 16.sp, modifier = Modifier.weight(1f).padding(vertical = 10.dp))
+                }
+            }
+        }
+    }
+}
+
 @Composable
 fun SpeechLineRow(
     line: SpeechLine,
@@ -2116,7 +2260,6 @@ fun SpeechLineRow(
         selectedRange?.let { addStyle(SpanStyle(background = Category.Picturable.soft), it.first, it.last + 1) }
     }
     val accent = Category.Operations
-    var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
     Card(
         colors = CardDefaults.cardColors(containerColor = if (speaking) accent.soft else PaperElevated),
         shape = RoundedCornerShape(14.dp),
@@ -2130,20 +2273,12 @@ fun SpeechLineRow(
     ) {
         Row(Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                // 点句子任意处朗读整句；长按某个词查释义
-                Text(
+                // 点句子任意处朗读整句；长按一个词查释义，长按拖动选多个词翻译
+                TranslatableText(
                     text = text,
                     style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, color = Ink),
-                    onTextLayout = { layout = it },
-                    modifier = Modifier.pointerInput(tokens) {
-                        detectTapGestures(
-                            onTap = { onSpeakEnglish() },
-                            onLongPress = { position ->
-                                val offset = layout?.getOffsetForPosition(position) ?: return@detectTapGestures
-                                tokens.firstOrNull { offset in it.range }?.let(onTokenClick)
-                            }
-                        )
-                    }
+                    onTap = onSpeakEnglish,
+                    onWord = onTokenClick
                 )
                 AnimatedVisibility(showTranslation) {
                     AppText(
@@ -2258,7 +2393,12 @@ private fun WordSheetBody(
                 ) {
                     Column(Modifier.padding(start = 14.dp, top = 6.dp, bottom = 6.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(word.example, fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink, modifier = Modifier.weight(1f))
+                            TranslatableText(
+                                AnnotatedString(word.example),
+                                TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink),
+                                modifier = Modifier.weight(1f),
+                                onTap = { onSpeakEnglish(word.example) }
+                            )
                             IconButton(onClick = { onSpeakEnglish(word.example) }) {
                                 Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = Category.Operations.tint)
                             }
@@ -2661,7 +2801,12 @@ fun PracticeScreen(
                             AppText(if (isCorrect) "答对了！" else "这题先记到错词本", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Text("${word.word} · ${convertZh(word.zh, zh)}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(word.example, fontFamily = FontFamily.Serif, fontSize = 19.sp, lineHeight = 26.sp, color = Ink, modifier = Modifier.weight(1f))
+                                TranslatableText(
+                                    AnnotatedString(word.example),
+                                    TextStyle(fontFamily = FontFamily.Serif, fontSize = 19.sp, lineHeight = 26.sp, color = Ink),
+                                    modifier = Modifier.weight(1f),
+                                    onTap = { onSpeak(word.example) }
+                                )
                                 IconButton(onClick = { onSpeak(word.example) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = Category.Operations.tint)
                                 }
@@ -2928,7 +3073,7 @@ fun ThemePracticeScreen(
                             AppText(if (isCorrect) "答对了！" else "再看看正确答案", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 Column(Modifier.weight(1f)) {
-                                    Text(question.sentence, fontFamily = FontFamily.Serif, fontSize = 22.sp)
+                                    TranslatableText(AnnotatedString(question.sentence), TextStyle(fontFamily = FontFamily.Serif, fontSize = 22.sp, lineHeight = 30.sp, color = Ink), onTap = { speakQuestion(question) })
                                     if (isWordQuestion(question)) AppText(question.hint, color = InkSoft, fontSize = 18.sp)
                                 }
                                 IconButton(onClick = { speakQuestion(question) }) {
@@ -3456,7 +3601,12 @@ fun SpecialPracticeScreen(
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppText(if (isCorrect) "答对了！" else "再看看正确答案", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text(question.sentence, fontFamily = FontFamily.Serif, fontSize = 22.sp, modifier = Modifier.weight(1f))
+                                TranslatableText(
+                                    AnnotatedString(question.sentence),
+                                    TextStyle(fontFamily = FontFamily.Serif, fontSize = 22.sp, lineHeight = 30.sp, color = Ink),
+                                    modifier = Modifier.weight(1f),
+                                    onTap = { onSpeak(question.spoken) }
+                                )
                                 IconButton(onClick = { onSpeak(question.spoken) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = accent.tint)
                                 }
@@ -3626,7 +3776,7 @@ fun InfoBlock(title: String, en: String, zh: String, tint: Color, onSpeakZh: (()
                 AppText(title, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                 IconButton(onClick = onSpeak) { Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = tint) }
             }
-            Text(en, fontFamily = FontFamily.Serif, fontSize = 20.sp, color = Ink)
+            TranslatableText(AnnotatedString(en), TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink), onTap = onSpeak)
             Text(
                 zh,
                 color = InkSoft,
