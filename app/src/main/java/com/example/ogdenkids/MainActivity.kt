@@ -284,7 +284,7 @@ enum class PracticeType(val title: String) {
     Meaning("看中文选英文"),
     Example("例句填空"),
     Spelling("拼写挑战"),
-    Synonym("近义词配对")
+    EnToZh("看英文，选中文")
 }
 
 sealed class Screen {
@@ -3678,14 +3678,13 @@ fun PracticeScreen(
                             val ok = option == question.answer
                             if (ok) {
                                 correctCount++
-                                // 答对立刻读出正确答案（近义词题的答案是近义词，不是本词）
-                                onSpeak(question.answer)
+                                onSpeak(question.spoken)
                             }
                             onRecord(word, ok)
                             answerShown = true
                         } else if (option == question.answer) {
                             // 答完后（尤其答错时）点正确选项可以再听一遍
-                            onSpeak(question.answer)
+                            onSpeak(question.spoken)
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -3701,7 +3700,7 @@ fun PracticeScreen(
                     border = BorderStroke(1.dp, Line)
                 ) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                        Text(option, modifier = Modifier.weight(1f), fontSize = 18.sp)
+                        Text(convertZh(option, zh), modifier = Modifier.weight(1f), fontSize = 18.sp)
                         if (correctThis) Icon(Icons.Default.Check, contentDescription = null, tint = Success)
                         if (wrongThis) Icon(Icons.Default.Close, contentDescription = null, tint = Error)
                         // 答题前不给查词，免得直接看到答案
@@ -4844,8 +4843,11 @@ private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, se
     }
 }
 
-/** [title] 覆盖题型标题（数字的近义词题改成算术题，标题不能还叫「近义词配对」） */
-data class Question(val prompt: String, val answer: String, val options: List<String>, val title: String? = null)
+/**
+ * @param title 覆盖题型标题（数字词轮到看英文选中文时改出算术题）
+ * @param spoken 答对后朗读的英文；看英文选中文的答案是中文，要读回英文单词
+ */
+data class Question(val prompt: String, val answer: String, val options: List<String>, val title: String? = null, val spoken: String = answer)
 
 private val NumberValues: Map<String, Int> = (0..99).associateBy(::numberWord) + ("hundred" to 100)
 
@@ -4908,26 +4910,13 @@ fun buildQuestion(type: PracticeType, word: OgdenWord, allWords: List<OgdenWord>
             answer = word.word,
             options = (distractors.take(3).map { it.word } + word.word).shuffled(random)
         )
-        PracticeType.Synonym -> arithmeticQuestion(word, allWords, random) ?: run {
-            // 选项只用词表里的词：近义词列表里混有词表外的生僻词（scarlet、crease…），不拿来出题
-            val headwords = allWords.associateBy { it.word.lowercase() }
-            val answer = word.synonyms.firstNotNullOfOrNull { headwords[it.lowercase()]?.word }
-                .takeIf { word.category.hasTrueSynonyms }
-            if (answer == null) buildQuestion(PracticeType.Meaning, word, allWords, lessonWords).copy(title = PracticeType.Meaning.title) else {
-                // 干扰项不能和题目词互为近义词，否则出现两个正确答案
-                val related = (word.synonyms + word.word).map { it.lowercase() }.toSet()
-                val synOptions = optionPool
-                    .shuffled(random)
-                    .filter { it.word.lowercase() !in related && it.synonyms.none { s -> s.lowercase() == word.word.lowercase() } }
-                    .map { it.word }
-                    .take(3)
-                Question(
-                    prompt = "哪个词接近 ${word.word} 的意思？",
-                    answer = answer,
-                    options = (synOptions + answer).shuffled(random)
-                )
-            }
-        }
+        // 不考近义词：近义词大多是孩子没学过的生词，改成认中文意思
+        PracticeType.EnToZh -> arithmeticQuestion(word, allWords, random) ?: Question(
+            prompt = word.word,
+            answer = word.zh,
+            options = (optionPool.map { it.zh }.filter { it != word.zh }.distinct().shuffled(random).take(3) + word.zh).shuffled(random),
+            spoken = word.word
+        )
     }
 }
 
