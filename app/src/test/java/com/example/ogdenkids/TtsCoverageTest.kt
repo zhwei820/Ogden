@@ -27,7 +27,8 @@ class TtsCoverageTest {
         List(a.length()) { a.getJSONObject(it) }.map {
             OgdenWord(it.getString("w"), Category.from(it.getString("c")), it.getString("zh"), it.getString("en"),
                 it.getString("ex"), it.getString("exz"), strings(it.getJSONArray("s")).filter { s -> s !in dropped }, "", "",
-                strings(antonyms.optJSONArray(it.getString("w"))), collocationsOf(it.getString("w")))
+                strings(antonyms.optJSONArray(it.getString("w"))), collocationsOf(it.getString("w")),
+                it.optString("ex2"), it.optString("exz2"))
         }
     }
 

@@ -62,7 +62,7 @@ class SpeechTest {
     fun lemmatizeRestoresInflectedForms() {
         mapOf(
             // came/went/is/my 等已有变形词词条，直接命中自身；sent 仍靠 IrregularForms 还原
-            "came" to "came", "Went" to "went", "sent" to "send", "boxes" to "box", "planes" to "plane", "cleaning" to "clean", "cleaned" to "clean", "opened" to "open", "liked" to "like", "toes" to "toe", "shoes" to "shoe", "tomatoes" to "tomato",
+            "came" to "came", "Went" to "went", "sent" to "send", "boxes" to "box", "planes" to "plane", "cleaning" to "cleaning", "dried" to "dry", "warmed" to "warm", "opened" to "open", "liked" to "like", "toes" to "toe", "shoes" to "shoe", "tomatoes" to "tomato",
             "my" to "my", "children" to "children", "stories" to "story", "T-shirt" to "t-shirt", "o'clock" to "o'clock",
             "stopped" to "stop", "going" to "go", "making" to "make", "used" to "use",
             "happier" to "happy", "longer" to "long", "slowly" to "slow", "later" to "late",

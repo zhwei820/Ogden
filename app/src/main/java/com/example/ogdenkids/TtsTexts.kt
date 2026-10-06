@@ -29,6 +29,7 @@ fun speakableTexts(
     lines.forEach { en += it.en }
     words.forEach { word ->
         en += word.example
+        en += word.example2
         // 近义词按钮和近义词题的答案；词表内的有离线录音
         (word.synonyms + word.antonyms).filter { it.lowercase() !in headwords }.forEach { en += it }
     }

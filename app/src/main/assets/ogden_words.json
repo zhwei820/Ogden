@@ -9689,8 +9689,10 @@
         "c":  "qg",
         "zh":  "喜欢；像，相似的",
         "en":  "to enjoy; similar to",
-        "ex":  "He\u0027s like his father.",
-        "exz":  "他像他父亲。",
+        "ex":  "I like apples.",
+        "exz":  "我喜欢吃苹果。",
+        "ex2":  "He\u0027s like his father.",
+        "exz2":  "他像他父亲。",
         "s":  [
                   "similar",
                   "alike",

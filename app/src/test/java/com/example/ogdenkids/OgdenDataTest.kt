@@ -43,6 +43,7 @@ class OgdenDataTest {
             assertFalse(item.getString("zh").isBlank())
             assertFalse(item.getString("en").isBlank())
             assertFalse(item.getString("ex").isBlank())
+            assertEquals("ex2 / exz2 要成对出现 at $index", item.optString("ex2").isBlank(), item.optString("exz2").isBlank())
         }
     }
 }

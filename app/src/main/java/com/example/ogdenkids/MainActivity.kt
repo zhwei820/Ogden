@@ -229,8 +229,15 @@ data class OgdenWord(
     /** 反义词，来自 antonyms.json；没有的为空，只在单词详情展示 */
     val antonyms: List<String> = emptyList(),
     /** 常见搭配，来自 collocations.json（覆盖课文「本课单词」和专项训练单词） */
-    val collocations: List<Collocation> = emptyList()
-)
+    val collocations: List<Collocation> = emptyList(),
+    /** 一词多义时第二个意思的例句（ex2 / exz2），没有的为空；只在单词详情和查词弹窗展示 */
+    val example2: String = "",
+    val exampleZh2: String = ""
+) {
+    /** 英文例句与中文翻译，第一句之外最多再有一句 */
+    val examples: List<Pair<String, String>>
+        get() = listOf(example to exampleZh) + listOfNotNull((example2 to exampleZh2).takeIf { example2.isNotBlank() })
+}
 
 data class Collocation(val phrase: String, val zh: String, val example: String, val exampleZh: String)
 
@@ -320,7 +327,9 @@ class OgdenRepository(private val context: Context) {
                         val c = a.getJSONObject(it)
                         Collocation(c.getString("phrase"), c.getString("zh"), c.getString("ex"), c.getString("exz"))
                     }
-                }.orEmpty()
+                }.orEmpty(),
+                example2 = item.optString("ex2"),
+                exampleZh2 = item.optString("exz2")
             )
         }
     }
@@ -1570,15 +1579,16 @@ fun WordDetailScreen(
                     }
                 }
             }
-            item {
+            items(word.examples.withIndex().toList()) { (index, example) ->
+                val (en, exampleZh) = example
                 InfoBlock(
-                    "例句",
-                    word.example,
-                    convertZh(word.exampleZh, zh),
+                    if (word.examples.size > 1) "例句 ${index + 1}" else "例句",
+                    en,
+                    convertZh(exampleZh, zh),
                     word.category.tint,
-                    onSpeakZh = { onSpeakZh(word.exampleZh) }
+                    onSpeakZh = { onSpeakZh(exampleZh) }
                 ) {
-                    onSpeak(word.example)
+                    onSpeak(en)
                 }
             }
             if (word.collocations.isNotEmpty()) {
@@ -3019,7 +3029,7 @@ private fun WordSheetBody(
                 }
             }
             AppText(word.zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
-            if (word.example.isNotBlank()) {
+            word.examples.filter { it.first.isNotBlank() }.forEach { (example, exampleZh) ->
                 Card(
                     colors = CardDefaults.cardColors(containerColor = Paper),
                     shape = RoundedCornerShape(12.dp),
@@ -3028,19 +3038,19 @@ private fun WordSheetBody(
                     Column(Modifier.padding(start = 14.dp, top = 6.dp, bottom = 6.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             TranslatableText(
-                                AnnotatedString(word.example),
+                                AnnotatedString(example),
                                 TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink),
                                 modifier = Modifier.weight(1f),
-                                onTap = { onSpeakEnglish(word.example) }
+                                onTap = { onSpeakEnglish(example) }
                             )
-                            IconButton(onClick = { onSpeakEnglish(word.example) }) {
+                            IconButton(onClick = { onSpeakEnglish(example) }) {
                                 Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = Category.Operations.tint)
                             }
                         }
-                        if (word.exampleZh.isNotBlank()) {
+                        if (exampleZh.isNotBlank()) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                AppText(word.exampleZh, color = InkSoft, fontSize = 17.sp, lineHeight = 24.sp, modifier = Modifier.weight(1f))
-                                IconButton(onClick = { onSpeakChinese(word.exampleZh) }) {
+                                AppText(exampleZh, color = InkSoft, fontSize = 17.sp, lineHeight = 24.sp, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { onSpeakChinese(exampleZh) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "读例句中文", tint = InkFaint)
                                 }
                             }
