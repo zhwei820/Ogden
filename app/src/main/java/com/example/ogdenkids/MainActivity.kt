@@ -1407,8 +1407,8 @@ fun LibraryScreen(
     onSpeak: (String) -> Unit,
     onOpen: (OgdenWord) -> Unit
 ) {
-    var query by remember { mutableStateOf("") }
-    var category by remember { mutableStateOf<Category?>(null) }
+    var query by rememberSaveable { mutableStateOf("") }
+    var category by rememberSaveable { mutableStateOf<Category?>(null) }
     // 随机模式：打乱当前筛选结果；「换一批」换种子重新打乱
     var randomOrder by rememberSaveable { mutableStateOf(false) }
     var shuffleSeed by rememberSaveable { mutableStateOf(0) }
@@ -1578,7 +1578,24 @@ fun WordDetailScreen(
                 ) {
                     Column(Modifier.padding(22.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(word.word, fontSize = 46.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                            // 长词（adjustment 等）46sp 放不下一行：保持单行，逐步缩小字号直到放下，缩好前不绘制避免闪烁
+                            var wordFontSize by remember(word.word) { mutableStateOf(46.sp) }
+                            var wordFitted by remember(word.word) { mutableStateOf(false) }
+                            Text(
+                                word.word,
+                                fontSize = wordFontSize,
+                                lineHeight = wordFontSize * 1.2f,
+                                fontFamily = FontFamily.Serif,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                softWrap = false,
+                                onTextLayout = {
+                                    if (it.didOverflowWidth && wordFontSize > 24.sp) wordFontSize *= 0.9f else wordFitted = true
+                                },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .alpha(if (wordFitted) 1f else 0f)
+                            )
                             IconButton(onClick = { onSpeak(word.word) }) {
                                 Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = word.category.tint)
                             }
