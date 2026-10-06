@@ -1,0 +1,112 @@
+{
+ "alive": {
+  "zh": "活着的",
+  "ex": "The little fish is still alive.",
+  "exz": "那条小鱼还活着。"
+ },
+ "asleep": {
+  "zh": "睡着的",
+  "ex": "The baby is asleep in bed.",
+  "exz": "宝宝在床上睡着了。"
+ },
+ "boring": {
+  "zh": "无聊的",
+  "ex": "This game is not boring at all.",
+  "exz": "这个游戏一点也不无聊。"
+ },
+ "careless": {
+  "zh": "粗心的",
+  "ex": "Don't be careless with your homework.",
+  "exz": "写作业不要粗心。"
+ },
+ "empty": {
+  "zh": "空的",
+  "ex": "My cup is empty now.",
+  "exz": "我的杯子现在空了。"
+ },
+ "enemy": {
+  "zh": "敌人",
+  "ex": "The cat and the mouse are enemies.",
+  "exz": "猫和老鼠是敌人。"
+ },
+ "least": {
+  "zh": "最少",
+  "ex": "I have the least candy of all.",
+  "exz": "我的糖果最少。"
+ },
+ "lend": {
+  "zh": "借出",
+  "ex": "Can you lend me your pencil?",
+  "exz": "你能把铅笔借给我吗？"
+ },
+ "lie": {
+  "zh": "说谎；躺",
+  "ex": "Please don't lie to me.",
+  "exz": "请不要对我说谎。"
+ },
+ "noisy": {
+  "zh": "吵闹的",
+  "ex": "The classroom is very noisy.",
+  "exz": "教室里很吵。"
+ },
+ "none": {
+  "zh": "一个也没有",
+  "ex": "None of the cookies are left.",
+  "exz": "饼干一块也没剩。"
+ },
+ "ordinary": {
+  "zh": "普通的",
+  "ex": "It was an ordinary day at school.",
+  "exz": "那是学校里普通的一天。"
+ },
+ "rich": {
+  "zh": "富有的",
+  "ex": "The rich man has a big house.",
+  "exz": "那个富人有一座大房子。"
+ },
+ "rude": {
+  "zh": "粗鲁的",
+  "ex": "It is rude to shout at people.",
+  "exz": "对别人大喊是不礼貌的。"
+ },
+ "sell": {
+  "zh": "卖",
+  "ex": "They sell fruit at the market.",
+  "exz": "他们在市场上卖水果。"
+ },
+ "shallow": {
+  "zh": "浅的",
+  "ex": "The water here is shallow.",
+  "exz": "这里的水很浅。"
+ },
+ "throw": {
+  "zh": "扔",
+  "ex": "Throw the ball to me!",
+  "exz": "把球扔给我！"
+ },
+ "ugly": {
+  "zh": "丑的",
+  "ex": "The ugly duckling became a swan.",
+  "exz": "丑小鸭变成了天鹅。"
+ },
+ "weak": {
+  "zh": "虚弱的",
+  "ex": "I feel weak when I am ill.",
+  "exz": "我生病时觉得很虚弱。"
+ },
+ "whisper": {
+  "zh": "小声说",
+  "ex": "Please whisper in the library.",
+  "exz": "在图书馆里请小声说话。"
+ },
+ "worse": {
+  "zh": "更差的",
+  "ex": "The rain is getting worse.",
+  "exz": "雨越下越大了。"
+ },
+ "worst": {
+  "zh": "最差的",
+  "ex": "This is the worst cake I ever had.",
+  "exz": "这是我吃过最难吃的蛋糕。"
+ }
+}

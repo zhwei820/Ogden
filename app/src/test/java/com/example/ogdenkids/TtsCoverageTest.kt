@@ -12,10 +12,28 @@ class TtsCoverageTest {
     private fun strings(a: JSONArray?) = if (a == null) emptyList() else List(a.length()) { a.getString(it) }
     private fun lines(a: JSONArray) = List(a.length()) { SpeechLine(a.getJSONObject(it).getString("en"), a.getJSONObject(it).getString("zh")) }
 
+    private val antonyms = JSONObject(File("src/main/assets/antonyms.json").readText(Charsets.UTF_8))
+    private val relatedJson = JSONObject(File("src/main/assets/related_words.json").readText(Charsets.UTF_8))
+    private val dropped = relatedJson.keys().asSequence().filter { relatedJson.getJSONObject(it).optBoolean("drop") }.toSet()
+    private val related = relatedJson.keys().asSequence().filter { it !in dropped }.map {
+        val r = relatedJson.getJSONObject(it)
+        RelatedWord(r.getString("zh"), r.getString("ex"), r.getString("exz"))
+    }.toList()
     private val words = json("ogden_words.json").let { a ->
         List(a.length()) { a.getJSONObject(it) }.map {
             OgdenWord(it.getString("w"), Category.from(it.getString("c")), it.getString("zh"), it.getString("en"),
-                it.getString("ex"), it.getString("exz"), strings(it.getJSONArray("s")), "", "")
+                it.getString("ex"), it.getString("exz"), strings(it.getJSONArray("s")).filter { s -> s !in dropped }, "", "",
+                strings(antonyms.optJSONArray(it.getString("w"))))
+        }
+    }
+
+    @Test
+    fun antonymsReferToHeadwords() {
+        val headwords = words.map { it.word }.toSet()
+        antonyms.keys().forEach { key ->
+            assertTrue("antonyms.json key not a headword: $key", key in headwords)
+            val list = strings(antonyms.getJSONArray(key))
+            assertTrue("$key antonyms", list.isNotEmpty() && list.none { it.equals(key, ignoreCase = true) })
         }
     }
     private val speeches = json("speeches.json").let { a ->
@@ -33,7 +51,7 @@ class TtsCoverageTest {
                 lines(m.getJSONArray("sentences")))
         }
     }
-    private val texts = speakableTexts(words, speeches, modules)
+    private val texts = speakableTexts(words, speeches, modules, related)
 
     /** 供 scripts/gen_tts_assets.py 读取，生成缺失的音频。 */
     @Test

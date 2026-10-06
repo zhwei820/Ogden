@@ -1,0 +1,940 @@
+{
+ "come": [
+  "go"
+ ],
+ "give": [
+  "take"
+ ],
+ "go": [
+  "come",
+  "stop"
+ ],
+ "take": [
+  "give",
+  "bring"
+ ],
+ "after": [
+  "before"
+ ],
+ "against": [
+  "for"
+ ],
+ "before": [
+  "after"
+ ],
+ "down": [
+  "up"
+ ],
+ "from": [
+  "to"
+ ],
+ "in": [
+  "out"
+ ],
+ "off": [
+  "on"
+ ],
+ "on": [
+  "off"
+ ],
+ "over": [
+  "under"
+ ],
+ "to": [
+  "from"
+ ],
+ "under": [
+  "over",
+  "above"
+ ],
+ "up": [
+  "down"
+ ],
+ "with": [
+  "without"
+ ],
+ "for": [
+  "against"
+ ],
+ "all": [
+  "none"
+ ],
+ "little": [
+  "big"
+ ],
+ "no": [
+  "yes"
+ ],
+ "that": [
+  "this"
+ ],
+ "this": [
+  "that"
+ ],
+ "he": [
+  "she"
+ ],
+ "ever": [
+  "never"
+ ],
+ "far": [
+  "near"
+ ],
+ "forward": [
+  "back"
+ ],
+ "near": [
+  "far"
+ ],
+ "here": [
+  "there"
+ ],
+ "now": [
+  "then"
+ ],
+ "out": [
+  "in"
+ ],
+ "then": [
+  "now"
+ ],
+ "there": [
+  "here"
+ ],
+ "together": [
+  "alone"
+ ],
+ "tomorrow": [
+  "yesterday"
+ ],
+ "yesterday": [
+  "tomorrow"
+ ],
+ "north": [
+  "south"
+ ],
+ "south": [
+  "north"
+ ],
+ "east": [
+  "west"
+ ],
+ "west": [
+  "east"
+ ],
+ "yes": [
+  "no"
+ ],
+ "answer": [
+  "question",
+  "ask"
+ ],
+ "back": [
+  "front",
+  "forward"
+ ],
+ "birth": [
+  "death"
+ ],
+ "brother": [
+  "sister"
+ ],
+ "cause": [
+  "effect"
+ ],
+ "cry": [
+  "laugh"
+ ],
+ "danger": [
+  "safety"
+ ],
+ "daughter": [
+  "son"
+ ],
+ "day": [
+  "night"
+ ],
+ "death": [
+  "life",
+  "birth"
+ ],
+ "disease": [
+  "health"
+ ],
+ "effect": [
+  "cause"
+ ],
+ "end": [
+  "start",
+  "begin"
+ ],
+ "fact": [
+  "fiction"
+ ],
+ "father": [
+  "mother"
+ ],
+ "fiction": [
+  "fact"
+ ],
+ "friend": [
+  "enemy"
+ ],
+ "hate": [
+  "love"
+ ],
+ "heat": [
+  "cold"
+ ],
+ "land": [
+  "sea"
+ ],
+ "laugh": [
+  "cry"
+ ],
+ "light": [
+  "dark"
+ ],
+ "liquid": [
+  "solid"
+ ],
+ "loss": [
+  "profit"
+ ],
+ "love": [
+  "hate"
+ ],
+ "man": [
+  "woman"
+ ],
+ "morning": [
+  "evening"
+ ],
+ "mother": [
+  "father"
+ ],
+ "night": [
+  "day"
+ ],
+ "pain": [
+  "pleasure"
+ ],
+ "part": [
+  "whole"
+ ],
+ "peace": [
+  "war"
+ ],
+ "pleasure": [
+  "pain"
+ ],
+ "profit": [
+  "loss"
+ ],
+ "pull": [
+  "push"
+ ],
+ "punishment": [
+  "reward"
+ ],
+ "push": [
+  "pull"
+ ],
+ "question": [
+  "answer"
+ ],
+ "rest": [
+  "work"
+ ],
+ "reward": [
+  "punishment"
+ ],
+ "sea": [
+  "land"
+ ],
+ "sister": [
+  "brother"
+ ],
+ "sleep": [
+  "wake"
+ ],
+ "son": [
+  "daughter"
+ ],
+ "start": [
+  "finish",
+  "end",
+  "stop"
+ ],
+ "stop": [
+  "go",
+  "start"
+ ],
+ "summer": [
+  "winter"
+ ],
+ "top": [
+  "bottom"
+ ],
+ "war": [
+  "peace"
+ ],
+ "winter": [
+  "summer"
+ ],
+ "woman": [
+  "man"
+ ],
+ "work": [
+  "rest"
+ ],
+ "boy": [
+  "girl"
+ ],
+ "girl": [
+  "boy"
+ ],
+ "spring": [
+  "autumn"
+ ],
+ "angry": [
+  "calm"
+ ],
+ "beautiful": [
+  "ugly"
+ ],
+ "black": [
+  "white"
+ ],
+ "bright": [
+  "dark"
+ ],
+ "cheap": [
+  "expensive"
+ ],
+ "clean": [
+  "dirty"
+ ],
+ "complex": [
+  "simple"
+ ],
+ "deep": [
+  "shallow"
+ ],
+ "early": [
+  "late"
+ ],
+ "fat": [
+  "thin"
+ ],
+ "first": [
+  "last"
+ ],
+ "full": [
+  "empty",
+  "hungry"
+ ],
+ "good": [
+  "bad"
+ ],
+ "happy": [
+  "sad"
+ ],
+ "hard": [
+  "soft",
+  "easy"
+ ],
+ "healthy": [
+  "ill",
+  "sick"
+ ],
+ "high": [
+  "low"
+ ],
+ "hollow": [
+  "solid"
+ ],
+ "kind": [
+  "cruel"
+ ],
+ "living": [
+  "dead"
+ ],
+ "long": [
+  "short"
+ ],
+ "male": [
+  "female"
+ ],
+ "new": [
+  "old"
+ ],
+ "open": [
+  "shut",
+  "close"
+ ],
+ "past": [
+  "future"
+ ],
+ "poor": [
+  "rich"
+ ],
+ "private": [
+  "public"
+ ],
+ "quick": [
+  "slow"
+ ],
+ "quiet": [
+  "loud",
+  "noisy"
+ ],
+ "right": [
+  "wrong",
+  "left"
+ ],
+ "same": [
+  "different"
+ ],
+ "smooth": [
+  "rough"
+ ],
+ "straight": [
+  "bent"
+ ],
+ "strong": [
+  "weak",
+  "feeble",
+  "delicate"
+ ],
+ "sweet": [
+  "sour",
+  "bitter"
+ ],
+ "tall": [
+  "short"
+ ],
+ "thick": [
+  "thin"
+ ],
+ "tight": [
+  "loose"
+ ],
+ "true": [
+  "false"
+ ],
+ "warm": [
+  "cool",
+  "cold"
+ ],
+ "wet": [
+  "dry"
+ ],
+ "wide": [
+  "narrow"
+ ],
+ "wise": [
+  "foolish"
+ ],
+ "young": [
+  "old"
+ ],
+ "awake": [
+  "asleep"
+ ],
+ "bad": [
+  "good"
+ ],
+ "bent": [
+  "straight"
+ ],
+ "bitter": [
+  "sweet"
+ ],
+ "cold": [
+  "hot",
+  "warm"
+ ],
+ "cruel": [
+  "kind"
+ ],
+ "dark": [
+  "light",
+  "bright"
+ ],
+ "dead": [
+  "alive",
+  "living"
+ ],
+ "delicate": [
+  "strong"
+ ],
+ "different": [
+  "same"
+ ],
+ "dirty": [
+  "clean"
+ ],
+ "dry": [
+  "wet"
+ ],
+ "false": [
+  "true"
+ ],
+ "feeble": [
+  "strong"
+ ],
+ "female": [
+  "male"
+ ],
+ "foolish": [
+  "wise",
+  "clever"
+ ],
+ "future": [
+  "past"
+ ],
+ "ill": [
+  "healthy"
+ ],
+ "last": [
+  "first",
+  "next"
+ ],
+ "late": [
+  "early"
+ ],
+ "left": [
+  "right"
+ ],
+ "loose": [
+  "tight"
+ ],
+ "loud": [
+  "quiet",
+  "soft"
+ ],
+ "low": [
+  "high"
+ ],
+ "narrow": [
+  "wide"
+ ],
+ "old": [
+  "new",
+  "young"
+ ],
+ "opposite": [
+  "same"
+ ],
+ "public": [
+  "private",
+  "secret"
+ ],
+ "rough": [
+  "smooth"
+ ],
+ "sad": [
+  "happy"
+ ],
+ "safe": [
+  "dangerous"
+ ],
+ "secret": [
+  "public"
+ ],
+ "short": [
+  "long",
+  "tall"
+ ],
+ "shut": [
+  "open"
+ ],
+ "simple": [
+  "complex"
+ ],
+ "slow": [
+  "fast",
+  "quick"
+ ],
+ "small": [
+  "big"
+ ],
+ "soft": [
+  "hard",
+  "loud"
+ ],
+ "solid": [
+  "liquid",
+  "hollow"
+ ],
+ "special": [
+  "ordinary"
+ ],
+ "strange": [
+  "normal"
+ ],
+ "normal": [
+  "strange"
+ ],
+ "thin": [
+  "thick",
+  "fat"
+ ],
+ "white": [
+  "black"
+ ],
+ "wrong": [
+  "right"
+ ],
+ "hello": [
+  "goodbye"
+ ],
+ "autumn": [
+  "spring"
+ ],
+ "hot": [
+  "cold"
+ ],
+ "cool": [
+  "warm"
+ ],
+ "mom": [
+  "dad"
+ ],
+ "dad": [
+  "mom"
+ ],
+ "grandma": [
+  "grandpa"
+ ],
+ "grandpa": [
+  "grandma"
+ ],
+ "parent": [
+  "child"
+ ],
+ "child": [
+  "grown-up",
+  "parent"
+ ],
+ "grown-up": [
+  "child"
+ ],
+ "hungry": [
+  "full"
+ ],
+ "teacher": [
+  "student"
+ ],
+ "student": [
+  "teacher"
+ ],
+ "teach": [
+  "learn"
+ ],
+ "learn": [
+  "teach"
+ ],
+ "stay": [
+  "go"
+ ],
+ "win": [
+  "lose"
+ ],
+ "ask": [
+  "answer"
+ ],
+ "catch": [
+  "throw"
+ ],
+ "die": [
+  "live"
+ ],
+ "hide": [
+  "show"
+ ],
+ "live": [
+  "die"
+ ],
+ "lose": [
+  "win",
+  "find"
+ ],
+ "read": [
+  "write"
+ ],
+ "remember": [
+  "forget"
+ ],
+ "save": [
+  "spend"
+ ],
+ "show": [
+  "hide"
+ ],
+ "spend": [
+  "save"
+ ],
+ "write": [
+  "read"
+ ],
+ "afraid": [
+  "brave"
+ ],
+ "alone": [
+  "together"
+ ],
+ "big": [
+  "small",
+  "little"
+ ],
+ "brave": [
+  "afraid"
+ ],
+ "busy": [
+  "free"
+ ],
+ "careful": [
+  "careless"
+ ],
+ "easy": [
+  "hard"
+ ],
+ "exciting": [
+  "boring"
+ ],
+ "expensive": [
+  "cheap"
+ ],
+ "fast": [
+  "slow"
+ ],
+ "funny": [
+  "serious"
+ ],
+ "serious": [
+  "funny"
+ ],
+ "heavy": [
+  "light"
+ ],
+ "whole": [
+  "part"
+ ],
+ "bottom": [
+  "top"
+ ],
+ "truth": [
+  "lie"
+ ],
+ "life": [
+  "death"
+ ],
+ "more": [
+  "less"
+ ],
+ "most": [
+  "least"
+ ],
+ "less": [
+  "more"
+ ],
+ "few": [
+  "many"
+ ],
+ "many": [
+  "few"
+ ],
+ "always": [
+  "never"
+ ],
+ "never": [
+  "always",
+  "ever"
+ ],
+ "next": [
+  "last"
+ ],
+ "outside": [
+  "inside"
+ ],
+ "without": [
+  "with"
+ ],
+ "something": [
+  "nothing"
+ ],
+ "everything": [
+  "nothing"
+ ],
+ "evening": [
+  "morning"
+ ],
+ "cloudy": [
+  "sunny"
+ ],
+ "sunny": [
+  "cloudy"
+ ],
+ "aunt": [
+  "uncle"
+ ],
+ "uncle": [
+  "aunt"
+ ],
+ "she": [
+  "he"
+ ],
+ "can": [
+  "cannot"
+ ],
+ "cannot": [
+  "can"
+ ],
+ "goodbye": [
+  "hello"
+ ],
+ "clever": [
+  "foolish"
+ ],
+ "polite": [
+  "rude"
+ ],
+ "sick": [
+  "healthy"
+ ],
+ "sour": [
+  "sweet"
+ ],
+ "calm": [
+  "angry"
+ ],
+ "buy": [
+  "sell"
+ ],
+ "find": [
+  "lose"
+ ],
+ "bring": [
+  "take"
+ ],
+ "begin": [
+  "finish",
+  "end"
+ ],
+ "finish": [
+  "start",
+  "begin"
+ ],
+ "close": [
+  "open"
+ ],
+ "forget": [
+  "remember"
+ ],
+ "behind": [
+  "front"
+ ],
+ "confident": [
+  "shy"
+ ],
+ "shy": [
+  "confident"
+ ],
+ "dangerous": [
+  "safe"
+ ],
+ "health": [
+  "disease"
+ ],
+ "nothing": [
+  "everything",
+  "something"
+ ],
+ "shout": [
+  "whisper"
+ ],
+ "wake": [
+  "sleep"
+ ],
+ "these": [
+  "those"
+ ],
+ "those": [
+  "these"
+ ],
+ "above": [
+  "below",
+  "under"
+ ],
+ "below": [
+  "above"
+ ],
+ "inside": [
+  "outside"
+ ],
+ "borrow": [
+  "lend"
+ ],
+ "interesting": [
+  "boring"
+ ],
+ "safety": [
+  "danger"
+ ],
+ "front": [
+  "back",
+  "behind"
+ ],
+ "went": [
+  "came"
+ ],
+ "came": [
+  "went"
+ ],
+ "gave": [
+  "took"
+ ],
+ "took": [
+  "gave"
+ ],
+ "won": [
+  "lost"
+ ],
+ "lost": [
+  "won",
+  "found"
+ ],
+ "found": [
+  "lost"
+ ],
+ "better": [
+  "worse"
+ ],
+ "best": [
+  "worst"
+ ],
+ "men": [
+  "women"
+ ],
+ "women": [
+  "men"
+ ],
+ "him": [
+  "her"
+ ],
+ "her": [
+  "him",
+  "his"
+ ],
+ "his": [
+  "her"
+ ],
+ "himself": [
+  "herself"
+ ],
+ "herself": [
+  "himself"
+ ]
+}

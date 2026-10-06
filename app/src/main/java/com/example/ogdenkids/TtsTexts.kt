@@ -16,7 +16,12 @@ data class TtsTexts(val english: Set<String>)
  * 中文不预生成，播放时在线合成并缓存在本机。
  * 新增会朗读的内容时要同步加到这里，否则 TtsCoverageTest 会报缺音频。
  */
-fun speakableTexts(words: List<OgdenWord>, speeches: List<Speech>, modules: List<SpecialModule>): TtsTexts {
+fun speakableTexts(
+    words: List<OgdenWord>,
+    speeches: List<Speech>,
+    modules: List<SpecialModule>,
+    related: Collection<RelatedWord> = emptyList()
+): TtsTexts {
     val headwords = words.map { it.word.lowercase() }.toSet()
     val en = mutableSetOf<String>()
     val lines = speeches.flatMap { it.lines + it.patterns } + modules.flatMap { it.sentences }
@@ -24,7 +29,7 @@ fun speakableTexts(words: List<OgdenWord>, speeches: List<Speech>, modules: List
     words.forEach { word ->
         en += word.example
         // 近义词按钮和近义词题的答案；词表内的有离线录音
-        word.synonyms.filter { it.lowercase() !in headwords }.forEach { en += it }
+        (word.synonyms + word.antonyms).filter { it.lowercase() !in headwords }.forEach { en += it }
     }
     // 弹窗里朗读原文写法（boxes、Amy、I'm）、缩写完整写法，以及「课文生词」里存的小写键
     lines.flatMap { tokenizeSpeech(it.en) }.map { it.text }.distinct().forEach { token ->
@@ -34,6 +39,7 @@ fun speakableTexts(words: List<OgdenWord>, speeches: List<Speech>, modules: List
             en += token.lowercase().removeSuffix("'s")
         }
     }
+    related.forEach { en += it.example }
     en += allSpecialUtterances().first
     return TtsTexts(en.map { it.trim() }.filter { it.isNotEmpty() }.toSet())
 }

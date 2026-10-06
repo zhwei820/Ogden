@@ -201,8 +201,13 @@ data class OgdenWord(
     val exampleZh: String,
     val synonyms: List<String>,
     val ipaUk: String,
-    val ipaUs: String
+    val ipaUs: String,
+    /** 反义词，来自 antonyms.json；没有的为空，只在单词详情展示 */
+    val antonyms: List<String> = emptyList()
 )
+
+/** 不在词库里的近义词 / 反义词的离线释义与例句（related_words.json）。 */
+data class RelatedWord(val zh: String, val example: String, val exampleZh: String)
 
 data class WordProgress(
     val favorite: Boolean,
@@ -260,6 +265,11 @@ class OgdenRepository(private val context: Context) {
     fun loadWords(): List<OgdenWord> {
         val words = JSONArray(readAsset("ogden_words.json"))
         val ipa = JSONObject(readAsset("ogden_ipa.json"))
+        val antonyms = JSONObject(readAsset("antonyms.json"))
+        // related_words.json 里标了 drop 的是描述性条目（如 "12 months"），不当近义词展示
+        val dropped = JSONObject(readAsset("related_words.json")).let { r ->
+            r.keys().asSequence().filter { r.getJSONObject(it).optBoolean("drop") }.toSet()
+        }
         return List(words.length()) { index ->
             val item = words.getJSONObject(index)
             val word = item.getString("w")
@@ -272,11 +282,20 @@ class OgdenRepository(private val context: Context) {
                 englishDefinition = item.getString("en"),
                 example = item.getString("ex"),
                 exampleZh = item.getString("exz"),
-                synonyms = List(synonyms.length()) { synonyms.getString(it) },
+                synonyms = List(synonyms.length()) { synonyms.getString(it) }.filter { it !in dropped },
                 ipaUk = ipaItem?.optString("uk").orEmpty(),
-                ipaUs = ipaItem?.optString("us").orEmpty()
+                ipaUs = ipaItem?.optString("us").orEmpty(),
+                antonyms = antonyms.optJSONArray(word)?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
             )
         }
+    }
+
+    fun loadRelatedWords(): Map<String, RelatedWord> {
+        val related = JSONObject(readAsset("related_words.json"))
+        return related.keys().asSequence().mapNotNull { key ->
+            val item = related.getJSONObject(key)
+            if (item.optBoolean("drop")) null else key.lowercase() to RelatedWord(item.getString("zh"), item.getString("ex"), item.getString("exz"))
+        }.toMap()
     }
 
     fun loadSpeeches(): List<Speech> {
@@ -493,6 +512,7 @@ fun OgdenKidsApp() {
     val speakEnglish: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.english(accent)) }
     val speakChinese: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.ZhCn) }
     val translator = remember { Translator(context) }
+    val relatedWords = remember { repository.loadRelatedWords() }
     val selectionController = remember { SelectionController() }
     val speechServices = remember(accent) {
         SpeechServices(
@@ -503,7 +523,8 @@ fun OgdenKidsApp() {
             openWord = { word ->
                 azureSpeaker.stop()
                 screen = Screen.Detail(word, returnTo = screen)
-            }
+            },
+            related = { relatedWords[it.lowercase()] }
         )
     }
     val goBack: () -> Unit = {
@@ -1520,6 +1541,12 @@ fun WordDetailScreen(
                 SectionTitle("近义词", "点击听发音，长按查看")
                 FlowRowCompat(word.synonyms) { syn -> SynonymChip(syn, onSpeak) }
             }
+            if (word.antonyms.isNotEmpty()) {
+                item {
+                    SectionTitle("反义词", "点击听发音，长按查看")
+                    FlowRowCompat(word.antonyms) { ant -> SynonymChip(ant, onSpeak) }
+                }
+            }
             item {
                 SectionTitle("熟练度", "答对会增加星星，答错会进入复习")
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -2142,7 +2169,9 @@ class SpeechServices(
     /** 原文词 → 词库词条（含词形还原），查不到为 null */
     val lookup: (String) -> OgdenWord?,
     /** 打开词条详情页，返回时回到当前页面 */
-    val openWord: (OgdenWord) -> Unit
+    val openWord: (OgdenWord) -> Unit,
+    /** 词库外近义词 / 反义词的离线释义与例句 */
+    val related: (String) -> RelatedWord? = { null }
 )
 
 val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}, { null }, {}) }
@@ -2420,7 +2449,50 @@ fun SynonymChip(text: String, onSpeak: (String) -> Unit) {
     }
     if (translating) {
         ModalBottomSheet(onDismissRequest = { translating = false }, containerColor = PaperElevated) {
-            PhraseTranslationSheet(text)
+            val related = services.related(text)
+            if (related != null) RelatedWordSheet(text, related) else PhraseTranslationSheet(text)
+        }
+    }
+}
+
+/** 词库外的近义词 / 反义词：离线释义 + 例句，不需要联网。 */
+@Composable
+private fun RelatedWordSheet(word: String, related: RelatedWord) {
+    val services = LocalSpeechServices.current
+    LaunchedEffect(word) { services.speakEnglish(word) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 22.dp, end = 22.dp, bottom = 36.dp),
+        verticalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(word, fontSize = 32.sp, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            IconButton(onClick = { services.speakEnglish(word) }) {
+                Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = Category.Operations.tint)
+            }
+        }
+        AppText(related.zh, fontSize = 22.sp, fontWeight = FontWeight.SemiBold)
+        Card(colors = CardDefaults.cardColors(containerColor = Paper), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+            Column(Modifier.padding(start = 14.dp, top = 6.dp, bottom = 6.dp)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    TranslatableText(
+                        AnnotatedString(related.example),
+                        TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink),
+                        modifier = Modifier.weight(1f),
+                        onTap = { services.speakEnglish(related.example) }
+                    )
+                    IconButton(onClick = { services.speakEnglish(related.example) }) {
+                        Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = Category.Operations.tint)
+                    }
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    AppText(related.exampleZh, color = InkSoft, fontSize = 17.sp, lineHeight = 24.sp, modifier = Modifier.weight(1f))
+                    IconButton(onClick = { services.speakChinese(related.exampleZh) }) {
+                        Icon(Icons.Default.VolumeUp, contentDescription = "读例句中文", tint = InkFaint)
+                    }
+                }
+            }
         }
     }
 }
