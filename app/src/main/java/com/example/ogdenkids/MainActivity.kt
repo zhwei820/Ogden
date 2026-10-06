@@ -128,6 +128,12 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.ui.unit.IntOffset
+import kotlin.math.abs
+import kotlin.math.roundToInt
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
@@ -1967,8 +1973,8 @@ fun SpeechReaderScreen(
             item {
                 SpeechTrackHeader(
                     title = "课文 · Listen and Read",
-                    subtitle = if (hasContraction) "点句子听朗读，长按单词查释义；带下划线的是缩写，长按看完整写法"
-                    else "点句子听朗读，长按单词查释义",
+                    subtitle = if (hasContraction) "点句子听朗读，长按选词可查词、翻译、朗读；带下划线的是缩写，查词看完整写法"
+                    else "点句子听朗读，长按选词可查词、翻译、朗读",
                     playingAll = playingAll,
                     onPlayAll = {
                         if (playingAll) {
@@ -2104,10 +2110,11 @@ class SpeechServices(val translator: Translator?, val speakEnglish: (String) -> 
 val LocalSpeechServices = staticCompositionLocalOf { SpeechServices(null, {}, {}) }
 
 /**
- * 可划词的英文：点击走 [onTap]；长按后拖动选中连续的词，松手弹出翻译。
- * 只长按一个词且给了 [onWord] 时交给调用方（查词弹窗），否则单个词也走翻译。
+ * 可划词的英文。点击走 [onTap]；长按一个词进入选词状态（高亮 + 震动 + 下方工具条），
+ * 之后点别的词、拖两端圆点或长按拖动都能调整选区，再从工具条选「查词 / 翻译 / 朗读 / 取消」。
+ * 松手不会自动出结果，选错了可以接着改。
  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun TranslatableText(
     text: AnnotatedString,
@@ -2116,73 +2123,169 @@ fun TranslatableText(
     onTap: (() -> Unit)? = null,
     onWord: ((SpeechToken) -> Unit)? = null
 ) {
+    val services = LocalSpeechServices.current
+    val haptic = LocalHapticFeedback.current
+    val density = LocalDensity.current
     val tokens = remember(text.text) { tokenizeSpeech(text.text) }
     var layout by remember { mutableStateOf<TextLayoutResult?>(null) }
-    var dragFrom by remember { mutableStateOf<Int?>(null) }
-    var dragTo by remember { mutableStateOf<Int?>(null) }
+    // 选区端点（词下标）；selFrom 为锚点，selTo 为正在移动的一端
+    var selFrom by remember(text.text) { mutableStateOf<Int?>(null) }
+    var selTo by remember(text.text) { mutableStateOf<Int?>(null) }
     var phrase by remember { mutableStateOf<String?>(null) }
-    var phraseRange by remember { mutableStateOf<IntRange?>(null) }
+    val active = selFrom != null && selTo != null
+    val first = if (active) minOf(selFrom!!, selTo!!) else -1
+    val last = if (active) maxOf(selFrom!!, selTo!!) else -1
+    val selectedRange = if (active) tokens[first].range.first..tokens[last].range.last else null
+    val selectedText = selectedRange?.let { text.text.substring(it) }
 
-    fun tokenAt(position: Offset): Int? {
-        val offset = layout?.getOffsetForPosition(position) ?: return null
+    fun clear() {
+        selFrom = null
+        selTo = null
+    }
+
+    /**
+     * 手指位置 → 词下标，带防抖：越过目标词一半才切过去；上下偏离当前行不到一行高时仍按当前行算。
+     * [current] 为正在移动的那一端当前所在的词。
+     */
+    fun tokenAt(position: Offset, current: Int?): Int? {
+        val l = layout ?: return null
         if (tokens.isEmpty()) return null
-        // 落在空格或标点上时取最近的词
-        return tokens.indices.minByOrNull { i ->
+        var y = position.y
+        if (current != null) {
+            val line = l.getLineForOffset(tokens[current].range.first)
+            val top = l.getLineTop(line)
+            val bottom = l.getLineBottom(line)
+            if (abs(y - (top + bottom) / 2) < (bottom - top) * 0.9f) y = (top + bottom) / 2
+        }
+        val offset = l.getOffsetForPosition(Offset(position.x, y))
+        val nearest = tokens.indices.minByOrNull { i ->
             val r = tokens[i].range
             when {
                 offset < r.first -> r.first - offset
                 offset > r.last -> offset - r.last
                 else -> 0
             }
-        }
+        } ?: return null
+        if (current == null || nearest == current) return nearest
+        val r = tokens[nearest].range
+        val half = (r.last - r.first + 1) / 2
+        val crossed = if (nearest > current) offset >= r.first + half else offset <= r.last - half
+        return if (crossed) nearest else current
     }
 
-    fun finish() {
-        val a = dragFrom
-        val b = dragTo
-        dragFrom = null
-        dragTo = null
-        if (a == null || b == null) return
-        val (from, to) = minOf(a, b) to maxOf(a, b)
-        if (from == to && onWord != null) {
-            onWord(tokens[from])
+    fun moveEnd(to: Int?, anchorIsFrom: Boolean = true) {
+        if (to == null) return
+        if (anchorIsFrom) {
+            if (to != selTo) { selTo = to; haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove) }
         } else {
-            val range = tokens[from].range.first..tokens[to].range.last
-            phraseRange = range
-            phrase = text.text.substring(range)
+            if (to != selFrom) { selFrom = to; haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove) }
         }
     }
 
-    val dragRange = dragFrom?.let { a -> dragTo?.let { b -> tokens[minOf(a, b)].range.first..tokens[maxOf(a, b)].range.last } }
-    val shown = remember(text, dragRange, phraseRange) {
+    val shown = remember(text, selectedRange) {
         buildAnnotatedString {
             append(text)
-            (dragRange ?: phraseRange)?.let {
+            selectedRange?.let {
                 addStyle(SpanStyle(background = Category.Qualities.soft, color = Category.Qualities.tint), it.first, it.last + 1)
             }
         }
     }
-    Text(
-        text = shown,
-        style = style,
-        onTextLayout = { layout = it },
-        modifier = modifier
-            .then(if (onTap != null) Modifier.pointerInput(tokens) { detectTapGestures(onTap = { onTap() }) } else Modifier)
-            .pointerInput(tokens) {
-                detectDragGesturesAfterLongPress(
-                    onDragStart = { position -> tokenAt(position)?.let { dragFrom = it; dragTo = it } },
-                    onDrag = { change, _ ->
-                        change.consume()
-                        tokenAt(change.position)?.let { dragTo = it }
-                    },
-                    onDragEnd = { finish() },
-                    onDragCancel = { dragFrom = null; dragTo = null }
-                )
+
+    Column(modifier) {
+        Box {
+            Text(
+                text = shown,
+                style = style,
+                onTextLayout = { layout = it },
+                modifier = Modifier
+                    .then(
+                        // 无选区且调用方不需要点击时不装点击手势，免得吞掉外层卡片的点击
+                        if (active || onTap != null) Modifier.pointerInput(tokens, active) {
+                            detectTapGestures(onTap = { position ->
+                                if (active) {
+                                    // 点另一个词：选区扩到那个词（以离它更远的一端为锚点）
+                                    tokenAt(position, null)?.let { t ->
+                                        if (abs(t - first) > abs(t - last)) { selFrom = first; moveEnd(t) } else { selFrom = last; moveEnd(t) }
+                                    }
+                                } else {
+                                    onTap?.invoke()
+                                }
+                            })
+                        } else Modifier
+                    )
+                    .pointerInput(tokens) {
+                        detectDragGesturesAfterLongPress(
+                            onDragStart = { position ->
+                                tokenAt(position, null)?.let {
+                                    selFrom = it
+                                    selTo = it
+                                    haptic.performHapticFeedback(HapticFeedbackType.LongPress)
+                                }
+                            },
+                            onDrag = { change, _ ->
+                                change.consume()
+                                moveEnd(tokenAt(change.position, selTo))
+                            }
+                        )
+                    }
+            )
+            // 两端圆点：拖动微调选区
+            val l = layout
+            if (active && l != null) {
+                val handle = 22.dp
+                val handlePx = with(density) { handle.toPx() }
+                listOf(true, false).forEach { isStart ->
+                    val box = l.getBoundingBox(if (isStart) tokens[first].range.first else tokens[last].range.last)
+                    val anchor = Offset(if (isStart) box.left else box.right, box.bottom)
+                    var dragPos by remember(isStart, first, last) { mutableStateOf(anchor) }
+                    Box(
+                        Modifier
+                            .offset { IntOffset((anchor.x - handlePx / 2).roundToInt(), anchor.y.roundToInt()) }
+                            .size(handle)
+                            .clip(CircleShape)
+                            .background(Category.Qualities.tint)
+                            .pointerInput(isStart, first, last) {
+                                detectDragGestures(
+                                    onDragStart = {
+                                        // 拖起点时以终点为锚，反之亦然
+                                        if (isStart) { selFrom = last; selTo = first } else { selFrom = first; selTo = last }
+                                        dragPos = Offset(anchor.x, anchor.y - handlePx)
+                                    },
+                                    onDrag = { change, amount ->
+                                        change.consume()
+                                        dragPos += amount
+                                        moveEnd(tokenAt(dragPos, selTo))
+                                    }
+                                )
+                            }
+                    )
+                }
             }
-    )
+        }
+        if (active && selectedText != null) {
+            Spacer(Modifier.height(18.dp))
+            Card(
+                colors = CardDefaults.cardColors(containerColor = Category.Qualities.soft),
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(Modifier.padding(10.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    AppText("已选：$selectedText", color = Category.Qualities.tint, fontSize = 15.sp, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        if (first == last && onWord != null) {
+                            Button(onClick = { val t = tokens[first]; clear(); onWord(t) }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("查词") }
+                        }
+                        Button(onClick = { phrase = selectedText }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("翻译") }
+                        OutlinedButton(onClick = { services.speakEnglish(selectedText) }, contentPadding = PaddingValues(horizontal = 14.dp)) { Text("朗读") }
+                        TextButton(onClick = { clear() }) { Text("取消") }
+                    }
+                }
+            }
+        }
+    }
 
     phrase?.let { selected ->
-        ModalBottomSheet(onDismissRequest = { phrase = null; phraseRange = null }, containerColor = PaperElevated) {
+        ModalBottomSheet(onDismissRequest = { phrase = null; clear() }, containerColor = PaperElevated) {
             PhraseTranslationSheet(selected)
         }
     }
@@ -2273,7 +2376,7 @@ fun SpeechLineRow(
     ) {
         Row(Modifier.padding(start = 16.dp, top = 6.dp, bottom = 6.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f).padding(vertical = 6.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                // 点句子任意处朗读整句；长按一个词查释义，长按拖动选多个词翻译
+                // 点句子任意处朗读整句；长按进入选词，可查词 / 翻译 / 朗读
                 TranslatableText(
                     text = text,
                     style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, color = Ink),
@@ -3232,7 +3335,7 @@ fun SpecialModuleScreen(
             }
             item {
                 Spacer(Modifier.height(8.dp))
-                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按单词查释义", playingAll = false, onPlayAll = null)
+                SpeechTrackHeader(title = "组合句子", subtitle = "点句子听朗读，长按选词可查词、翻译、朗读", playingAll = false, onPlayAll = null)
             }
             items(module.sentences.size) { index ->
                 val line = module.sentences[index]
