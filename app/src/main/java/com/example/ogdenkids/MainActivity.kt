@@ -906,7 +906,12 @@ fun OgdenKidsApp() {
                     },
                     onPracticeWords = { list ->
                         azureSpeaker.stop()
-                        screen = Screen.WordPractice("${current.speech.title} · 单词练习", list.shuffled().take(10), current)
+                        screen = Screen.WordPractice(
+                            "${current.speech.title} · 单词练习",
+                            // 没掌握的词排前面，多练几轮就能把本课单词练全
+                            list.shuffled().sortedBy { w -> wordIndex[w.lowercase()]?.let { progressStore.progress(it.word).mastered } ?: true }.take(10),
+                            current
+                        )
                     }
                 )
                 Screen.SpeechWords -> SpeechWordListScreen(
@@ -2086,6 +2091,12 @@ fun SpeechReaderScreen(
     val listState = rememberLazyListState()
     var showTranslation by remember(speech.id) { mutableStateOf(true) }
     var learned by remember(speech.id) { mutableStateOf(store.isSpeechLearned(speech.id)) }
+    // 不进练习的词（np）练不到，不算进「全部掌握」的门槛
+    val masteredWords = speech.words.filter { w ->
+        val word = wordIndex[w.lowercase()]
+        word == null || !word.practice || store.progress(word.word).mastered
+    }.toSet()
+    val allWordsMastered = masteredWords.size == speech.words.size
     // 收藏存在 SharedPreferences 里，不是 Compose 状态；改动后递增它，让高亮与词卡重新读取
     var favoriteVersion by remember { mutableStateOf(0) }
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
@@ -2250,6 +2261,7 @@ fun SpeechReaderScreen(
                         speech.words.forEach { w ->
                             val picked = pickedWord == w
                             val saved = remember(w, favoriteVersion) { isSaved(SpeechToken(w, w.indices)) }
+                            val mastered = w in masteredWords && wordIndex[w.lowercase()]?.practice == true
                             OutlinedButton(
                                 onClick = {
                                     stopSpeaking()
@@ -2275,13 +2287,17 @@ fun SpeechReaderScreen(
                                     color = if (saved) Category.Opposites.tint else Ink
                                 )
                                 registerOf(w)?.let { Spacer(Modifier.width(6.dp)); RegisterBadge(it.tag) }
+                                if (mastered) {
+                                    Spacer(Modifier.width(4.dp))
+                                    Icon(Icons.Default.Check, contentDescription = "已掌握", tint = Success, modifier = Modifier.size(16.dp))
+                                }
                             }
                         }
                     }
                 }
                 item {
                     Button(onClick = { stopSpeaking(); onPracticeWords(speech.words) }, modifier = Modifier.fillMaxWidth()) {
-                        Text("单词练习（${speech.words.size} 词，每次 10 题）", fontSize = 18.sp)
+                        Text("单词练习（已掌握 ${masteredWords.size} / ${speech.words.size}，每次 10 题）", fontSize = 18.sp)
                     }
                 }
             }
@@ -2295,8 +2311,9 @@ fun SpeechReaderScreen(
                 } else {
                     Button(
                         onClick = { store.toggleSpeechLearned(speech.id); learned = true; onLearnedChange() },
+                        enabled = allWordsMastered,
                         modifier = Modifier.fillMaxWidth()
-                    ) { Text("我学会了") }
+                    ) { Text(if (allWordsMastered) "我学会了" else "本课单词全部掌握后才能点「我学会了」") }
                 }
             }
         }
