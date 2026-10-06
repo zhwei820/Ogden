@@ -28,6 +28,7 @@ class OgdenDataTest {
         assertTrue((counts["ex"] ?: 0) >= 350)
         assertTrue((counts["fm"] ?: 0) > 0)
         assertTrue((counts["kd"] ?: 0) > 0)
+        assertTrue((counts["ky"] ?: 0) > 0)
         assertEquals(words.length(), counts.values.sum())
         val headwords = List(words.length()) { words.getJSONObject(it).getString("w").lowercase() }
         assertEquals("Duplicate headwords", headwords.size, headwords.toSet().size)

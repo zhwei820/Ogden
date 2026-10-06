@@ -211,7 +211,8 @@ enum class Category(
     Opposites("qo", "Opposites", "反义对", Color(0xFF7C3AED), Color(0xFFEDE9FE)),
     Extended("ex", "Extended", "拓展词", Color(0xFF0F766E), Color(0xFFCCFBF1)),
     Forms("fm", "Word Forms", "变形词", Color(0xFFBE185D), Color(0xFFFCE7F3)),
-    BabyTalk("kd", "Baby Talk", "儿语", Color(0xFFC2410C), Color(0xFFFFEDD5));
+    BabyTalk("kd", "Baby Talk", "儿语", Color(0xFFC2410C), Color(0xFFFFEDD5)),
+    Informal("ky", "Informal", "口语", Color(0xFF475569), Color(0xFFE2E8F0));
 
     companion object {
         fun from(code: String) = values().first { it.code == code }
@@ -545,8 +546,8 @@ fun OgdenKidsApp() {
             words.filter { it.category in categories }.map { it.word.lowercase() }.toSet()
         LemmaVocabulary(
             words = wordIndex.keys,
-            qualities = keysOf(Category.Qualities, Category.Opposites, Category.Extended, Category.BabyTalk),
-            things = keysOf(Category.GeneralThings, Category.Picturable, Category.Extended, Category.BabyTalk)
+            qualities = keysOf(Category.Qualities, Category.Opposites, Category.Extended, Category.BabyTalk, Category.Informal),
+            things = keysOf(Category.GeneralThings, Category.Picturable, Category.Extended, Category.BabyTalk, Category.Informal)
         )
     }
     val progressStore = remember { ProgressStore(context) }
@@ -4776,15 +4777,15 @@ fun TogglePill(label: String, selected: Boolean, onClick: () -> Unit, modifier: 
 /** 「儿语 / 口语」小标签 */
 @Composable
 fun RegisterBadge(tag: String) {
-    val kid = tag == Category.BabyTalk.zh
+    val category = if (tag == Category.BabyTalk.zh) Category.BabyTalk else Category.Informal
     Text(
         tag,
         fontSize = 11.sp,
         fontWeight = FontWeight.Bold,
-        color = if (kid) Category.BabyTalk.tint else InkSoft,
+        color = category.tint,
         modifier = Modifier
             .clip(RoundedCornerShape(6.dp))
-            .background(if (kid) Category.BabyTalk.soft else Line)
+            .background(category.soft)
             .padding(horizontal = 6.dp, vertical = 2.dp)
     )
 }
@@ -4796,10 +4797,6 @@ fun RegisterNote(word: String) {
     val services = LocalSpeechServices.current
     val formal = services.lookup(register.formal)
     Row(verticalAlignment = Alignment.CenterVertically) {
-        if (register.tag != Category.BabyTalk.zh) {
-            RegisterBadge(register.tag)
-            Spacer(Modifier.width(8.dp))
-        }
         AppText("正式说法：", color = InkSoft, fontSize = 15.sp)
         Text(
             formal?.word ?: register.formal,

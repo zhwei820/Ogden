@@ -11727,7 +11727,7 @@
     },
     {
         "w": "mom",
-        "c": "ex",
+        "c": "ky",
         "zh": "妈妈",
         "en": "mother",
         "ex": "My mom cooks dinner.",
@@ -11739,7 +11739,7 @@
     },
     {
         "w": "dad",
-        "c": "ex",
+        "c": "ky",
         "zh": "爸爸",
         "en": "father",
         "ex": "My dad reads to me at night.",
@@ -11751,7 +11751,7 @@
     },
     {
         "w": "grandma",
-        "c": "ex",
+        "c": "ky",
         "zh": "奶奶,外婆",
         "en": "your father's or mother's mother",
         "ex": "My grandma makes good dumplings.",
@@ -11763,7 +11763,7 @@
     },
     {
         "w": "grandpa",
-        "c": "ex",
+        "c": "ky",
         "zh": "爷爷,外公",
         "en": "your father's or mother's father",
         "ex": "My grandpa likes to walk in the park.",

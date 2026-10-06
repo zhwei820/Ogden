@@ -15,9 +15,9 @@ class SpecialTrainingTest {
             .groupBy({ it.getString("c") }, { it.getString("w").lowercase() })
         fun keysOf(vararg codes: String) = codes.flatMap { byCategory[it].orEmpty() }.toSet()
         LemmaVocabulary(
-            words = keysOf("op", "gt", "pt", "qg", "qo", "ex", "fm", "kd"),
-            qualities = keysOf("qg", "qo", "ex", "kd"),
-            things = keysOf("gt", "pt", "ex", "kd")
+            words = keysOf("op", "gt", "pt", "qg", "qo", "ex", "fm", "kd", "ky"),
+            qualities = keysOf("qg", "qo", "ex", "kd", "ky"),
+            things = keysOf("gt", "pt", "ex", "kd", "ky")
         )
     }
 
