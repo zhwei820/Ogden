@@ -2805,8 +2805,20 @@ fun PracticeScreen(
     var answerShown by remember(source) { mutableStateOf(false) }
     var correctCount by remember(source) { mutableStateOf(0) }
     val word = source.getOrNull(index)
+    fun goNext() {
+        if (index >= source.lastIndex) {
+            onComplete()
+            onBack()
+        } else {
+            index++
+            selected = null
+            answerShown = false
+        }
+    }
 
-    Scaffold(containerColor = Paper, topBar = {
+    Scaffold(containerColor = Paper, bottomBar = {
+        if (answerShown && word != null) NextQuestionBar(if (index >= source.lastIndex) "完成并返回" else "下一题", ::goNext)
+    }, topBar = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -2939,23 +2951,6 @@ fun PracticeScreen(
                                     }
                                 }
                             }
-                            Button(
-                                onClick = {
-                                    if (index >= source.lastIndex) {
-                                        onComplete()
-                                        onBack()
-                                    }
-                                    else {
-                                        index++
-                                        selected = null
-                                        answerShown = false
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(14.dp)
-                            ) {
-                                AppText(if (index >= source.lastIndex) "完成并返回" else "下一题")
-                            }
                         }
                     }
                 }
@@ -2998,6 +2993,15 @@ fun ThemePracticeScreen(
     val question = questions.getOrNull(index)
     val accent = Category.Operations
 
+    fun goNext() {
+        if (index >= questions.lastIndex) {
+            onFinish(correctCount, questions.size)
+            finished = true
+        } else {
+            index++
+        }
+    }
+
     fun submit(ok: Boolean) {
         answered = true
         if (ok) {
@@ -3014,7 +3018,9 @@ fun ThemePracticeScreen(
         }
     }
 
-    Scaffold(containerColor = Paper, topBar = {
+    Scaffold(containerColor = Paper, bottomBar = {
+        if (answered && !finished && question != null) NextQuestionBar(if (index >= questions.lastIndex) "看成绩" else "下一题", ::goNext)
+    }, topBar = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -3199,20 +3205,6 @@ fun ThemePracticeScreen(
                                 IconButton(onClick = { speakQuestion(question) }) {
                                     Icon(Icons.Default.VolumeUp, contentDescription = "朗读", tint = accent.tint)
                                 }
-                            }
-                            Button(
-                                onClick = {
-                                    if (index >= questions.lastIndex) {
-                                        onFinish(correctCount, questions.size)
-                                        finished = true
-                                    } else {
-                                        index++
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(14.dp)
-                            ) {
-                                AppText(if (index >= questions.lastIndex) "看成绩" else "下一题", fontSize = 18.sp)
                             }
                         }
                     }
@@ -3588,6 +3580,15 @@ fun SpecialPracticeScreen(
     val accent = Category.Operations
     val answered = selected != null
 
+    fun goNext() {
+        if (index >= questions.lastIndex) {
+            onFinish(correctCount)
+            finished = true
+        } else {
+            index++
+        }
+    }
+
     fun pick(i: Int) {
         if (answered || question == null) return
         selected = i
@@ -3600,7 +3601,9 @@ fun SpecialPracticeScreen(
     // 有听力内容先读听力，否则读英文问句
     LaunchedEffect(session, index) { (question?.speak ?: question?.question)?.let(onSpeak) }
 
-    Scaffold(containerColor = Paper, topBar = {
+    Scaffold(containerColor = Paper, bottomBar = {
+        if (answered && !finished && question != null) NextQuestionBar(if (index >= questions.lastIndex) "看成绩" else "下一题", ::goNext)
+    }, topBar = {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -3737,23 +3740,26 @@ fun SpecialPracticeScreen(
                                     Icon(Icons.Default.VolumeUp, contentDescription = "朗读中文", tint = InkFaint)
                                 }
                             }
-                            Button(
-                                onClick = {
-                                    if (index >= questions.lastIndex) {
-                                        onFinish(correctCount)
-                                        finished = true
-                                    } else {
-                                        index++
-                                    }
-                                },
-                                modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(14.dp)
-                            ) { AppText(if (index >= questions.lastIndex) "看成绩" else "下一题", fontSize = 18.sp) }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+/** 答完题后固定在底部的大按钮，不用滚到反馈卡片下面去找。 */
+@Composable
+private fun NextQuestionBar(label: String, onClick: () -> Unit) {
+    Surface(color = PaperElevated, shadowElevation = 8.dp) {
+        Button(
+            onClick = onClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 18.dp, vertical = 12.dp)
+                .height(56.dp),
+            shape = RoundedCornerShape(16.dp)
+        ) { Text(label, fontSize = 20.sp, fontWeight = FontWeight.Bold) }
     }
 }
 
