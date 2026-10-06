@@ -1425,7 +1425,6 @@ fun WordListCard(
                     Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = word.category.tint)
                 }
             }
-            Text(word.englishDefinition, color = InkFaint, fontStyle = FontStyle.Italic)
             TranslatableText(AnnotatedString(word.example), TextStyle(color = InkSoft, fontFamily = FontFamily.Serif, fontSize = 16.sp))
             if (word.exampleZh.isNotBlank()) AppText(convertZh(word.exampleZh, zh), color = InkFaint, fontSize = 14.sp)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -3020,6 +3019,9 @@ fun PracticeScreen(
                             }
                             onRecord(word, ok)
                             answerShown = true
+                        } else if (option == question.answer) {
+                            // 答完后（尤其答错时）点正确选项可以再听一遍
+                            onSpeak(question.answer)
                         }
                     },
                     modifier = Modifier.fillMaxWidth(),
@@ -3286,6 +3288,8 @@ fun ThemePracticeScreen(
                             if (!answered) {
                                 selected = option
                                 submit(option == question.answer)
+                            } else if (option == question.answer) {
+                                speakQuestion(question)
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -3677,7 +3681,7 @@ private fun PlaceSlotsView(question: SpecialQuestion, selected: Int?, answered: 
                     .clip(CircleShape)
                     .background(color.copy(alpha = 0.12f))
                     .border(BorderStroke(3.dp, color), CircleShape)
-                    .clickable(enabled = !answered) { onPick(index) },
+                    .clickable { onPick(index) },
                 contentAlignment = Alignment.Center
             ) {
                 if (answered && index == question.answer) EmojiInBox(first.item.emoji, size * scale * 0.8f)
@@ -3718,7 +3722,12 @@ fun SpecialPracticeScreen(
     }
 
     fun pick(i: Int) {
-        if (answered || question == null) return
+        if (question == null) return
+        if (answered) {
+            // 答完后点正确选项再听一遍
+            if (i == question.answer) onSpeak(question.spoken)
+            return
+        }
         selected = i
         if (i == question.answer) {
             correctCount++
@@ -3910,7 +3919,7 @@ private fun SpecialOptionCard(option: SpecialOption, index: Int, answer: Int, se
         shape = RoundedCornerShape(14.dp),
         modifier = modifier
             .border(BorderStroke(if (answered && (index == answer || index == selected)) 2.dp else 1.dp, color), RoundedCornerShape(14.dp))
-            .clickable(enabled = !answered, onClick = onClick)
+            .clickable(onClick = onClick)
     ) {
         Column(
             Modifier.padding(12.dp).fillMaxWidth(),
