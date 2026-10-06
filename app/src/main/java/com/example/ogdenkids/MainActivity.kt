@@ -228,7 +228,7 @@ data class OgdenWord(
     val ipaUs: String,
     /** 反义词，来自 antonyms.json；没有的为空，只在单词详情展示 */
     val antonyms: List<String> = emptyList(),
-    /** 常见搭配，来自 collocations.json（目前只覆盖课文「本课单词」） */
+    /** 常见搭配，来自 collocations.json（覆盖课文「本课单词」和专项训练单词） */
     val collocations: List<Collocation> = emptyList()
 )
 

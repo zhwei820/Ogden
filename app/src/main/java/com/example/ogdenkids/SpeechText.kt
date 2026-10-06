@@ -128,8 +128,15 @@ private val IrregularForms = mapOf(
  * @param things 名词（gt/pt）：与 [OperatorVerbs] 一起作为 -ing/-ed 的合法原形
  */
 class LemmaVocabulary(val words: Set<String>, val qualities: Set<String>, val things: Set<String>) {
-    fun canTakeVerbSuffix(base: String) = base in things || base in OperatorVerbs
+    fun canTakeVerbSuffix(base: String) = base in things || base in OperatorVerbs || base in QualityVerbs
 }
+
+/**
+ * 也常作动词用的性质词（cleaning、opened、liked）。不对全部性质词放开：longing 会被误还原成 long。
+ */
+private val QualityVerbs = setOf(
+    "clean", "open", "close", "dry", "warm", "cool", "empty", "like", "free", "cut", "wet", "clear", "complete", "slow", "shut"
+)
 
 /** Ogden 操作词里真正的动词；其余操作词（for/even/up…）不接 -ing/-ed。 */
 private val OperatorVerbs = setOf(

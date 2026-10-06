@@ -66,6 +66,16 @@ class TtsCoverageTest {
     }
     private val texts = speakableTexts(words, speeches, modules, related)
 
+    @Test
+    fun lessonAndSpecialWordsHaveCollocations() {
+        val byLower = words.associateBy { it.word.lowercase() }
+        val missing = (speeches.flatMap { it.words } + modules.flatMap { it.words })
+            .map { byLower[it.lowercase()]?.word ?: it }
+            .distinct()
+            .filter { collocationsOf(it).isEmpty() }
+        assertTrue("缺常见搭配：$missing", missing.isEmpty())
+    }
+
     /** 供 scripts/gen_tts_assets.py 读取，生成缺失的音频。 */
     @Test
     fun writeManifest() {
