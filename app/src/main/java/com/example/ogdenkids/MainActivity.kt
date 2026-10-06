@@ -12,6 +12,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.foundation.gestures.PressGestureScope
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -2751,22 +2762,11 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
             val current = state
             if (current != ReadAlongState.Scoring) {
                 val recording = current == ReadAlongState.Recording
-                Box(
-                    modifier = Modifier
-                        .size(96.dp + (if (recording) (level * 40).dp else 0.dp))
-                        .clip(CircleShape)
-                        .background(if (recording) Error else Category.Operations.tint)
-                        .pointerInput(Unit) {
-                            detectTapGestures(onPress = {
-                                if (requestRecording()) {
-                                    tryAwaitRelease()
-                                    stopRequested = true
-                                }
-                            })
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(Icons.Default.Mic, contentDescription = "按住跟读", tint = Color.White, modifier = Modifier.size(44.dp))
+                HoldToTalkMic(recording, level) {
+                    if (requestRecording()) {
+                        tryAwaitRelease()
+                        stopRequested = true
+                    }
                 }
                 AppText(
                     when {
@@ -2779,6 +2779,38 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
                     textAlign = TextAlign.Center
                 )
             }
+        }
+    }
+}
+
+/** 跟读话筒：录音时向外扩散波纹，按钮随音量起伏；[onPress] 在按下时调用，挂起到松开。 */
+@Composable
+private fun HoldToTalkMic(recording: Boolean, level: Float, onPress: suspend PressGestureScope.() -> Unit) {
+    val color by animateColorAsState(if (recording) Error else Category.Operations.tint, label = "micColor")
+    val scale by animateFloatAsState(if (recording) 1.08f + level * 0.3f else 1f, spring(stiffness = Spring.StiffnessMediumLow), label = "micScale")
+    val ripple = rememberInfiniteTransition(label = "micRipple")
+    val phase by ripple.animateFloat(0f, 1f, infiniteRepeatable(tween(1_400, easing = LinearEasing)), label = "micRipplePhase")
+    // 外框固定大小，波纹和缩放都画在里面，弹窗高度不跟着跳
+    Box(Modifier.size(180.dp), contentAlignment = Alignment.Center) {
+        if (recording) {
+            Canvas(Modifier.matchParentSize()) {
+                val base = 48.dp.toPx()
+                repeat(3) { i ->
+                    val t = (phase + i / 3f) % 1f
+                    drawCircle(color.copy(alpha = 0.35f * (1f - t)), radius = base + (size.minDimension / 2 - base) * t)
+                }
+            }
+        }
+        Box(
+            modifier = Modifier
+                .size(96.dp)
+                .graphicsLayer { scaleX = scale; scaleY = scale }
+                .clip(CircleShape)
+                .background(color)
+                .pointerInput(Unit) { detectTapGestures(onPress = { onPress() }) },
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(Icons.Default.Mic, contentDescription = "按住跟读", tint = Color.White, modifier = Modifier.size(44.dp))
         }
     }
 }
@@ -3946,16 +3978,16 @@ private data class Placement(val x: Float, val y: Float, val size: Float, val un
 
 private fun placementOf(relation: Relation): Placement = when (relation) {
     Relation.On -> Placement(120f, 46f, 40f)
-    Relation.Above -> Placement(120f, 20f, 36f)
-    Relation.Under -> Placement(120f, 144f, 40f)
-    Relation.Below -> Placement(120f, 172f, 36f)
+    Relation.Above -> Placement(120f, 22f, 34f)
+    Relation.Under -> Placement(120f, 152f, 40f)
+    Relation.Below -> Placement(120f, 174f, 30f)
     Relation.In -> Placement(120f, 68f, 34f, underRef = true)
     // 「后面 / 前面」放在三维辅助线的前后轴上：后面的小一些、淡一些，被参照物挡住一部分
     Relation.Behind -> Placement(156f, 72f, 34f, underRef = true, alpha = 0.75f)
     Relation.InFrontOf -> Placement(82f, 129f, 46f)
-    Relation.NextTo, Relation.Beside, Relation.RightOf -> Placement(172f, 100f, 40f)
-    Relation.Near -> Placement(212f, 100f, 36f)
-    Relation.LeftOf -> Placement(66f, 100f, 40f)
+    Relation.NextTo, Relation.Beside, Relation.RightOf -> Placement(188f, 100f, 40f)
+    Relation.Near -> Placement(218f, 100f, 34f)
+    Relation.LeftOf -> Placement(52f, 100f, 40f)
     Relation.Between -> Placement(120f, 100f, 38f)
     Relation.Inside -> Placement(120f, 110f, 26f)
     Relation.Outside -> Placement(208f, 150f, 36f)
@@ -3976,9 +4008,6 @@ private fun EmojiAt(emoji: String, x: Float, y: Float, size: Float, scale: Float
     }
 }
 
-/** 先在「后面 / 前面」两种方位上试用三维辅助线，效果确认后再推广。 */
-private val GuidedRelations = setOf(Relation.Behind, Relation.InFrontOf)
-
 // 参照物外框立方体（基准画布坐标）：正面框住参照物，背面向右上偏移表现纵深
 private const val CubeLeft = 85f
 private const val CubeTop = 68f
@@ -3986,13 +4015,29 @@ private const val CubeRight = 155f
 private const val CubeBottom = 132f
 private const val CubeDepthX = 18f
 private const val CubeDepthY = -14f
+// 三条轴都从参照物中心出发，物体沿对应的轴摆放
+private const val OriginX = 120f
+private const val OriginY = 100f
+
+private enum class AxisEnd { Up, Down, Left, Right, Back, Front }
+
+private fun axisEndOf(relation: Relation): AxisEnd? = when (relation) {
+    Relation.On, Relation.Above -> AxisEnd.Up
+    Relation.Under, Relation.Below -> AxisEnd.Down
+    Relation.NextTo, Relation.Beside, Relation.RightOf, Relation.Near -> AxisEnd.Right
+    Relation.LeftOf -> AxisEnd.Left
+    Relation.Behind -> AxisEnd.Back
+    Relation.InFrontOf -> AxisEnd.Front
+    else -> null
+}
 
 /**
  * 三维辅助线：线框立方体 + 地面阴影 + 上下 / 左右 / 前后三条轴（轴端标中文）。
  * 物体所在的那一面填浅色，所在方向的半条轴画成箭头、轴端文字加粗变色；全部画在表情底下，
- * 物体像停在轴上，箭头从物体后面伸出去。[labels] 为 false 时（缩略图）不标字。
+ * 物体像停在轴上。[relation] 为 null（「点一点放在哪」）时只画立方体和轴，不提示答案。
+ * [labels] 为 false 时（缩略图）不标字。
  */
-private fun DrawScope.drawSpatialGuides(relation: Relation, labels: Boolean) {
+private fun DrawScope.drawSpatialGuides(relation: Relation?, labels: Boolean) {
     val u = size.width / SceneWidth
     fun pt(x: Float, y: Float) = Offset(x * u, y * u)
     val guide = Color(0xFF94A3B8)
@@ -4001,24 +4046,37 @@ private fun DrawScope.drawSpatialGuides(relation: Relation, labels: Boolean) {
     val dash = PathEffect.dashPathEffect(floatArrayOf(6f * u, 5f * u))
     val l = CubeLeft; val t = CubeTop; val r = CubeRight; val b = CubeBottom
     val dx = CubeDepthX; val dy = CubeDepthY
-    val cx = (l + r) / 2 + dx / 2
-    val cy = (t + b) / 2 + dy / 2
-    val back = Offset(cx + dx * 3.4f, cy + dy * 3.4f)
-    val front = Offset(cx - dx * 4.4f, cy - dy * 4.4f)
-
-    fun face(p: List<Offset>) {
-        drawPath(Path().apply { moveTo(p[0].x, p[0].y); p.drop(1).forEach { lineTo(it.x, it.y) }; close() }, tint.copy(alpha = 0.16f))
+    val ends = mapOf(
+        AxisEnd.Up to Offset(OriginX, 10f),
+        AxisEnd.Down to Offset(OriginX, 182f),
+        AxisEnd.Left to Offset(12f, OriginY),
+        AxisEnd.Right to Offset(228f, OriginY),
+        AxisEnd.Back to Offset(OriginX + dx * 3.4f, OriginY + dy * 3.4f),
+        AxisEnd.Front to Offset(OriginX - dx * 4.4f, OriginY - dy * 4.4f)
+    )
+    fun face(p: List<Offset>, alpha: Float = 0.16f) {
+        drawPath(Path().apply { moveTo(p[0].x, p[0].y); p.drop(1).forEach { lineTo(it.x, it.y) }; close() }, tint.copy(alpha = alpha))
     }
+    val frontFace = listOf(pt(l, t), pt(r, t), pt(r, b), pt(l, b))
+    val backFace = listOf(pt(l + dx, t + dy), pt(r + dx, t + dy), pt(r + dx, b + dy), pt(l + dx, b + dy))
+    val topFace = listOf(pt(l, t), pt(r, t), pt(r + dx, t + dy), pt(l + dx, t + dy))
+    val bottomFace = listOf(pt(l, b), pt(r, b), pt(r + dx, b + dy), pt(l + dx, b + dy))
+    val rightFace = listOf(pt(r, t), pt(r + dx, t + dy), pt(r + dx, b + dy), pt(r, b))
 
     drawOval(Color(0x18000000), topLeft = pt(l - 8, b - 10), size = Size((r - l + dx + 16) * u, 22 * u))
     when (relation) {
-        Relation.Behind -> face(listOf(pt(l + dx, t + dy), pt(r + dx, t + dy), pt(r + dx, b + dy), pt(l + dx, b + dy)))
-        Relation.InFrontOf -> face(listOf(pt(l, t), pt(r, t), pt(r, b), pt(l, b)))
+        Relation.On -> face(topFace, 0.22f)
+        Relation.Under -> face(bottomFace, 0.22f)
+        Relation.Behind -> face(backFace)
+        Relation.InFrontOf -> face(frontFace)
+        Relation.NextTo, Relation.Beside, Relation.RightOf -> face(rightFace, 0.22f)
+        Relation.In, Relation.Inside -> { face(backFace, 0.10f); face(topFace, 0.10f); face(rightFace, 0.10f); face(frontFace, 0.14f) }
         else -> Unit
     }
-    drawLine(axis, pt(cx, 10f), pt(cx, 182f), 1.5f * u, pathEffect = dash)
-    drawLine(axis, pt(12f, cy), pt(228f, cy), 1.5f * u, pathEffect = dash)
-    drawLine(axis, pt(front.x, front.y), pt(back.x, back.y), 1.5f * u, pathEffect = dash)
+    val origin = pt(OriginX, OriginY)
+    listOf(AxisEnd.Up to AxisEnd.Down, AxisEnd.Left to AxisEnd.Right, AxisEnd.Front to AxisEnd.Back).forEach { (a, c) ->
+        drawLine(axis, ends.getValue(a) * u, ends.getValue(c) * u, 1.5f * u, pathEffect = dash)
+    }
     listOf(
         pt(l + dx, t + dy) to pt(l + dx, b + dy),
         pt(l + dx, b + dy) to pt(r + dx, b + dy),
@@ -4030,29 +4088,33 @@ private fun DrawScope.drawSpatialGuides(relation: Relation, labels: Boolean) {
         pt(r, b) to pt(r + dx, b + dy), pt(r + dx, t + dy) to pt(r + dx, b + dy)
     ).forEach { (a, c) -> drawLine(guide, a, c, 2f * u) }
 
-    // 物体所在方向的半条轴画成箭头
-    val end = when (relation) {
-        Relation.Behind -> back
-        Relation.InFrontOf -> front
-        else -> null
-    }
-    if (end != null) {
-        val start = pt(cx, cy)
-        val tip = pt(end.x, end.y)
-        val dir = tip - start
+    fun arrow(from: Offset, to: Offset) {
+        val dir = to - from
         val unit = dir / dir.getDistance()
         val normal = Offset(-unit.y, unit.x)
-        drawLine(tint, start, tip, 3f * u, cap = StrokeCap.Round)
+        drawLine(tint, from, to, 3f * u, cap = StrokeCap.Round)
         drawPath(Path().apply {
-            moveTo(tip.x + unit.x * 9f * u, tip.y + unit.y * 9f * u)
-            lineTo(tip.x + normal.x * 7f * u, tip.y + normal.y * 7f * u)
-            lineTo(tip.x - normal.x * 7f * u, tip.y - normal.y * 7f * u)
+            moveTo(to.x + unit.x * 9f * u, to.y + unit.y * 9f * u)
+            lineTo(to.x + normal.x * 7f * u, to.y + normal.y * 7f * u)
+            lineTo(to.x - normal.x * 7f * u, to.y - normal.y * 7f * u)
             close()
         }, tint)
     }
+    val activeEnd = relation?.let(::axisEndOf)
+    if (activeEnd != null) arrow(origin, ends.getValue(activeEnd) * u)
+    if (relation == Relation.Outside) placementOf(relation).let { arrow(origin, pt(it.x - 18f, it.y - 12f)) }
+    // 「上方 / 下方」不挨着：在参照物和物体之间画一段带端点的虚线标出空隙
+    if (relation == Relation.Above || relation == Relation.Below) {
+        val p = placementOf(relation)
+        val (from, to) = if (relation == Relation.Above) (t + dy / 2) to (p.y + p.size / 2) else b to (p.y - p.size / 2)
+        val x = OriginX + 26f
+        drawLine(tint, pt(x, from), pt(x, to), 2f * u, pathEffect = PathEffect.dashPathEffect(floatArrayOf(3f * u, 3f * u)))
+        drawLine(tint, pt(x - 5f, from), pt(x + 5f, from), 2f * u)
+        drawLine(tint, pt(x - 5f, to), pt(x + 5f, to), 2f * u)
+    }
     if (labels) {
         drawIntoCanvas { canvas ->
-            fun label(text: String, x: Float, y: Float, active: Boolean) {
+            fun label(text: String, at: Offset, active: Boolean) {
                 val paint = android.graphics.Paint().apply {
                     isAntiAlias = true
                     textAlign = android.graphics.Paint.Align.CENTER
@@ -4060,23 +4122,37 @@ private fun DrawScope.drawSpatialGuides(relation: Relation, labels: Boolean) {
                     isFakeBoldText = active
                     color = if (active) android.graphics.Color.rgb(30, 64, 175) else android.graphics.Color.rgb(148, 163, 184)
                 }
-                canvas.nativeCanvas.drawText(text, x * u, y * u + paint.textSize / 3, paint)
+                canvas.nativeCanvas.drawText(text, at.x * u, at.y * u + paint.textSize / 3, paint)
             }
-            label("上", cx + 9f, 14f, false)
-            label("下", cx + 9f, 180f, false)
-            label("左", 18f, cy - 9f, false)
-            label("右", 222f, cy - 9f, false)
-            label("后", back.x + 14f, back.y - 4f, relation == Relation.Behind)
-            label("前", front.x - 10f, front.y + 12f, relation == Relation.InFrontOf)
+            fun end(e: AxisEnd) = ends.getValue(e)
+            label("上", end(AxisEnd.Up) + Offset(10f, 4f), activeEnd == AxisEnd.Up)
+            label("下", end(AxisEnd.Down) + Offset(10f, -2f), activeEnd == AxisEnd.Down)
+            label("左", end(AxisEnd.Left) + Offset(6f, -9f), activeEnd == AxisEnd.Left)
+            label("右", end(AxisEnd.Right) + Offset(-6f, -9f), activeEnd == AxisEnd.Right)
+            label("后", end(AxisEnd.Back) + Offset(14f, -4f), activeEnd == AxisEnd.Back)
+            label("前", end(AxisEnd.Front) + Offset(-10f, 12f), activeEnd == AxisEnd.Front)
+            if (relation == Relation.In || relation == Relation.Inside) label("里", Offset(OriginX + 52f, OriginY + 26f), true)
+            if (relation == Relation.Outside) label("外", Offset(222f, 168f), true)
         }
     }
+}
+
+/** 「在中间」：两个参照物之间画一条连线，物体停在中点。 */
+private fun DrawScope.drawBetweenGuides() {
+    val u = size.width / SceneWidth
+    fun pt(x: Float, y: Float) = Offset(x * u, y * u)
+    val tint = Category.Qualities.tint
+    drawOval(Color(0x18000000), topLeft = pt(22f, 118f), size = Size(56f * u, 16f * u))
+    drawOval(Color(0x18000000), topLeft = pt(162f, 118f), size = Size(56f * u, 16f * u))
+    drawLine(tint, pt(50f, 100f), pt(190f, 100f), 3f * u, cap = StrokeCap.Round)
+    listOf(84f, 156f).forEach { x -> drawLine(tint, pt(x, 92f), pt(x, 108f), 2f * u) }
 }
 
 @Composable
 private fun PlaceSceneView(scene: Scene.Place, scale: Float, showItem: Boolean = true) {
     Box(Modifier.size((SceneWidth * scale).dp, (SceneHeight * scale).dp)) {
-        if (scene.relation in GuidedRelations && scene.ref2 == null) {
-            Canvas(Modifier.matchParentSize()) { drawSpatialGuides(scene.relation, labels = scale >= 1f) }
+        Canvas(Modifier.matchParentSize()) {
+            if (scene.ref2 != null) drawBetweenGuides() else drawSpatialGuides(scene.relation, labels = scale >= 1f)
         }
         val p = placementOf(scene.relation)
         val refSize = if (scene.relation == Relation.Inside || scene.relation == Relation.Outside) 84f else 66f
@@ -4173,6 +4249,7 @@ private fun PlaceSlotsView(question: SpecialQuestion, selected: Int?, answered: 
     val first = question.options.first().scene as Scene.Place
     val scale = 1.3f
     Box(Modifier.size((SceneWidth * scale).dp, (SceneHeight * scale).dp)) {
+        Canvas(Modifier.matchParentSize()) { drawSpatialGuides(null, labels = true) }
         EmojiAt(first.ref.emoji, 120f, 100f, 66f, scale)
         question.options.forEachIndexed { index, option ->
             val p = placementOf((option.scene as Scene.Place).relation)
