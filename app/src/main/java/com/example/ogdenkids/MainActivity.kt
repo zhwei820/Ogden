@@ -286,7 +286,7 @@ sealed class Screen {
     object Main : Screen()
     data class Detail(val word: OgdenWord, val returnTo: Screen = Screen.Main) : Screen()
     data class Levels(val category: Category) : Screen()
-    data class Practice(val category: Category, val level: Int, val reviewOnly: Boolean = false) : Screen()
+    data class Practice(val category: Category, val level: Int, val reviewOnly: Boolean = false, val returnTo: Screen = Main) : Screen()
     data class WordCollection(val title: String, val kind: String) : Screen()
     data class SpeechReader(val speech: Speech) : Screen()
     data class ThemePractice(val level: Int, val theme: SpeechTheme) : Screen()
@@ -431,6 +431,8 @@ class ProgressStore(context: Context) {
     fun masteredWords(words: List<OgdenWord>) = words.filter { progress(it.word).mastered }
 
     fun mistakeWords(words: List<OgdenWord>) = words.filter { progress(it.word).mistake }
+
+    fun removeMistake(word: String) = updateSet("mistakes", word, false)
 
     fun favoriteWords(words: List<OgdenWord>) = words.filter { progress(it.word).favorite }
 
@@ -591,11 +593,14 @@ fun OgdenKidsApp() {
                 azureSpeaker.stop()
                 screen = current.returnTo
             }
+            // 离开练习就丢掉答题进度，否则下次进同一关会停在上次的最后一题
             is Screen.Practice -> {
+                stateHolder.removeState(screenKey(current))
                 version++
-                screen = Screen.Main
+                screen = current.returnTo
             }
             is Screen.WordPractice -> {
+                stateHolder.removeState(screenKey(current))
                 version++
                 screen = current.returnTo
             }
@@ -749,6 +754,7 @@ fun OgdenKidsApp() {
                         },
                         onNextLevel = if (!current.reviewOnly && current.level * 10 < words.count { it.category == current.category }) {
                             {
+                                stateHolder.removeState(screenKey(current))
                                 version++
                                 screen = Screen.Practice(current.category, current.level + 1)
                             }
@@ -829,18 +835,32 @@ fun OgdenKidsApp() {
                     customWords = current.words.mapNotNull { wordIndex[it.lowercase()] },
                     customTitle = current.title
                 )
-                is Screen.WordCollection -> WordCollectionScreen(
-                    title = current.title,
-                    words = when (current.kind) {
-                        "mistakes" -> progressStore.mistakeWords(words)
-                        "mastered" -> progressStore.masteredWords(words)
-                        else -> progressStore.favoriteWords(words)
-                    },
-                    store = progressStore,
-                    zh = chineseMode,
-                    onBack = goBack,
-                    onOpen = { screen = Screen.Detail(it) }
-                )
+                is Screen.WordCollection -> {
+                    val isMistakes = current.kind == "mistakes"
+                    WordCollectionScreen(
+                        title = current.title,
+                        words = remember(version, current.kind) {
+                            when (current.kind) {
+                                "mistakes" -> progressStore.mistakeWords(words)
+                                "mastered" -> progressStore.masteredWords(words)
+                                else -> progressStore.favoriteWords(words)
+                            }
+                        },
+                        store = progressStore,
+                        zh = chineseMode,
+                        onBack = goBack,
+                        onOpen = { screen = Screen.Detail(it, returnTo = current) },
+                        onPractice = if (isMistakes) {
+                            { screen = Screen.Practice(progressStore.lastCategory(), 1, reviewOnly = true, returnTo = current) }
+                        } else null,
+                        onRemove = if (isMistakes) {
+                            { word ->
+                                progressStore.removeMistake(word.word)
+                                version++
+                            }
+                        } else null
+                    )
+                }
                 is Screen.ThemePractice -> ThemePracticeScreen(
                     title = "主题练习 · ${current.theme.zh}",
                     subtitle = "${SpeechLevelNames[current.level]}${SpeechLevelThemes[current.level]}",
@@ -1777,7 +1797,9 @@ fun WordCollectionScreen(
     store: ProgressStore,
     zh: ChineseMode,
     onBack: () -> Unit,
-    onOpen: (OgdenWord) -> Unit
+    onOpen: (OgdenWord) -> Unit,
+    onPractice: (() -> Unit)? = null,
+    onRemove: ((OgdenWord) -> Unit)? = null
 ) {
     Scaffold(containerColor = Paper, topBar = {
         Row(
@@ -1790,6 +1812,9 @@ fun WordCollectionScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             AppText("$title · ${words.size}", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            if (onPractice != null && words.isNotEmpty()) {
+                TextButton(onClick = onPractice) { AppText("练习错词", fontWeight = FontWeight.Bold) }
+            }
         }
     }) { padding ->
         LazyColumn(
@@ -1803,7 +1828,7 @@ fun WordCollectionScreen(
                 item { EmptyCard("这里暂时还没有单词。") }
             } else {
                 items(words, key = { it.word }) { word ->
-                    CompactWordRow(word, store.progress(word.word), zh, onOpen)
+                    CompactWordRow(word, store.progress(word.word), zh, onOpen, onRemove)
                 }
             }
         }
@@ -3483,7 +3508,8 @@ fun PracticeScreen(
     customTitle: String? = null,
     onNextLevel: (() -> Unit)? = null
 ) {
-    val source = remember(version, category, level, reviewOnly, customWords) {
+    // 不随 version 重算：错词复习答对一题就会移出错词本，重算会让题目在答题中途变掉
+    val source = remember(category, level, reviewOnly, customWords) {
         val reviewWords = store.mistakeWords(allWords)
         if (customWords != null) customWords
         else if (reviewOnly && reviewWords.isNotEmpty()) reviewWords.take(10)
@@ -3571,13 +3597,22 @@ fun PracticeScreen(
                     modifier = Modifier.border(1.dp, Line, RoundedCornerShape(18.dp))
                 ) {
                     Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(14.dp)) {
-                        CategoryBadge(word.category)
-                        AppText(type.title, color = word.category.tint, fontWeight = FontWeight.Bold)
                         if (type == PracticeType.Listen) {
-                            Button(onClick = { onSpeak(word.word) }, shape = CircleShape, modifier = Modifier.size(96.dp)) {
-                                Icon(Icons.Default.VolumeUp, contentDescription = "播放", modifier = Modifier.size(44.dp))
+                            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                                CategoryBadge(word.category)
+                                AppText(type.title, color = word.category.tint, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                                Button(
+                                    onClick = { onSpeak(word.word) },
+                                    shape = CircleShape,
+                                    contentPadding = PaddingValues(0.dp),
+                                    modifier = Modifier.size(56.dp)
+                                ) {
+                                    Icon(Icons.Default.VolumeUp, contentDescription = "播放", modifier = Modifier.size(30.dp))
+                                }
                             }
                         } else {
+                            CategoryBadge(word.category)
+                            AppText(type.title, color = word.category.tint, fontWeight = FontWeight.Bold)
                             Text(convertZh(question.prompt, zh), fontSize = 24.sp, fontWeight = FontWeight.SemiBold, lineHeight = 30.sp)
                         }
                         if (type == PracticeType.Spelling) {
@@ -4987,7 +5022,7 @@ fun FlowRowCompat(items: List<String>, chip: @Composable (String) -> Unit) {
 }
 
 @Composable
-fun CompactWordRow(word: OgdenWord, progress: WordProgress, zh: ChineseMode, onOpen: (OgdenWord) -> Unit) {
+fun CompactWordRow(word: OgdenWord, progress: WordProgress, zh: ChineseMode, onOpen: (OgdenWord) -> Unit, onRemove: ((OgdenWord) -> Unit)? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -5007,6 +5042,11 @@ fun CompactWordRow(word: OgdenWord, progress: WordProgress, zh: ChineseMode, onO
         Row {
             repeat(progress.mastery) {
                 Icon(Icons.Default.Star, contentDescription = null, tint = Category.Picturable.tint, modifier = Modifier.size(16.dp))
+            }
+        }
+        if (onRemove != null) {
+            IconButton(onClick = { onRemove(word) }, modifier = Modifier.size(32.dp)) {
+                Icon(Icons.Default.Close, contentDescription = "移出", tint = InkFaint, modifier = Modifier.size(20.dp))
             }
         }
     }
