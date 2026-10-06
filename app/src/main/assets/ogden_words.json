@@ -862,8 +862,7 @@
         "exz":  "如果下雨就待在家。",
         "s":  [
                   "provided that",
-                  "when",
-                  "supposing"
+                  "when"
               ]
     },
     {
@@ -954,9 +953,7 @@
         "ex":  "Try again later.",
         "exz":  "待会儿再试。",
         "s":  [
-                  "once more",
-                  "anew",
-                  "afresh"
+                  "once more"
               ]
     },
     {
@@ -981,8 +978,7 @@
         "exz":  "车站有多远?",
         "s":  [
                   "distant",
-                  "remote",
-                  "afar"
+                  "remote"
               ]
     },
     {
@@ -994,8 +990,7 @@
         "exz":  "请向前走一步。",
         "s":  [
                   "onward",
-                  "ahead",
-                  "frontward"
+                  "ahead"
               ]
     },
     {
@@ -1085,7 +1080,6 @@
         "exz":  "坐到那边去。",
         "s":  [
                   "at that place",
-                  "yonder",
                   "thither"
               ]
     },
@@ -1097,9 +1091,7 @@
         "ex":  "We sing together.",
         "exz":  "我们一起唱歌。",
         "s":  [
-                  "jointly",
-                  "collectively",
-                  "in unison"
+                  "collectively"
               ]
     },
     {
@@ -1323,8 +1315,7 @@
         "exz":  "是的,我同意。",
         "s":  [
                   "yeah",
-                  "yep",
-                  "affirmative"
+                  "yep"
               ]
     },
     {
@@ -1338,8 +1329,7 @@
         "exz2":  "他讲述了这次旅行的经过。",
         "s":  [
                   "record",
-                  "report",
-                  "ledger"
+                  "report"
               ]
     },
     {
@@ -1351,7 +1341,6 @@
         "exz":  "那是个善举。",
         "s":  [
                   "action",
-                  "deed",
                   "performance"
               ]
     },
@@ -1500,7 +1489,6 @@
         "exz":  "她点头表示赞同。",
         "s":  [
                   "consent",
-                  "endorsement",
                   "permission"
               ]
     },
@@ -1552,8 +1540,7 @@
         "exz":  "努力尝试成功。",
         "s":  [
                   "try",
-                  "effort",
-                  "endeavor"
+                  "effort"
               ]
     },
     {
@@ -1565,7 +1552,6 @@
         "exz":  "注意听我说。",
         "s":  [
                   "focus",
-                  "heed",
                   "notice"
               ]
     },
@@ -1618,7 +1604,6 @@
         "ex":  "Keep your balance.",
         "exz":  "保持平衡。",
         "s":  [
-                  "equilibrium",
                   "stability",
                   "poise"
               ]
@@ -1739,7 +1724,6 @@
         "ex":  "Exercise keeps the body strong.",
         "exz":  "运动让身体强壮。",
         "s":  [
-                  "physique",
                   "form",
                   "frame"
               ]
@@ -1752,7 +1736,6 @@
         "ex":  "The door handle is brass.",
         "exz":  "门把手是黄铜的。",
         "s":  [
-                  "alloy",
                   "copper alloy",
                   "metal"
               ]
@@ -1778,7 +1761,6 @@
         "ex":  "Take a deep breath.",
         "exz":  "深吸一口气。",
         "s":  [
-                  "inhalation",
                   "gasp",
                   "air"
               ]
@@ -1792,8 +1774,7 @@
         "exz":  "我哥哥比我大。",
         "s":  [
                   "sibling",
-                  "bro",
-                  "kin"
+                  "bro"
               ]
     },
     {
@@ -1805,7 +1786,6 @@
         "exz":  "这座高楼有30层。",
         "s":  [
                   "structure",
-                  "edifice",
                   "construction"
               ]
     },
@@ -1872,8 +1852,7 @@
         "exz":  "画家准备好画布。",
         "s":  [
                   "cloth",
-                  "fabric",
-                  "tarp"
+                  "fabric"
               ]
     },
     {
@@ -1993,7 +1972,6 @@
         "exz2":  "我难过的时候妈妈安慰我。",
         "s":  [
                   "ease",
-                  "solace",
                   "relaxation"
               ]
     },
@@ -2034,7 +2012,6 @@
         "exz":  "相比之下,这个更便宜。",
         "s":  [
                   "contrast",
-                  "analogy",
                   "matching"
               ]
     },
@@ -2207,7 +2184,6 @@
         "exz":  "墙上有道裂缝。",
         "s":  [
                   "split",
-                  "fissure",
                   "gap"
               ]
     },
@@ -2235,7 +2211,6 @@
         "exz":  "偷窃是犯罪。",
         "s":  [
                   "offense",
-                  "wrongdoing",
                   "felony"
               ]
     },
@@ -2262,7 +2237,6 @@
         "ex2":  "Don\u0027t cry, little one.",
         "exz2":  "别哭，小宝贝。",
         "s":  [
-                  "weep",
                   "shout",
                   "wail"
               ]
@@ -2317,7 +2291,6 @@
         "exz":  "远离危险。",
         "s":  [
                   "risk",
-                  "peril",
                   "hazard"
               ]
     },
@@ -2525,8 +2498,7 @@
         "exz":  "这种病很罕见。",
         "s":  [
                   "illness",
-                  "sickness",
-                  "ailment"
+                  "sickness"
               ]
     },
     {
@@ -2537,9 +2509,8 @@
         "ex":  "He looked at it with disgust.",
         "exz":  "他厌恶地看着它。",
         "s":  [
-                  "revulsion",
-                  "loathing",
-                  "distaste"
+                  "dislike",
+                  "hate"
               ]
     },
     {
@@ -2564,7 +2535,6 @@
         "exz":  "公平分配食物。",
         "s":  [
                   "sharing",
-                  "allocation",
                   "spread"
               ]
     },
@@ -2590,8 +2560,7 @@
         "exz":  "我对此毫不怀疑。",
         "s":  [
                   "uncertainty",
-                  "question",
-                  "skepticism"
+                  "question"
               ]
     },
     {
@@ -2603,7 +2572,6 @@
         "exz":  "给我拿杯冷饮。",
         "s":  [
                   "beverage",
-                  "refreshment",
                   "liquid"
               ]
     },
@@ -2748,8 +2716,7 @@
         "exz":  "礼物交换。",
         "s":  [
                   "swap",
-                  "trade",
-                  "interchange"
+                  "trade"
               ]
     },
     {
@@ -2813,8 +2780,7 @@
         "exz":  "这是个众所周知的事实。",
         "s":  [
                   "truth",
-                  "reality",
-                  "actuality"
+                  "reality"
               ]
     },
     {
@@ -2841,8 +2807,7 @@
         "exz":  "家人优先。",
         "s":  [
                   "household",
-                  "relatives",
-                  "kin"
+                  "relatives"
               ]
     },
     {
@@ -3001,7 +2966,6 @@
         "exz":  "食物在桌上。",
         "s":  [
                   "meal",
-                  "nourishment",
                   "fare"
               ]
     },
@@ -3081,7 +3045,6 @@
         "exz2":  "窗户是玻璃做的。",
         "s":  [
                   "cup",
-                  "tumbler",
                   "crystal"
               ]
     },
@@ -3094,7 +3057,6 @@
         "exz":  "戒指是纯金的。",
         "s":  [
                   "treasure",
-                  "bullion",
                   "aurum"
               ]
     },
@@ -3223,7 +3185,6 @@
         "ex":  "His hate for lies is well known.",
         "exz":  "他对谎言的憎恨众所周知。",
         "s":  [
-                  "loathing",
                   "hatred",
                   "disgust"
               ]
@@ -3276,8 +3237,7 @@
         "exz":  "她研究中国历史。",
         "s":  [
                   "past",
-                  "record",
-                  "chronicle"
+                  "record"
               ]
     },
     {
@@ -3406,7 +3366,6 @@
         "exz":  "笔里是黑墨水。",
         "s":  [
                   "dye",
-                  "pigment",
                   "writing fluid"
               ]
     },
@@ -3418,9 +3377,7 @@
         "ex":  "A bee is an insect.",
         "exz":  "蜜蜂是昆虫。",
         "s":  [
-                  "bug",
-                  "critter",
-                  "arthropod"
+                  "bug"
               ]
     },
     {
@@ -3544,8 +3501,7 @@
         "exz2":  "裁判给她打了十分。",
         "s":  [
                   "arbiter",
-                  "referee",
-                  "magistrate"
+                  "referee"
               ]
     },
     {
@@ -3583,7 +3539,6 @@
         "exz":  "她吻了他。",
         "s":  [
                   "peck",
-                  "smooch",
                   "caress"
               ]
     },
@@ -3635,8 +3590,7 @@
         "exz":  "她爽朗地笑了。",
         "s":  [
                   "chuckle",
-                  "giggle",
-                  "chortle"
+                  "giggle"
               ]
     },
     {
@@ -3660,7 +3614,6 @@
         "ex":  "Pencils contain lead.",
         "exz":  "铅笔里有铅芯。",
         "s":  [
-                  "graphite",
                   "metal",
                   "weight"
               ]
@@ -3983,7 +3936,6 @@
         "exz":  "她记性好。",
         "s":  [
                   "recall",
-                  "recollection",
                   "mind"
               ]
     },
@@ -3996,7 +3948,6 @@
         "exz":  "钢是坚固的金属。",
         "s":  [
                   "ore",
-                  "alloy",
                   "steel"
               ]
     },
@@ -4047,9 +3998,7 @@
         "ex":  "They work in a gold mine.",
         "exz":  "他们在金矿工作。",
         "s":  [
-                  "pit",
-                  "quarry",
-                  "excavation"
+                  "pit"
               ]
     },
     {
@@ -4113,8 +4062,7 @@
         "exz":  "早上好!",
         "s":  [
                   "dawn",
-                  "sunrise",
-                  "forenoon"
+                  "sunrise"
               ]
     },
     {
@@ -4191,8 +4139,7 @@
         "exz":  "你叫什么名字?",
         "s":  [
                   "title",
-                  "label",
-                  "designation"
+                  "label"
               ]
     },
     {
@@ -4271,8 +4218,7 @@
         "exz":  "给我留张条。",
         "s":  [
                   "memo",
-                  "message",
-                  "jotting"
+                  "message"
               ]
     },
     {
@@ -4387,9 +4333,7 @@
         "ex":  "The room has many ornaments.",
         "exz":  "房间里有很多装饰品。",
         "s":  [
-                  "decoration",
-                  "embellishment",
-                  "trinket"
+                  "decoration"
               ]
     },
     {
@@ -4400,8 +4344,6 @@
         "ex":  "Who is the owner of this car?",
         "exz":  "这车谁的?",
         "s":  [
-                  "possessor",
-                  "proprietor",
                   "holder"
               ]
     },
@@ -4440,8 +4382,7 @@
         "exz":  "买红漆刷墙。",
         "s":  [
                   "dye",
-                  "color",
-                  "pigment"
+                  "color"
               ]
     },
     {
@@ -4479,7 +4420,6 @@
         "exz":  "用浆糊把这粘上。",
         "s":  [
                   "glue",
-                  "adhesive",
                   "cement"
               ]
     },
@@ -4545,8 +4485,6 @@
         "ex":  "Water the plants daily.",
         "exz":  "每天给植物浇水。",
         "s":  [
-                  "vegetation",
-                  "flora",
                   "greenery"
               ]
     },
@@ -4599,7 +4537,6 @@
         "ex":  "This plant is poison.",
         "exz":  "这植物有毒。",
         "s":  [
-                  "toxin",
                   "venom",
                   "bane"
               ]
@@ -4626,7 +4563,6 @@
         "exz":  "搬运工拿走了我们的包。",
         "s":  [
                   "carrier",
-                  "bellboy",
                   "attendant"
               ]
     },
@@ -4834,8 +4770,7 @@
         "exz":  "这质量很高。",
         "s":  [
                   "grade",
-                  "standard",
-                  "caliber"
+                  "standard"
               ]
     },
     {
@@ -4963,9 +4898,7 @@
         "ex":  "I have no regret.",
         "exz":  "我不后悔。",
         "s":  [
-                  "sorrow",
-                  "remorse",
-                  "repentance"
+                  "sorrow"
               ]
     },
     {
@@ -5002,9 +4935,7 @@
         "ex":  "She\u0027s our representative.",
         "exz":  "她是我们的代表。",
         "s":  [
-                  "delegate",
-                  "agent",
-                  "spokesperson"
+                  "agent"
               ]
     },
     {
@@ -5267,8 +5198,7 @@
         "exz":  "我秘书会给你打电话。",
         "s":  [
                   "assistant",
-                  "clerk",
-                  "aide"
+                  "clerk"
               ]
     },
     {
@@ -5453,8 +5383,7 @@
         "exz":  "我妹妹比我小。",
         "s":  [
                   "sibling",
-                  "sis",
-                  "kin"
+                  "sis"
               ]
     },
     {
@@ -5478,7 +5407,6 @@
         "ex":  "The sky is blue.",
         "exz":  "天是蓝的。",
         "s":  [
-                  "heavens",
                   "atmosphere",
                   "air"
               ]
@@ -5492,7 +5420,6 @@
         "exz":  "好好睡一觉。",
         "s":  [
                   "rest",
-                  "slumber",
                   "snooze"
               ]
     },
@@ -5519,9 +5446,7 @@
         "ex":  "The slope is steep.",
         "exz":  "坡很陡。",
         "s":  [
-                  "incline",
-                  "hillside",
-                  "gradient"
+                  "hillside"
               ]
     },
     {
@@ -5704,8 +5629,7 @@
         "exz2":  "宇航员飞向太空。",
         "s":  [
                   "room",
-                  "area",
-                  "cosmos"
+                  "area"
               ]
     },
     {
@@ -5730,7 +5654,6 @@
         "exz":  "开了个好头。",
         "s":  [
                   "beginning",
-                  "onset",
                   "launch"
               ]
     },
@@ -5769,7 +5692,6 @@
         "exz":  "刀刃是钢的。",
         "s":  [
                   "metal",
-                  "alloy",
                   "iron"
               ]
     },
@@ -6030,7 +5952,6 @@
         "ex":  "He has a tendency to be late.",
         "exz":  "他有迟到的倾向。",
         "s":  [
-                  "inclination",
                   "trend",
                   "leaning"
               ]
@@ -6176,8 +6097,7 @@
         "exz":  "公共交通很快。",
         "s":  [
                   "transit",
-                  "shipment",
-                  "conveyance"
+                  "shipment"
               ]
     },
     {
@@ -6284,8 +6204,7 @@
         "exz":  "她写了一段诗。",
         "s":  [
                   "poetry",
-                  "rhyme",
-                  "stanza"
+                  "rhyme"
               ]
     },
     {
@@ -6418,7 +6337,6 @@
         "exz":  "蜡烛是蜡做的。",
         "s":  [
                   "beeswax",
-                  "paraffin",
                   "polish"
               ]
     },
@@ -6537,7 +6455,6 @@
         "exz":  "椅子是木头的。",
         "s":  [
                   "timber",
-                  "lumber",
                   "material"
               ]
     },
@@ -6602,7 +6519,6 @@
         "exz":  "她写得很清楚。",
         "s":  [
                   "script",
-                  "penmanship",
                   "composition"
               ]
     },
@@ -6773,8 +6689,7 @@
         "exz":  "一篮苹果。",
         "s":  [
                   "hamper",
-                  "creel",
-                  "pannier"
+                  "creel"
               ]
     },
     {
@@ -6918,8 +6833,7 @@
         "exz":  "读这本书。",
         "s":  [
                   "volume",
-                  "text",
-                  "tome"
+                  "text"
               ]
     },
     {
@@ -6944,8 +6858,7 @@
         "exz":  "一瓶水。",
         "s":  [
                   "flask",
-                  "jug",
-                  "vial"
+                  "jug"
               ]
     },
     {
@@ -7009,7 +6922,6 @@
         "exz":  "一根树枝断了。",
         "s":  [
                   "limb",
-                  "bough",
                   "arm"
               ]
     },
@@ -7088,7 +7000,6 @@
         "ex":  "A button came off.",
         "exz":  "一颗扣子掉了。",
         "s":  [
-                  "fastener",
                   "stud",
                   "snap"
               ]
@@ -7102,8 +7013,7 @@
         "exz":  "吃块蛋糕。",
         "s":  [
                   "pastry",
-                  "dessert",
-                  "gateau"
+                  "dessert"
               ]
     },
     {
@@ -7168,7 +7078,6 @@
         "ex":  "The cat is sleeping.",
         "exz":  "猫在睡觉。",
         "s":  [
-                  "feline",
                   "kitty",
                   "puss"
               ]
@@ -7195,7 +7104,6 @@
         "exz":  "请给我面包和奶酪。",
         "s":  [
                   "dairy",
-                  "curd",
                   "fromage"
               ]
     },
@@ -7209,7 +7117,6 @@
         "ex2":  "The pirate found a chest of gold.",
         "exz2":  "海盗找到了一箱金子。",
         "s":  [
-                  "torso",
                   "trunk",
                   "bosom"
               ]
@@ -7223,7 +7130,6 @@
         "exz":  "他下巴线条很硬。",
         "s":  [
                   "jaw",
-                  "jowl",
                   "mandible"
               ]
     },
@@ -7261,7 +7167,6 @@
         "ex":  "The clock is fast.",
         "exz":  "钟快了。",
         "s":  [
-                  "timepiece",
                   "watch",
                   "timer"
               ]
@@ -7300,7 +7205,6 @@
         "ex":  "His collar is white.",
         "exz":  "他的衣领是白的。",
         "s":  [
-                  "neckband",
                   "band",
                   "ring"
               ]
@@ -7340,8 +7244,7 @@
         "exz":  "母牛产奶。",
         "s":  [
                   "cattle",
-                  "bovine",
-                  "heifer"
+                  "bovine"
               ]
     },
     {
@@ -7353,8 +7256,7 @@
         "exz":  "一杯茶。",
         "s":  [
                   "mug",
-                  "glass",
-                  "beaker"
+                  "glass"
               ]
     },
     {
@@ -7379,8 +7281,7 @@
         "exz":  "坐在垫子上。",
         "s":  [
                   "pillow",
-                  "pad",
-                  "bolster"
+                  "pad"
               ]
     },
     {
@@ -7392,8 +7293,7 @@
         "exz":  "狗在叫。",
         "s":  [
                   "pup",
-                  "hound",
-                  "canine"
+                  "hound"
               ]
     },
     {
@@ -7444,7 +7344,6 @@
         "exz":  "一条红裙子。",
         "s":  [
                   "gown",
-                  "frock",
                   "outfit"
               ]
     },
@@ -7469,7 +7368,6 @@
         "ex":  "My ear hurts.",
         "exz":  "我耳朵疼。",
         "s":  [
-                  "lobe",
                   "hearing organ",
                   "listener"
               ]
@@ -7522,7 +7420,6 @@
         "exz":  "洗脸。",
         "s":  [
                   "countenance",
-                  "visage",
                   "mug"
               ]
     },
@@ -7535,8 +7432,7 @@
         "exz":  "住在农场。",
         "s":  [
                   "ranch",
-                  "estate",
-                  "homestead"
+                  "estate"
               ]
     },
     {
@@ -7587,8 +7483,7 @@
         "exz":  "旗帜高高飘扬。",
         "s":  [
                   "banner",
-                  "standard",
-                  "ensign"
+                  "standard"
               ]
     },
     {
@@ -7641,8 +7536,7 @@
         "exz":  "用叉子。",
         "s":  [
                   "utensil",
-                  "trident",
-                  "prong"
+                  "trident"
               ]
     },
     {
@@ -7692,7 +7586,6 @@
         "ex":  "The girl is happy.",
         "exz":  "那女孩很开心。",
         "s":  [
-                  "lass",
                   "maid",
                   "kid"
               ]
@@ -7705,9 +7598,7 @@
         "ex":  "Wear warm gloves.",
         "exz":  "戴上保暖手套。",
         "s":  [
-                  "mitten",
-                  "gauntlet",
-                  "mitt"
+                  "mitten"
               ]
     },
     {
@@ -7745,8 +7636,7 @@
         "exz":  "她头发很长。",
         "s":  [
                   "mane",
-                  "locks",
-                  "tresses"
+                  "locks"
               ]
     },
     {
@@ -7758,7 +7648,6 @@
         "exz":  "用锤子。",
         "s":  [
                   "mallet",
-                  "gavel",
                   "beater"
               ]
     },
@@ -7783,9 +7672,7 @@
         "ex":  "Wear a sun hat.",
         "exz":  "戴顶遮阳帽。",
         "s":  [
-                  "cap",
-                  "headgear",
-                  "bonnet"
+                  "cap"
               ]
     },
     {
@@ -7797,8 +7684,7 @@
         "exz":  "我头疼。",
         "s":  [
                   "skull",
-                  "pate",
-                  "noggin"
+                  "pate"
               ]
     },
     {
@@ -7838,8 +7724,7 @@
         "exz2":  "司机按了喇叭。",
         "s":  [
                   "antler",
-                  "trumpet",
-                  "klaxon"
+                  "trumpet"
               ]
     },
     {
@@ -7850,7 +7735,6 @@
         "ex":  "Ride the horse.",
         "exz":  "骑马。",
         "s":  [
-                  "steed",
                   "mare",
                   "stallion"
               ]
@@ -7864,7 +7748,6 @@
         "exz":  "送她去医院。",
         "s":  [
                   "clinic",
-                  "infirmary",
                   "sanatorium"
               ]
     },
@@ -7877,7 +7760,6 @@
         "exz":  "我家房子小。",
         "s":  [
                   "home",
-                  "dwelling",
                   "residence"
               ]
     },
@@ -7890,7 +7772,6 @@
         "exz":  "这岛很小。",
         "s":  [
                   "isle",
-                  "atoll",
                   "key"
               ]
     },
@@ -7981,8 +7862,7 @@
         "exz":  "叶子黄了。",
         "s":  [
                   "foliage",
-                  "blade",
-                  "frond"
+                  "blade"
               ]
     },
     {
@@ -8085,7 +7965,6 @@
         "exz":  "猴子爬上去了。",
         "s":  [
                   "ape",
-                  "primate",
                   "simian"
               ]
     },
@@ -8240,11 +8119,10 @@
         "w":  "orange",
         "c":  "pt",
         "zh":  "橙子",
-        "en":  "round citrus fruit",
+        "en":  "round juicy fruit",
         "ex":  "Peel the orange.",
         "exz":  "剥橙子。",
         "s":  [
-                  "citrus",
                   "fruit",
                   "mandarin"
               ]
@@ -8258,7 +8136,6 @@
         "exz":  "放进烤箱。",
         "s":  [
                   "stove",
-                  "kiln",
                   "furnace"
               ]
     },
@@ -8284,8 +8161,7 @@
         "exz":  "用笔写。",
         "s":  [
                   "ballpoint",
-                  "quill",
-                  "biro"
+                  "quill"
               ]
     },
     {
@@ -8296,7 +8172,6 @@
         "ex":  "Sharpen the pencil.",
         "exz":  "削铅笔。",
         "s":  [
-                  "graphite",
                   "drawing tool",
                   "crayon"
               ]
@@ -8322,7 +8197,6 @@
         "ex":  "The pig is in the mud.",
         "exz":  "猪在泥里。",
         "s":  [
-                  "swine",
                   "hog",
                   "boar"
               ]
@@ -8348,9 +8222,7 @@
         "ex":  "The pipe is leaking.",
         "exz":  "管子漏了。",
         "s":  [
-                  "tube",
-                  "duct",
-                  "conduit"
+                  "tube"
               ]
     },
     {
@@ -8388,8 +8260,7 @@
         "exz":  "驾驶犁。",
         "s":  [
                   "plow",
-                  "tiller",
-                  "cultivator"
+                  "tiller"
               ]
     },
     {
@@ -8428,8 +8299,6 @@
         "ex":  "Mash the potato.",
         "exz":  "把土豆压碎。",
         "s":  [
-                  "spud",
-                  "tuber",
                   "vegetable"
               ]
     },
@@ -8441,9 +8310,7 @@
         "ex":  "He went to prison.",
         "exz":  "他进了监狱。",
         "s":  [
-                  "jail",
-                  "gaol",
-                  "penitentiary"
+                  "jail"
               ]
     },
     {
@@ -8454,9 +8321,7 @@
         "ex":  "Use the pump.",
         "exz":  "用泵。",
         "s":  [
-                  "compressor",
-                  "siphon",
-                  "piston"
+                  "siphon"
               ]
     },
     {
@@ -8480,7 +8345,6 @@
         "ex":  "A rat ran by.",
         "exz":  "老鼠跑过。",
         "s":  [
-                  "rodent",
                   "vermin",
                   "mouse"
               ]
@@ -8559,8 +8423,7 @@
         "exz":  "扬帆。",
         "s":  [
                   "canvas",
-                  "sheet",
-                  "mainsail"
+                  "sheet"
               ]
     },
     {
@@ -8598,7 +8461,6 @@
         "exz":  "拧紧螺丝。",
         "s":  [
                   "bolt",
-                  "fastener",
                   "spiral"
               ]
     },
@@ -8624,8 +8486,7 @@
         "exz":  "羊在田里吃草。",
         "s":  [
                   "lamb",
-                  "livestock",
-                  "ewe"
+                  "livestock"
               ]
     },
     {
@@ -8702,8 +8563,7 @@
         "exz":  "一条长裙。",
         "s":  [
                   "dress",
-                  "kilt",
-                  "frock"
+                  "kilt"
               ]
     },
     {
@@ -8714,8 +8574,6 @@
         "ex":  "A snake in the grass.",
         "exz":  "草里有蛇。",
         "s":  [
-                  "serpent",
-                  "reptile",
                   "viper"
               ]
     },
@@ -8754,7 +8612,6 @@
         "exz":  "用海绵擦。",
         "s":  [
                   "pad",
-                  "absorber",
                   "mop"
               ]
     },
@@ -8976,7 +8833,6 @@
         "ex":  "My throat is sore.",
         "exz":  "我嗓子疼。",
         "s":  [
-                  "gullet",
                   "pharynx",
                   "neck"
               ]
@@ -9042,7 +8898,6 @@
         "exz":  "刷牙。",
         "s":  [
                   "fang",
-                  "molar",
                   "ivory"
               ]
     },
@@ -9055,8 +8910,7 @@
         "exz":  "一个小镇。",
         "s":  [
                   "city",
-                  "village",
-                  "municipality"
+                  "village"
               ]
     },
     {
@@ -9106,9 +8960,7 @@
         "ex":  "Wear black trousers.",
         "exz":  "穿黑裤子。",
         "s":  [
-                  "pants",
-                  "slacks",
-                  "bottoms"
+                  "pants"
               ]
     },
     {
@@ -9120,7 +8972,6 @@
         "exz":  "打开伞。",
         "s":  [
                   "parasol",
-                  "brolly",
                   "canopy"
               ]
     },
@@ -9147,7 +8998,6 @@
         "ex2":  "We watch TV after dinner.",
         "exz2":  "我们晚饭后看电视。",
         "s":  [
-                  "timepiece",
                   "clock",
                   "wristwatch"
               ]
@@ -9200,7 +9050,6 @@
         "exz":  "开窗。",
         "s":  [
                   "pane",
-                  "casement",
                   "opening"
               ]
     },
@@ -9212,7 +9061,6 @@
         "ex":  "The bird spread its wings.",
         "exz":  "鸟展开翅膀。",
         "s":  [
-                  "pinion",
                   "fin",
                   "flap"
               ]
@@ -9238,8 +9086,6 @@
         "ex":  "A worm in the apple.",
         "exz":  "苹果里有虫。",
         "s":  [
-                  "larva",
-                  "grub",
                   "earthworm"
               ]
     },
@@ -9317,7 +9163,6 @@
         "exz":  "一只黑猫。",
         "s":  [
                   "dark",
-                  "ebony",
                   "jet"
               ]
     },
@@ -9356,8 +9201,7 @@
         "exz":  "玻璃碎了。",
         "s":  [
                   "damaged",
-                  "shattered",
-                  "busted"
+                  "shattered"
               ]
     },
     {
@@ -9369,8 +9213,7 @@
         "exz":  "棕色面包更健康。",
         "s":  [
                   "tan",
-                  "chocolate",
-                  "russet"
+                  "chocolate"
               ]
     },
     {
@@ -9462,7 +9305,6 @@
         "exz":  "复杂的问题。",
         "s":  [
                   "complicated",
-                  "intricate",
                   "involved"
               ]
     },
@@ -9513,9 +9355,7 @@
         "ex":  "Children are dependent on parents.",
         "exz":  "孩子依赖父母。",
         "s":  [
-                  "reliant",
-                  "subject",
-                  "subordinate"
+                  "subject"
               ]
     },
     {
@@ -9605,8 +9445,7 @@
         "exz":  "我们第一次见面。",
         "s":  [
                   "initial",
-                  "earliest",
-                  "foremost"
+                  "earliest"
               ]
     },
     {
@@ -9646,8 +9485,7 @@
         "exz2":  "小鸟现在自由了。",
         "s":  [
                   "liberated",
-                  "loose",
-                  "gratis"
+                  "loose"
               ]
     },
     {
@@ -9724,7 +9562,6 @@
         "exz":  "灰云带来雨。",
         "s":  [
                   "gray",
-                  "ashen",
                   "silver"
               ]
     },
@@ -9791,7 +9628,6 @@
         "exz":  "一座高塔。",
         "s":  [
                   "tall",
-                  "lofty",
                   "elevated"
               ]
     },
@@ -9898,7 +9734,6 @@
         "ex":  "They are happily married.",
         "exz":  "他们婚姻幸福。",
         "s":  [
-                  "wed",
                   "united",
                   "spliced"
               ]
@@ -9912,8 +9747,7 @@
         "exz":  "物质的东西不那么重要。",
         "s":  [
                   "physical",
-                  "real",
-                  "tangible"
+                  "real"
               ]
     },
     {
@@ -9951,8 +9785,7 @@
         "exz":  "自然之美。",
         "s":  [
                   "organic",
-                  "native",
-                  "innate"
+                  "native"
               ]
     },
     {
@@ -10042,8 +9875,7 @@
         "exz":  "运动有好处。",
         "s":  [
                   "bodily",
-                  "material",
-                  "tangible"
+                  "material"
               ]
     },
     {
@@ -10067,9 +9899,7 @@
         "ex":  "A poor family.",
         "exz":  "贫穷的家庭。",
         "s":  [
-                  "needy",
-                  "broke",
-                  "impoverished"
+                  "broke"
               ]
     },
     {
@@ -10122,8 +9952,7 @@
         "exz":  "很可能的原因。",
         "s":  [
                   "likely",
-                  "expected",
-                  "credible"
+                  "expected"
               ]
     },
     {
@@ -10228,8 +10057,7 @@
         "exz":  "一张圆桌。",
         "s":  [
                   "circular",
-                  "spherical",
-                  "rotund"
+                  "spherical"
               ]
     },
     {
@@ -10319,8 +10147,7 @@
         "exz":  "粘乎乎的手指。",
         "s":  [
                   "gummy",
-                  "tacky",
-                  "adhesive"
+                  "tacky"
               ]
     },
     {
@@ -10384,7 +10211,6 @@
         "exz":  "这蛋糕很甜。",
         "s":  [
                   "sugary",
-                  "honeyed",
                   "pleasant"
               ]
     },
@@ -10397,8 +10223,7 @@
         "exz":  "一个高个子男人。",
         "s":  [
                   "high",
-                  "towering",
-                  "lofty"
+                  "towering"
               ]
     },
     {
@@ -10527,7 +10352,6 @@
         "exz":  "睿智的老人。",
         "s":  [
                   "smart",
-                  "prudent",
                   "sage"
               ]
     },
@@ -10617,7 +10441,6 @@
         "ex":  "A blue dress.",
         "exz":  "一条蓝裙子。",
         "s":  [
-                  "azure",
                   "navy",
                   "sapphire"
               ]
@@ -10828,8 +10651,7 @@
         "exz":  "未来的计划。",
         "s":  [
                   "coming",
-                  "upcoming",
-                  "forthcoming"
+                  "upcoming"
               ]
     },
     {
@@ -10841,8 +10663,7 @@
         "exz":  "绿叶。",
         "s":  [
                   "emerald",
-                  "lime",
-                  "verdant"
+                  "lime"
               ]
     },
     {
@@ -10893,8 +10714,7 @@
         "exz":  "左转。",
         "s":  [
                   "port",
-                  "sinister",
-                  "leftward"
+                  "sinister"
               ]
     },
     {
@@ -11023,7 +10843,6 @@
         "exz":  "悲伤的故事。",
         "s":  [
                   "unhappy",
-                  "sorrowful",
                   "blue"
               ]
     },

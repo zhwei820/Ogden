@@ -38,11 +38,6 @@
   "ex": "The car came to an abrupt stop.",
   "exz": "汽车突然停了下来。"
  },
- "absorber": {
-  "zh": "吸收物",
-  "ex": "A sponge is a good water absorber.",
-  "exz": "海绵是很好的吸水物。"
- },
  "absorption": {
   "drop": true
  },
@@ -101,11 +96,6 @@
   "ex": "This is an actual dinosaur bone.",
   "exz": "这是一块真正的恐龙骨头。"
  },
- "actuality": {
-  "zh": "现实；事实",
-  "ex": "The dream became an actuality.",
-  "exz": "梦想变成了现实。"
- },
  "acute": {
   "zh": "敏锐的；尖的",
   "ex": "Owls have acute hearing.",
@@ -126,11 +116,6 @@
   "ex": "We have adequate food for the picnic.",
   "exz": "我们野餐的食物足够了。"
  },
- "adhesive": {
-  "zh": "胶粘剂；有黏性的",
-  "ex": "Use some adhesive to stick the paper.",
-  "exz": "用些胶水把纸粘上。"
- },
  "administration": {
   "zh": "管理部门；政府",
   "ex": "The school administration planned a fun day.",
@@ -141,30 +126,15 @@
   "ex": "An adult will help you cross the road.",
   "exz": "会有大人帮你过马路。"
  },
- "afar": {
-  "zh": "在远处",
-  "ex": "We saw the mountains from afar.",
-  "exz": "我们从远处看到了群山。"
- },
  "affection": {
   "zh": "喜爱；关爱",
   "ex": "The puppy showed us lots of affection.",
   "exz": "小狗对我们非常亲热。"
  },
- "affirmative": {
-  "zh": "肯定的",
-  "ex": "She gave an affirmative nod.",
-  "exz": "她肯定地点了点头。"
- },
  "affordable": {
   "zh": "便宜的；买得起的",
   "ex": "These toys are very affordable.",
   "exz": "这些玩具很便宜。"
- },
- "afresh": {
-  "zh": "重新",
-  "ex": "Let us start afresh tomorrow.",
-  "exz": "我们明天重新开始吧。"
  },
  "afterward": {
   "zh": "之后；然后",
@@ -195,16 +165,6 @@
   "zh": "帮助；援助",
   "ex": "The nurse gave aid to the boy.",
   "exz": "护士帮助了那个男孩。"
- },
- "aide": {
-  "zh": "助手；秘书",
-  "ex": "The teacher's aide helped us read.",
-  "exz": "老师的助手帮我们阅读。"
- },
- "ailment": {
-  "zh": "小病",
-  "ex": "A cold is a common ailment.",
-  "exz": "感冒是一种常见的小病。"
  },
  "aim": {
   "zh": "目标；目的",
@@ -241,20 +201,10 @@
   "ex": "The little fish is still alive.",
   "exz": "小鱼还活着。"
  },
- "allocation": {
-  "zh": "分配",
-  "ex": "The allocation of snacks was fair.",
-  "exz": "零食分配得很公平。"
- },
  "allow": {
   "zh": "允许",
   "ex": "Mom will allow me to play outside.",
   "exz": "妈妈会允许我出去玩。"
- },
- "alloy": {
-  "zh": "合金",
-  "ex": "Steel is a strong alloy.",
-  "exz": "钢是一种坚固的合金。"
  },
  "alongside": {
   "zh": "在旁边；一起",
@@ -306,20 +256,10 @@
   "ex": "She sat amongst her friends.",
   "exz": "她坐在朋友们中间。"
  },
- "analogy": {
-  "zh": "类比",
-  "ex": "The teacher used an analogy to explain it.",
-  "exz": "老师用了一个类比来解释。"
- },
  "ancient": {
   "zh": "古老的",
   "ex": "We saw an ancient castle.",
   "exz": "我们看到了一座古老的城堡。"
- },
- "anew": {
-  "zh": "重新",
-  "ex": "The flowers bloom anew every spring.",
-  "exz": "每年春天花儿都重新开放。"
  },
  "annum": {
   "drop": true
@@ -436,11 +376,6 @@
   "ex": "The bus will arrive soon.",
   "exz": "公交车很快就到。"
  },
- "arthropod": {
-  "zh": "节肢动物",
-  "ex": "A spider is an arthropod.",
-  "exz": "蜘蛛是一种节肢动物。"
- },
  "artistry": {
   "zh": "艺术技巧",
   "ex": "The painting shows great artistry.",
@@ -455,11 +390,6 @@
   "zh": "以及；和",
   "ex": "I like cats as well as dogs.",
   "exz": "我喜欢猫，也喜欢狗。"
- },
- "ashen": {
-  "zh": "灰白的",
-  "ex": "The sky was ashen before the rain.",
-  "exz": "下雨前天空灰蒙蒙的。"
  },
  "asleep": {
   "zh": "睡着的",
@@ -544,11 +474,6 @@
   "ex": "The party had a happy atmosphere.",
   "exz": "派对的气氛很欢乐。"
  },
- "atoll": {
-  "zh": "环礁",
-  "ex": "We saw a small atoll in the sea.",
-  "exz": "我们看到海里有一个小环礁。"
- },
  "atop": {
   "zh": "在……顶上",
   "ex": "A bird sat atop the roof.",
@@ -589,11 +514,6 @@
   "zh": "糟糕的",
   "ex": "The weather was awful today.",
   "exz": "今天天气很糟糕。"
- },
- "azure": {
-  "zh": "天蓝色",
-  "ex": "The sky is a lovely azure.",
-  "exz": "天空是可爱的天蓝色。"
  },
  "background": {
   "zh": "背景；经历",
@@ -686,11 +606,6 @@
   "ex": "The bird picked up a seed with its beak.",
   "exz": "小鸟用嘴叼起一颗种子。"
  },
- "beaker": {
-  "zh": "烧杯；大杯子",
-  "ex": "Pour the water into the beaker.",
-  "exz": "把水倒进烧杯里。"
- },
  "beam": {
   "zh": "光束；笑容",
   "ex": "A beam of light came through the window.",
@@ -728,11 +643,6 @@
   "zh": "开始",
   "ex": "This is the beginning of the story.",
   "exz": "这是故事的开头。"
- },
- "bellboy": {
-  "zh": "行李员",
-  "ex": "The bellboy carried our bags.",
-  "exz": "行李员帮我们提了包。"
  },
  "belly": {
   "zh": "肚子",
@@ -797,11 +707,6 @@
  "billy": {
   "drop": true
  },
- "biro": {
-  "zh": "圆珠笔",
-  "ex": "Can I borrow your biro?",
-  "exz": "我能借你的圆珠笔吗？"
- },
  "blaze": {
   "zh": "火焰；大火",
   "ex": "The campfire made a warm blaze.",
@@ -865,11 +770,6 @@
   "ex": "The boiler keeps our house warm.",
   "exz": "锅炉让我们的房子保持温暖。"
  },
- "bolster": {
-  "zh": "长枕",
-  "ex": "I hug my bolster when I sleep.",
-  "exz": "我睡觉时抱着长枕头。"
- },
  "bolt": {
   "zh": "门闩；螺栓",
   "ex": "Lock the door with the bolt.",
@@ -879,11 +779,6 @@
   "zh": "联系；纽带",
   "ex": "There is a strong bond between us.",
   "exz": "我们之间有很深的感情。"
- },
- "bonnet": {
-  "zh": "帽子（系带）",
-  "ex": "The baby wore a little bonnet.",
-  "exz": "宝宝戴着一顶小软帽。"
  },
  "bonus": {
   "zh": "奖励；额外奖",
@@ -925,16 +820,6 @@
   "zh": "无底的；很深的",
   "ex": "The well looked bottomless.",
   "exz": "那口井看起来深不见底。"
- },
- "bottoms": {
-  "zh": "裤子",
-  "ex": "Put on your pajama bottoms.",
-  "exz": "穿上你的睡裤。"
- },
- "bough": {
-  "zh": "大树枝",
-  "ex": "A bird sat on the bough.",
-  "exz": "一只鸟坐在树枝上。"
  },
  "bouillon": {
   "zh": "清汤",
@@ -1003,11 +888,6 @@
   "ex": "I spent all my money and now I am broke.",
   "exz": "我花光了钱，现在没钱了。"
  },
- "brolly": {
-  "zh": "雨伞",
-  "ex": "Take your brolly, it is raining.",
-  "exz": "带上雨伞，下雨了。"
- },
  "brook": {
   "zh": "小溪",
   "ex": "We played by the little brook.",
@@ -1051,11 +931,6 @@
   "ex": "We buy rice in bulk.",
   "exz": "我们大量购买大米。"
  },
- "bullion": {
-  "zh": "金条",
-  "ex": "The bank keeps gold bullion.",
-  "exz": "银行存放着金条。"
- },
  "bumpy": {
   "zh": "颠簸的；不平的",
   "ex": "The road was bumpy.",
@@ -1078,11 +953,6 @@
   "zh": "办公室；局",
   "ex": "Dad works at the travel bureau.",
   "exz": "爸爸在旅游局工作。"
- },
- "busted": {
-  "zh": "坏了的",
-  "ex": "My old toy car is busted.",
-  "exz": "我的旧玩具车坏了。"
  },
  "by means of": {
   "zh": "通过；借助",
@@ -1107,20 +977,10 @@
   "ex": "The poem has a nice cadence.",
   "exz": "这首诗有很好的韵律。"
  },
- "caliber": {
-  "zh": "质量；水平",
-  "ex": "She is a player of high caliber.",
-  "exz": "她是一名高水平的选手。"
- },
  "cane": {
   "zh": "手杖；藤条",
   "ex": "Grandpa walks with a cane.",
   "exz": "爷爷拄着拐杖走路。"
- },
- "canine": {
-  "zh": "犬；狗",
-  "ex": "A canine is a member of the dog family.",
-  "exz": "犬是狗科的成员。"
  },
  "canopy": {
   "zh": "顶篷；遮篷",
@@ -1172,11 +1032,6 @@
   "zh": "例子；盒子",
   "ex": "Put your glasses in the case.",
   "exz": "把眼镜放进盒子里。"
- },
- "casement": {
-  "zh": "窗扉；窗户",
-  "ex": "She opened the casement to let in air.",
-  "exz": "她打开窗户让空气进来。"
  },
  "cash": {
   "zh": "现金",
@@ -1311,16 +1166,6 @@
   "ex": "Add the chopped carrots to the soup.",
   "exz": "把切碎的胡萝卜加到汤里。"
  },
- "chortle": {
-  "zh": "咯咯笑",
-  "ex": "The joke made Dad chortle.",
-  "exz": "这个笑话把爸爸逗得咯咯笑。"
- },
- "chronicle": {
-  "zh": "编年史；记录",
-  "ex": "The book is a chronicle of our town.",
-  "exz": "这本书记录了我们小镇的历史。"
- },
  "chubby": {
   "zh": "胖乎乎的",
   "ex": "The baby has chubby cheeks.",
@@ -1335,11 +1180,6 @@
   "zh": "圆形的",
   "ex": "We sat at a circular table.",
   "exz": "我们坐在一张圆桌旁。"
- },
- "citrus": {
-  "zh": "柑橘类水果",
-  "ex": "Oranges and lemons are citrus fruits.",
-  "exz": "橙子和柠檬是柑橘类水果。"
  },
  "civic": {
   "zh": "公民的；市政的",
@@ -1547,11 +1387,6 @@
   "ex": "Water is a compound.",
   "exz": "水是一种化合物。"
  },
- "compressor": {
-  "zh": "压缩机；打气泵",
-  "ex": "Dad used a compressor to fill the tire.",
-  "exz": "爸爸用打气泵给轮胎充气。"
- },
  "concept": {
   "zh": "概念；想法",
   "ex": "Sharing is an important concept.",
@@ -1581,11 +1416,6 @@
   "zh": "行为；举止",
   "ex": "Good conduct earns a gold star.",
   "exz": "表现好可以得到金星。"
- },
- "conduit": {
-  "zh": "管道",
-  "ex": "Water flows through the conduit.",
-  "exz": "水流过管道。"
  },
  "conference": {
   "zh": "会议",
@@ -1657,11 +1487,6 @@
   "ex": "Black and white make a strong contrast.",
   "exz": "黑色和白色形成鲜明对比。"
  },
- "conveyance": {
-  "zh": "交通工具",
-  "ex": "A bus is a kind of conveyance.",
-  "exz": "公交车是一种交通工具。"
- },
  "conviction": {
   "zh": "信念",
   "ex": "She spoke with conviction.",
@@ -1679,11 +1504,6 @@
   "zh": "正确的",
   "ex": "Your answer is correct.",
   "exz": "你的答案是对的。"
- },
- "cosmos": {
-  "zh": "宇宙",
-  "ex": "The cosmos is full of stars.",
-  "exz": "宇宙中满是星星。"
  },
  "cost": {
   "zh": "价格；费用",
@@ -1773,11 +1593,6 @@
   "ex": "A turtle is a slow creature.",
   "exz": "乌龟是一种慢吞吞的动物。"
  },
- "credible": {
-  "zh": "可信的",
-  "ex": "Her story is credible.",
-  "exz": "她的故事是可信的。"
- },
  "creed": {
   "drop": true
  },
@@ -1793,11 +1608,6 @@
   "zh": "深红色",
   "ex": "She wore a crimson dress.",
   "exz": "她穿着一条深红色的裙子。"
- },
- "critter": {
-  "zh": "小动物；小虫",
-  "ex": "A little critter ran across the path.",
-  "exz": "一只小动物跑过小路。"
  },
  "crooked": {
   "zh": "弯曲的",
@@ -1834,11 +1644,6 @@
   "ex": "The vase is made of crystal.",
   "exz": "这个花瓶是水晶做的。"
  },
- "cultivator": {
-  "zh": "耕耘机",
-  "ex": "The farmer used a cultivator in the field.",
-  "exz": "农民在田里用耕耘机。"
- },
  "cuprum": {
   "drop": true
  },
@@ -1846,11 +1651,6 @@
   "zh": "抑制；制止",
   "ex": "Try to curb your anger.",
   "exz": "试着控制你的怒气。"
- },
- "curd": {
-  "zh": "凝乳",
-  "ex": "I like to eat bean curd.",
-  "exz": "我喜欢吃豆腐。"
  },
  "curiosity": {
   "zh": "好奇心",
@@ -1953,11 +1753,6 @@
   "ex": "There was a decrease in the price.",
   "exz": "价格降低了。"
  },
- "deed": {
-  "zh": "行为；事迹",
-  "ex": "Helping others is a good deed.",
-  "exz": "帮助别人是一件好事。"
- },
  "deficit": {
   "zh": "亏损；不足",
   "ex": "The shop had a small deficit.",
@@ -1977,11 +1772,6 @@
   "zh": "延误的",
   "ex": "Our train was delayed.",
   "exz": "我们的火车晚点了。"
- },
- "delegate": {
-  "zh": "代表",
-  "ex": "She is our class delegate.",
-  "exz": "她是我们班的代表。"
  },
  "delight": {
   "zh": "快乐",
@@ -2023,11 +1813,6 @@
   "zh": "车站；仓库",
   "ex": "The bus is at the depot.",
   "exz": "公交车在车站。"
- },
- "designation": {
-  "zh": "名称；称号",
-  "ex": "Each room has a number designation.",
-  "exz": "每个房间都有一个编号。"
  },
  "despite": {
   "zh": "尽管",
@@ -2137,6 +1922,11 @@
   "ex": "The moon looked like a white disk.",
   "exz": "月亮看起来像一个白色的圆盘。"
  },
+ "dislike": {
+  "zh": "不喜欢",
+  "ex": "I dislike cold weather.",
+  "exz": "我不喜欢寒冷的天气。"
+ },
  "dispatch": {
   "zh": "发送；派遣",
   "ex": "We will dispatch the letter today.",
@@ -2151,11 +1941,6 @@
   "zh": "遥远的",
   "ex": "We saw a distant star.",
   "exz": "我们看到了一颗遥远的星星。"
- },
- "distaste": {
-  "zh": "反感",
-  "ex": "The cat looked at the bath with distaste.",
-  "exz": "小猫嫌弃地看着澡盆。"
  },
  "distinct": {
   "zh": "不同的；清楚的",
@@ -2230,11 +2015,6 @@
   "ex": "A droplet of water fell from the leaf.",
   "exz": "一滴小水珠从叶子上滴落。"
  },
- "duct": {
-  "zh": "管道",
-  "ex": "Air comes through the duct.",
-  "exz": "空气从管道里进来。"
- },
  "due to": {
   "zh": "由于",
   "ex": "The game was stopped due to rain.",
@@ -2249,11 +2029,6 @@
   "zh": "税；责任",
   "ex": "We paid duty on the new car.",
   "exz": "我们为新车交了税。"
- },
- "dwelling": {
-  "zh": "住所",
-  "ex": "A cave was their dwelling long ago.",
-  "exz": "很久以前，山洞是他们的住所。"
  },
  "dye": {
   "zh": "染料",
@@ -2298,16 +2073,6 @@
   "ex": "The birds flew eastward.",
   "exz": "鸟儿向东飞去。"
  },
- "ebony": {
-  "zh": "乌黑色",
-  "ex": "She has ebony hair.",
-  "exz": "她有一头乌黑的头发。"
- },
- "edifice": {
-  "zh": "大厦",
-  "ex": "The museum is a grand edifice.",
-  "exz": "博物馆是一座宏伟的建筑。"
- },
  "effort": {
   "zh": "努力；尝试",
   "ex": "Thank you for your effort.",
@@ -2341,11 +2106,6 @@
   "ex": "His face turned red with embarrassment.",
   "exz": "他尴尬得脸都红了。"
  },
- "embellishment": {
-  "zh": "装饰",
-  "ex": "The dress has gold embellishment.",
-  "exz": "这条裙子有金色的装饰。"
- },
  "emerald": {
   "zh": "翠绿色",
   "ex": "The grass is emerald after the rain.",
@@ -2371,20 +2131,10 @@
   "ex": "Glasses enable me to see better.",
   "exz": "眼镜让我看得更清楚。"
  },
- "endeavor": {
-  "zh": "努力",
-  "ex": "We will endeavor to do our best.",
-  "exz": "我们会努力做到最好。"
- },
  "ending": {
   "zh": "结局；最后",
   "ex": "The story has a happy ending.",
   "exz": "这个故事有一个快乐的结局。"
- },
- "endorsement": {
-  "zh": "认可；赞同",
-  "ex": "The plan got the teacher's endorsement.",
-  "exz": "这个计划得到了老师的认可。"
  },
  "enemy": {
   "zh": "敌人",
@@ -2400,11 +2150,6 @@
   "zh": "扩大；放大",
   "ex": "We got an enlargement of the photo.",
   "exz": "我们把照片放大了。"
- },
- "ensign": {
-  "zh": "旗帜",
-  "ex": "The ship flew a red ensign.",
-  "exz": "船上飘着一面红旗。"
  },
  "entertainment": {
   "zh": "娱乐",
@@ -2436,11 +2181,6 @@
  },
  "equidistant": {
   "drop": true
- },
- "equilibrium": {
-  "zh": "平衡",
-  "ex": "The scale is in equilibrium.",
-  "exz": "天平是平衡的。"
  },
  "equipment": {
   "zh": "设备；器材",
@@ -2491,16 +2231,6 @@
   "zh": "演变；发展",
   "ex": "We learned about the evolution of birds.",
   "exz": "我们学习了鸟类的演化。"
- },
- "ewe": {
-  "zh": "母羊",
-  "ex": "The ewe has a little lamb.",
-  "exz": "母羊有一只小羊羔。"
- },
- "excavation": {
-  "zh": "挖掘",
-  "ex": "The excavation found old bones.",
-  "exz": "挖掘发现了古老的骨头。"
  },
  "excellent": {
   "zh": "极好的",
@@ -2642,11 +2372,6 @@
   "ex": "The cafe serves simple fare.",
   "exz": "这家咖啡馆供应简单的饭菜。"
  },
- "fastener": {
-  "zh": "扣件",
-  "ex": "My coat has a metal fastener.",
-  "exz": "我的外套有一个金属扣。"
- },
  "fault": {
   "zh": "错误",
   "ex": "It was not your fault.",
@@ -2681,11 +2406,6 @@
   "zh": "感觉像；似乎",
   "ex": "Today does feel like spring.",
   "exz": "今天确实感觉像春天。"
- },
- "feline": {
-  "zh": "猫科动物",
-  "ex": "A tiger is a large feline.",
-  "exz": "老虎是一种大型猫科动物。"
  },
  "fellow": {
   "zh": "家伙；男人",
@@ -2756,11 +2476,6 @@
   "ex": "The bed is soft, but the floor is firm.",
   "exz": "床很软，但地板很硬。"
  },
- "fissure": {
-  "zh": "裂缝",
-  "ex": "There is a small fissure in the rock.",
-  "exz": "岩石上有一条小裂缝。"
- },
  "fist": {
   "zh": "拳头",
   "ex": "He held a candy in his fist.",
@@ -2810,11 +2525,6 @@
   "zh": "灵活的；有弹性的",
   "ex": "This ruler is flexible and bends.",
   "exz": "这把尺子有弹性，能弯曲。"
- },
- "flora": {
-  "zh": "植物群",
-  "ex": "The flora in the park is beautiful.",
-  "exz": "公园里的植物很美。"
  },
  "flow": {
   "zh": "流动；水流",
@@ -2887,16 +2597,6 @@
   "ex": "I have a sticker on my forearm.",
   "exz": "我的前臂上贴了张贴纸。"
  },
- "foremost": {
-  "zh": "首要的",
-  "ex": "Safety comes first and foremost.",
-  "exz": "安全永远是第一位的。"
- },
- "forenoon": {
-  "zh": "上午",
-  "ex": "We play outside in the forenoon.",
-  "exz": "我们上午在外面玩。"
- },
  "forever": {
   "zh": "永远",
   "ex": "We will be friends forever.",
@@ -2911,11 +2611,6 @@
   "zh": "以前的",
   "ex": "This was my former school.",
   "exz": "这是我以前的学校。"
- },
- "forthcoming": {
-  "zh": "即将到来的",
-  "ex": "We are excited about the forthcoming trip.",
-  "exz": "我们期待即将到来的旅行。"
  },
  "foundation": {
   "zh": "地基；基础",
@@ -2960,23 +2655,8 @@
   "ex": "The loud noise gave me a fright.",
   "exz": "那声巨响吓了我一跳。"
  },
- "frock": {
-  "zh": "连衣裙",
-  "ex": "She wore a pink frock to the party.",
-  "exz": "她穿粉色连衣裙去参加派对。"
- },
  "fromage": {
   "drop": true
- },
- "frond": {
-  "zh": "叶子（蕨叶）",
-  "ex": "A palm frond moved in the wind.",
-  "exz": "一片棕榈叶在风中摇动。"
- },
- "frontward": {
-  "zh": "向前",
-  "ex": "Take one step frontward.",
-  "exz": "向前走一步。"
  },
  "frost": {
   "zh": "霜",
@@ -3039,11 +2719,6 @@
   "ex": "A gale blew the leaves away.",
   "exz": "一阵大风把树叶吹走了。"
  },
- "gaol": {
-  "zh": "监狱",
-  "ex": "The old gaol is now a museum.",
-  "exz": "那座旧监狱现在是博物馆。"
- },
  "gap": {
   "zh": "缝隙；空隙",
   "ex": "The cat ran through a gap in the fence.",
@@ -3069,11 +2744,6 @@
   "ex": "Please close the garden gate.",
   "exz": "请关上花园的门。"
  },
- "gateau": {
-  "zh": "奶油蛋糕",
-  "ex": "Mom made a chocolate gateau.",
-  "exz": "妈妈做了一个巧克力蛋糕。"
- },
  "gathering": {
   "zh": "聚会",
   "ex": "We had a family gathering on Sunday.",
@@ -3083,16 +2753,6 @@
   "zh": "测量；仪表",
   "ex": "This gauge shows how much gas we have.",
   "exz": "这个仪表显示我们还有多少油。"
- },
- "gauntlet": {
-  "zh": "长手套",
-  "ex": "The knight wore a metal gauntlet.",
-  "exz": "骑士戴着金属手套。"
- },
- "gavel": {
-  "zh": "木槌",
-  "ex": "The judge tapped the gavel.",
-  "exz": "法官敲了敲木槌。"
  },
  "gaze": {
   "zh": "凝视",
@@ -3222,11 +2882,6 @@
   "ex": "I am in the second grade.",
   "exz": "我上二年级。"
  },
- "gradient": {
-  "zh": "坡度",
-  "ex": "The hill has a gentle gradient.",
-  "exz": "这座小山坡度平缓。"
- },
  "gradual": {
   "zh": "逐渐的",
   "ex": "The change was slow and gradual.",
@@ -3252,20 +2907,10 @@
   "ex": "My grandmother bakes cookies.",
   "exz": "我奶奶会烤饼干。"
  },
- "graphite": {
-  "zh": "石墨",
-  "ex": "Pencils are made with graphite.",
-  "exz": "铅笔是用石墨做的。"
- },
  "grasp": {
   "zh": "抓紧",
   "ex": "Grasp the rope with both hands.",
   "exz": "用双手抓紧绳子。"
- },
- "gratis": {
-  "zh": "免费的",
-  "ex": "The balloons are gratis today.",
-  "exz": "今天气球免费送。"
  },
  "grave": {
   "zh": "严肃的",
@@ -3322,11 +2967,6 @@
   "ex": "We walked around the school grounds.",
   "exz": "我们在校园里散步。"
  },
- "grub": {
-  "zh": "幼虫",
-  "ex": "The bird ate a fat grub.",
-  "exz": "小鸟吃了一只肥肥的幼虫。"
- },
  "grubby": {
   "zh": "脏的",
   "ex": "Wash your grubby hands.",
@@ -3336,11 +2976,6 @@
   "zh": "内疚",
   "ex": "He felt guilt for breaking the cup.",
   "exz": "他打碎了杯子，感到内疚。"
- },
- "gullet": {
-  "zh": "食道；喉咙",
-  "ex": "The fish slid down the bird's gullet.",
-  "exz": "鱼滑进了鸟的喉咙里。"
  },
  "gummy": {
   "zh": "黏的",
@@ -3417,11 +3052,6 @@
   "ex": "The hills are in a blue haze.",
   "exz": "山丘笼罩在蓝色薄雾中。"
  },
- "headgear": {
-  "zh": "头饰；帽子",
-  "ex": "Wear headgear when you ride a bike.",
-  "exz": "骑车时要戴头盔。"
- },
  "hearing organ": {
   "drop": true
  },
@@ -3435,25 +3065,10 @@
   "ex": "We swim in a heated pool.",
   "exz": "我们在温水泳池里游泳。"
  },
- "heavens": {
-  "zh": "天空",
-  "ex": "The heavens are full of stars.",
-  "exz": "天空中满是星星。"
- },
  "heaviness": {
   "zh": "重量",
   "ex": "I felt the heaviness of the box.",
   "exz": "我感觉到箱子很重。"
- },
- "heed": {
-  "zh": "注意",
-  "ex": "Pay heed to the safety rules.",
-  "exz": "要注意安全规则。"
- },
- "heifer": {
-  "zh": "小母牛",
-  "ex": "The heifer eats grass in the field.",
-  "exz": "小母牛在田里吃草。"
  },
  "hi": {
   "zh": "你好",
@@ -3518,18 +3133,8 @@
   "ex": "He is the holder of the ticket.",
   "exz": "他是这张票的持有人。"
  },
- "homestead": {
-  "zh": "农庄",
-  "ex": "They live on a big homestead.",
-  "exz": "他们住在一个大农庄里。"
- },
  "honey-maker": {
   "drop": true
- },
- "honeyed": {
-  "zh": "甜美的",
-  "ex": "The bird sang a honeyed song.",
-  "exz": "鸟儿唱着甜美的歌。"
  },
  "honor": {
   "zh": "尊敬；荣誉",
@@ -3617,11 +3222,6 @@
   "ex": "This is an imitation of a famous painting.",
   "exz": "这是一幅名画的仿制品。"
  },
- "impoverished": {
-  "zh": "贫困的",
-  "ex": "We gave books to an impoverished school.",
-  "exz": "我们给一所贫困学校捐了书。"
- },
  "impression": {
   "zh": "印记",
   "ex": "The shoe left an impression in the mud.",
@@ -3635,11 +3235,6 @@
  "in this spot": {
   "drop": true
  },
- "in unison": {
-  "zh": "一起；齐声",
-  "ex": "The class sang in unison.",
-  "exz": "全班齐声唱歌。"
- },
  "in what way": {
   "zh": "以什么方式",
   "ex": "In what way can I help you?",
@@ -3649,16 +3244,6 @@
   "zh": "事件",
   "ex": "There was a funny incident at school.",
   "exz": "学校里发生了一件趣事。"
- },
- "inclination": {
-  "zh": "倾向",
-  "ex": "I have an inclination to sleep late.",
-  "exz": "我总想睡懒觉。"
- },
- "incline": {
-  "zh": "斜坡",
-  "ex": "The bike went down the incline.",
-  "exz": "自行车沿斜坡滑下。"
  },
  "including": {
   "zh": "包括",
@@ -3690,11 +3275,6 @@
   "ex": "The forest fire was a huge inferno.",
   "exz": "那场森林火灾是一片火海。"
  },
- "infirmary": {
-  "zh": "医务室",
-  "ex": "The nurse works in the school infirmary.",
-  "exz": "护士在学校医务室工作。"
- },
  "inflexible": {
   "zh": "僵硬的；不弯曲的",
   "ex": "This metal rod is inflexible.",
@@ -3705,11 +3285,6 @@
   "ex": "The book has lots of information.",
   "exz": "这本书有很多信息。"
  },
- "inhalation": {
-  "zh": "吸气",
-  "ex": "Take a deep inhalation and relax.",
-  "exz": "深吸一口气，放松。"
- },
  "initial": {
   "zh": "最初的",
   "ex": "My initial answer was right.",
@@ -3719,11 +3294,6 @@
   "zh": "伤",
   "ex": "He has a small injury on his hand.",
   "exz": "他手上有个小伤。"
- },
- "innate": {
-  "zh": "天生的",
-  "ex": "Birds have an innate skill to fly.",
-  "exz": "鸟儿天生会飞。"
  },
  "innovation": {
   "zh": "创新；发明",
@@ -3780,11 +3350,6 @@
   "ex": "My intention is to help.",
   "exz": "我的本意是帮忙。"
  },
- "interchange": {
-  "zh": "交换",
-  "ex": "We had a quick interchange of ideas.",
-  "exz": "我们快速交流了想法。"
- },
  "intercourse": {
   "drop": true
  },
@@ -3792,11 +3357,6 @@
   "zh": "解读",
   "ex": "That is a good interpretation of the poem.",
   "exz": "这是对这首诗很好的解读。"
- },
- "intricate": {
-  "zh": "复杂的",
-  "ex": "The puzzle has an intricate pattern.",
-  "exz": "这个拼图图案很复杂。"
  },
  "involved": {
   "zh": "复杂的",
@@ -3863,25 +3423,10 @@
   "ex": "Your knee is a joint.",
   "exz": "膝盖是一个关节。"
  },
- "jointly": {
-  "zh": "共同地",
-  "ex": "We jointly built the sandcastle.",
-  "exz": "我们一起堆了沙堡。"
- },
  "jolt": {
   "zh": "颠簸；震动",
   "ex": "The bus stopped with a jolt.",
   "exz": "公交车猛地一颠停下了。"
- },
- "jotting": {
-  "zh": "笔记",
-  "ex": "I made a quick jotting in my notebook.",
-  "exz": "我在本子上简单记了一笔。"
- },
- "jowl": {
-  "zh": "下颌垂肉",
-  "ex": "The bulldog has a floppy jowl.",
-  "exz": "斗牛犬的腮帮子松松垂着。"
  },
  "joyful": {
   "zh": "快乐的",
@@ -3918,20 +3463,10 @@
   "ex": "Every kid loves the playground.",
   "exz": "每个小孩都喜欢游乐场。"
  },
- "kiln": {
-  "zh": "窑",
-  "ex": "We baked our clay pots in a kiln.",
-  "exz": "我们把陶罐放进窑里烧。"
- },
  "kilt": {
   "zh": "苏格兰短裙",
   "ex": "The man wore a red kilt.",
   "exz": "那个男人穿着红色苏格兰裙。"
- },
- "kin": {
-  "zh": "亲属",
-  "ex": "My kin all came for the holiday.",
-  "exz": "我的亲戚都来过节了。"
  },
  "kindly": {
   "zh": "请；亲切地",
@@ -3947,11 +3482,6 @@
   "zh": "小猫",
   "ex": "The kitty is playing with yarn.",
   "exz": "小猫在玩毛线。"
- },
- "klaxon": {
-  "zh": "汽笛；喇叭",
-  "ex": "The klaxon was very loud.",
-  "exz": "喇叭声非常响。"
  },
  "kneecap": {
   "zh": "膝盖骨",
@@ -4011,20 +3541,10 @@
   "ex": "An elephant is very large.",
   "exz": "大象非常大。"
  },
- "larva": {
-  "zh": "幼虫",
-  "ex": "A larva will become a butterfly.",
-  "exz": "幼虫会变成蝴蝶。"
- },
  "lash": {
   "zh": "鞭打；甩动",
   "ex": "The horse's tail can lash at flies.",
   "exz": "马尾能甩打苍蝇。"
- },
- "lass": {
-  "zh": "小姑娘",
-  "ex": "The lass has long red hair.",
-  "exz": "那个小姑娘有一头红色长发。"
  },
  "latch": {
   "zh": "门闩",
@@ -4090,16 +3610,6 @@
   "zh": "窗台；壁架",
   "ex": "A bird sat on the window ledge.",
   "exz": "一只鸟停在窗台上。"
- },
- "ledger": {
-  "zh": "账本",
-  "ex": "Mom writes our spending in a ledger.",
-  "exz": "妈妈把开销记在账本上。"
- },
- "leftward": {
-  "zh": "向左",
-  "ex": "The car turned leftward.",
-  "exz": "汽车向左转了。"
  },
  "leisurely": {
   "zh": "悠闲的",
@@ -4242,16 +3752,6 @@
   "ex": "I gave my friend a loan of my pen.",
   "exz": "我把笔借给了朋友。"
  },
- "loathing": {
-  "zh": "厌恶",
-  "ex": "She has a loathing for spiders.",
-  "exz": "她非常讨厌蜘蛛。"
- },
- "lobe": {
-  "zh": "耳垂",
-  "ex": "She has a star on her ear lobe.",
-  "exz": "她的耳垂上有颗星星耳钉。"
- },
  "location": {
   "zh": "位置",
   "ex": "Show me the location on the map.",
@@ -4271,11 +3771,6 @@
   "zh": "火车头",
   "ex": "The locomotive pulls the train.",
   "exz": "火车头拉着火车。"
- },
- "lofty": {
-  "zh": "高耸的",
-  "ex": "We saw a lofty tower.",
-  "exz": "我们看到一座高塔。"
  },
  "log": {
   "zh": "记录；日志",
@@ -4317,11 +3812,6 @@
   "ex": "Good luck on your test!",
   "exz": "祝你考试好运！"
  },
- "lumber": {
-  "zh": "木材",
-  "ex": "They used lumber to build the house.",
-  "exz": "他们用木材盖房子。"
- },
  "luminary": {
   "drop": true
  },
@@ -4338,11 +3828,6 @@
   "ex": "Mom was mad at the messy room.",
   "exz": "妈妈对乱糟糟的房间很生气。"
  },
- "magistrate": {
-  "zh": "地方法官",
-  "ex": "The magistrate listened carefully.",
-  "exz": "法官认真地听着。"
- },
  "maid": {
   "zh": "少女；女仆",
   "ex": "The maid in the story was kind.",
@@ -4357,11 +3842,6 @@
   "zh": "主要的",
   "ex": "This is the main door.",
   "exz": "这是正门。"
- },
- "mainsail": {
-  "zh": "主帆",
-  "ex": "The wind filled the mainsail.",
-  "exz": "风吹满了主帆。"
  },
  "maintain": {
   "zh": "保持",
@@ -4562,11 +4042,6 @@
   "ex": "I was mistaken about the time.",
   "exz": "我把时间弄错了。"
  },
- "mitt": {
-  "zh": "手套",
-  "ex": "He caught the ball with his mitt.",
-  "exz": "他用手套接住了球。"
- },
  "mitten": {
   "zh": "连指手套",
   "ex": "I lost my red mitten.",
@@ -4591,11 +4066,6 @@
   "zh": "潮湿的",
   "ex": "The cake is soft and moist.",
   "exz": "蛋糕又软又湿润。"
- },
- "molar": {
-  "zh": "臼齿",
-  "ex": "My new molar is coming in.",
-  "exz": "我的新臼齿正在长出来。"
  },
  "mop": {
   "zh": "拖把",
@@ -4637,11 +4107,6 @@
   "ex": "I drink cocoa from a mug.",
   "exz": "我用马克杯喝可可。"
  },
- "municipality": {
-  "zh": "市；自治区",
-  "ex": "Our municipality has a new park.",
-  "exz": "我们市有一个新公园。"
- },
  "nape": {
   "zh": "后颈",
   "ex": "The cat picked up its kitten by the nape.",
@@ -4677,20 +4142,10 @@
   "ex": "Water is a necessity.",
   "exz": "水是必需品。"
  },
- "neckband": {
-  "zh": "领口；领圈",
-  "ex": "The shirt has a soft neckband.",
-  "exz": "这件衬衫的领口很柔软。"
- },
  "needed": {
   "zh": "需要的",
   "ex": "Your help is needed.",
   "exz": "我们需要你的帮助。"
- },
- "needy": {
-  "zh": "贫困的",
-  "ex": "We gave toys to needy children.",
-  "exz": "我们给贫困的孩子送了玩具。"
  },
  "newborn": {
   "zh": "新生的",
@@ -4716,11 +4171,6 @@
   "zh": "夜间",
   "ex": "Owls hunt at nighttime.",
   "exz": "猫头鹰在夜间捕猎。"
- },
- "noggin": {
-  "zh": "脑袋",
-  "ex": "Put a hat on your noggin.",
-  "exz": "给你的小脑袋戴顶帽子。"
  },
  "noisy": {
   "zh": "吵闹的",
@@ -4754,11 +4204,6 @@
   "zh": "想法",
   "ex": "I have a notion to bake a cake.",
   "exz": "我想烤个蛋糕。"
- },
- "nourishment": {
-  "zh": "营养",
-  "ex": "Plants get nourishment from soil.",
-  "exz": "植物从土壤中获得营养。"
  },
  "novel": {
   "zh": "小说；新奇的",
@@ -4835,11 +4280,6 @@
   "zh": "再一次",
   "ex": "Sing the song once more.",
   "exz": "再唱一遍这首歌。"
- },
- "onset": {
-  "zh": "开始",
-  "ex": "We stayed inside at the onset of the storm.",
-  "exz": "暴风雨开始时我们待在屋里。"
  },
  "onward": {
   "zh": "向前",
@@ -5026,20 +4466,10 @@
   "ex": "A panel of judges watched the show.",
   "exz": "评委小组观看了表演。"
  },
- "pannier": {
-  "zh": "驮篮",
-  "ex": "The bike has a pannier for books.",
-  "exz": "自行车上有个放书的挂篮。"
- },
  "papa": {
   "zh": "爸爸",
   "ex": "Papa reads me a story.",
   "exz": "爸爸给我讲故事。"
- },
- "paraffin": {
-  "zh": "石蜡",
-  "ex": "The candle is made of paraffin.",
-  "exz": "这支蜡烛是石蜡做的。"
  },
  "parasol": {
   "zh": "阳伞",
@@ -5161,16 +4591,6 @@
   "ex": "The answer is still pending.",
   "exz": "答案还在等待中。"
  },
- "penitentiary": {
-  "zh": "监狱",
-  "ex": "The old penitentiary is now closed.",
-  "exz": "那座旧监狱现在关闭了。"
- },
- "penmanship": {
-  "zh": "书法；字迹",
-  "ex": "Your penmanship is very neat.",
-  "exz": "你的字写得很工整。"
- },
  "penny": {
   "zh": "一便士",
   "ex": "I found a penny on the ground.",
@@ -5195,11 +4615,6 @@
   "zh": "也许",
   "ex": "Perhaps it will rain.",
   "exz": "也许会下雨。"
- },
- "peril": {
-  "zh": "危险",
-  "ex": "The ship was in peril.",
-  "exz": "那艘船处于危险之中。"
  },
  "period": {
   "zh": "时期；一段时间",
@@ -5245,30 +4660,15 @@
   "ex": "The moon has a new phase.",
   "exz": "月亮进入了新的月相。"
  },
- "physique": {
-  "zh": "体格",
-  "ex": "The swimmer has a strong physique.",
-  "exz": "那位游泳运动员体格强壮。"
- },
  "piece": {
   "zh": "一块；部分",
   "ex": "Can I have a piece of cake?",
   "exz": "我能吃一块蛋糕吗？"
  },
- "pigment": {
-  "zh": "颜料",
-  "ex": "This paint has bright pigment.",
-  "exz": "这种颜料颜色很鲜艳。"
- },
  "pillow": {
   "zh": "枕头",
   "ex": "My pillow is soft.",
   "exz": "我的枕头很软。"
- },
- "pinion": {
-  "zh": "鸟翼",
-  "ex": "The bird hurt its pinion.",
-  "exz": "那只鸟伤了翅膀。"
  },
  "pinky": {
   "zh": "小指",
@@ -5287,11 +4687,6 @@
   "zh": "手枪",
   "ex": "I have a blue water pistol.",
   "exz": "我有一把蓝色水枪。"
- },
- "piston": {
-  "zh": "活塞",
-  "ex": "The piston moves up and down.",
-  "exz": "活塞上下移动。"
  },
  "pit": {
   "zh": "坑；果核",
@@ -5454,11 +4849,6 @@
   "ex": "Pack your possessions in a bag.",
   "exz": "把你的东西装进包里。"
  },
- "possessor": {
-  "zh": "拥有者",
-  "ex": "Who is the possessor of this hat?",
-  "exz": "这顶帽子是谁的？"
- },
  "possibility": {
   "zh": "可能性",
   "ex": "There is a possibility of snow.",
@@ -5570,11 +4960,6 @@
   "ex": "Our primary goal is to have fun.",
   "exz": "我们的主要目标是玩得开心。"
  },
- "primate": {
-  "zh": "灵长类动物",
-  "ex": "A monkey is a primate.",
-  "exz": "猴子是灵长类动物。"
- },
  "principal": {
   "zh": "校长；主要的",
   "ex": "The principal visited our class.",
@@ -5643,11 +5028,6 @@
   "ex": "Thank you for your prompt reply.",
   "exz": "谢谢你及时的回复。"
  },
- "prong": {
-  "zh": "叉齿",
-  "ex": "This fork has four prongs.",
-  "exz": "这把叉子有四个齿。"
- },
  "proper": {
   "zh": "正确的",
   "ex": "Put the toys in their proper place.",
@@ -5662,11 +5042,6 @@
   "zh": "提议",
   "ex": "Dad liked my proposal to go camping.",
   "exz": "爸爸喜欢我去露营的提议。"
- },
- "proprietor": {
-  "zh": "店主",
-  "ex": "The proprietor of the shop is kind.",
-  "exz": "这家店的店主很和善。"
  },
  "protected": {
   "zh": "受保护的",
@@ -5685,11 +5060,6 @@
   "zh": "只要",
   "ex": "You can play, provided that you finish homework.",
   "exz": "只要你写完作业，就可以玩。"
- },
- "prudent": {
-  "zh": "谨慎的",
-  "ex": "It is prudent to save some money.",
-  "exz": "存点钱是明智的。"
  },
  "puff": {
   "zh": "一团（烟/云）",
@@ -5736,11 +5106,6 @@
   "zh": "数量",
   "ex": "We need a small quantity of sugar.",
   "exz": "我们需要少量的糖。"
- },
- "quarry": {
-  "zh": "采石场",
-  "ex": "The truck carries stones from the quarry.",
-  "exz": "卡车从采石场运石头。"
  },
  "query": {
   "zh": "疑问",
@@ -5845,11 +5210,6 @@
   "ex": "I receive a card every birthday.",
   "exz": "每个生日我都会收到一张卡片。"
  },
- "recollection": {
-  "zh": "回忆",
-  "ex": "I have a happy recollection of that trip.",
-  "exz": "我对那次旅行有美好的回忆。"
- },
  "recorder": {
   "drop": true
  },
@@ -5872,11 +5232,6 @@
   "zh": "反射（动作）",
   "ex": "Blinking is a reflex.",
   "exz": "眨眼是一种反射动作。"
- },
- "refreshment": {
-  "zh": "茶点；饮料",
-  "ex": "We had some refreshment after the game.",
-  "exz": "比赛后我们吃了些茶点。"
  },
  "regard": {
   "zh": "尊重",
@@ -5913,11 +5268,6 @@
   "ex": "My friend is very reliable.",
   "exz": "我的朋友很可靠。"
  },
- "reliant": {
-  "zh": "依赖的",
-  "ex": "Baby birds are reliant on their mother.",
-  "exz": "小鸟依赖鸟妈妈。"
- },
  "remain": {
   "zh": "保持；留下",
   "ex": "Please remain in your seats.",
@@ -5926,11 +5276,6 @@
  "remittance": {
   "drop": true
  },
- "remorse": {
-  "zh": "懊悔",
-  "ex": "He felt remorse and said sorry.",
-  "exz": "他感到懊悔，说了对不起。"
- },
  "remote": {
   "zh": "遥远的",
   "ex": "They live in a remote village.",
@@ -5938,11 +5283,6 @@
  },
  "repast": {
   "drop": true
- },
- "repentance": {
-  "zh": "悔悟",
-  "ex": "He showed repentance and fixed the toy.",
-  "exz": "他知错了，把玩具修好了。"
  },
  "replica": {
   "zh": "复制品",
@@ -5958,11 +5298,6 @@
   "zh": "报告",
   "ex": "I wrote a report about frogs.",
   "exz": "我写了一篇关于青蛙的报告。"
- },
- "reptile": {
-  "zh": "爬行动物",
-  "ex": "A turtle is a reptile.",
-  "exz": "乌龟是爬行动物。"
  },
  "required": {
   "zh": "必需的",
@@ -6032,11 +5367,6 @@
   "ex": "Now do it in reverse order.",
   "exz": "现在按相反的顺序做。"
  },
- "revulsion": {
-  "zh": "厌恶",
-  "ex": "She felt revulsion at the rotten egg.",
-  "exz": "她对臭鸡蛋感到恶心。"
- },
  "rhyme": {
   "zh": "韵诗",
   "ex": "We learned a new rhyme today.",
@@ -6100,11 +5430,6 @@
   "ex": "I sat on a big rock.",
   "exz": "我坐在一块大岩石上。"
  },
- "rodent": {
-  "zh": "啮齿动物",
-  "ex": "A mouse is a rodent.",
-  "exz": "老鼠是啮齿动物。"
- },
  "role": {
   "zh": "角色",
   "ex": "I play the role of a king.",
@@ -6127,11 +5452,6 @@
  },
  "rotor": {
   "drop": true
- },
- "rotund": {
-  "zh": "圆胖的",
-  "ex": "The rotund panda ate bamboo.",
-  "exz": "圆滚滚的熊猫吃着竹子。"
  },
  "route": {
   "zh": "路线",
@@ -6177,11 +5497,6 @@
   "zh": "计策",
   "ex": "The fox used a clever ruse.",
   "exz": "狐狸用了一个聪明的计策。"
- },
- "russet": {
-  "zh": "赤褐色",
-  "ex": "The leaves turned russet in fall.",
-  "exz": "秋天树叶变成了红褐色。"
  },
  "sack": {
   "zh": "麻袋",
@@ -6382,11 +5697,6 @@
   "zh": "系列",
   "ex": "I love this book series.",
   "exz": "我喜欢这套系列书。"
- },
- "serpent": {
-  "zh": "大蛇",
-  "ex": "The serpent slid into the grass.",
-  "exz": "大蛇滑进了草丛。"
  },
  "set": {
   "zh": "放；准备好的",
@@ -6594,11 +5904,6 @@
   "ex": "We saw a dinosaur skeleton.",
   "exz": "我们看到了一具恐龙骨架。"
  },
- "skepticism": {
-  "zh": "怀疑",
-  "ex": "He listened with skepticism.",
-  "exz": "他半信半疑地听着。"
- },
  "skill": {
   "zh": "技能",
   "ex": "Reading is an important skill.",
@@ -6623,11 +5928,6 @@
   "zh": "松弛的",
   "ex": "The rope is slack.",
   "exz": "绳子是松的。"
- },
- "slacks": {
-  "zh": "休闲裤",
-  "ex": "Dad wears gray slacks to work.",
-  "exz": "爸爸穿灰色长裤上班。"
  },
  "slender": {
   "zh": "苗条的",
@@ -6659,11 +5959,6 @@
   "ex": "I feel sluggish in the morning.",
   "exz": "我早上觉得没精神。"
  },
- "slumber": {
-  "zh": "睡眠",
-  "ex": "The baby is in a deep slumber.",
-  "exz": "宝宝睡得很熟。"
- },
  "smart": {
   "zh": "聪明的",
   "ex": "My dog is very smart.",
@@ -6673,11 +5968,6 @@
   "zh": "得意地笑",
   "ex": "He gave a little smirk.",
   "exz": "他得意地笑了一下。"
- },
- "smooch": {
-  "zh": "亲吻",
-  "ex": "Mom gave me a smooch.",
-  "exz": "妈妈亲了我一下。"
  },
  "snap": {
   "zh": "按扣",
@@ -6746,11 +6036,6 @@
  "sol": {
   "drop": true
  },
- "solace": {
-  "zh": "安慰",
-  "ex": "My teddy bear gives me solace.",
-  "exz": "我的泰迪熊给我安慰。"
- },
  "sole": {
   "zh": "脚底；鞋底",
   "ex": "The sole of my shoe is wet.",
@@ -6785,11 +6070,6 @@
   "zh": "悲伤",
   "ex": "She felt sorrow when her fish died.",
   "exz": "她的鱼死了，她很伤心。"
- },
- "sorrowful": {
-  "zh": "悲伤的",
-  "ex": "The puppy had sorrowful eyes.",
-  "exz": "小狗的眼神很忧伤。"
  },
  "source": {
   "zh": "来源",
@@ -6857,11 +6137,6 @@
   "ex": "Let's split the cookie in half.",
   "exz": "我们把饼干分成两半吧。"
  },
- "spokesperson": {
-  "zh": "发言人",
-  "ex": "She is the spokesperson for our class.",
-  "exz": "她是我们班的发言人。"
- },
  "spot": {
   "zh": "地点；斑点",
   "ex": "This is a nice spot for a picnic.",
@@ -6886,11 +6161,6 @@
   "zh": "冲刺",
   "ex": "I sprint to the finish line.",
   "exz": "我冲向终点线。"
- },
- "spud": {
-  "zh": "土豆",
-  "ex": "I ate a baked spud for lunch.",
-  "exz": "我午饭吃了一个烤土豆。"
  },
  "squash": {
   "zh": "压扁",
@@ -6927,11 +6197,6 @@
   "ex": "Her work is of a high standard.",
   "exz": "她的作品水平很高。"
  },
- "stanza": {
-  "zh": "诗节",
-  "ex": "Read the first stanza of the poem.",
-  "exz": "读这首诗的第一节。"
- },
  "staple": {
   "drop": true
  },
@@ -6964,11 +6229,6 @@
   "zh": "热气腾腾的",
   "ex": "I drank a steaming cup of milk.",
   "exz": "我喝了一杯热气腾腾的牛奶。"
- },
- "steed": {
-  "zh": "骏马",
-  "ex": "The knight rode his steed.",
-  "exz": "骑士骑着他的骏马。"
  },
  "steering": {
   "zh": "驾驶；转向",
@@ -7080,11 +6340,6 @@
  "stupid": {
   "drop": true
  },
- "subordinate": {
-  "zh": "下属；次要的",
-  "ex": "The captain gave orders to his subordinate.",
-  "exz": "队长给他的部下下达了命令。"
- },
  "sucrose": {
   "drop": true
  },
@@ -7149,11 +6404,6 @@
   "ex": "Cats have supple bodies.",
   "exz": "猫的身体很柔软。"
  },
- "supposing": {
-  "zh": "假如",
-  "ex": "Supposing it rains, what will we do?",
-  "exz": "假如下雨，我们怎么办？"
- },
  "sure": {
   "zh": "确定的",
   "ex": "Are you sure about the answer?",
@@ -7188,11 +6438,6 @@
   "zh": "迅速的",
   "ex": "The rabbit is swift.",
   "exz": "兔子跑得很快。"
- },
- "swine": {
-  "zh": "猪",
-  "ex": "The farmer feeds the swine.",
-  "exz": "农夫喂猪。"
  },
  "switch": {
   "drop": true
@@ -7235,11 +6480,6 @@
   "ex": "The dog has tan fur.",
   "exz": "这只狗是棕褐色的毛。"
  },
- "tangible": {
-  "zh": "有形的",
-  "ex": "A hug is a tangible sign of love.",
-  "exz": "拥抱是爱的实在表现。"
- },
  "tangle": {
   "zh": "缠结",
   "ex": "My kite string is in a tangle.",
@@ -7252,11 +6492,6 @@
  },
  "tariff": {
   "drop": true
- },
- "tarp": {
-  "zh": "防水布",
-  "ex": "We put a tarp over the tent.",
-  "exz": "我们在帐篷上盖了一块防水布。"
  },
  "tart": {
   "zh": "酸的",
@@ -7438,11 +6673,6 @@
   "ex": "The house is made of timber.",
   "exz": "这座房子是木头建的。"
  },
- "timepiece": {
-  "zh": "钟表",
-  "ex": "Grandpa has an old timepiece.",
-  "exz": "爷爷有一块旧怀表。"
- },
  "timer": {
   "zh": "计时器",
   "ex": "Set the timer for ten minutes.",
@@ -7486,11 +6716,6 @@
   "ex": "I went to the zoo together with Mom.",
   "exz": "我和妈妈一起去了动物园。"
  },
- "tome": {
-  "zh": "大部头书",
-  "ex": "The teacher has a big tome on her desk.",
-  "exz": "老师桌上有一本厚厚的书。"
- },
  "tone": {
   "zh": "语气；音调",
   "ex": "Speak in a kind tone.",
@@ -7500,11 +6725,6 @@
   "zh": "工具",
   "ex": "A hammer is a useful tool.",
   "exz": "锤子是有用的工具。"
- },
- "torso": {
-  "zh": "躯干",
-  "ex": "The statue has no head, just a torso.",
-  "exz": "这尊雕像没有头，只有躯干。"
  },
  "total": {
   "zh": "总数",
@@ -7525,11 +6745,6 @@
   "zh": "高耸的",
   "ex": "We saw a towering tree.",
   "exz": "我们看到一棵高耸的大树。"
- },
- "toxin": {
-  "zh": "毒素",
-  "ex": "Some plants have a toxin in them.",
-  "exz": "有些植物含有毒素。"
  },
  "track": {
   "zh": "轨道；跑道",
@@ -7571,11 +6786,6 @@
   "ex": "Bright colors are a new trend.",
   "exz": "鲜艳的颜色是新潮流。"
  },
- "tresses": {
-  "zh": "长发",
-  "ex": "The princess has long golden tresses.",
-  "exz": "公主有一头金色长发。"
- },
  "trial": {
   "zh": "试验；审判",
   "ex": "We gave the new game a trial.",
@@ -7588,11 +6798,6 @@
   "zh": "修剪过的",
   "ex": "The hedge is neatly trimmed.",
   "exz": "树篱修剪得很整齐。"
- },
- "trinket": {
-  "zh": "小饰品",
-  "ex": "She bought a pretty trinket.",
-  "exz": "她买了一个漂亮的小饰品。"
  },
  "trolley": {
   "zh": "手推车",
@@ -7637,11 +6842,6 @@
   "ex": "Squeeze the tube of toothpaste.",
   "exz": "挤一挤牙膏管。"
  },
- "tuber": {
-  "zh": "块茎",
-  "ex": "A potato is a tuber.",
-  "exz": "土豆是一种块茎。"
- },
  "tug": {
   "zh": "拉",
   "ex": "Give the rope a tug.",
@@ -7651,11 +6851,6 @@
   "zh": "跌倒；翻滚",
   "ex": "The kids tumble on the grass.",
   "exz": "孩子们在草地上打滚。"
- },
- "tumbler": {
-  "zh": "平底玻璃杯",
-  "ex": "Pour milk into the tumbler.",
-  "exz": "把牛奶倒进杯子里。"
  },
  "tune": {
   "zh": "曲调",
@@ -7837,20 +7032,10 @@
  "vault": {
   "drop": true
  },
- "vegetation": {
-  "zh": "植物",
-  "ex": "The island has thick vegetation.",
-  "exz": "岛上植被茂密。"
- },
  "venom": {
   "zh": "毒液",
   "ex": "Some snakes have venom.",
   "exz": "有些蛇有毒液。"
- },
- "verdant": {
-  "zh": "翠绿的",
-  "ex": "We walked through verdant fields.",
-  "exz": "我们走过翠绿的田野。"
  },
  "vermin": {
   "zh": "害虫；害兽",
@@ -7867,11 +7052,6 @@
   "ex": "We went to Grandma's via the park.",
   "exz": "我们穿过公园去奶奶家。"
  },
- "vial": {
-  "zh": "小瓶",
-  "ex": "The nurse held a small vial.",
-  "exz": "护士拿着一个小药瓶。"
- },
  "vino": {
   "drop": true
  },
@@ -7884,11 +7064,6 @@
   "zh": "几乎",
   "ex": "The bus was virtually empty.",
   "exz": "公交车上几乎没人。"
- },
- "visage": {
-  "zh": "面容",
-  "ex": "The king had a kind visage.",
-  "exz": "国王面容慈祥。"
  },
  "vital": {
   "zh": "极重要的",
@@ -7968,16 +7143,6 @@
   "zh": "网",
   "ex": "The spider made a web.",
   "exz": "蜘蛛织了一张网。"
- },
- "wed": {
-  "zh": "结婚",
-  "ex": "My aunt will wed in June.",
-  "exz": "我姑姑六月结婚。"
- },
- "weep": {
-  "zh": "哭泣",
-  "ex": "Don't weep, everything is fine.",
-  "exz": "别哭，一切都好。"
  },
  "weird": {
   "zh": "奇怪的",
@@ -8134,11 +7299,6 @@
  "writing fluid": {
   "drop": true
  },
- "wrongdoing": {
-  "zh": "过错",
-  "ex": "He said sorry for his wrongdoing.",
-  "exz": "他为自己的错误道了歉。"
- },
  "yank": {
   "zh": "猛拉",
   "ex": "Don't yank the dog's leash.",
@@ -8184,11 +7344,6 @@
  },
  "yon": {
   "drop": true
- },
- "yonder": {
-  "zh": "那边",
-  "ex": "Look at the hill over yonder.",
-  "exz": "看那边的山。"
  },
  "youth": {
   "zh": "青年",
