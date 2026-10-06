@@ -12115,7 +12115,7 @@
     },
     {
         "w": "math",
-        "c": "ex",
+        "c": "ky",
         "zh": "数学",
         "en": "the study of numbers",
         "ex": "I like math very much.",
@@ -12381,7 +12381,7 @@
     },
     {
         "w": "bike",
-        "c": "ex",
+        "c": "ky",
         "zh": "自行车",
         "en": "a bicycle",
         "ex": "I ride my bike to the park.",
@@ -12599,7 +12599,7 @@
     },
     {
         "w": "tv",
-        "c": "ex",
+        "c": "ky",
         "zh": "电视",
         "en": "television",
         "ex": "I watch TV after dinner.",
@@ -12611,7 +12611,7 @@
     },
     {
         "w": "photo",
-        "c": "ex",
+        "c": "ky",
         "zh": "照片",
         "en": "a picture taken with a camera",
         "ex": "Let's take a photo.",
@@ -12623,7 +12623,7 @@
     },
     {
         "w": "phone",
-        "c": "ex",
+        "c": "ky",
         "zh": "电话,手机",
         "en": "a thing you use to talk to people far away",
         "ex": "Mom is on the phone.",
@@ -14899,7 +14899,7 @@
     },
     {
         "w": "exam",
-        "c": "ex",
+        "c": "ky",
         "zh": "考试",
         "en": "a big test",
         "ex": "I have an exam tomorrow.",
@@ -19968,6 +19968,120 @@
         "exz": "我爸妈会来看演出。",
         "s": [
             "parent"
+        ]
+    },
+    {
+        "w": "television",
+        "c": "ex",
+        "zh": "电视机",
+        "en": "a machine that shows pictures and sound from far away",
+        "ex": "We watch television after dinner.",
+        "exz": "我们晚饭后看电视。",
+        "s": [
+            "tv"
+        ]
+    },
+    {
+        "w": "photograph",
+        "c": "ex",
+        "zh": "照片",
+        "en": "a picture made with a camera",
+        "ex": "This is a photograph of my family.",
+        "exz": "这是一张我家人的照片。",
+        "s": [
+            "photo",
+            "picture"
+        ]
+    },
+    {
+        "w": "telephone",
+        "c": "ex",
+        "zh": "电话",
+        "en": "a machine you use to talk to someone far away",
+        "ex": "The telephone is ringing.",
+        "exz": "电话响了。",
+        "s": [
+            "phone"
+        ]
+    },
+    {
+        "w": "bicycle",
+        "c": "ex",
+        "zh": "自行车",
+        "en": "a machine with two wheels that you ride by moving your feet",
+        "ex": "She goes to school by bicycle.",
+        "exz": "她骑自行车上学。",
+        "s": [
+            "bike"
+        ]
+    },
+    {
+        "w": "mathematics",
+        "c": "ex",
+        "zh": "数学",
+        "en": "the study of numbers, shapes and amounts",
+        "ex": "Mathematics is my best subject.",
+        "exz": "数学是我最好的科目。",
+        "s": [
+            "math",
+            "maths"
+        ]
+    },
+    {
+        "w": "examination",
+        "c": "ex",
+        "zh": "考试",
+        "en": "a test of what you know",
+        "ex": "The examination is on Monday.",
+        "exz": "考试在星期一。",
+        "s": [
+            "exam",
+            "test"
+        ]
+    },
+    {
+        "w": "refrigerator",
+        "c": "ex",
+        "zh": "冰箱",
+        "en": "a cold box for keeping food fresh",
+        "ex": "Put the milk in the refrigerator.",
+        "exz": "把牛奶放进冰箱。",
+        "s": [
+            "fridge"
+        ]
+    },
+    {
+        "w": "fridge",
+        "c": "ky",
+        "zh": "冰箱",
+        "en": "an informal word for a refrigerator",
+        "ex": "There is some cake in the fridge.",
+        "exz": "冰箱里有一些蛋糕。",
+        "s": [
+            "refrigerator"
+        ]
+    },
+    {
+        "w": "maths",
+        "c": "ky",
+        "zh": "数学",
+        "en": "an informal British word for mathematics",
+        "ex": "We have maths in the morning.",
+        "exz": "我们早上有数学课。",
+        "s": [
+            "math",
+            "mathematics"
+        ]
+    },
+    {
+        "w": "ad",
+        "c": "ky",
+        "zh": "广告",
+        "en": "an informal word for an advertisement",
+        "ex": "I saw a funny ad on TV.",
+        "exz": "我在电视上看到一个有趣的广告。",
+        "s": [
+            "advertisement"
         ]
     }
 ]

@@ -4214,5 +4214,45 @@
     "folks":  {
         "uk":  "/fəʊks/",
         "us":  "/foʊks/"
+    },
+    "television":  {
+        "uk":  "/ˈtelɪvɪʒn/",
+        "us":  "/ˈtɛləvɪʒən/"
+    },
+    "photograph":  {
+        "uk":  "/ˈfəʊtəɡɹɑːf/",
+        "us":  "/ˈfoʊtəɡɹæf/"
+    },
+    "telephone":  {
+        "uk":  "/ˈtelɪfəʊn/",
+        "us":  "/ˈtɛləfoʊn/"
+    },
+    "bicycle":  {
+        "uk":  "/ˈbaɪsɪkl/",
+        "us":  "/ˈbaɪsɪkəl/"
+    },
+    "mathematics":  {
+        "uk":  "/ˌmæθəˈmætɪks/",
+        "us":  "/ˌmæθəˈmætɪks/"
+    },
+    "examination":  {
+        "uk":  "/ɪɡˌzæmɪˈneɪʃn/",
+        "us":  "/ɪɡˌzæməˈneɪʃən/"
+    },
+    "refrigerator":  {
+        "uk":  "/ɹɪˈfɹɪdʒəɹeɪtə/",
+        "us":  "/ɹɪˈfɹɪdʒəˌɹeɪtɚ/"
+    },
+    "fridge":  {
+        "uk":  "/fɹɪdʒ/",
+        "us":  "/fɹɪdʒ/"
+    },
+    "maths":  {
+        "uk":  "/mæθs/",
+        "us":  "/mæθs/"
+    },
+    "ad":  {
+        "uk":  "/æd/",
+        "us":  "/æd/"
     }
 }

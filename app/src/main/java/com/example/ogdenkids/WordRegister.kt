@@ -40,7 +40,16 @@ private val Registers = mapOf(
     "awesome" to Register("口语", "great"),
     "okay" to Register("口语", "fine"),
     "thanks" to Register("口语", "thank"),
-    "folks" to Register("口语", "parent")
+    "folks" to Register("口语", "parent"),
+    "tv" to Register("口语", "television"),
+    "photo" to Register("口语", "photograph"),
+    "phone" to Register("口语", "telephone"),
+    "bike" to Register("口语", "bicycle"),
+    "math" to Register("口语", "mathematics"),
+    "exam" to Register("口语", "examination"),
+    "fridge" to Register("口语", "refrigerator"),
+    "maths" to Register("口语", "mathematics"),
+    "ad" to Register("口语", "advertisement")
 )
 
 fun registerOf(word: String): Register? = Registers[word.lowercase()]

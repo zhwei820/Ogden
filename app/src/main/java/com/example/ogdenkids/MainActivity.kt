@@ -3448,10 +3448,12 @@ fun PracticeScreen(
         else if (reviewOnly && reviewWords.isNotEmpty()) reviewWords.take(10)
         else allWords.filter { it.category == category }.drop((level - 1) * 10).take(10)
     }
-    var index by remember(source) { mutableStateOf(0) }
-    var selected by remember(source) { mutableStateOf<String?>(null) }
-    var answerShown by remember(source) { mutableStateOf(false) }
-    var correctCount by remember(source) { mutableStateOf(0) }
+    val services = LocalSpeechServices.current
+    // 用 rememberSaveable：答完点「查词典」会跳到单词详情，返回时要回到原题
+    var index by rememberSaveable(source) { mutableStateOf(0) }
+    var selected by rememberSaveable(source) { mutableStateOf<String?>(null) }
+    var answerShown by rememberSaveable(source) { mutableStateOf(false) }
+    var correctCount by rememberSaveable(source) { mutableStateOf(0) }
     val word = source.getOrNull(index)
     fun goNext() {
         if (index >= source.lastIndex) {
@@ -3491,7 +3493,7 @@ fun PracticeScreen(
         val type = PracticeType.values()[index % PracticeType.values().size]
         val question = remember(word, type) { buildQuestion(type, word, allWords) }
         // 听音选词一进题就播放
-        LaunchedEffect(word, type) { if (type == PracticeType.Listen) onSpeak(word.word) }
+        LaunchedEffect(word, type) { if (type == PracticeType.Listen && !answerShown) onSpeak(word.word) }
         val isCorrect = selected == question.answer
 
         LazyColumn(
@@ -3571,6 +3573,12 @@ fun PracticeScreen(
                         Text(option, modifier = Modifier.weight(1f), fontSize = 18.sp)
                         if (correctThis) Icon(Icons.Default.Check, contentDescription = null, tint = Success)
                         if (wrongThis) Icon(Icons.Default.Close, contentDescription = null, tint = Error)
+                        // 答题前不给查词，免得直接看到答案
+                        if (answerShown) services.lookup(option)?.let { entry ->
+                            IconButton(onClick = { services.openWord(entry) }) {
+                                Icon(Icons.Default.Book, contentDescription = "查词典", tint = InkFaint)
+                            }
+                        }
                     }
                 }
             }
@@ -3582,7 +3590,12 @@ fun PracticeScreen(
                     ) {
                         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             AppText(if (isCorrect) "答对了！" else "这题先记到错词本", fontWeight = FontWeight.Bold, color = if (isCorrect) Success else Error)
-                            Text("${word.word} · ${convertZh(word.zh, zh)}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Text("${word.word} · ${convertZh(word.zh, zh)}", fontSize = 20.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.weight(1f))
+                                IconButton(onClick = { services.openWord(word) }) {
+                                    Icon(Icons.Default.Book, contentDescription = "查词典", tint = Category.Operations.tint)
+                                }
+                            }
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 TranslatableText(
                                     AnnotatedString(word.example),
