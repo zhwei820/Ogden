@@ -9,6 +9,7 @@
 """
 import array
 import hashlib
+import http.client
 import json
 import sys
 import threading
@@ -107,7 +108,8 @@ def request(ssml_text, sub_key, region, output_format):
                 time.sleep(max(int(e.headers.get("Retry-After") or 0), min(2 ** attempt, 60)))
                 continue
             raise
-        except (urllib.error.URLError, TimeoutError):
+        except (urllib.error.URLError, TimeoutError, http.client.IncompleteRead, ConnectionError):
+            # 大批量请求偶尔会断流，重试即可
             if attempt < 11:
                 time.sleep(min(2 ** attempt, 60))
                 continue
