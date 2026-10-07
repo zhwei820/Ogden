@@ -47,9 +47,9 @@ class SpeechTest {
             val unitWords = speeches.getJSONObject(index).optJSONArray("words") ?: return@repeat
             repeat(unitWords.length()) { assertTrue("Unit word not in list: ${unitWords.getString(it)}", unitWords.getString(it).lowercase() in headwords) }
         }
-        // 单元按 SpeechTheme 声明顺序连续编号，每个主题 5 个
+        // 单元按 SpeechTheme 声明顺序连续编号，每个主题 units 个
         (1..StemLevel).forEach { level ->
-            val expectedThemes = SpeechTheme.forLevel(level).flatMap { theme -> List(5) { theme.key } }
+            val expectedThemes = SpeechTheme.forLevel(level).flatMap { theme -> List(theme.units) { theme.key } }
             val units = List(speeches.length()) { speeches.getJSONObject(it) }
                 .filter { it.getInt("level") == level }
                 .sortedBy { it.getInt("unit") }

@@ -14669,5 +14669,2715 @@
       "iron",
       "power"
     ]
+  },
+  {
+    "id": "4-16",
+    "level": 4,
+    "unit": 16,
+    "theme": "addition",
+    "title": "Plus One",
+    "titleZh": "加一",
+    "lines": [
+      {
+        "en": "One plus one is two.",
+        "zh": "一加一等于二。"
+      },
+      {
+        "en": "Two plus one is three.",
+        "zh": "二加一等于三。"
+      },
+      {
+        "en": "Three plus one is four.",
+        "zh": "三加一等于四。"
+      },
+      {
+        "en": "Four plus one is five.",
+        "zh": "四加一等于五。"
+      },
+      {
+        "en": "Five plus one is six.",
+        "zh": "五加一等于六。"
+      },
+      {
+        "en": "Six plus one is seven.",
+        "zh": "六加一等于七。"
+      },
+      {
+        "en": "Seven plus one is eight.",
+        "zh": "七加一等于八。"
+      },
+      {
+        "en": "Eight plus one is nine.",
+        "zh": "八加一等于九。"
+      },
+      {
+        "en": "Nine plus one is ten.",
+        "zh": "九加一等于十。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three plus one? It's four.",
+        "zh": "三加一等于几？等于四。"
+      },
+      {
+        "en": "Six and one make seven.",
+        "zh": "六和一合起来是七。"
+      },
+      {
+        "en": "One more than eight is nine.",
+        "zh": "比八多一是九。"
+      },
+      {
+        "en": "Four plus one equals five.",
+        "zh": "四加一等于五。"
+      }
+    ],
+    "words": [
+      "plus",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten"
+    ]
+  },
+  {
+    "id": "4-17",
+    "level": 4,
+    "unit": 17,
+    "theme": "addition",
+    "title": "Plus Two",
+    "titleZh": "加二",
+    "lines": [
+      {
+        "en": "One plus two is three.",
+        "zh": "一加二等于三。"
+      },
+      {
+        "en": "Two plus two is four.",
+        "zh": "二加二等于四。"
+      },
+      {
+        "en": "Three plus two is five.",
+        "zh": "三加二等于五。"
+      },
+      {
+        "en": "Four plus two is six.",
+        "zh": "四加二等于六。"
+      },
+      {
+        "en": "Five plus two is seven.",
+        "zh": "五加二等于七。"
+      },
+      {
+        "en": "Six plus two is eight.",
+        "zh": "六加二等于八。"
+      },
+      {
+        "en": "Seven plus two is nine.",
+        "zh": "七加二等于九。"
+      },
+      {
+        "en": "Eight plus two is ten.",
+        "zh": "八加二等于十。"
+      },
+      {
+        "en": "Nine plus two is eleven.",
+        "zh": "九加二等于十一。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is four plus two? It's six.",
+        "zh": "四加二等于几？等于六。"
+      },
+      {
+        "en": "Seven and two make nine.",
+        "zh": "七和二合起来是九。"
+      },
+      {
+        "en": "Two more than nine is eleven.",
+        "zh": "比九多二是十一。"
+      },
+      {
+        "en": "Two plus two equals four.",
+        "zh": "二加二等于四。"
+      }
+    ],
+    "words": [
+      "plus",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven"
+    ]
+  },
+  {
+    "id": "4-18",
+    "level": 4,
+    "unit": 18,
+    "theme": "addition",
+    "title": "Plus Three",
+    "titleZh": "加三",
+    "lines": [
+      {
+        "en": "One plus three is four.",
+        "zh": "一加三等于四。"
+      },
+      {
+        "en": "Two plus three is five.",
+        "zh": "二加三等于五。"
+      },
+      {
+        "en": "Three plus three is six.",
+        "zh": "三加三等于六。"
+      },
+      {
+        "en": "Four plus three is seven.",
+        "zh": "四加三等于七。"
+      },
+      {
+        "en": "Five plus three is eight.",
+        "zh": "五加三等于八。"
+      },
+      {
+        "en": "Six plus three is nine.",
+        "zh": "六加三等于九。"
+      },
+      {
+        "en": "Seven plus three is ten.",
+        "zh": "七加三等于十。"
+      },
+      {
+        "en": "Eight plus three is eleven.",
+        "zh": "八加三等于十一。"
+      },
+      {
+        "en": "Nine plus three is twelve.",
+        "zh": "九加三等于十二。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is five plus three? It's eight.",
+        "zh": "五加三等于几？等于八。"
+      },
+      {
+        "en": "Eight and three make eleven.",
+        "zh": "八和三合起来是十一。"
+      },
+      {
+        "en": "Three more than three is six.",
+        "zh": "比三多三是六。"
+      },
+      {
+        "en": "Six plus three equals nine.",
+        "zh": "六加三等于九。"
+      }
+    ],
+    "words": [
+      "plus",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve"
+    ]
+  },
+  {
+    "id": "4-19",
+    "level": 4,
+    "unit": 19,
+    "theme": "addition",
+    "title": "Plus Four",
+    "titleZh": "加四",
+    "lines": [
+      {
+        "en": "One plus four is five.",
+        "zh": "一加四等于五。"
+      },
+      {
+        "en": "Two plus four is six.",
+        "zh": "二加四等于六。"
+      },
+      {
+        "en": "Three plus four is seven.",
+        "zh": "三加四等于七。"
+      },
+      {
+        "en": "Four plus four is eight.",
+        "zh": "四加四等于八。"
+      },
+      {
+        "en": "Five plus four is nine.",
+        "zh": "五加四等于九。"
+      },
+      {
+        "en": "Six plus four is ten.",
+        "zh": "六加四等于十。"
+      },
+      {
+        "en": "Seven plus four is eleven.",
+        "zh": "七加四等于十一。"
+      },
+      {
+        "en": "Eight plus four is twelve.",
+        "zh": "八加四等于十二。"
+      },
+      {
+        "en": "Nine plus four is thirteen.",
+        "zh": "九加四等于十三。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is two plus four? It's six.",
+        "zh": "二加四等于几？等于六。"
+      },
+      {
+        "en": "Five and four make nine.",
+        "zh": "五和四合起来是九。"
+      },
+      {
+        "en": "Four more than seven is eleven.",
+        "zh": "比七多四是十一。"
+      },
+      {
+        "en": "Nine plus four equals thirteen.",
+        "zh": "九加四等于十三。"
+      }
+    ],
+    "words": [
+      "plus",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen"
+    ]
+  },
+  {
+    "id": "4-20",
+    "level": 4,
+    "unit": 20,
+    "theme": "addition",
+    "title": "Plus Five",
+    "titleZh": "加五",
+    "lines": [
+      {
+        "en": "One plus five is six.",
+        "zh": "一加五等于六。"
+      },
+      {
+        "en": "Two plus five is seven.",
+        "zh": "二加五等于七。"
+      },
+      {
+        "en": "Three plus five is eight.",
+        "zh": "三加五等于八。"
+      },
+      {
+        "en": "Four plus five is nine.",
+        "zh": "四加五等于九。"
+      },
+      {
+        "en": "Five plus five is ten.",
+        "zh": "五加五等于十。"
+      },
+      {
+        "en": "Six plus five is eleven.",
+        "zh": "六加五等于十一。"
+      },
+      {
+        "en": "Seven plus five is twelve.",
+        "zh": "七加五等于十二。"
+      },
+      {
+        "en": "Eight plus five is thirteen.",
+        "zh": "八加五等于十三。"
+      },
+      {
+        "en": "Nine plus five is fourteen.",
+        "zh": "九加五等于十四。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three plus five? It's eight.",
+        "zh": "三加五等于几？等于八。"
+      },
+      {
+        "en": "Six and five make eleven.",
+        "zh": "六和五合起来是十一。"
+      },
+      {
+        "en": "Five more than eight is thirteen.",
+        "zh": "比八多五是十三。"
+      },
+      {
+        "en": "Four plus five equals nine.",
+        "zh": "四加五等于九。"
+      }
+    ],
+    "words": [
+      "plus",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen"
+    ]
+  },
+  {
+    "id": "4-21",
+    "level": 4,
+    "unit": 21,
+    "theme": "addition",
+    "title": "Plus Six",
+    "titleZh": "加六",
+    "lines": [
+      {
+        "en": "One plus six is seven.",
+        "zh": "一加六等于七。"
+      },
+      {
+        "en": "Two plus six is eight.",
+        "zh": "二加六等于八。"
+      },
+      {
+        "en": "Three plus six is nine.",
+        "zh": "三加六等于九。"
+      },
+      {
+        "en": "Four plus six is ten.",
+        "zh": "四加六等于十。"
+      },
+      {
+        "en": "Five plus six is eleven.",
+        "zh": "五加六等于十一。"
+      },
+      {
+        "en": "Six plus six is twelve.",
+        "zh": "六加六等于十二。"
+      },
+      {
+        "en": "Seven plus six is thirteen.",
+        "zh": "七加六等于十三。"
+      },
+      {
+        "en": "Eight plus six is fourteen.",
+        "zh": "八加六等于十四。"
+      },
+      {
+        "en": "Nine plus six is fifteen.",
+        "zh": "九加六等于十五。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is four plus six? It's ten.",
+        "zh": "四加六等于几？等于十。"
+      },
+      {
+        "en": "Seven and six make thirteen.",
+        "zh": "七和六合起来是十三。"
+      },
+      {
+        "en": "Six more than nine is fifteen.",
+        "zh": "比九多六是十五。"
+      },
+      {
+        "en": "Two plus six equals eight.",
+        "zh": "二加六等于八。"
+      }
+    ],
+    "words": [
+      "plus",
+      "six",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen"
+    ]
+  },
+  {
+    "id": "4-22",
+    "level": 4,
+    "unit": 22,
+    "theme": "addition",
+    "title": "Plus Seven",
+    "titleZh": "加七",
+    "lines": [
+      {
+        "en": "One plus seven is eight.",
+        "zh": "一加七等于八。"
+      },
+      {
+        "en": "Two plus seven is nine.",
+        "zh": "二加七等于九。"
+      },
+      {
+        "en": "Three plus seven is ten.",
+        "zh": "三加七等于十。"
+      },
+      {
+        "en": "Four plus seven is eleven.",
+        "zh": "四加七等于十一。"
+      },
+      {
+        "en": "Five plus seven is twelve.",
+        "zh": "五加七等于十二。"
+      },
+      {
+        "en": "Six plus seven is thirteen.",
+        "zh": "六加七等于十三。"
+      },
+      {
+        "en": "Seven plus seven is fourteen.",
+        "zh": "七加七等于十四。"
+      },
+      {
+        "en": "Eight plus seven is fifteen.",
+        "zh": "八加七等于十五。"
+      },
+      {
+        "en": "Nine plus seven is sixteen.",
+        "zh": "九加七等于十六。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is five plus seven? It's twelve.",
+        "zh": "五加七等于几？等于十二。"
+      },
+      {
+        "en": "Eight and seven make fifteen.",
+        "zh": "八和七合起来是十五。"
+      },
+      {
+        "en": "Seven more than three is ten.",
+        "zh": "比三多七是十。"
+      },
+      {
+        "en": "Six plus seven equals thirteen.",
+        "zh": "六加七等于十三。"
+      }
+    ],
+    "words": [
+      "plus",
+      "seven",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen"
+    ]
+  },
+  {
+    "id": "4-23",
+    "level": 4,
+    "unit": 23,
+    "theme": "addition",
+    "title": "Plus Eight",
+    "titleZh": "加八",
+    "lines": [
+      {
+        "en": "One plus eight is nine.",
+        "zh": "一加八等于九。"
+      },
+      {
+        "en": "Two plus eight is ten.",
+        "zh": "二加八等于十。"
+      },
+      {
+        "en": "Three plus eight is eleven.",
+        "zh": "三加八等于十一。"
+      },
+      {
+        "en": "Four plus eight is twelve.",
+        "zh": "四加八等于十二。"
+      },
+      {
+        "en": "Five plus eight is thirteen.",
+        "zh": "五加八等于十三。"
+      },
+      {
+        "en": "Six plus eight is fourteen.",
+        "zh": "六加八等于十四。"
+      },
+      {
+        "en": "Seven plus eight is fifteen.",
+        "zh": "七加八等于十五。"
+      },
+      {
+        "en": "Eight plus eight is sixteen.",
+        "zh": "八加八等于十六。"
+      },
+      {
+        "en": "Nine plus eight is seventeen.",
+        "zh": "九加八等于十七。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is two plus eight? It's ten.",
+        "zh": "二加八等于几？等于十。"
+      },
+      {
+        "en": "Five and eight make thirteen.",
+        "zh": "五和八合起来是十三。"
+      },
+      {
+        "en": "Eight more than seven is fifteen.",
+        "zh": "比七多八是十五。"
+      },
+      {
+        "en": "Nine plus eight equals seventeen.",
+        "zh": "九加八等于十七。"
+      }
+    ],
+    "words": [
+      "plus",
+      "eight",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen"
+    ]
+  },
+  {
+    "id": "4-24",
+    "level": 4,
+    "unit": 24,
+    "theme": "addition",
+    "title": "Plus Nine",
+    "titleZh": "加九",
+    "lines": [
+      {
+        "en": "One plus nine is ten.",
+        "zh": "一加九等于十。"
+      },
+      {
+        "en": "Two plus nine is eleven.",
+        "zh": "二加九等于十一。"
+      },
+      {
+        "en": "Three plus nine is twelve.",
+        "zh": "三加九等于十二。"
+      },
+      {
+        "en": "Four plus nine is thirteen.",
+        "zh": "四加九等于十三。"
+      },
+      {
+        "en": "Five plus nine is fourteen.",
+        "zh": "五加九等于十四。"
+      },
+      {
+        "en": "Six plus nine is fifteen.",
+        "zh": "六加九等于十五。"
+      },
+      {
+        "en": "Seven plus nine is sixteen.",
+        "zh": "七加九等于十六。"
+      },
+      {
+        "en": "Eight plus nine is seventeen.",
+        "zh": "八加九等于十七。"
+      },
+      {
+        "en": "Nine plus nine is eighteen.",
+        "zh": "九加九等于十八。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three plus nine? It's twelve.",
+        "zh": "三加九等于几？等于十二。"
+      },
+      {
+        "en": "Six and nine make fifteen.",
+        "zh": "六和九合起来是十五。"
+      },
+      {
+        "en": "Nine more than eight is seventeen.",
+        "zh": "比八多九是十七。"
+      },
+      {
+        "en": "Four plus nine equals thirteen.",
+        "zh": "四加九等于十三。"
+      }
+    ],
+    "words": [
+      "plus",
+      "nine",
+      "ten",
+      "eleven",
+      "twelve",
+      "thirteen",
+      "fourteen",
+      "fifteen",
+      "sixteen",
+      "seventeen",
+      "eighteen"
+    ]
+  },
+  {
+    "id": "4-25",
+    "level": 4,
+    "unit": 25,
+    "theme": "subtraction",
+    "title": "Minus One",
+    "titleZh": "减一",
+    "lines": [
+      {
+        "en": "Two minus one is one.",
+        "zh": "二减一等于一。"
+      },
+      {
+        "en": "Three minus one is two.",
+        "zh": "三减一等于二。"
+      },
+      {
+        "en": "Four minus one is three.",
+        "zh": "四减一等于三。"
+      },
+      {
+        "en": "Five minus one is four.",
+        "zh": "五减一等于四。"
+      },
+      {
+        "en": "Six minus one is five.",
+        "zh": "六减一等于五。"
+      },
+      {
+        "en": "Seven minus one is six.",
+        "zh": "七减一等于六。"
+      },
+      {
+        "en": "Eight minus one is seven.",
+        "zh": "八减一等于七。"
+      },
+      {
+        "en": "Nine minus one is eight.",
+        "zh": "九减一等于八。"
+      },
+      {
+        "en": "Ten minus one is nine.",
+        "zh": "十减一等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is four minus one? It's three.",
+        "zh": "四减一等于几？等于三。"
+      },
+      {
+        "en": "Seven take away one is six.",
+        "zh": "七拿走一还剩六。"
+      },
+      {
+        "en": "One less than nine is eight.",
+        "zh": "比九少一是八。"
+      },
+      {
+        "en": "Five minus one equals four.",
+        "zh": "五减一等于四。"
+      }
+    ],
+    "words": [
+      "minus",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-26",
+    "level": 4,
+    "unit": 26,
+    "theme": "subtraction",
+    "title": "Minus Two",
+    "titleZh": "减二",
+    "lines": [
+      {
+        "en": "Three minus two is one.",
+        "zh": "三减二等于一。"
+      },
+      {
+        "en": "Four minus two is two.",
+        "zh": "四减二等于二。"
+      },
+      {
+        "en": "Five minus two is three.",
+        "zh": "五减二等于三。"
+      },
+      {
+        "en": "Six minus two is four.",
+        "zh": "六减二等于四。"
+      },
+      {
+        "en": "Seven minus two is five.",
+        "zh": "七减二等于五。"
+      },
+      {
+        "en": "Eight minus two is six.",
+        "zh": "八减二等于六。"
+      },
+      {
+        "en": "Nine minus two is seven.",
+        "zh": "九减二等于七。"
+      },
+      {
+        "en": "Ten minus two is eight.",
+        "zh": "十减二等于八。"
+      },
+      {
+        "en": "Eleven minus two is nine.",
+        "zh": "十一减二等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is six minus two? It's four.",
+        "zh": "六减二等于几？等于四。"
+      },
+      {
+        "en": "Nine take away two is seven.",
+        "zh": "九拿走二还剩七。"
+      },
+      {
+        "en": "Two less than eleven is nine.",
+        "zh": "比十一少二是九。"
+      },
+      {
+        "en": "Four minus two equals two.",
+        "zh": "四减二等于二。"
+      }
+    ],
+    "words": [
+      "minus",
+      "two",
+      "one",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-27",
+    "level": 4,
+    "unit": 27,
+    "theme": "subtraction",
+    "title": "Minus Three",
+    "titleZh": "减三",
+    "lines": [
+      {
+        "en": "Four minus three is one.",
+        "zh": "四减三等于一。"
+      },
+      {
+        "en": "Five minus three is two.",
+        "zh": "五减三等于二。"
+      },
+      {
+        "en": "Six minus three is three.",
+        "zh": "六减三等于三。"
+      },
+      {
+        "en": "Seven minus three is four.",
+        "zh": "七减三等于四。"
+      },
+      {
+        "en": "Eight minus three is five.",
+        "zh": "八减三等于五。"
+      },
+      {
+        "en": "Nine minus three is six.",
+        "zh": "九减三等于六。"
+      },
+      {
+        "en": "Ten minus three is seven.",
+        "zh": "十减三等于七。"
+      },
+      {
+        "en": "Eleven minus three is eight.",
+        "zh": "十一减三等于八。"
+      },
+      {
+        "en": "Twelve minus three is nine.",
+        "zh": "十二减三等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is eight minus three? It's five.",
+        "zh": "八减三等于几？等于五。"
+      },
+      {
+        "en": "Eleven take away three is eight.",
+        "zh": "十一拿走三还剩八。"
+      },
+      {
+        "en": "Three less than six is three.",
+        "zh": "比六少三是三。"
+      },
+      {
+        "en": "Nine minus three equals six.",
+        "zh": "九减三等于六。"
+      }
+    ],
+    "words": [
+      "minus",
+      "three",
+      "one",
+      "two",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-28",
+    "level": 4,
+    "unit": 28,
+    "theme": "subtraction",
+    "title": "Minus Four",
+    "titleZh": "减四",
+    "lines": [
+      {
+        "en": "Five minus four is one.",
+        "zh": "五减四等于一。"
+      },
+      {
+        "en": "Six minus four is two.",
+        "zh": "六减四等于二。"
+      },
+      {
+        "en": "Seven minus four is three.",
+        "zh": "七减四等于三。"
+      },
+      {
+        "en": "Eight minus four is four.",
+        "zh": "八减四等于四。"
+      },
+      {
+        "en": "Nine minus four is five.",
+        "zh": "九减四等于五。"
+      },
+      {
+        "en": "Ten minus four is six.",
+        "zh": "十减四等于六。"
+      },
+      {
+        "en": "Eleven minus four is seven.",
+        "zh": "十一减四等于七。"
+      },
+      {
+        "en": "Twelve minus four is eight.",
+        "zh": "十二减四等于八。"
+      },
+      {
+        "en": "Thirteen minus four is nine.",
+        "zh": "十三减四等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is six minus four? It's two.",
+        "zh": "六减四等于几？等于二。"
+      },
+      {
+        "en": "Nine take away four is five.",
+        "zh": "九拿走四还剩五。"
+      },
+      {
+        "en": "Four less than eleven is seven.",
+        "zh": "比十一少四是七。"
+      },
+      {
+        "en": "Thirteen minus four equals nine.",
+        "zh": "十三减四等于九。"
+      }
+    ],
+    "words": [
+      "minus",
+      "four",
+      "one",
+      "two",
+      "three",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-29",
+    "level": 4,
+    "unit": 29,
+    "theme": "subtraction",
+    "title": "Minus Five",
+    "titleZh": "减五",
+    "lines": [
+      {
+        "en": "Six minus five is one.",
+        "zh": "六减五等于一。"
+      },
+      {
+        "en": "Seven minus five is two.",
+        "zh": "七减五等于二。"
+      },
+      {
+        "en": "Eight minus five is three.",
+        "zh": "八减五等于三。"
+      },
+      {
+        "en": "Nine minus five is four.",
+        "zh": "九减五等于四。"
+      },
+      {
+        "en": "Ten minus five is five.",
+        "zh": "十减五等于五。"
+      },
+      {
+        "en": "Eleven minus five is six.",
+        "zh": "十一减五等于六。"
+      },
+      {
+        "en": "Twelve minus five is seven.",
+        "zh": "十二减五等于七。"
+      },
+      {
+        "en": "Thirteen minus five is eight.",
+        "zh": "十三减五等于八。"
+      },
+      {
+        "en": "Fourteen minus five is nine.",
+        "zh": "十四减五等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is eight minus five? It's three.",
+        "zh": "八减五等于几？等于三。"
+      },
+      {
+        "en": "Eleven take away five is six.",
+        "zh": "十一拿走五还剩六。"
+      },
+      {
+        "en": "Five less than thirteen is eight.",
+        "zh": "比十三少五是八。"
+      },
+      {
+        "en": "Nine minus five equals four.",
+        "zh": "九减五等于四。"
+      }
+    ],
+    "words": [
+      "minus",
+      "five",
+      "one",
+      "two",
+      "three",
+      "four",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-30",
+    "level": 4,
+    "unit": 30,
+    "theme": "subtraction",
+    "title": "Minus Six",
+    "titleZh": "减六",
+    "lines": [
+      {
+        "en": "Seven minus six is one.",
+        "zh": "七减六等于一。"
+      },
+      {
+        "en": "Eight minus six is two.",
+        "zh": "八减六等于二。"
+      },
+      {
+        "en": "Nine minus six is three.",
+        "zh": "九减六等于三。"
+      },
+      {
+        "en": "Ten minus six is four.",
+        "zh": "十减六等于四。"
+      },
+      {
+        "en": "Eleven minus six is five.",
+        "zh": "十一减六等于五。"
+      },
+      {
+        "en": "Twelve minus six is six.",
+        "zh": "十二减六等于六。"
+      },
+      {
+        "en": "Thirteen minus six is seven.",
+        "zh": "十三减六等于七。"
+      },
+      {
+        "en": "Fourteen minus six is eight.",
+        "zh": "十四减六等于八。"
+      },
+      {
+        "en": "Fifteen minus six is nine.",
+        "zh": "十五减六等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is ten minus six? It's four.",
+        "zh": "十减六等于几？等于四。"
+      },
+      {
+        "en": "Thirteen take away six is seven.",
+        "zh": "十三拿走六还剩七。"
+      },
+      {
+        "en": "Six less than fifteen is nine.",
+        "zh": "比十五少六是九。"
+      },
+      {
+        "en": "Eight minus six equals two.",
+        "zh": "八减六等于二。"
+      }
+    ],
+    "words": [
+      "minus",
+      "six",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-31",
+    "level": 4,
+    "unit": 31,
+    "theme": "subtraction",
+    "title": "Minus Seven",
+    "titleZh": "减七",
+    "lines": [
+      {
+        "en": "Eight minus seven is one.",
+        "zh": "八减七等于一。"
+      },
+      {
+        "en": "Nine minus seven is two.",
+        "zh": "九减七等于二。"
+      },
+      {
+        "en": "Ten minus seven is three.",
+        "zh": "十减七等于三。"
+      },
+      {
+        "en": "Eleven minus seven is four.",
+        "zh": "十一减七等于四。"
+      },
+      {
+        "en": "Twelve minus seven is five.",
+        "zh": "十二减七等于五。"
+      },
+      {
+        "en": "Thirteen minus seven is six.",
+        "zh": "十三减七等于六。"
+      },
+      {
+        "en": "Fourteen minus seven is seven.",
+        "zh": "十四减七等于七。"
+      },
+      {
+        "en": "Fifteen minus seven is eight.",
+        "zh": "十五减七等于八。"
+      },
+      {
+        "en": "Sixteen minus seven is nine.",
+        "zh": "十六减七等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is twelve minus seven? It's five.",
+        "zh": "十二减七等于几？等于五。"
+      },
+      {
+        "en": "Fifteen take away seven is eight.",
+        "zh": "十五拿走七还剩八。"
+      },
+      {
+        "en": "Seven less than ten is three.",
+        "zh": "比十少七是三。"
+      },
+      {
+        "en": "Thirteen minus seven equals six.",
+        "zh": "十三减七等于六。"
+      }
+    ],
+    "words": [
+      "minus",
+      "seven",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-32",
+    "level": 4,
+    "unit": 32,
+    "theme": "subtraction",
+    "title": "Minus Eight",
+    "titleZh": "减八",
+    "lines": [
+      {
+        "en": "Nine minus eight is one.",
+        "zh": "九减八等于一。"
+      },
+      {
+        "en": "Ten minus eight is two.",
+        "zh": "十减八等于二。"
+      },
+      {
+        "en": "Eleven minus eight is three.",
+        "zh": "十一减八等于三。"
+      },
+      {
+        "en": "Twelve minus eight is four.",
+        "zh": "十二减八等于四。"
+      },
+      {
+        "en": "Thirteen minus eight is five.",
+        "zh": "十三减八等于五。"
+      },
+      {
+        "en": "Fourteen minus eight is six.",
+        "zh": "十四减八等于六。"
+      },
+      {
+        "en": "Fifteen minus eight is seven.",
+        "zh": "十五减八等于七。"
+      },
+      {
+        "en": "Sixteen minus eight is eight.",
+        "zh": "十六减八等于八。"
+      },
+      {
+        "en": "Seventeen minus eight is nine.",
+        "zh": "十七减八等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is ten minus eight? It's two.",
+        "zh": "十减八等于几？等于二。"
+      },
+      {
+        "en": "Thirteen take away eight is five.",
+        "zh": "十三拿走八还剩五。"
+      },
+      {
+        "en": "Eight less than fifteen is seven.",
+        "zh": "比十五少八是七。"
+      },
+      {
+        "en": "Seventeen minus eight equals nine.",
+        "zh": "十七减八等于九。"
+      }
+    ],
+    "words": [
+      "minus",
+      "eight",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-33",
+    "level": 4,
+    "unit": 33,
+    "theme": "subtraction",
+    "title": "Minus Nine",
+    "titleZh": "减九",
+    "lines": [
+      {
+        "en": "Ten minus nine is one.",
+        "zh": "十减九等于一。"
+      },
+      {
+        "en": "Eleven minus nine is two.",
+        "zh": "十一减九等于二。"
+      },
+      {
+        "en": "Twelve minus nine is three.",
+        "zh": "十二减九等于三。"
+      },
+      {
+        "en": "Thirteen minus nine is four.",
+        "zh": "十三减九等于四。"
+      },
+      {
+        "en": "Fourteen minus nine is five.",
+        "zh": "十四减九等于五。"
+      },
+      {
+        "en": "Fifteen minus nine is six.",
+        "zh": "十五减九等于六。"
+      },
+      {
+        "en": "Sixteen minus nine is seven.",
+        "zh": "十六减九等于七。"
+      },
+      {
+        "en": "Seventeen minus nine is eight.",
+        "zh": "十七减九等于八。"
+      },
+      {
+        "en": "Eighteen minus nine is nine.",
+        "zh": "十八减九等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is twelve minus nine? It's three.",
+        "zh": "十二减九等于几？等于三。"
+      },
+      {
+        "en": "Fifteen take away nine is six.",
+        "zh": "十五拿走九还剩六。"
+      },
+      {
+        "en": "Nine less than seventeen is eight.",
+        "zh": "比十七少九是八。"
+      },
+      {
+        "en": "Thirteen minus nine equals four.",
+        "zh": "十三减九等于四。"
+      }
+    ],
+    "words": [
+      "minus",
+      "nine",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight"
+    ]
+  },
+  {
+    "id": "4-34",
+    "level": 4,
+    "unit": 34,
+    "theme": "multiplication",
+    "title": "The One Times Table",
+    "titleZh": "一的乘法表",
+    "lines": [
+      {
+        "en": "One times one is one.",
+        "zh": "一乘一等于一。"
+      },
+      {
+        "en": "Two times one is two.",
+        "zh": "二乘一等于二。"
+      },
+      {
+        "en": "Three times one is three.",
+        "zh": "三乘一等于三。"
+      },
+      {
+        "en": "Four times one is four.",
+        "zh": "四乘一等于四。"
+      },
+      {
+        "en": "Five times one is five.",
+        "zh": "五乘一等于五。"
+      },
+      {
+        "en": "Six times one is six.",
+        "zh": "六乘一等于六。"
+      },
+      {
+        "en": "Seven times one is seven.",
+        "zh": "七乘一等于七。"
+      },
+      {
+        "en": "Eight times one is eight.",
+        "zh": "八乘一等于八。"
+      },
+      {
+        "en": "Nine times one is nine.",
+        "zh": "九乘一等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three times one? It's three.",
+        "zh": "三乘一等于几？等于三。"
+      },
+      {
+        "en": "Six ones are six.",
+        "zh": "六个一是六。"
+      },
+      {
+        "en": "Eight groups of one make eight.",
+        "zh": "八组一一共是八。"
+      },
+      {
+        "en": "Four times one equals four.",
+        "zh": "四乘一等于四。"
+      }
+    ],
+    "words": [
+      "times",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-35",
+    "level": 4,
+    "unit": 35,
+    "theme": "multiplication",
+    "title": "The Two Times Table",
+    "titleZh": "二的乘法表",
+    "lines": [
+      {
+        "en": "One times two is two.",
+        "zh": "一乘二等于二。"
+      },
+      {
+        "en": "Two times two is four.",
+        "zh": "二乘二等于四。"
+      },
+      {
+        "en": "Three times two is six.",
+        "zh": "三乘二等于六。"
+      },
+      {
+        "en": "Four times two is eight.",
+        "zh": "四乘二等于八。"
+      },
+      {
+        "en": "Five times two is ten.",
+        "zh": "五乘二等于十。"
+      },
+      {
+        "en": "Six times two is twelve.",
+        "zh": "六乘二等于十二。"
+      },
+      {
+        "en": "Seven times two is fourteen.",
+        "zh": "七乘二等于十四。"
+      },
+      {
+        "en": "Eight times two is sixteen.",
+        "zh": "八乘二等于十六。"
+      },
+      {
+        "en": "Nine times two is eighteen.",
+        "zh": "九乘二等于十八。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is four times two? It's eight.",
+        "zh": "四乘二等于几？等于八。"
+      },
+      {
+        "en": "Seven twos are fourteen.",
+        "zh": "七个二是十四。"
+      },
+      {
+        "en": "Nine groups of two make eighteen.",
+        "zh": "九组二一共是十八。"
+      },
+      {
+        "en": "Two times two equals four.",
+        "zh": "二乘二等于四。"
+      }
+    ],
+    "words": [
+      "times",
+      "two",
+      "four",
+      "six",
+      "eight",
+      "ten",
+      "twelve",
+      "fourteen",
+      "sixteen",
+      "eighteen"
+    ]
+  },
+  {
+    "id": "4-36",
+    "level": 4,
+    "unit": 36,
+    "theme": "multiplication",
+    "title": "The Three Times Table",
+    "titleZh": "三的乘法表",
+    "lines": [
+      {
+        "en": "One times three is three.",
+        "zh": "一乘三等于三。"
+      },
+      {
+        "en": "Two times three is six.",
+        "zh": "二乘三等于六。"
+      },
+      {
+        "en": "Three times three is nine.",
+        "zh": "三乘三等于九。"
+      },
+      {
+        "en": "Four times three is twelve.",
+        "zh": "四乘三等于十二。"
+      },
+      {
+        "en": "Five times three is fifteen.",
+        "zh": "五乘三等于十五。"
+      },
+      {
+        "en": "Six times three is eighteen.",
+        "zh": "六乘三等于十八。"
+      },
+      {
+        "en": "Seven times three is twenty-one.",
+        "zh": "七乘三等于二十一。"
+      },
+      {
+        "en": "Eight times three is twenty-four.",
+        "zh": "八乘三等于二十四。"
+      },
+      {
+        "en": "Nine times three is twenty-seven.",
+        "zh": "九乘三等于二十七。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is five times three? It's fifteen.",
+        "zh": "五乘三等于几？等于十五。"
+      },
+      {
+        "en": "Eight threes are twenty-four.",
+        "zh": "八个三是二十四。"
+      },
+      {
+        "en": "Three groups of three make nine.",
+        "zh": "三组三一共是九。"
+      },
+      {
+        "en": "Six times three equals eighteen.",
+        "zh": "六乘三等于十八。"
+      }
+    ],
+    "words": [
+      "times",
+      "three",
+      "six",
+      "nine",
+      "twelve",
+      "fifteen",
+      "eighteen"
+    ]
+  },
+  {
+    "id": "4-37",
+    "level": 4,
+    "unit": 37,
+    "theme": "multiplication",
+    "title": "The Four Times Table",
+    "titleZh": "四的乘法表",
+    "lines": [
+      {
+        "en": "One times four is four.",
+        "zh": "一乘四等于四。"
+      },
+      {
+        "en": "Two times four is eight.",
+        "zh": "二乘四等于八。"
+      },
+      {
+        "en": "Three times four is twelve.",
+        "zh": "三乘四等于十二。"
+      },
+      {
+        "en": "Four times four is sixteen.",
+        "zh": "四乘四等于十六。"
+      },
+      {
+        "en": "Five times four is twenty.",
+        "zh": "五乘四等于二十。"
+      },
+      {
+        "en": "Six times four is twenty-four.",
+        "zh": "六乘四等于二十四。"
+      },
+      {
+        "en": "Seven times four is twenty-eight.",
+        "zh": "七乘四等于二十八。"
+      },
+      {
+        "en": "Eight times four is thirty-two.",
+        "zh": "八乘四等于三十二。"
+      },
+      {
+        "en": "Nine times four is thirty-six.",
+        "zh": "九乘四等于三十六。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is two times four? It's eight.",
+        "zh": "二乘四等于几？等于八。"
+      },
+      {
+        "en": "Five fours are twenty.",
+        "zh": "五个四是二十。"
+      },
+      {
+        "en": "Seven groups of four make twenty-eight.",
+        "zh": "七组四一共是二十八。"
+      },
+      {
+        "en": "Nine times four equals thirty-six.",
+        "zh": "九乘四等于三十六。"
+      }
+    ],
+    "words": [
+      "times",
+      "four",
+      "eight",
+      "twelve",
+      "sixteen",
+      "twenty"
+    ]
+  },
+  {
+    "id": "4-38",
+    "level": 4,
+    "unit": 38,
+    "theme": "multiplication",
+    "title": "The Five Times Table",
+    "titleZh": "五的乘法表",
+    "lines": [
+      {
+        "en": "One times five is five.",
+        "zh": "一乘五等于五。"
+      },
+      {
+        "en": "Two times five is ten.",
+        "zh": "二乘五等于十。"
+      },
+      {
+        "en": "Three times five is fifteen.",
+        "zh": "三乘五等于十五。"
+      },
+      {
+        "en": "Four times five is twenty.",
+        "zh": "四乘五等于二十。"
+      },
+      {
+        "en": "Five times five is twenty-five.",
+        "zh": "五乘五等于二十五。"
+      },
+      {
+        "en": "Six times five is thirty.",
+        "zh": "六乘五等于三十。"
+      },
+      {
+        "en": "Seven times five is thirty-five.",
+        "zh": "七乘五等于三十五。"
+      },
+      {
+        "en": "Eight times five is forty.",
+        "zh": "八乘五等于四十。"
+      },
+      {
+        "en": "Nine times five is forty-five.",
+        "zh": "九乘五等于四十五。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three times five? It's fifteen.",
+        "zh": "三乘五等于几？等于十五。"
+      },
+      {
+        "en": "Six fives are thirty.",
+        "zh": "六个五是三十。"
+      },
+      {
+        "en": "Eight groups of five make forty.",
+        "zh": "八组五一共是四十。"
+      },
+      {
+        "en": "Four times five equals twenty.",
+        "zh": "四乘五等于二十。"
+      }
+    ],
+    "words": [
+      "times",
+      "five",
+      "ten",
+      "fifteen",
+      "twenty",
+      "thirty",
+      "forty"
+    ]
+  },
+  {
+    "id": "4-39",
+    "level": 4,
+    "unit": 39,
+    "theme": "multiplication",
+    "title": "The Six Times Table",
+    "titleZh": "六的乘法表",
+    "lines": [
+      {
+        "en": "One times six is six.",
+        "zh": "一乘六等于六。"
+      },
+      {
+        "en": "Two times six is twelve.",
+        "zh": "二乘六等于十二。"
+      },
+      {
+        "en": "Three times six is eighteen.",
+        "zh": "三乘六等于十八。"
+      },
+      {
+        "en": "Four times six is twenty-four.",
+        "zh": "四乘六等于二十四。"
+      },
+      {
+        "en": "Five times six is thirty.",
+        "zh": "五乘六等于三十。"
+      },
+      {
+        "en": "Six times six is thirty-six.",
+        "zh": "六乘六等于三十六。"
+      },
+      {
+        "en": "Seven times six is forty-two.",
+        "zh": "七乘六等于四十二。"
+      },
+      {
+        "en": "Eight times six is forty-eight.",
+        "zh": "八乘六等于四十八。"
+      },
+      {
+        "en": "Nine times six is fifty-four.",
+        "zh": "九乘六等于五十四。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is four times six? It's twenty-four.",
+        "zh": "四乘六等于几？等于二十四。"
+      },
+      {
+        "en": "Seven sixes are forty-two.",
+        "zh": "七个六是四十二。"
+      },
+      {
+        "en": "Nine groups of six make fifty-four.",
+        "zh": "九组六一共是五十四。"
+      },
+      {
+        "en": "Two times six equals twelve.",
+        "zh": "二乘六等于十二。"
+      }
+    ],
+    "words": [
+      "times",
+      "six",
+      "twelve",
+      "eighteen",
+      "thirty"
+    ]
+  },
+  {
+    "id": "4-40",
+    "level": 4,
+    "unit": 40,
+    "theme": "multiplication",
+    "title": "The Seven Times Table",
+    "titleZh": "七的乘法表",
+    "lines": [
+      {
+        "en": "One times seven is seven.",
+        "zh": "一乘七等于七。"
+      },
+      {
+        "en": "Two times seven is fourteen.",
+        "zh": "二乘七等于十四。"
+      },
+      {
+        "en": "Three times seven is twenty-one.",
+        "zh": "三乘七等于二十一。"
+      },
+      {
+        "en": "Four times seven is twenty-eight.",
+        "zh": "四乘七等于二十八。"
+      },
+      {
+        "en": "Five times seven is thirty-five.",
+        "zh": "五乘七等于三十五。"
+      },
+      {
+        "en": "Six times seven is forty-two.",
+        "zh": "六乘七等于四十二。"
+      },
+      {
+        "en": "Seven times seven is forty-nine.",
+        "zh": "七乘七等于四十九。"
+      },
+      {
+        "en": "Eight times seven is fifty-six.",
+        "zh": "八乘七等于五十六。"
+      },
+      {
+        "en": "Nine times seven is sixty-three.",
+        "zh": "九乘七等于六十三。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is five times seven? It's thirty-five.",
+        "zh": "五乘七等于几？等于三十五。"
+      },
+      {
+        "en": "Eight sevens are fifty-six.",
+        "zh": "八个七是五十六。"
+      },
+      {
+        "en": "Three groups of seven make twenty-one.",
+        "zh": "三组七一共是二十一。"
+      },
+      {
+        "en": "Six times seven equals forty-two.",
+        "zh": "六乘七等于四十二。"
+      }
+    ],
+    "words": [
+      "times",
+      "seven",
+      "fourteen"
+    ]
+  },
+  {
+    "id": "4-41",
+    "level": 4,
+    "unit": 41,
+    "theme": "multiplication",
+    "title": "The Eight Times Table",
+    "titleZh": "八的乘法表",
+    "lines": [
+      {
+        "en": "One times eight is eight.",
+        "zh": "一乘八等于八。"
+      },
+      {
+        "en": "Two times eight is sixteen.",
+        "zh": "二乘八等于十六。"
+      },
+      {
+        "en": "Three times eight is twenty-four.",
+        "zh": "三乘八等于二十四。"
+      },
+      {
+        "en": "Four times eight is thirty-two.",
+        "zh": "四乘八等于三十二。"
+      },
+      {
+        "en": "Five times eight is forty.",
+        "zh": "五乘八等于四十。"
+      },
+      {
+        "en": "Six times eight is forty-eight.",
+        "zh": "六乘八等于四十八。"
+      },
+      {
+        "en": "Seven times eight is fifty-six.",
+        "zh": "七乘八等于五十六。"
+      },
+      {
+        "en": "Eight times eight is sixty-four.",
+        "zh": "八乘八等于六十四。"
+      },
+      {
+        "en": "Nine times eight is seventy-two.",
+        "zh": "九乘八等于七十二。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is two times eight? It's sixteen.",
+        "zh": "二乘八等于几？等于十六。"
+      },
+      {
+        "en": "Five eights are forty.",
+        "zh": "五个八是四十。"
+      },
+      {
+        "en": "Seven groups of eight make fifty-six.",
+        "zh": "七组八一共是五十六。"
+      },
+      {
+        "en": "Nine times eight equals seventy-two.",
+        "zh": "九乘八等于七十二。"
+      }
+    ],
+    "words": [
+      "times",
+      "eight",
+      "sixteen",
+      "forty"
+    ]
+  },
+  {
+    "id": "4-42",
+    "level": 4,
+    "unit": 42,
+    "theme": "multiplication",
+    "title": "The Nine Times Table",
+    "titleZh": "九的乘法表",
+    "lines": [
+      {
+        "en": "One times nine is nine.",
+        "zh": "一乘九等于九。"
+      },
+      {
+        "en": "Two times nine is eighteen.",
+        "zh": "二乘九等于十八。"
+      },
+      {
+        "en": "Three times nine is twenty-seven.",
+        "zh": "三乘九等于二十七。"
+      },
+      {
+        "en": "Four times nine is thirty-six.",
+        "zh": "四乘九等于三十六。"
+      },
+      {
+        "en": "Five times nine is forty-five.",
+        "zh": "五乘九等于四十五。"
+      },
+      {
+        "en": "Six times nine is fifty-four.",
+        "zh": "六乘九等于五十四。"
+      },
+      {
+        "en": "Seven times nine is sixty-three.",
+        "zh": "七乘九等于六十三。"
+      },
+      {
+        "en": "Eight times nine is seventy-two.",
+        "zh": "八乘九等于七十二。"
+      },
+      {
+        "en": "Nine times nine is eighty-one.",
+        "zh": "九乘九等于八十一。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three times nine? It's twenty-seven.",
+        "zh": "三乘九等于几？等于二十七。"
+      },
+      {
+        "en": "Six nines are fifty-four.",
+        "zh": "六个九是五十四。"
+      },
+      {
+        "en": "Eight groups of nine make seventy-two.",
+        "zh": "八组九一共是七十二。"
+      },
+      {
+        "en": "Four times nine equals thirty-six.",
+        "zh": "四乘九等于三十六。"
+      }
+    ],
+    "words": [
+      "times",
+      "nine",
+      "eighteen"
+    ]
+  },
+  {
+    "id": "4-43",
+    "level": 4,
+    "unit": 43,
+    "theme": "division",
+    "title": "Divided by One",
+    "titleZh": "除以一",
+    "lines": [
+      {
+        "en": "One divided by one is one.",
+        "zh": "一除以一等于一。"
+      },
+      {
+        "en": "Two divided by one is two.",
+        "zh": "二除以一等于二。"
+      },
+      {
+        "en": "Three divided by one is three.",
+        "zh": "三除以一等于三。"
+      },
+      {
+        "en": "Four divided by one is four.",
+        "zh": "四除以一等于四。"
+      },
+      {
+        "en": "Five divided by one is five.",
+        "zh": "五除以一等于五。"
+      },
+      {
+        "en": "Six divided by one is six.",
+        "zh": "六除以一等于六。"
+      },
+      {
+        "en": "Seven divided by one is seven.",
+        "zh": "七除以一等于七。"
+      },
+      {
+        "en": "Eight divided by one is eight.",
+        "zh": "八除以一等于八。"
+      },
+      {
+        "en": "Nine divided by one is nine.",
+        "zh": "九除以一等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is three divided by one? It's three.",
+        "zh": "三除以一等于几？等于三。"
+      },
+      {
+        "en": "How many ones are in six? Six.",
+        "zh": "六里有几个一？六个。"
+      },
+      {
+        "en": "Put eight into one group: eight in it.",
+        "zh": "把八放成一组：一组有八。"
+      },
+      {
+        "en": "Four divided by one equals four.",
+        "zh": "四除以一等于四。"
+      }
+    ],
+    "words": [
+      "divide",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-44",
+    "level": 4,
+    "unit": 44,
+    "theme": "division",
+    "title": "Divided by Two",
+    "titleZh": "除以二",
+    "lines": [
+      {
+        "en": "Two divided by two is one.",
+        "zh": "二除以二等于一。"
+      },
+      {
+        "en": "Four divided by two is two.",
+        "zh": "四除以二等于二。"
+      },
+      {
+        "en": "Six divided by two is three.",
+        "zh": "六除以二等于三。"
+      },
+      {
+        "en": "Eight divided by two is four.",
+        "zh": "八除以二等于四。"
+      },
+      {
+        "en": "Ten divided by two is five.",
+        "zh": "十除以二等于五。"
+      },
+      {
+        "en": "Twelve divided by two is six.",
+        "zh": "十二除以二等于六。"
+      },
+      {
+        "en": "Fourteen divided by two is seven.",
+        "zh": "十四除以二等于七。"
+      },
+      {
+        "en": "Sixteen divided by two is eight.",
+        "zh": "十六除以二等于八。"
+      },
+      {
+        "en": "Eighteen divided by two is nine.",
+        "zh": "十八除以二等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is eight divided by two? It's four.",
+        "zh": "八除以二等于几？等于四。"
+      },
+      {
+        "en": "How many twos are in fourteen? Seven.",
+        "zh": "十四里有几个二？七个。"
+      },
+      {
+        "en": "Put eighteen into two equal groups: nine in each.",
+        "zh": "把十八平均分成二份，每份是九。"
+      },
+      {
+        "en": "Four divided by two equals two.",
+        "zh": "四除以二等于二。"
+      }
+    ],
+    "words": [
+      "divide",
+      "two",
+      "one",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-45",
+    "level": 4,
+    "unit": 45,
+    "theme": "division",
+    "title": "Divided by Three",
+    "titleZh": "除以三",
+    "lines": [
+      {
+        "en": "Three divided by three is one.",
+        "zh": "三除以三等于一。"
+      },
+      {
+        "en": "Six divided by three is two.",
+        "zh": "六除以三等于二。"
+      },
+      {
+        "en": "Nine divided by three is three.",
+        "zh": "九除以三等于三。"
+      },
+      {
+        "en": "Twelve divided by three is four.",
+        "zh": "十二除以三等于四。"
+      },
+      {
+        "en": "Fifteen divided by three is five.",
+        "zh": "十五除以三等于五。"
+      },
+      {
+        "en": "Eighteen divided by three is six.",
+        "zh": "十八除以三等于六。"
+      },
+      {
+        "en": "Twenty-one divided by three is seven.",
+        "zh": "二十一除以三等于七。"
+      },
+      {
+        "en": "Twenty-four divided by three is eight.",
+        "zh": "二十四除以三等于八。"
+      },
+      {
+        "en": "Twenty-seven divided by three is nine.",
+        "zh": "二十七除以三等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is fifteen divided by three? It's five.",
+        "zh": "十五除以三等于几？等于五。"
+      },
+      {
+        "en": "How many threes are in twenty-four? Eight.",
+        "zh": "二十四里有几个三？八个。"
+      },
+      {
+        "en": "Put nine into three equal groups: three in each.",
+        "zh": "把九平均分成三份，每份是三。"
+      },
+      {
+        "en": "Eighteen divided by three equals six.",
+        "zh": "十八除以三等于六。"
+      }
+    ],
+    "words": [
+      "divide",
+      "three",
+      "one",
+      "two",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-46",
+    "level": 4,
+    "unit": 46,
+    "theme": "division",
+    "title": "Divided by Four",
+    "titleZh": "除以四",
+    "lines": [
+      {
+        "en": "Four divided by four is one.",
+        "zh": "四除以四等于一。"
+      },
+      {
+        "en": "Eight divided by four is two.",
+        "zh": "八除以四等于二。"
+      },
+      {
+        "en": "Twelve divided by four is three.",
+        "zh": "十二除以四等于三。"
+      },
+      {
+        "en": "Sixteen divided by four is four.",
+        "zh": "十六除以四等于四。"
+      },
+      {
+        "en": "Twenty divided by four is five.",
+        "zh": "二十除以四等于五。"
+      },
+      {
+        "en": "Twenty-four divided by four is six.",
+        "zh": "二十四除以四等于六。"
+      },
+      {
+        "en": "Twenty-eight divided by four is seven.",
+        "zh": "二十八除以四等于七。"
+      },
+      {
+        "en": "Thirty-two divided by four is eight.",
+        "zh": "三十二除以四等于八。"
+      },
+      {
+        "en": "Thirty-six divided by four is nine.",
+        "zh": "三十六除以四等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is eight divided by four? It's two.",
+        "zh": "八除以四等于几？等于二。"
+      },
+      {
+        "en": "How many fours are in twenty? Five.",
+        "zh": "二十里有几个四？五个。"
+      },
+      {
+        "en": "Put twenty-eight into four equal groups: seven in each.",
+        "zh": "把二十八平均分成四份，每份是七。"
+      },
+      {
+        "en": "Thirty-six divided by four equals nine.",
+        "zh": "三十六除以四等于九。"
+      }
+    ],
+    "words": [
+      "divide",
+      "four",
+      "one",
+      "two",
+      "three",
+      "five",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-47",
+    "level": 4,
+    "unit": 47,
+    "theme": "division",
+    "title": "Divided by Five",
+    "titleZh": "除以五",
+    "lines": [
+      {
+        "en": "Five divided by five is one.",
+        "zh": "五除以五等于一。"
+      },
+      {
+        "en": "Ten divided by five is two.",
+        "zh": "十除以五等于二。"
+      },
+      {
+        "en": "Fifteen divided by five is three.",
+        "zh": "十五除以五等于三。"
+      },
+      {
+        "en": "Twenty divided by five is four.",
+        "zh": "二十除以五等于四。"
+      },
+      {
+        "en": "Twenty-five divided by five is five.",
+        "zh": "二十五除以五等于五。"
+      },
+      {
+        "en": "Thirty divided by five is six.",
+        "zh": "三十除以五等于六。"
+      },
+      {
+        "en": "Thirty-five divided by five is seven.",
+        "zh": "三十五除以五等于七。"
+      },
+      {
+        "en": "Forty divided by five is eight.",
+        "zh": "四十除以五等于八。"
+      },
+      {
+        "en": "Forty-five divided by five is nine.",
+        "zh": "四十五除以五等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is fifteen divided by five? It's three.",
+        "zh": "十五除以五等于几？等于三。"
+      },
+      {
+        "en": "How many fives are in thirty? Six.",
+        "zh": "三十里有几个五？六个。"
+      },
+      {
+        "en": "Put forty into five equal groups: eight in each.",
+        "zh": "把四十平均分成五份，每份是八。"
+      },
+      {
+        "en": "Twenty divided by five equals four.",
+        "zh": "二十除以五等于四。"
+      }
+    ],
+    "words": [
+      "divide",
+      "five",
+      "one",
+      "two",
+      "three",
+      "four",
+      "six",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-48",
+    "level": 4,
+    "unit": 48,
+    "theme": "division",
+    "title": "Divided by Six",
+    "titleZh": "除以六",
+    "lines": [
+      {
+        "en": "Six divided by six is one.",
+        "zh": "六除以六等于一。"
+      },
+      {
+        "en": "Twelve divided by six is two.",
+        "zh": "十二除以六等于二。"
+      },
+      {
+        "en": "Eighteen divided by six is three.",
+        "zh": "十八除以六等于三。"
+      },
+      {
+        "en": "Twenty-four divided by six is four.",
+        "zh": "二十四除以六等于四。"
+      },
+      {
+        "en": "Thirty divided by six is five.",
+        "zh": "三十除以六等于五。"
+      },
+      {
+        "en": "Thirty-six divided by six is six.",
+        "zh": "三十六除以六等于六。"
+      },
+      {
+        "en": "Forty-two divided by six is seven.",
+        "zh": "四十二除以六等于七。"
+      },
+      {
+        "en": "Forty-eight divided by six is eight.",
+        "zh": "四十八除以六等于八。"
+      },
+      {
+        "en": "Fifty-four divided by six is nine.",
+        "zh": "五十四除以六等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is twenty-four divided by six? It's four.",
+        "zh": "二十四除以六等于几？等于四。"
+      },
+      {
+        "en": "How many sixes are in forty-two? Seven.",
+        "zh": "四十二里有几个六？七个。"
+      },
+      {
+        "en": "Put fifty-four into six equal groups: nine in each.",
+        "zh": "把五十四平均分成六份，每份是九。"
+      },
+      {
+        "en": "Twelve divided by six equals two.",
+        "zh": "十二除以六等于二。"
+      }
+    ],
+    "words": [
+      "divide",
+      "six",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "seven",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-49",
+    "level": 4,
+    "unit": 49,
+    "theme": "division",
+    "title": "Divided by Seven",
+    "titleZh": "除以七",
+    "lines": [
+      {
+        "en": "Seven divided by seven is one.",
+        "zh": "七除以七等于一。"
+      },
+      {
+        "en": "Fourteen divided by seven is two.",
+        "zh": "十四除以七等于二。"
+      },
+      {
+        "en": "Twenty-one divided by seven is three.",
+        "zh": "二十一除以七等于三。"
+      },
+      {
+        "en": "Twenty-eight divided by seven is four.",
+        "zh": "二十八除以七等于四。"
+      },
+      {
+        "en": "Thirty-five divided by seven is five.",
+        "zh": "三十五除以七等于五。"
+      },
+      {
+        "en": "Forty-two divided by seven is six.",
+        "zh": "四十二除以七等于六。"
+      },
+      {
+        "en": "Forty-nine divided by seven is seven.",
+        "zh": "四十九除以七等于七。"
+      },
+      {
+        "en": "Fifty-six divided by seven is eight.",
+        "zh": "五十六除以七等于八。"
+      },
+      {
+        "en": "Sixty-three divided by seven is nine.",
+        "zh": "六十三除以七等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is thirty-five divided by seven? It's five.",
+        "zh": "三十五除以七等于几？等于五。"
+      },
+      {
+        "en": "How many sevens are in fifty-six? Eight.",
+        "zh": "五十六里有几个七？八个。"
+      },
+      {
+        "en": "Put twenty-one into seven equal groups: three in each.",
+        "zh": "把二十一平均分成七份，每份是三。"
+      },
+      {
+        "en": "Forty-two divided by seven equals six.",
+        "zh": "四十二除以七等于六。"
+      }
+    ],
+    "words": [
+      "divide",
+      "seven",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "eight",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-50",
+    "level": 4,
+    "unit": 50,
+    "theme": "division",
+    "title": "Divided by Eight",
+    "titleZh": "除以八",
+    "lines": [
+      {
+        "en": "Eight divided by eight is one.",
+        "zh": "八除以八等于一。"
+      },
+      {
+        "en": "Sixteen divided by eight is two.",
+        "zh": "十六除以八等于二。"
+      },
+      {
+        "en": "Twenty-four divided by eight is three.",
+        "zh": "二十四除以八等于三。"
+      },
+      {
+        "en": "Thirty-two divided by eight is four.",
+        "zh": "三十二除以八等于四。"
+      },
+      {
+        "en": "Forty divided by eight is five.",
+        "zh": "四十除以八等于五。"
+      },
+      {
+        "en": "Forty-eight divided by eight is six.",
+        "zh": "四十八除以八等于六。"
+      },
+      {
+        "en": "Fifty-six divided by eight is seven.",
+        "zh": "五十六除以八等于七。"
+      },
+      {
+        "en": "Sixty-four divided by eight is eight.",
+        "zh": "六十四除以八等于八。"
+      },
+      {
+        "en": "Seventy-two divided by eight is nine.",
+        "zh": "七十二除以八等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is sixteen divided by eight? It's two.",
+        "zh": "十六除以八等于几？等于二。"
+      },
+      {
+        "en": "How many eights are in forty? Five.",
+        "zh": "四十里有几个八？五个。"
+      },
+      {
+        "en": "Put fifty-six into eight equal groups: seven in each.",
+        "zh": "把五十六平均分成八份，每份是七。"
+      },
+      {
+        "en": "Seventy-two divided by eight equals nine.",
+        "zh": "七十二除以八等于九。"
+      }
+    ],
+    "words": [
+      "divide",
+      "eight",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "nine"
+    ]
+  },
+  {
+    "id": "4-51",
+    "level": 4,
+    "unit": 51,
+    "theme": "division",
+    "title": "Divided by Nine",
+    "titleZh": "除以九",
+    "lines": [
+      {
+        "en": "Nine divided by nine is one.",
+        "zh": "九除以九等于一。"
+      },
+      {
+        "en": "Eighteen divided by nine is two.",
+        "zh": "十八除以九等于二。"
+      },
+      {
+        "en": "Twenty-seven divided by nine is three.",
+        "zh": "二十七除以九等于三。"
+      },
+      {
+        "en": "Thirty-six divided by nine is four.",
+        "zh": "三十六除以九等于四。"
+      },
+      {
+        "en": "Forty-five divided by nine is five.",
+        "zh": "四十五除以九等于五。"
+      },
+      {
+        "en": "Fifty-four divided by nine is six.",
+        "zh": "五十四除以九等于六。"
+      },
+      {
+        "en": "Sixty-three divided by nine is seven.",
+        "zh": "六十三除以九等于七。"
+      },
+      {
+        "en": "Seventy-two divided by nine is eight.",
+        "zh": "七十二除以九等于八。"
+      },
+      {
+        "en": "Eighty-one divided by nine is nine.",
+        "zh": "八十一除以九等于九。"
+      }
+    ],
+    "patterns": [
+      {
+        "en": "What is twenty-seven divided by nine? It's three.",
+        "zh": "二十七除以九等于几？等于三。"
+      },
+      {
+        "en": "How many nines are in fifty-four? Six.",
+        "zh": "五十四里有几个九？六个。"
+      },
+      {
+        "en": "Put seventy-two into nine equal groups: eight in each.",
+        "zh": "把七十二平均分成九份，每份是八。"
+      },
+      {
+        "en": "Thirty-six divided by nine equals four.",
+        "zh": "三十六除以九等于四。"
+      }
+    ],
+    "words": [
+      "divide",
+      "nine",
+      "one",
+      "two",
+      "three",
+      "four",
+      "five",
+      "six",
+      "seven",
+      "eight"
+    ]
   }
 ]

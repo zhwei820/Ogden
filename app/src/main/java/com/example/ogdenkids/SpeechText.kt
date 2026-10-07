@@ -2,8 +2,8 @@ package com.example.ogdenkids
 
 data class SpeechLine(val en: String, val zh: String)
 
-/** 三个级别共用同一套主题，每级每个主题 5 个单元；声明顺序即单元编号顺序。 */
-enum class SpeechTheme(val key: String, val zh: String, val en: String) {
+/** 三个级别共用同一套主题；每级每个主题 [units] 个单元，声明顺序即单元编号顺序。 */
+enum class SpeechTheme(val key: String, val zh: String, val en: String, val units: Int = 5) {
     Me("me", "我和家人", "Me and My Family"),
     School("school", "学校与朋友", "School and Friends"),
     Food("food", "食物与健康", "Food and Health"),
@@ -16,13 +16,18 @@ enum class SpeechTheme(val key: String, val zh: String, val en: String) {
     Festivals("festivals", "节日与成长", "Festivals and Growing Up"),
     Algebra("algebra", "代数", "Algebra"),
     Geometry("geometry", "几何", "Geometry"),
-    Physics("physics", "物理", "Physics");
+    Physics("physics", "物理", "Physics"),
+    // 四张口算表：每课一个数（加一…加九），1–9 各一句，共 9 课
+    Addition("addition", "加法表", "Addition Facts", units = 9),
+    Subtraction("subtraction", "减法表", "Subtraction Facts", units = 9),
+    Multiplication("multiplication", "乘法表", "Times Tables", units = 9),
+    Division("division", "除法表", "Division Facts", units = 9);
 
     companion object {
         fun from(key: String) = values().first { it.key == key }
 
         /** 学科主题只在 [StemLevel] 里用，一到三级用其余的生活主题 */
-        val Stem = listOf(Algebra, Geometry, Physics)
+        val Stem = listOf(Algebra, Geometry, Physics, Addition, Subtraction, Multiplication, Division)
 
         fun forLevel(level: Int) = if (level == StemLevel) Stem else values().filter { it !in Stem }
     }

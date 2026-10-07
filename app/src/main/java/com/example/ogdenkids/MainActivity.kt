@@ -2150,12 +2150,10 @@ fun SpeechReaderScreen(
     val listState = rememberLazyListState()
     var showTranslation by remember(speech.id) { mutableStateOf(true) }
     var learned by remember(speech.id) { mutableStateOf(store.isSpeechLearned(speech.id)) }
-    // 不进练习的词（np）练不到，不算进「全部掌握」的门槛
-    val masteredWords = speech.words.filter { w ->
-        val word = wordIndex[w.lowercase()]
-        word == null || !word.practice || store.progress(word.word).mastered
-    }.toSet()
-    val allWordsMastered = masteredWords.size == speech.words.size
+    // 词库里没有的词（如课文包引用了未下载词包的词）和不进练习的词（np）练不到，进度和「全部掌握」门槛都不算它们
+    val practiceWords = speech.words.filter { wordIndex[it.lowercase()]?.practice == true }
+    val masteredWords = practiceWords.filter { store.progress(wordIndex.getValue(it.lowercase()).word).mastered }.toSet()
+    val allWordsMastered = masteredWords.size == practiceWords.size
     // 收藏存在 SharedPreferences 里，不是 Compose 状态；改动后递增它，让高亮与词卡重新读取
     var favoriteVersion by remember { mutableStateOf(0) }
     fun ogdenWordOf(token: SpeechToken) = lemmatize(token.text, lemmaVocabulary)?.let { wordIndex[it] }
@@ -2320,7 +2318,7 @@ fun SpeechReaderScreen(
                         speech.words.forEach { w ->
                             val picked = pickedWord == w
                             val saved = remember(w, favoriteVersion) { isSaved(SpeechToken(w, w.indices)) }
-                            val mastered = w in masteredWords && wordIndex[w.lowercase()]?.practice == true
+                            val mastered = w in masteredWords
                             OutlinedButton(
                                 onClick = {
                                     stopSpeaking()
@@ -2356,7 +2354,7 @@ fun SpeechReaderScreen(
                 }
                 item {
                     Button(onClick = { stopSpeaking(); onPracticeWords(speech.words) }, modifier = Modifier.fillMaxWidth()) {
-                        Text("单词练习（已掌握 ${masteredWords.size} / ${speech.words.size}，每次 10 题）", fontSize = 18.sp)
+                        Text("单词练习（已掌握 ${masteredWords.size} / ${practiceWords.size}，每次 10 题）", fontSize = 18.sp)
                     }
                 }
             }

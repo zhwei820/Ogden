@@ -19,8 +19,14 @@ RULES = {
     4: ((8, 10), (3, 10), (4, 6)),  # STEM：难度同二级
 }
 LIFE_THEMES = ["me", "school", "food", "nature", "seasons", "hobbies", "places", "city", "jobs", "festivals"]
-THEMES = {1: LIFE_THEMES, 2: LIFE_THEMES, 3: LIFE_THEMES, 4: ["algebra", "geometry", "physics"]}
-UNITS_PER_THEME = 5
+TABLE_THEMES = ["addition", "subtraction", "multiplication", "division"]
+THEMES = {1: LIFE_THEMES, 2: LIFE_THEMES, 3: LIFE_THEMES, 4: ["algebra", "geometry", "physics"] + TABLE_THEMES}
+# 与 SpeechTheme.units 一致：口算表每个数一课（1–9）
+UNITS = {t: 9 for t in TABLE_THEMES}
+
+
+def units_of(theme):
+    return UNITS.get(theme, 5)
 
 # 词表只收原形；这些代词变格 / be·do·have 变位 / 情态词按 Ogden 规则视为表内
 INFLECTED = set("""
@@ -83,13 +89,13 @@ def check(path, words):
         print(f"{uid:6} L{level} {u.get('title', '')[:28]:28} 表外词({len(extra)}): {' '.join(extra)}")
     for level, units_seen in sorted(seen.items()):
         units_seen.sort(key=lambda x: x[0] or 0)
-        units_per_level = len(THEMES[level]) * UNITS_PER_THEME
+        units_per_level = sum(units_of(t) for t in THEMES[level])
         if [n for n, _ in units_seen] != list(range(1, units_per_level + 1)):
             errors.append(f"L{level}: 单元号应为 1-{units_per_level}，实际 {[n for n, _ in units_seen]}")
-        # 单元按主题顺序连续编号：第 1-5 单元属于 THEMES[level][0]，依此类推
-        expected = [t for t in THEMES[level] for _ in range(UNITS_PER_THEME)]
+        # 单元按主题顺序连续编号：前 units_of(THEMES[level][0]) 个单元属于第一个主题，依此类推
+        expected = [t for t in THEMES[level] for _ in range(units_of(t))]
         if [t for _, t in units_seen] != expected:
-            errors.append(f"L{level}: 主题应按 {THEMES[level]} 顺序每个 {UNITS_PER_THEME} 单元连续排列")
+            errors.append(f"L{level}: 主题应按 {THEMES[level]} 顺序、各自 {[units_of(t) for t in THEMES[level]]} 个单元连续排列")
     return errors
 
 
