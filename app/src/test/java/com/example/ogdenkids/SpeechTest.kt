@@ -144,4 +144,20 @@ class SpeechTest {
             assertTrue(isValidSpeechPlacement(item.getInt("level"), item.getString("theme")))
         }
     }
+
+    @Test
+    fun mockTextbookPackIsOnTextbookLevelWithUnitGroups() {
+        val builtIn = JSONArray(File("src/main/assets/speeches.json").readText().trimStart('\uFEFF'))
+        val builtInIds = List(builtIn.length()) { builtIn.getJSONObject(it).getString("id") }.toSet()
+        val pack = JSONArray(File("../scripts/mock_packs/textbook-fltrp-g2a/speeches.json").readText())
+        val ids = List(pack.length()) { pack.getJSONObject(it).getString("id") }
+        assertEquals(ids.size, ids.toSet().size)
+        for (i in 0 until pack.length()) {
+            val item = pack.getJSONObject(i)
+            assertFalse(item.getString("id") in builtInIds)
+            assertEquals(TextbookLevel, item.getInt("level"))
+            assertTrue(item.getString("group").isNotBlank())
+            assertTrue(item.getJSONArray("lines").length() > 0)
+        }
+    }
 }

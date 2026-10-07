@@ -1,0 +1,129 @@
+[
+ {
+  "id": "textbook-fltrp-g2a-u1-1",
+  "level": 5,
+  "unit": 1,
+  "group": "Unit 1 Face",
+  "groupZh": "第一单元 脸",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Eyes on the face.",
+    "zh": "脸上有眼睛。"
+   },
+   {
+    "en": "A mouth on the face.",
+    "zh": "脸上有嘴巴。"
+   },
+   {
+    "en": "A nose on the face.",
+    "zh": "脸上有鼻子。"
+   },
+   {
+    "en": "This is a snowman.",
+    "zh": "这是一个雪人。"
+   },
+   {
+    "en": "We love the snowman.",
+    "zh": "我们喜欢这个雪人。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "face",
+   "eye",
+   "mouth",
+   "nose",
+   "snowman",
+   "love"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u1-2",
+  "level": 5,
+  "unit": 2,
+  "group": "Unit 1 Face",
+  "groupZh": "第一单元 脸",
+  "title": "Story",
+  "titleZh": "故事",
+  "lines": [
+   {
+    "en": "Hi. I'm Meimei.",
+    "zh": "你好，我是美美。"
+   },
+   {
+    "en": "I'm Beibei.",
+    "zh": "我是贝贝。"
+   },
+   {
+    "en": "We are twins.",
+    "zh": "我们是双胞胎。"
+   },
+   {
+    "en": "I have big eyes.",
+    "zh": "我有一双大眼睛。"
+   },
+   {
+    "en": "I have big eyes, too.",
+    "zh": "我也有一双大眼睛。"
+   },
+   {
+    "en": "I have a small nose.",
+    "zh": "我有一个小鼻子。"
+   },
+   {
+    "en": "I have a small nose, too.",
+    "zh": "我也有一个小鼻子。"
+   },
+   {
+    "en": "I have a small mouth.",
+    "zh": "我有一张小嘴巴。"
+   },
+   {
+    "en": "I have a small mouth, too.",
+    "zh": "我也有一张小嘴巴。"
+   },
+   {
+    "en": "People often get us wrong.",
+    "zh": "大家常常把我们认错。"
+   },
+   {
+    "en": "What can we do?",
+    "zh": "我们能怎么办呢？"
+   },
+   {
+    "en": "I have an idea!",
+    "zh": "我有个主意！"
+   },
+   {
+    "en": "I have long hair.",
+    "zh": "我留长头发。"
+   },
+   {
+    "en": "I have short hair.",
+    "zh": "我留短头发。"
+   },
+   {
+    "en": "We are different now.",
+    "zh": "现在我们不一样了。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "twins",
+   "big",
+   "small",
+   "eye",
+   "nose",
+   "mouth",
+   "long",
+   "short",
+   "hair",
+   "different",
+   "people",
+   "wrong",
+   "idea"
+  ]
+ }
+]

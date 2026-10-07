@@ -50,14 +50,15 @@ import java.security.MessageDigest
 import java.util.zip.ZipInputStream
 
 /**
- * 可下载的资源包：词包（words.json + 发音）、语音包（tts/ 下的句子朗读）或课文包（speeches.json + 朗读）。
+ * 可下载的资源包：词包（words.json + 发音）、语音包（tts/ 下的句子朗读）、课文包或教材包（speeches.json + 朗读）。
  * zip 内路径与 assets 一致（audio/us/…、tts/en-US/…），查找发音时同一个相对路径先查已装的包、再查 assets。
  * @param dataFile 包内必须有的数据文件，格式与 assets 里同名文件一致；缺了不予安装
  */
 enum class PackType(val code: String, val label: String, val dataFile: String?) {
     Words("words", "词包", "words.json"),
     Voice("voice", "语音包", null),
-    Lessons("lessons", "课文包", "speeches.json");
+    Lessons("lessons", "课文包", "speeches.json"),
+    Textbook("textbook", "教材", "speeches.json");
 
     companion object {
         fun fromCode(code: String) = values().firstOrNull { it.code == code }

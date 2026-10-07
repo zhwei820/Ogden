@@ -389,28 +389,32 @@ class OgdenRepository(private val context: Context) {
                 id = item.getString("id"),
                 level = item.getInt("level"),
                 unit = item.getInt("unit"),
-                theme = SpeechTheme.from(item.getString("theme")),
+                theme = item.optString("theme").takeIf { it.isNotBlank() }?.let(SpeechTheme::from),
                 title = item.getString("title"),
                 titleZh = item.getString("titleZh"),
                 lines = lines(item.getJSONArray("lines")),
                 patterns = lines(item.getJSONArray("patterns")),
-                words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
+                words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty(),
+                group = item.optString("group").ifBlank { null },
+                groupZh = item.optString("groupZh").ifBlank { null }
             )
         val builtIn = List(speeches.length()) { parse(speeches.getJSONObject(it)) }
         return (builtIn + loadPackSpeeches(builtIn.map { it.id }.toSet(), ::parse)).sortedWith(compareBy({ it.level }, { it.unit }))
     }
 
     /**
-     * 已下载课文包里的课文。学习进度、跟读成绩都按 id 记，id 和已有课文重复的整课跳过，不覆盖内置课文；
-     * 级别 / 主题不合法、没有句子、字段缺失的也跳过。
+     * 已下载课文包 / 教材包里的课文。学习进度、跟读成绩都按 id 记，id 和已有课文重复的整课跳过，不覆盖内置课文；
+     * 位置不合法（课文包：级别与主题对不上；教材包：不在教材级或没有单元）、没有句子、字段缺失的也跳过。
      */
     private fun loadPackSpeeches(existing: Set<String>, parse: (JSONObject) -> Speech): List<Speech> {
         val seen = existing.toMutableSet()
-        return readPackItems(PackType.Lessons).mapNotNull { item ->
+        val items = readPackItems(PackType.Lessons).map { it to isValidSpeechPlacement(it.optInt("level"), it.optString("theme")) } +
+            readPackItems(PackType.Textbook).map { it to (it.optInt("level") == TextbookLevel && it.optString("group").isNotBlank()) }
+        return items.mapNotNull { (item, isPlaced) ->
             val id = item.optString("id")
             when {
                 id.isBlank() || id in seen -> null
-                !isValidSpeechPlacement(item.optInt("level"), item.optString("theme")) -> null
+                !isPlaced -> null
                 (item.optJSONArray("lines")?.length() ?: 0) == 0 -> null
                 else -> runCatching { parse(item) }.getOrNull()
             }.also { if (it == null) Log.w(TAG, "Lesson pack entry skipped: $id") else seen += id }
@@ -1916,8 +1920,19 @@ fun WordCollectionScreen(
     }
 }
 
-private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "数理")
-private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达", StemLevel to "启蒙")
+private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "数理", TextbookLevel to "教材")
+private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达", StemLevel to "启蒙", TextbookLevel to "同步")
+
+/** 课文列表里的一组：一个生活 / 学科主题（[theme] 非空，带主题练习），或教材的一个单元。 */
+private data class SpeechGroup(val key: String, val title: String, val subtitle: String, val theme: SpeechTheme?, val units: List<Speech>)
+
+private fun groupSpeeches(units: List<Speech>): List<SpeechGroup> =
+    units.groupBy { it.group ?: it.theme?.key.orEmpty() }.map { (key, list) ->
+        val first = list.first()
+        val theme = first.theme
+        if (theme != null) SpeechGroup(key, theme.zh, theme.en, theme, list)
+        else SpeechGroup(key, first.groupZh ?: key, first.group ?: key, null, list)
+    }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -1932,13 +1947,17 @@ fun SpeechListScreen(
     padding: PaddingValues,
     onOpen: (Speech) -> Unit
 ) {
+    val hasTextbook = speeches.any { it.level == TextbookLevel }
+    // 教材包删掉后「教材」标签消失，停在它上面的话退回一级
+    LaunchedEffect(level, hasTextbook) { if (level == TextbookLevel && !hasTextbook) onLevel(1) }
+    val levelNames = SpeechLevelNames.filterKeys { it != TextbookLevel || hasTextbook }
     val units = speeches.filter { it.level == level }
     val learned = units.count { store.isSpeechLearned(it.id) }
-    val groups = units.groupBy { it.theme }.toList()
+    val groups = groupSpeeches(units)
     // 列表头部依次是：标题、吸顶选择栏、进度行、专项训练，之后每个主题占 1 个标题项 + 若干单元项
     val themeStarts = remember(groups) {
         var index = 4
-        groups.map { (_, themeUnits) -> index.also { index += 1 + themeUnits.size } }
+        groups.map { group -> index.also { index += 1 + group.units.size } }
     }
     val listState = rememberLazyListState()
     val chipState = rememberLazyListState()
@@ -1977,7 +1996,7 @@ fun SpeechListScreen(
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SpeechLevelNames.forEach { (value, name) ->
+                    levelNames.forEach { (value, name) ->
                         FilterChip(
                             selected = level == value,
                             onClick = { onLevel(value) },
@@ -1987,28 +2006,28 @@ fun SpeechListScreen(
                     }
                 }
                 @Composable
-                fun themeChip(index: Int, theme: SpeechTheme, themeUnits: List<Speech>, modifier: Modifier = Modifier) {
+                fun themeChip(index: Int, group: SpeechGroup, modifier: Modifier = Modifier) {
                     FilterChip(
                         selected = index == currentTheme,
                         onClick = {
                             themesExpanded = false
                             scope.launch { listState.animateScrollToItem(themeStarts[index]) }
                         },
-                        label = { AppText("${theme.zh} ${themeUnits.count { store.isSpeechLearned(it.id) }}/${themeUnits.size}") },
+                        label = { AppText("${group.title} ${group.units.count { store.isSpeechLearned(it.id) }}/${group.units.size}") },
                         modifier = modifier
                     )
                 }
                 Row(verticalAlignment = Alignment.Top) {
                     if (themesExpanded) {
                         FlowRow(Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            groups.forEachIndexed { index, (theme, themeUnits) ->
-                                themeChip(index, theme, themeUnits, Modifier.padding(bottom = 4.dp))
+                            groups.forEachIndexed { index, group ->
+                                themeChip(index, group, Modifier.padding(bottom = 4.dp))
                             }
                         }
                     } else {
                         LazyRow(state = chipState, modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            itemsIndexed(groups, key = { _, (theme, _) -> theme.key }) { index, (theme, themeUnits) ->
-                                themeChip(index, theme, themeUnits)
+                            itemsIndexed(groups, key = { _, group -> group.key }) { index, group ->
+                                themeChip(index, group)
                             }
                         }
                     }
@@ -2059,23 +2078,25 @@ fun SpeechListScreen(
                 }
             }
         }
-        groups.forEach { (theme, themeUnits) ->
-            item(key = "theme-${theme.key}") {
+        groups.forEach { group ->
+            val theme = group.theme
+            item(key = "theme-${group.key}") {
                 Row(Modifier.padding(top = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                     Column(Modifier.weight(1f)) {
-                        AppText(theme.zh, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
-                        val best = store.bestThemeScore(level, theme)
+                        AppText(group.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Ink)
+                        val best = theme?.let { store.bestThemeScore(level, it) }
                         AppText(
-                            "${theme.en} · 已学 ${themeUnits.count { store.isSpeechLearned(it.id) }} / ${themeUnits.size}" +
+                            "${group.subtitle} · 已学 ${group.units.count { store.isSpeechLearned(it.id) }} / ${group.units.size}" +
                                 (best?.let { " · 练习最佳 $it" } ?: ""),
                             color = InkFaint,
                             fontSize = 12.sp
                         )
                     }
-                    OutlinedButton(onClick = { onPractice(theme) }) { Text("主题练习") }
+                    // 主题练习成绩按「级别 + 主题」存，教材单元不是主题，先不提供
+                    if (theme != null) OutlinedButton(onClick = { onPractice(theme) }) { Text("主题练习") }
                 }
             }
-            items(themeUnits, key = { it.id }) { speech ->
+            items(group.units, key = { it.id }) { speech ->
                 Card(
                     colors = CardDefaults.cardColors(containerColor = PaperElevated),
                     shape = RoundedCornerShape(16.dp),
@@ -2260,7 +2281,7 @@ fun SpeechReaderScreen(
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
                 Text(speech.title, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                AppText("${SpeechLevelNames[speech.level]}${SpeechLevelThemes[speech.level]} · Unit ${speech.unit} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
+                AppText("${SpeechLevelNames[speech.level]}${SpeechLevelThemes[speech.level]} · ${speech.group ?: "Unit ${speech.unit}"} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
             }
             TextButton(onClick = { showTranslation = !showTranslation }) {
                 AppText(if (showTranslation) "收起译文" else "显示译文", fontSize = 13.sp)

@@ -36,6 +36,9 @@ enum class SpeechTheme(val key: String, val zh: String, val en: String, val unit
 /** 课文第 4 级：按学科编排的 STEM 课文 */
 const val StemLevel = 4
 
+/** 课文第 5 级：下载的教材同步课文，只在装了教材包时显示 */
+const val TextbookLevel = 5
+
 /** 课文包里的课文能否放进 [level] 级的 [themeKey] 主题：级别要存在，学科主题只能在 [StemLevel]。 */
 fun isValidSpeechPlacement(level: Int, themeKey: String): Boolean {
     val theme = SpeechTheme.values().firstOrNull { it.key == themeKey } ?: return false
@@ -47,12 +50,16 @@ data class Speech(
     val id: String,
     val level: Int,
     val unit: Int,
-    val theme: SpeechTheme,
+    /** 教材课文没有生活主题，为 null，改按 [group] 分组 */
+    val theme: SpeechTheme?,
     val title: String,
     val titleZh: String,
     val lines: List<SpeechLine>,
     val patterns: List<SpeechLine>,
-    val words: List<String> = emptyList()
+    val words: List<String> = emptyList(),
+    /** 教材课文所属单元（如 "Unit 1 Face" / "第一单元 脸"）；内置课文为 null */
+    val group: String? = null,
+    val groupZh: String? = null
 )
 
 /** 正文中一个可点击的英文词：[text] 为原文，[range] 为它在段落字符串中的位置。 */
