@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 仅 debug：mock 资源服务器走本机明文 HTTP（adb reverse 到 127.0.0.1，模拟器为 10.0.2.2） -->
+<!-- mock 资源服务器走本机明文 HTTP（adb reverse 到 127.0.0.1，模拟器为 10.0.2.2）；其余地址仍只允许 HTTPS -->
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="false">127.0.0.1</domain>

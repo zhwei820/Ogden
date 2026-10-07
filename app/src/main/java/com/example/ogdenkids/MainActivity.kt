@@ -2068,7 +2068,7 @@ fun SpeechListScreen(
             }
         }
         item {
-            AppText("${SpeechLevelThemes[level]} · 已学 $learned / ${units.size} 单元", color = InkFaint, fontSize = 13.sp)
+            AppText("${SpeechLevelThemes[level]} · 已学 $learned / ${units.size} ${if (level == TextbookLevel) "课" else "单元"}", color = InkFaint, fontSize = 13.sp)
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -2145,7 +2145,7 @@ fun SpeechListScreen(
                         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                             Text(speech.title, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 19.sp, color = Ink)
                             AppText(speech.titleZh, color = InkSoft)
-                            AppText("${speech.lines.size} 句 · ${speech.patterns.size} 个句型", color = InkFaint, fontSize = 12.sp)
+                            AppText("${speech.lines.size} 句" + if (speech.patterns.isEmpty()) "" else " · ${speech.patterns.size} 个句型", color = InkFaint, fontSize = 12.sp)
                         }
                         if (store.isSpeechLearned(speech.id)) {
                             Icon(Icons.Default.Check, contentDescription = "已学", tint = Success)
