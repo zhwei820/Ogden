@@ -149,7 +149,7 @@ class SpeechTest {
     fun mockTextbookPacksAreOnTextbookLevelWithBooksAndUnitGroups() {
         val builtIn = JSONArray(File("src/main/assets/speeches.json").readText().trimStart('\uFEFF'))
         val ids = List(builtIn.length()) { builtIn.getJSONObject(it).getString("id") }.toMutableList()
-        for (id in listOf("textbook-fltrp-g1a", "textbook-fltrp-g2a")) {
+        for (id in listOf("textbook-fltrp-g1a", "textbook-fltrp-g1b", "textbook-fltrp-g2a")) {
             val pack = JSONArray(File("../scripts/mock_packs/$id/speeches.json").readText())
             for (i in 0 until pack.length()) {
                 val item = pack.getJSONObject(i)
