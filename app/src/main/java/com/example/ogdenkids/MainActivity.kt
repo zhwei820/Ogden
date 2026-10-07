@@ -8,6 +8,7 @@ import android.net.Uri
 import android.icu.text.Transliterator
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -187,14 +188,14 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private val Paper = Color(0xFFFAF6ED)
-private val PaperElevated = Color(0xFFFFFDF7)
-private val Ink = Color(0xFF1C1917)
-private val InkSoft = Color(0xFF44403C)
-private val InkFaint = Color(0xFF78716C)
-private val Line = Color(0xFFE7E2D4)
-private val Success = Color(0xFF166534)
-private val Error = Color(0xFFB91C1C)
+internal val Paper = Color(0xFFFAF6ED)
+internal val PaperElevated = Color(0xFFFFFDF7)
+internal val Ink = Color(0xFF1C1917)
+internal val InkSoft = Color(0xFF44403C)
+internal val InkFaint = Color(0xFF78716C)
+internal val Line = Color(0xFFE7E2D4)
+internal val Success = Color(0xFF166534)
+internal val Error = Color(0xFFB91C1C)
 private val LocalChineseMode = compositionLocalOf { ChineseMode.Hans }
 
 enum class Category(
@@ -301,6 +302,7 @@ sealed class Screen {
     data class ModulePractice(val key: String) : Screen()
     object SpeechWords : Screen()
     object Settings : Screen()
+    object ResourcePacks : Screen()
     object Privacy : Screen()
     object Feedback : Screen()
 }
@@ -315,12 +317,12 @@ class OgdenRepository(private val context: Context) {
         val dropped = JSONObject(readAsset("related_words.json")).let { r ->
             r.keys().asSequence().filter { r.getJSONObject(it).optBoolean("drop") }.toSet()
         }
-        return List(words.length()) { index ->
-            val item = words.getJSONObject(index)
+        // 词包条目可直接带音标（ipa_uk / ipa_us），内置词的音标在 ogden_ipa.json
+        fun parse(item: JSONObject): OgdenWord {
             val word = item.getString("w")
             val ipaItem = ipa.optJSONObject(word)
             val synonyms = item.getJSONArray("s")
-            OgdenWord(
+            return OgdenWord(
                 word = word,
                 category = Category.from(item.getString("c")),
                 zh = item.getString("zh"),
@@ -328,8 +330,8 @@ class OgdenRepository(private val context: Context) {
                 example = item.getString("ex"),
                 exampleZh = item.getString("exz"),
                 synonyms = List(synonyms.length()) { synonyms.getString(it) }.filter { it !in dropped },
-                ipaUk = ipaItem?.optString("uk").orEmpty(),
-                ipaUs = ipaItem?.optString("us").orEmpty(),
+                ipaUk = item.optString("ipa_uk").ifBlank { ipaItem?.optString("uk").orEmpty() },
+                ipaUs = item.optString("ipa_us").ifBlank { ipaItem?.optString("us").orEmpty() },
                 antonyms = antonyms.optJSONArray(word)?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty(),
                 collocations = collocations.optJSONArray(word)?.let { a ->
                     List(a.length()) {
@@ -341,6 +343,26 @@ class OgdenRepository(private val context: Context) {
                 exampleZh2 = item.optString("exz2"),
                 practice = !item.optBoolean("np")
             )
+        }
+        val builtIn = List(words.length()) { parse(words.getJSONObject(it)) }
+        return builtIn + loadPackWords(builtIn.map { it.word.lowercase() }.toSet(), ::parse)
+    }
+
+    /** 已下载词包里的词；分类不认识、和已有词重名、字段缺失的条目跳过，坏包不影响内置词库。 */
+    private fun loadPackWords(existing: Set<String>, parse: (JSONObject) -> OgdenWord): List<OgdenWord> {
+        val seen = existing.toMutableSet()
+        return PackStore.of(context).readWordPackJsons().flatMap { json ->
+            val items = runCatching { JSONArray(json.trimStart('\uFEFF')) }
+                .getOrElse { Log.w(TAG, "Word pack unreadable", it); return@flatMap emptyList() }
+            List(items.length()) { items.optJSONObject(it) }.mapNotNull { item ->
+                val word = item?.optString("w").orEmpty()
+                when {
+                    word.isBlank() -> null
+                    Category.values().none { it.code == item?.optString("c") } -> null
+                    !seen.add(word.lowercase()) -> null
+                    else -> runCatching { parse(item!!) }.getOrNull()
+                }.also { if (it == null) Log.w(TAG, "Word pack entry skipped: $word") }
+            }
         }
     }
 
@@ -401,6 +423,10 @@ class OgdenRepository(private val context: Context) {
 
     private fun readAsset(name: String): String =
         context.assets.open(name).bufferedReader().use { it.readText() }.trimStart('\uFEFF')
+
+    private companion object {
+        const val TAG = "OgdenRepository"
+    }
 }
 
 class ProgressStore(context: Context) {
@@ -545,7 +571,9 @@ class ProgressStore(context: Context) {
 fun OgdenKidsApp() {
     val context = LocalContext.current
     val repository = remember { OgdenRepository(context) }
-    val words = remember { repository.loadWords() }
+    // 资源包装好或删掉后递增，重新加载词库（含词包里的词）
+    var packVersion by remember { mutableStateOf(0) }
+    val words = remember(packVersion) { repository.loadWords() }
     val speeches = remember { repository.loadSpeeches() }
     val lessonWords = remember(speeches) { speeches.flatMap { it.words }.map { it.lowercase() }.toSet() }
     val specialModules = remember { repository.loadSpecialModules() }
@@ -617,6 +645,7 @@ fun OgdenKidsApp() {
                 azureSpeaker.stop()
                 screen = Screen.SpecialModulePage(current.key)
             }
+            Screen.ResourcePacks -> screen = Screen.Settings
             else -> {
                 azureSpeaker.stop()
                 screen = Screen.Main
@@ -930,8 +959,10 @@ fun OgdenKidsApp() {
                     chineseMode = chineseMode,
                     onAccent = { accent = it; progressStore.saveAccent(it) },
                     onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
+                    onResourcePacks = { screen = Screen.ResourcePacks },
                     onBack = goBack
                 )
+                Screen.ResourcePacks -> ResourcePacksScreen(onBack = goBack, onPacksChanged = { packVersion++ })
                 Screen.Privacy -> LegalInfoScreen(
                     title = "隐私声明",
                     onBack = goBack,
@@ -947,12 +978,13 @@ fun OgdenKidsApp() {
 }
 
 /**
- * 单词朗读：有 assets/audio 离线录音的直接播放；其余文本（例句、近义词）交给 [azure]，
- * 它会先用预生成的 assets/tts 音频，缺失时才在线合成。
+ * 单词朗读：有离线录音（已下载的资源包优先，其次 assets/audio）的直接播放；其余文本（例句、近义词）交给 [azure]，
+ * 它会先用预生成的音频，缺失时才在线合成。
  */
 @Composable
 fun rememberSpeaker(accent: Accent, azure: AzureSpeaker): (String) -> Unit {
     val context = LocalContext.current
+    val packs = remember { PackStore.of(context) }
     var player by remember { mutableStateOf<MediaPlayer?>(null) }
     DisposableEffect(Unit) {
         onDispose { player?.release() }
@@ -964,16 +996,21 @@ fun rememberSpeaker(accent: Accent, azure: AzureSpeaker): (String) -> Unit {
                 player?.release()
                 player = null
                 val localPath = localAudioPath(text, accent)
-                val fd = localPath?.let { runCatching { context.assets.openFd(it) }.getOrNull() }
-                if (fd == null) {
+                val downloaded = localPath?.let { packs.findFile(it) }
+                val fd = if (downloaded != null) null else localPath?.let { runCatching { context.assets.openFd(it) }.getOrNull() }
+                if (downloaded == null && fd == null) {
                     azure.speak(text, AzureVoice.english(accent))
                 } else {
                     azure.stop()
                     runCatching {
                         val mediaPlayer = MediaPlayer()
                         player = mediaPlayer
-                        mediaPlayer.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
-                        fd.close()
+                        if (fd != null) {
+                            mediaPlayer.setDataSource(fd.fileDescriptor, fd.startOffset, fd.length)
+                            fd.close()
+                        } else {
+                            mediaPlayer.setDataSource(downloaded!!.path)
+                        }
                         mediaPlayer.setOnPreparedListener { it.start() }
                         mediaPlayer.setOnCompletionListener {
                             it.release()
@@ -1008,6 +1045,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.ModulePractice -> "module-practice-${screen.key}"
     Screen.SpeechWords -> "speech-words"
     Screen.Settings -> "settings"
+    Screen.ResourcePacks -> "resource-packs"
     Screen.Privacy -> "privacy"
     Screen.Feedback -> "feedback"
 }
@@ -3284,6 +3322,7 @@ fun SettingsScreen(
     chineseMode: ChineseMode,
     onAccent: (Accent) -> Unit,
     onChineseMode: (ChineseMode) -> Unit,
+    onResourcePacks: () -> Unit,
     onBack: () -> Unit
 ) {
     Scaffold(containerColor = Paper, topBar = {
@@ -3325,6 +3364,11 @@ fun SettingsScreen(
                             onChineseMode = onChineseMode
                         )
                     }
+                }
+            }
+            item {
+                OutlinedButton(onClick = onResourcePacks, shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+                    AppText("资源下载 · 额外的单词和语音")
                 }
             }
         }

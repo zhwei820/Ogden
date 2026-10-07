@@ -45,9 +45,14 @@ android {
     }
 
     buildTypes {
+        // 资源包服务器；debug 默认连本机 mock（scripts/mock_pack_server.py + adb reverse），release 未配置时下载页显示暂未开放
+        debug {
+            buildConfigField "String", "PACK_SERVER_URL", "\"${localProps.getProperty("pack.server.url", "http://127.0.0.1:8765")}\""
+        }
         release {
             minifyEnabled false
             signingConfig signingConfigs.release
+            buildConfigField "String", "PACK_SERVER_URL", "\"${localProps.getProperty("pack.server.url", "")}\""
         }
     }
 

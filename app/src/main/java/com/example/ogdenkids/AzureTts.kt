@@ -26,11 +26,12 @@ enum class AzureVoice(val voiceName: String, val lang: String, val fallbackLocal
 }
 
 /**
- * Microsoft Azure 语音：先放 assets/tts 里预生成的音频，其次查运行时缓存，再请求 REST 接口；
+ * Microsoft Azure 语音：先放预生成的音频（已下载的语音包优先，其次 assets/tts），其次查运行时缓存，再请求 REST 接口；
  * 未配置 key、断网、额度耗尽等任何失败都回退到系统 TTS，保证有声音。
  */
 class AzureSpeaker(context: Context) {
     private val assets = context.assets
+    private val packs = PackStore.of(context)
     private val cacheDir = File(context.cacheDir, "azure-tts")
     private val executor = Executors.newSingleThreadExecutor()
     private val mainHandler = Handler(Looper.getMainLooper())
@@ -64,6 +65,11 @@ class AzureSpeaker(context: Context) {
         stop()
         val seq = requestSeq.incrementAndGet()
         onFinished = onDone
+        val downloaded = packs.findFile(ttsAssetPath(voice, text))
+        if (downloaded != null) {
+            playPrepared(seq, text, onBroken = { synthesizeAndPlay(seq, text, voice) }) { it.setDataSource(downloaded.path) }
+            return
+        }
         val bundled = runCatching { assets.openFd(ttsAssetPath(voice, text)) }.getOrNull()
         if (bundled != null) {
             playPrepared(seq, text, onBroken = { synthesizeAndPlay(seq, text, voice) }) {

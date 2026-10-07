@@ -1,0 +1,68 @@
+[
+    {
+        "w": "penguin",
+        "c": "ex",
+        "zh": "企鹅",
+        "en": "a black and white bird that swims but cannot fly",
+        "ex": "The penguin walks on the ice.",
+        "exz": "企鹅在冰上走。",
+        "s": ["bird"],
+        "ipa_uk": "/ˈpeŋɡwɪn/",
+        "ipa_us": "/ˈpɛŋɡwɪn/"
+    },
+    {
+        "w": "koala",
+        "c": "ex",
+        "zh": "考拉，树袋熊",
+        "en": "a small grey animal from Australia that lives in trees",
+        "ex": "The koala is sleeping in the tree.",
+        "exz": "考拉在树上睡觉。",
+        "s": ["animal"],
+        "ipa_uk": "/kəʊˈɑːlə/",
+        "ipa_us": "/koʊˈɑːlə/"
+    },
+    {
+        "w": "octopus",
+        "c": "ex",
+        "zh": "章鱼",
+        "en": "a sea animal with eight long arms",
+        "ex": "An octopus has eight arms.",
+        "exz": "章鱼有八条腕足。",
+        "s": ["sea animal"],
+        "ipa_uk": "/ˈɒktəpəs/",
+        "ipa_us": "/ˈɑːktəpəs/"
+    },
+    {
+        "w": "jellyfish",
+        "c": "ex",
+        "zh": "水母",
+        "en": "a soft sea animal you can see through",
+        "ex": "Do not touch the jellyfish.",
+        "exz": "不要碰水母。",
+        "s": ["sea animal"],
+        "ipa_uk": "/ˈdʒelifɪʃ/",
+        "ipa_us": "/ˈdʒɛlifɪʃ/"
+    },
+    {
+        "w": "starfish",
+        "c": "ex",
+        "zh": "海星",
+        "en": "a sea animal shaped like a star",
+        "ex": "I found a starfish on the beach.",
+        "exz": "我在海滩上找到一只海星。",
+        "s": ["sea star"],
+        "ipa_uk": "/ˈstɑːfɪʃ/",
+        "ipa_us": "/ˈstɑːrfɪʃ/"
+    },
+    {
+        "w": "seahorse",
+        "c": "ex",
+        "zh": "海马",
+        "en": "a small fish whose head looks like a horse",
+        "ex": "The seahorse is very small.",
+        "exz": "海马非常小。",
+        "s": ["fish"],
+        "ipa_uk": "/ˈsiːhɔːs/",
+        "ipa_us": "/ˈsiːhɔːrs/"
+    }
+]
