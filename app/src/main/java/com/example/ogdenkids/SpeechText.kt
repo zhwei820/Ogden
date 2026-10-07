@@ -59,7 +59,10 @@ data class Speech(
     val words: List<String> = emptyList(),
     /** 教材课文所属单元（如 "Unit 1 Face" / "第一单元 脸"）；内置课文为 null */
     val group: String? = null,
-    val groupZh: String? = null
+    val groupZh: String? = null,
+    /** 教材课文所属的书（选书芯片上的名字，如「一年级上册」）与书之间的排序 */
+    val book: String? = null,
+    val bookOrder: Int = 0
 )
 
 /** 正文中一个可点击的英文词：[text] 为原文，[range] 为它在段落字符串中的位置。 */

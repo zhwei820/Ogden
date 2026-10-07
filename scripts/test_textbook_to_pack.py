@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from textbook_to_pack import build_speeches, parse_textbook  # noqa: E402
+from textbook_to_pack import book_label, book_order, build_speeches, parse_textbook  # noqa: E402
 
 SAMPLE = """# 书
 ## Unit 1 Face | 第一单元 脸
@@ -36,6 +36,15 @@ class ParseTextbookTest(unittest.TestCase):
     def test_section_without_sentences_is_rejected(self):
         with self.assertRaises(ValueError):
             parse_textbook("# 书\n## Unit 1\n### Empty\n")
+
+
+class BookLabelTest(unittest.TestCase):
+    def test_label_drops_edition_and_orders_by_grade_then_term(self):
+        self.assertEqual(book_label("外研版（一年级起点）二年级上册"), "二年级上册")
+        self.assertEqual(book_label("自编教材"), "自编教材")
+        orders = [book_order(x) for x in ("一年级上册", "一年级下册", "二年级上册", "自编教材")]
+        self.assertEqual(orders, sorted(orders))
+        self.assertEqual(book_order("自编教材"), 99)
 
 
 if __name__ == "__main__":

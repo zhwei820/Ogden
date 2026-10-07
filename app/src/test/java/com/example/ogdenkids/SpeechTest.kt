@@ -146,18 +146,21 @@ class SpeechTest {
     }
 
     @Test
-    fun mockTextbookPackIsOnTextbookLevelWithUnitGroups() {
+    fun mockTextbookPacksAreOnTextbookLevelWithBooksAndUnitGroups() {
         val builtIn = JSONArray(File("src/main/assets/speeches.json").readText().trimStart('\uFEFF'))
-        val builtInIds = List(builtIn.length()) { builtIn.getJSONObject(it).getString("id") }.toSet()
-        val pack = JSONArray(File("../scripts/mock_packs/textbook-fltrp-g2a/speeches.json").readText())
-        val ids = List(pack.length()) { pack.getJSONObject(it).getString("id") }
-        assertEquals(ids.size, ids.toSet().size)
-        for (i in 0 until pack.length()) {
-            val item = pack.getJSONObject(i)
-            assertFalse(item.getString("id") in builtInIds)
-            assertEquals(TextbookLevel, item.getInt("level"))
-            assertTrue(item.getString("group").isNotBlank())
-            assertTrue(item.getJSONArray("lines").length() > 0)
+        val ids = List(builtIn.length()) { builtIn.getJSONObject(it).getString("id") }.toMutableList()
+        for (id in listOf("textbook-fltrp-g1a", "textbook-fltrp-g2a")) {
+            val pack = JSONArray(File("../scripts/mock_packs/$id/speeches.json").readText())
+            for (i in 0 until pack.length()) {
+                val item = pack.getJSONObject(i)
+                ids += item.getString("id")
+                assertEquals(TextbookLevel, item.getInt("level"))
+                assertTrue(item.getString("group").isNotBlank())
+                assertTrue(item.getString("book").isNotBlank())
+                assertTrue(item.getJSONArray("lines").length() > 0)
+            }
         }
+        // 课文进度按 id 记，教材之间、教材与内置课文之间都不能重复
+        assertEquals(ids.size, ids.toSet().size)
     }
 }

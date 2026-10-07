@@ -1,0 +1,524 @@
+[
+ {
+  "id": "textbook-fltrp-g1b-u1-1",
+  "level": 5,
+  "unit": 1,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 1 Feelings",
+  "groupZh": "第一单元 感受",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "I'm happy, I'm happy, I'm happy today.",
+    "zh": "我很开心，我很开心，我今天很开心。"
+   },
+   {
+    "en": "Clap, clap, clap my hands.",
+    "zh": "拍拍拍，拍拍手。"
+   },
+   {
+    "en": "One, two, three!",
+    "zh": "一，二，三！"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "happy",
+   "today",
+   "hand"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u1-2",
+  "level": 5,
+  "unit": 2,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 1 Feelings",
+  "groupZh": "第一单元 感受",
+  "title": "Don't do that again",
+  "titleZh": "别再这样了",
+  "lines": [
+   {
+    "en": "Dear all, please follow me.",
+    "zh": "大家请跟着我。"
+   },
+   {
+    "en": "Don't walk away.",
+    "zh": "不要走开。"
+   },
+   {
+    "en": "Oh no. Mum? Mum?",
+    "zh": "哎呀。妈妈？妈妈？"
+   },
+   {
+    "en": "Jack is hungry. He is tired, too.",
+    "zh": "杰克饿了。他也累了。"
+   },
+   {
+    "en": "Jack is sad. He is scared, too.",
+    "zh": "杰克很难过。他也很害怕。"
+   },
+   {
+    "en": "Jack, you are here!",
+    "zh": "杰克，你在这儿！"
+   },
+   {
+    "en": "Oh, Mum. I'm so happy.",
+    "zh": "哦，妈妈。我太开心了。"
+   },
+   {
+    "en": "I'm happy, too.",
+    "zh": "我也很开心。"
+   },
+   {
+    "en": "Don't do that again.",
+    "zh": "别再这样了。"
+   },
+   {
+    "en": "Sorry, Mum.",
+    "zh": "对不起，妈妈。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "follow",
+   "walk",
+   "away",
+   "hungry",
+   "tired",
+   "sad",
+   "scared",
+   "happy",
+   "sorry",
+   "again"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u2-1",
+  "level": 5,
+  "unit": 3,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 2 Family",
+  "groupZh": "第二单元 家人",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Dad, mum, brother, sister.",
+    "zh": "爸爸，妈妈，哥哥，姐姐。"
+   },
+   {
+    "en": "Grandpa, grandma, all together.",
+    "zh": "爷爷，奶奶，全家在一起。"
+   },
+   {
+    "en": "Love, love, we love each other!",
+    "zh": "爱，爱，我们彼此相爱！"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "dad",
+   "mum",
+   "brother",
+   "sister",
+   "grandpa",
+   "grandma",
+   "together",
+   "love"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u2-2",
+  "level": 5,
+  "unit": 4,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 2 Family",
+  "groupZh": "第二单元 家人",
+  "title": "Happy birthday",
+  "titleZh": "生日快乐",
+  "lines": [
+   {
+    "en": "Hello! I'm Taotao. I'm 7.",
+    "zh": "你好！我是涛涛。我七岁了。"
+   },
+   {
+    "en": "This is for you, Taotao.",
+    "zh": "这是给你的，涛涛。"
+   },
+   {
+    "en": "Thank you!",
+    "zh": "谢谢！"
+   },
+   {
+    "en": "This is for Grandpa.",
+    "zh": "这是给爷爷的。"
+   },
+   {
+    "en": "This is for Grandma.",
+    "zh": "这是给奶奶的。"
+   },
+   {
+    "en": "This is for Mum.",
+    "zh": "这是给妈妈的。"
+   },
+   {
+    "en": "This is for Dad.",
+    "zh": "这是给爸爸的。"
+   },
+   {
+    "en": "This is for my brother.",
+    "zh": "这是给我哥哥的。"
+   },
+   {
+    "en": "This is for my baby sister.",
+    "zh": "这是给我小妹妹的。"
+   },
+   {
+    "en": "This is for me.",
+    "zh": "这是给我自己的。"
+   },
+   {
+    "en": "I love my family.",
+    "zh": "我爱我的家人。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "birthday",
+   "grandpa",
+   "grandma",
+   "mum",
+   "dad",
+   "brother",
+   "baby",
+   "sister",
+   "love",
+   "family"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u3-1",
+  "level": 5,
+  "unit": 5,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 3 Pets",
+  "groupZh": "第三单元 宠物",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Dog, dog, woof.",
+    "zh": "小狗，小狗，汪汪。"
+   },
+   {
+    "en": "Cat, cat, miaow.",
+    "zh": "小猫，小猫，喵喵。"
+   },
+   {
+    "en": "Fish, fish.",
+    "zh": "小鱼，小鱼。"
+   },
+   {
+    "en": "Bird, bird.",
+    "zh": "小鸟，小鸟。"
+   },
+   {
+    "en": "Rabbit, rabbit.",
+    "zh": "兔子，兔子。"
+   },
+   {
+    "en": "All are my friends.",
+    "zh": "都是我的好朋友。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "dog",
+   "cat",
+   "fish",
+   "bird",
+   "rabbit",
+   "friend"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u3-2",
+  "level": 5,
+  "unit": 6,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 3 Pets",
+  "groupZh": "第三单元 宠物",
+  "title": "My pet",
+  "titleZh": "我的宠物",
+  "lines": [
+   {
+    "en": "I have a pet. It's a dog.",
+    "zh": "我有一只宠物。是一只狗。"
+   },
+   {
+    "en": "I have a pet. It's a cat.",
+    "zh": "我有一只宠物。是一只猫。"
+   },
+   {
+    "en": "I have a pet. It's a bird.",
+    "zh": "我有一只宠物。是一只鸟。"
+   },
+   {
+    "en": "I have a pet. It's a fish.",
+    "zh": "我有一只宠物。是一条鱼。"
+   },
+   {
+    "en": "I have a pet. It's a rabbit.",
+    "zh": "我有一只宠物。是一只兔子。"
+   },
+   {
+    "en": "We love our pets!",
+    "zh": "我们爱我们的宠物！"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "pet",
+   "dog",
+   "cat",
+   "bird",
+   "fish",
+   "rabbit",
+   "love"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u4-1",
+  "level": 5,
+  "unit": 7,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 4 At the farm",
+  "groupZh": "第四单元 在农场",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "One, two, three, four.",
+    "zh": "一，二，三，四。"
+   },
+   {
+    "en": "Five, six, seven, eight.",
+    "zh": "五，六，七，八。"
+   },
+   {
+    "en": "Nine, ten, eleven, twelve.",
+    "zh": "九，十，十一，十二。"
+   },
+   {
+    "en": "Let's count again.",
+    "zh": "我们再数一遍。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "seven",
+   "eight",
+   "nine",
+   "ten",
+   "eleven",
+   "twelve",
+   "count",
+   "again"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u4-2",
+  "level": 5,
+  "unit": 8,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 4 At the farm",
+  "groupZh": "第四单元 在农场",
+  "title": "A happy morning at the farm",
+  "titleZh": "农场里快乐的早晨",
+  "lines": [
+   {
+    "en": "Welcome!",
+    "zh": "欢迎！"
+   },
+   {
+    "en": "Grandpa! Grandma! Great to see you!",
+    "zh": "爷爷！奶奶！见到你们真好！"
+   },
+   {
+    "en": "It's 7 o'clock. Time to get up, children!",
+    "zh": "七点了。孩子们，该起床了！"
+   },
+   {
+    "en": "It's 8 o'clock. Time to have breakfast.",
+    "zh": "八点了。该吃早饭了。"
+   },
+   {
+    "en": "Yummy yummy.",
+    "zh": "真好吃。"
+   },
+   {
+    "en": "It's 9 o'clock. Let's work at the farm.",
+    "zh": "九点了。我们去农场干活吧。"
+   },
+   {
+    "en": "How many rabbits?",
+    "zh": "有多少只兔子？"
+   },
+   {
+    "en": "How many cows?",
+    "zh": "有多少头奶牛？"
+   },
+   {
+    "en": "How many eggs do you have?",
+    "zh": "你有多少个鸡蛋？"
+   },
+   {
+    "en": "I have 8.",
+    "zh": "我有八个。"
+   },
+   {
+    "en": "I have 7.",
+    "zh": "我有七个。"
+   },
+   {
+    "en": "It's 12 o'clock. Let's get back home.",
+    "zh": "十二点了。我们回家吧。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "grandpa",
+   "grandma",
+   "great",
+   "morning",
+   "breakfast",
+   "work",
+   "farm",
+   "rabbit",
+   "cow",
+   "egg",
+   "home"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u5-1",
+  "level": 5,
+  "unit": 9,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 5 My room",
+  "groupZh": "第五单元 我的房间",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Teddy Bear, Teddy Bear, where are you?",
+    "zh": "泰迪熊，泰迪熊，你在哪里？"
+   },
+   {
+    "en": "Are you in the living room? Yes. Yes. Yes.",
+    "zh": "你在客厅里吗？是的。是的。是的。"
+   },
+   {
+    "en": "Are you on the table? No. No. No.",
+    "zh": "你在桌子上吗？不是。不是。不是。"
+   },
+   {
+    "en": "Are you under the sofa? No. No. No.",
+    "zh": "你在沙发下面吗？不是。不是。不是。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "bear",
+   "living",
+   "room",
+   "table",
+   "under"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g1b-u5-2",
+  "level": 5,
+  "unit": 10,
+  "book": "一年级下册",
+  "bookOrder": 12,
+  "group": "Unit 5 My room",
+  "groupZh": "第五单元 我的房间",
+  "title": "Where is it?",
+  "titleZh": "它在哪里？",
+  "lines": [
+   {
+    "en": "Dad, I need my water bottle.",
+    "zh": "爸爸，我要我的水壶。"
+   },
+   {
+    "en": "OK. Where is it?",
+    "zh": "好的。它在哪儿？"
+   },
+   {
+    "en": "It's in my room.",
+    "zh": "在我房间里。"
+   },
+   {
+    "en": "Is it on my desk?",
+    "zh": "在我的书桌上吗？"
+   },
+   {
+    "en": "No, it's not there.",
+    "zh": "不，不在那儿。"
+   },
+   {
+    "en": "Is it in my schoolbag?",
+    "zh": "在我的书包里吗？"
+   },
+   {
+    "en": "Where is your schoolbag?",
+    "zh": "你的书包在哪儿？"
+   },
+   {
+    "en": "It's behind the door.",
+    "zh": "在门后面。"
+   },
+   {
+    "en": "No, your water bottle is not there.",
+    "zh": "不，你的水壶不在那儿。"
+   },
+   {
+    "en": "Is it on my bed?",
+    "zh": "在我的床上吗？"
+   },
+   {
+    "en": "No.",
+    "zh": "不在。"
+   },
+   {
+    "en": "Oh, it's under your bed.",
+    "zh": "哦，在你的床底下。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "need",
+   "water",
+   "bottle",
+   "room",
+   "desk",
+   "schoolbag",
+   "behind",
+   "door",
+   "bed",
+   "under"
+  ]
+ }
+]

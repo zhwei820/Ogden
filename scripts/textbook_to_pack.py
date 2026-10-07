@@ -24,6 +24,19 @@ from gen_word_audio import SSL_CONTEXT, local_props  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
 TEXTBOOK_LEVEL = 5  # 与 SpeechText.kt 的 TextbookLevel 一致
+GRADES = "一二三四五六"
+
+
+def book_label(title):
+    """书名里括号之后的部分作 App 选书芯片上的简称：「外研版（一年级起点）一年级上册」→「一年级上册」。"""
+    return title.rsplit("）", 1)[-1].strip() or title
+
+
+def book_order(label):
+    """选书芯片的排序：一年级上册 → 11、一年级下册 → 12 …；认不出年级的排最后。"""
+    if len(label) >= 4 and label[0] in GRADES and label[1:3] == "年级" and label[3] in "上下":
+        return (GRADES.index(label[0]) + 1) * 10 + (1 if label[3] == "上" else 2)
+    return 99
 
 
 def split_bilingual(text):
@@ -67,8 +80,9 @@ def parse_textbook(text):
 
 
 def build_speeches(pack_id, book):
-    """每个小节一课；unit 在整册内连续编号，决定排序；group 为单元名，App 按它分组。"""
+    """每个小节一课；unit 在整册内连续编号，决定排序；group 为单元名，App 按它分组，book 为选书芯片上的书名。"""
     speeches, unit = [], 0
+    label = book_label(book["title"])
     for u_index, u in enumerate(book["units"], 1):
         for s_index, s in enumerate(u["sections"], 1):
             unit += 1
@@ -76,6 +90,8 @@ def build_speeches(pack_id, book):
                 "id": f"{pack_id}-u{u_index}-{s_index}",
                 "level": TEXTBOOK_LEVEL,
                 "unit": unit,
+                "book": label,
+                "bookOrder": book_order(label),
                 "group": u["title"],
                 "groupZh": u["titleZh"],
                 "title": s["title"],

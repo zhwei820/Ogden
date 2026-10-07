@@ -396,10 +396,13 @@ class OgdenRepository(private val context: Context) {
                 patterns = lines(item.getJSONArray("patterns")),
                 words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty(),
                 group = item.optString("group").ifBlank { null },
-                groupZh = item.optString("groupZh").ifBlank { null }
+                groupZh = item.optString("groupZh").ifBlank { null },
+                book = item.optString("book").ifBlank { null },
+                bookOrder = item.optInt("bookOrder")
             )
         val builtIn = List(speeches.length()) { parse(speeches.getJSONObject(it)) }
-        return (builtIn + loadPackSpeeches(builtIn.map { it.id }.toSet(), ::parse)).sortedWith(compareBy({ it.level }, { it.unit }))
+        return (builtIn + loadPackSpeeches(builtIn.map { it.id }.toSet(), ::parse))
+            .sortedWith(compareBy({ it.level }, { it.bookOrder }, { it.book }, { it.unit }))
     }
 
     /**
@@ -537,6 +540,10 @@ class ProgressStore(context: Context) {
     }.getOrDefault(Category.Operations)
 
     fun lastLevel(): Int = prefs.getInt("lastLevel", 1).coerceAtLeast(1)
+
+    fun textbookBook(): String? = prefs.getString("textbookBook", null)
+
+    fun saveTextbookBook(book: String) = prefs.edit().putString("textbookBook", book).apply()
 
     fun saveLastLevel(category: Category, level: Int) {
         prefs.edit()
@@ -1951,7 +1958,12 @@ fun SpeechListScreen(
     // 教材包删掉后「教材」标签消失，停在它上面的话退回一级
     LaunchedEffect(level, hasTextbook) { if (level == TextbookLevel && !hasTextbook) onLevel(1) }
     val levelNames = SpeechLevelNames.filterKeys { it != TextbookLevel || hasTextbook }
-    val units = speeches.filter { it.level == level }
+    val levelUnits = speeches.filter { it.level == level }
+    // 教材可能装了多本书：选书芯片切换，记住上次选的；只有一本时不显示芯片
+    val books = levelUnits.mapNotNull { it.book }.distinct()
+    var chosenBook by remember { mutableStateOf(store.textbookBook()) }
+    val book = chosenBook?.takeIf { it in books } ?: books.firstOrNull()
+    val units = if (book == null) levelUnits else levelUnits.filter { it.book == book }
     val learned = units.count { store.isSpeechLearned(it.id) }
     val groups = groupSpeeches(units)
     // 列表头部依次是：标题、吸顶选择栏、进度行、专项训练，之后每个主题占 1 个标题项 + 若干单元项
@@ -2003,6 +2015,21 @@ fun SpeechListScreen(
                             label = { Text(name, textAlign = TextAlign.Center, modifier = Modifier.fillMaxWidth()) },
                             modifier = Modifier.weight(1f)
                         )
+                    }
+                }
+                if (books.size > 1) {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(books) { name ->
+                            FilterChip(
+                                selected = name == book,
+                                onClick = {
+                                    chosenBook = name
+                                    store.saveTextbookBook(name)
+                                    scope.launch { listState.scrollToItem(0) }
+                                },
+                                label = { AppText(name) }
+                            )
+                        }
                     }
                 }
                 @Composable
@@ -2281,7 +2308,7 @@ fun SpeechReaderScreen(
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             Column(Modifier.weight(1f)) {
                 Text(speech.title, fontWeight = FontWeight.Bold, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                AppText("${SpeechLevelNames[speech.level]}${SpeechLevelThemes[speech.level]} · ${speech.group ?: "Unit ${speech.unit}"} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
+                AppText("${SpeechLevelNames[speech.level]}${SpeechLevelThemes[speech.level]} · ${listOfNotNull(speech.book, speech.group).joinToString(" · ").ifEmpty { "Unit ${speech.unit}" }} · ${speech.titleZh}", color = InkFaint, fontSize = 12.sp)
             }
             TextButton(onClick = { showTranslation = !showTranslation }) {
                 AppText(if (showTranslation) "收起译文" else "显示译文", fontSize = 13.sp)

@@ -3,6 +3,8 @@
   "id": "textbook-fltrp-g2a-u1-1",
   "level": 5,
   "unit": 1,
+  "book": "二年级上册",
+  "bookOrder": 21,
   "group": "Unit 1 Face",
   "groupZh": "第一单元 脸",
   "title": "Let's chant!",
@@ -43,6 +45,8 @@
   "id": "textbook-fltrp-g2a-u1-2",
   "level": 5,
   "unit": 2,
+  "book": "二年级上册",
+  "bookOrder": 21,
   "group": "Unit 1 Face",
   "groupZh": "第一单元 脸",
   "title": "Story",
@@ -130,8 +134,10 @@
   "id": "textbook-fltrp-g2a-u2-1",
   "level": 5,
   "unit": 3,
-  "group": "Unit 2",
-  "groupZh": "第二单元",
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 2 Body parts",
+  "groupZh": "第二单元 身体部位",
   "title": "Let's chant!",
   "titleZh": "一起说唱",
   "lines": [
@@ -176,8 +182,10 @@
   "id": "textbook-fltrp-g2a-u2-2",
   "level": 5,
   "unit": 4,
-  "group": "Unit 2",
-  "groupZh": "第二单元",
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 2 Body parts",
+  "groupZh": "第二单元 身体部位",
   "title": "Story",
   "titleZh": "故事",
   "lines": [
@@ -219,6 +227,320 @@
    "hand",
    "neck",
    "head"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u3-1",
+  "level": 5,
+  "unit": 5,
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 3 Animals",
+  "groupZh": "第三单元 动物",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Let's go to the zoo.",
+    "zh": "我们去动物园吧。"
+   },
+   {
+    "en": "Look!",
+    "zh": "看！"
+   },
+   {
+    "en": "Tigers and foxes.",
+    "zh": "老虎和狐狸。"
+   },
+   {
+    "en": "Birds and monkeys.",
+    "zh": "小鸟和猴子。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "zoo",
+   "tiger",
+   "fox",
+   "bird",
+   "monkey"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u3-2",
+  "level": 5,
+  "unit": 6,
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 3 Animals",
+  "groupZh": "第三单元 动物",
+  "title": "Fox and Tiger",
+  "titleZh": "狐狸和老虎",
+  "lines": [
+   {
+    "en": "Tiger is hungry.",
+    "zh": "老虎饿了。"
+   },
+   {
+    "en": "A fox! Great!",
+    "zh": "一只狐狸！太好了！"
+   },
+   {
+    "en": "Don't eat me. I'm the king of animals!",
+    "zh": "别吃我。我是百兽之王！"
+   },
+   {
+    "en": "No. I'm the king of animals!",
+    "zh": "不，我才是百兽之王！"
+   },
+   {
+    "en": "Let me show you. Come with me.",
+    "zh": "我证明给你看。跟我来。"
+   },
+   {
+    "en": "Look! The rabbits run away.",
+    "zh": "看！兔子们跑掉了。"
+   },
+   {
+    "en": "The deer runs away, too.",
+    "zh": "鹿也跑掉了。"
+   },
+   {
+    "en": "The birds fly away.",
+    "zh": "鸟儿们飞走了。"
+   },
+   {
+    "en": "The monkeys run away, too.",
+    "zh": "猴子们也跑掉了。"
+   },
+   {
+    "en": "See? I'm the king of animals!",
+    "zh": "看到了吧？我是百兽之王！"
+   },
+   {
+    "en": "Yes, you are!",
+    "zh": "是的，你是！"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "hungry",
+   "fox",
+   "tiger",
+   "eat",
+   "king",
+   "animal",
+   "show",
+   "rabbit",
+   "deer",
+   "run",
+   "fly"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u4-1",
+  "level": 5,
+  "unit": 7,
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 4 Food",
+  "groupZh": "第四单元 食物",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Apples, apples. I like apples.",
+    "zh": "苹果，苹果。我喜欢苹果。"
+   },
+   {
+    "en": "Bananas, bananas. I like bananas.",
+    "zh": "香蕉，香蕉。我喜欢香蕉。"
+   },
+   {
+    "en": "Milk, milk. I like milk.",
+    "zh": "牛奶，牛奶。我喜欢牛奶。"
+   },
+   {
+    "en": "How about you?",
+    "zh": "你呢？"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "apple",
+   "banana",
+   "milk",
+   "like"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u4-2",
+  "level": 5,
+  "unit": 8,
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 4 Food",
+  "groupZh": "第四单元 食物",
+  "title": "Picnic day",
+  "titleZh": "野餐日",
+  "lines": [
+   {
+    "en": "It's picnic day!",
+    "zh": "今天是野餐日！"
+   },
+   {
+    "en": "I like apples and bananas.",
+    "zh": "我喜欢苹果和香蕉。"
+   },
+   {
+    "en": "I like bread and milk.",
+    "zh": "我喜欢面包和牛奶。"
+   },
+   {
+    "en": "I like meat.",
+    "zh": "我喜欢肉。"
+   },
+   {
+    "en": "We can share our food.",
+    "zh": "我们可以分享我们的食物。"
+   },
+   {
+    "en": "We all like our picnic.",
+    "zh": "我们都喜欢我们的野餐。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "picnic",
+   "apple",
+   "banana",
+   "bread",
+   "milk",
+   "meat",
+   "share",
+   "food"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u5-1",
+  "level": 5,
+  "unit": 9,
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 5 Festival",
+  "groupZh": "第五单元 节日",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Happy Spring Festival!",
+    "zh": "春节快乐！"
+   },
+   {
+    "en": "Welcome to my home.",
+    "zh": "欢迎来我家。"
+   },
+   {
+    "en": "Let's have a good time.",
+    "zh": "我们一起玩得开心吧。"
+   },
+   {
+    "en": "Best wishes to you!",
+    "zh": "送给你最美好的祝福！"
+   },
+   {
+    "en": "Happy Spring Festival!",
+    "zh": "春节快乐！"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "happy",
+   "festival",
+   "welcome",
+   "home",
+   "wish"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u5-2",
+  "level": 5,
+  "unit": 10,
+  "book": "二年级上册",
+  "bookOrder": 21,
+  "group": "Unit 5 Festival",
+  "groupZh": "第五单元 节日",
+  "title": "A happy festival",
+  "titleZh": "快乐的节日",
+  "lines": [
+   {
+    "en": "Welcome, Joe.",
+    "zh": "欢迎你，乔。"
+   },
+   {
+    "en": "Hi, Lanlan. How do you celebrate the Spring Festival?",
+    "zh": "你好，兰兰。你们怎么过春节？"
+   },
+   {
+    "en": "We wear red clothes for the festival.",
+    "zh": "过节时我们穿红衣服。"
+   },
+   {
+    "en": "Look here. What is this?",
+    "zh": "看这里。这是什么？"
+   },
+   {
+    "en": "It's fu. It means good luck. We put it on the door.",
+    "zh": "这是“福”，意思是好运。我们把它贴在门上。"
+   },
+   {
+    "en": "Look at these red lanterns.",
+    "zh": "看这些红灯笼。"
+   },
+   {
+    "en": "They are beautiful!",
+    "zh": "它们真漂亮！"
+   },
+   {
+    "en": "We also put red paper-cuts on the windows.",
+    "zh": "我们还在窗户上贴红色的剪纸。"
+   },
+   {
+    "en": "Wow. They are great!",
+    "zh": "哇，它们真棒！"
+   },
+   {
+    "en": "Joe, come and have some jiaozi.",
+    "zh": "乔，来吃点饺子吧。"
+   },
+   {
+    "en": "Oh. What is this? A red candy.",
+    "zh": "哦，这是什么？一颗红色的糖。"
+   },
+   {
+    "en": "It's lucky jiaozi. It means good luck for the new year!",
+    "zh": "这是幸运饺子，代表新的一年好运连连！"
+   },
+   {
+    "en": "I like the Spring Festival. It's so interesting.",
+    "zh": "我喜欢春节，它太有意思了。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "welcome",
+   "celebrate",
+   "festival",
+   "wear",
+   "red",
+   "clothes",
+   "luck",
+   "door",
+   "lantern",
+   "beautiful",
+   "window",
+   "candy",
+   "interesting"
   ]
  }
 ]
