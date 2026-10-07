@@ -125,5 +125,100 @@
    "wrong",
    "idea"
   ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u2-1",
+  "level": 5,
+  "unit": 3,
+  "group": "Unit 2",
+  "groupZh": "第二单元",
+  "title": "Let's chant!",
+  "titleZh": "一起说唱",
+  "lines": [
+   {
+    "en": "Put the head on the neck.",
+    "zh": "把头放在脖子上。"
+   },
+   {
+    "en": "Put the hands on the arms.",
+    "zh": "把手放在胳膊上。"
+   },
+   {
+    "en": "Put the neck on the body.",
+    "zh": "把脖子放在身体上。"
+   },
+   {
+    "en": "Put the arms on the body.",
+    "zh": "把胳膊放在身体上。"
+   },
+   {
+    "en": "Put the legs on the body.",
+    "zh": "把腿放在身体上。"
+   },
+   {
+    "en": "This is my friend Andy.",
+    "zh": "这是我的朋友安迪。"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "put",
+   "head",
+   "neck",
+   "hand",
+   "arm",
+   "body",
+   "leg",
+   "friend"
+  ]
+ },
+ {
+  "id": "textbook-fltrp-g2a-u2-2",
+  "level": 5,
+  "unit": 4,
+  "group": "Unit 2",
+  "groupZh": "第二单元",
+  "title": "Story",
+  "titleZh": "故事",
+  "lines": [
+   {
+    "en": "Who am I?",
+    "zh": "我是谁？"
+   },
+   {
+    "en": "I have a body.",
+    "zh": "我有一个身体。"
+   },
+   {
+    "en": "I have two legs.",
+    "zh": "我有两条腿。"
+   },
+   {
+    "en": "I have two arms.",
+    "zh": "我有两条胳膊。"
+   },
+   {
+    "en": "I have two hands and a neck.",
+    "zh": "我有两只手和一个脖子。"
+   },
+   {
+    "en": "I have a head.",
+    "zh": "我有一个头。"
+   },
+   {
+    "en": "I have my Jingubang!",
+    "zh": "我有我的金箍棒！"
+   }
+  ],
+  "patterns": [],
+  "words": [
+   "who",
+   "body",
+   "leg",
+   "arm",
+   "hand",
+   "neck",
+   "head"
+  ]
  }
 ]
