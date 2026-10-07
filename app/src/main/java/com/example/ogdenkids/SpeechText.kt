@@ -31,6 +31,12 @@ enum class SpeechTheme(val key: String, val zh: String, val en: String) {
 /** 课文第 4 级：按学科编排的 STEM 课文 */
 const val StemLevel = 4
 
+/** 课文包里的课文能否放进 [level] 级的 [themeKey] 主题：级别要存在，学科主题只能在 [StemLevel]。 */
+fun isValidSpeechPlacement(level: Int, themeKey: String): Boolean {
+    val theme = SpeechTheme.values().firstOrNull { it.key == themeKey } ?: return false
+    return level in 1..StemLevel && theme in SpeechTheme.forLevel(level)
+}
+
 /** 一个单元：[lines] 是课文（一句一行），[patterns] 是替换句型，[words] 是可选的本课单词（词表原形）。 */
 data class Speech(
     val id: String,

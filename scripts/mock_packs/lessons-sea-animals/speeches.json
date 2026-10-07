@@ -1,0 +1,25 @@
+[
+    {
+        "id": "pack-sea-01",
+        "level": 1,
+        "unit": 51,
+        "theme": "nature",
+        "title": "At the Sea",
+        "titleZh": "在海边",
+        "lines": [
+            {"en": "We go to the sea today.", "zh": "今天我们去海边。"},
+            {"en": "I see a starfish on the sand.", "zh": "我看见沙滩上有一只海星。"},
+            {"en": "A penguin swims in the water.", "zh": "一只企鹅在水里游泳。"},
+            {"en": "The octopus has eight arms.", "zh": "章鱼有八条腕足。"},
+            {"en": "Look at the little seahorse!", "zh": "看那只小海马！"},
+            {"en": "Do not touch the jellyfish.", "zh": "不要碰水母。"}
+        ],
+        "patterns": [
+            {"en": "I see a starfish.", "zh": "我看见一只海星。"},
+            {"en": "I see a penguin.", "zh": "我看见一只企鹅。"},
+            {"en": "I see an octopus.", "zh": "我看见一只章鱼。"},
+            {"en": "I see a seahorse.", "zh": "我看见一只海马。"}
+        ],
+        "words": ["sea", "sand", "water", "swim", "starfish", "penguin", "octopus", "seahorse", "jellyfish"]
+    }
+]

@@ -351,20 +351,24 @@ class OgdenRepository(private val context: Context) {
     /** 已下载词包里的词；分类不认识、和已有词重名、字段缺失的条目跳过，坏包不影响内置词库。 */
     private fun loadPackWords(existing: Set<String>, parse: (JSONObject) -> OgdenWord): List<OgdenWord> {
         val seen = existing.toMutableSet()
-        return PackStore.of(context).readWordPackJsons().flatMap { json ->
-            val items = runCatching { JSONArray(json.trimStart('\uFEFF')) }
-                .getOrElse { Log.w(TAG, "Word pack unreadable", it); return@flatMap emptyList() }
-            List(items.length()) { items.optJSONObject(it) }.mapNotNull { item ->
-                val word = item?.optString("w").orEmpty()
-                when {
-                    word.isBlank() -> null
-                    Category.values().none { it.code == item?.optString("c") } -> null
-                    !seen.add(word.lowercase()) -> null
-                    else -> runCatching { parse(item!!) }.getOrNull()
-                }.also { if (it == null) Log.w(TAG, "Word pack entry skipped: $word") }
-            }
+        return readPackItems(PackType.Words).mapNotNull { item ->
+            val word = item.optString("w")
+            when {
+                word.isBlank() -> null
+                Category.values().none { it.code == item.optString("c") } -> null
+                !seen.add(word.lowercase()) -> null
+                else -> runCatching { parse(item) }.getOrNull()
+            }.also { if (it == null) Log.w(TAG, "Word pack entry skipped: $word") }
         }
     }
+
+    /** 已装 [type] 包数据文件里的条目；读不了的包整个跳过。 */
+    private fun readPackItems(type: PackType): List<JSONObject> =
+        PackStore.of(context).readPackDataJsons(type).flatMap { json ->
+            val items = runCatching { JSONArray(json.trimStart('\uFEFF')) }
+                .getOrElse { Log.w(TAG, "${type.label} unreadable", it); return@flatMap emptyList() }
+            List(items.length()) { items.optJSONObject(it) }.filterNotNull()
+        }
 
     fun loadRelatedWords(): Map<String, RelatedWord> {
         val related = JSONObject(readAsset("related_words.json"))
@@ -380,8 +384,7 @@ class OgdenRepository(private val context: Context) {
             val line = array.getJSONObject(it)
             SpeechLine(en = line.getString("en"), zh = line.getString("zh"))
         }
-        return List(speeches.length()) { index ->
-            val item = speeches.getJSONObject(index)
+        fun parse(item: JSONObject) =
             Speech(
                 id = item.getString("id"),
                 level = item.getInt("level"),
@@ -393,7 +396,25 @@ class OgdenRepository(private val context: Context) {
                 patterns = lines(item.getJSONArray("patterns")),
                 words = item.optJSONArray("words")?.let { a -> List(a.length()) { a.getString(it) } }.orEmpty()
             )
-        }.sortedWith(compareBy({ it.level }, { it.unit }))
+        val builtIn = List(speeches.length()) { parse(speeches.getJSONObject(it)) }
+        return (builtIn + loadPackSpeeches(builtIn.map { it.id }.toSet(), ::parse)).sortedWith(compareBy({ it.level }, { it.unit }))
+    }
+
+    /**
+     * 已下载课文包里的课文。学习进度、跟读成绩都按 id 记，id 和已有课文重复的整课跳过，不覆盖内置课文；
+     * 级别 / 主题不合法、没有句子、字段缺失的也跳过。
+     */
+    private fun loadPackSpeeches(existing: Set<String>, parse: (JSONObject) -> Speech): List<Speech> {
+        val seen = existing.toMutableSet()
+        return readPackItems(PackType.Lessons).mapNotNull { item ->
+            val id = item.optString("id")
+            when {
+                id.isBlank() || id in seen -> null
+                !isValidSpeechPlacement(item.optInt("level"), item.optString("theme")) -> null
+                (item.optJSONArray("lines")?.length() ?: 0) == 0 -> null
+                else -> runCatching { parse(item) }.getOrNull()
+            }.also { if (it == null) Log.w(TAG, "Lesson pack entry skipped: $id") else seen += id }
+        }
     }
 
     fun loadSpecialModules(): List<SpecialModule> {
@@ -574,7 +595,7 @@ fun OgdenKidsApp() {
     // 资源包装好或删掉后递增，重新加载词库（含词包里的词）
     var packVersion by remember { mutableStateOf(0) }
     val words = remember(packVersion) { repository.loadWords() }
-    val speeches = remember { repository.loadSpeeches() }
+    val speeches = remember(packVersion) { repository.loadSpeeches() }
     val lessonWords = remember(speeches) { speeches.flatMap { it.words }.map { it.lowercase() }.toSet() }
     val specialModules = remember { repository.loadSpecialModules() }
     val wordIndex = remember(words) { words.associateBy { it.word.lowercase() } }

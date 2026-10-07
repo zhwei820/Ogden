@@ -85,7 +85,7 @@ class ResourcePacksTest {
         val reloaded = PackStore(root)
         assertEquals(1, reloaded.installedVersion("words-a"))
         assertEquals("mp3", reloaded.findFile("audio/us/penguin.mp3")!!.readText())
-        assertEquals(listOf("[]"), reloaded.readWordPackJsons())
+        assertEquals(listOf("[]"), reloaded.readPackDataJsons(PackType.Words))
 
         reloaded.remove("words-a")
         assertNull(reloaded.installedVersion("words-a"))
@@ -112,7 +112,24 @@ class ResourcePacksTest {
         val root = tmp.newFolder("packs")
         val store = PackStore(root)
         store.install(pack("voice-a", PackType.Voice), zipOf("tts/en-US/abc.mp3" to "mp3"))
-        assertTrue(store.readWordPackJsons().isEmpty())
+        assertTrue(store.readPackDataJsons(PackType.Words).isEmpty())
         assertEquals("mp3", store.findFile("tts/en-US/abc.mp3")!!.readText())
+    }
+
+    @Test
+    fun lessonPackNeedsSpeechesJsonAndIsReadByType() {
+        val root = tmp.newFolder("packs")
+        val store = PackStore(root)
+        try {
+            store.install(pack("lessons-a", PackType.Lessons), zipOf("words.json" to "[]"))
+            fail("缺 speeches.json 的课文包应安装失败")
+        } catch (e: IOException) {
+            assertTrue(e.message!!.contains("speeches.json"))
+        }
+        store.install(pack("lessons-a", PackType.Lessons), zipOf("speeches.json" to "[1]"))
+        store.install(pack("words-a"), zipOf("words.json" to "[2]"))
+        assertEquals(listOf("[1]"), store.readPackDataJsons(PackType.Lessons))
+        assertEquals(listOf("[2]"), store.readPackDataJsons(PackType.Words))
+        assertTrue(store.readPackDataJsons(PackType.Voice).isEmpty())
     }
 }

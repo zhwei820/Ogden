@@ -122,4 +122,26 @@ class SpeechTest {
         assertTrue(ssml.contains("name='en-US-JennyNeural'"))
         assertTrue(ssml.contains("xml:lang='en-US'"))
     }
+
+    @Test
+    fun packLessonPlacementMustMatchLevelThemes() {
+        assertTrue(isValidSpeechPlacement(1, "nature"))
+        assertTrue(isValidSpeechPlacement(StemLevel, "physics"))
+        assertFalse(isValidSpeechPlacement(1, "physics"))
+        assertFalse(isValidSpeechPlacement(StemLevel, "nature"))
+        assertFalse(isValidSpeechPlacement(5, "nature"))
+        assertFalse(isValidSpeechPlacement(1, "ocean"))
+    }
+
+    @Test
+    fun mockLessonPackIsValidAndDoesNotReuseBuiltInIds() {
+        val builtIn = JSONArray(File("src/main/assets/speeches.json").readText().trimStart('\uFEFF'))
+        val builtInIds = List(builtIn.length()) { builtIn.getJSONObject(it).getString("id") }.toSet()
+        val pack = JSONArray(File("../scripts/mock_packs/lessons-sea-animals/speeches.json").readText())
+        for (i in 0 until pack.length()) {
+            val item = pack.getJSONObject(i)
+            assertFalse(item.getString("id") in builtInIds)
+            assertTrue(isValidSpeechPlacement(item.getInt("level"), item.getString("theme")))
+        }
+    }
 }
