@@ -47,6 +47,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -103,6 +106,51 @@ private class ClipSequencePlayer(private val context: Context, private val azure
     }
 }
 
+/** 随机循环播放 assets/bgm 里的背景音乐，一首放完换另一首；读题时压低音量。 */
+private class BackgroundMusic(private val context: Context) {
+    private val tracks = context.assets.list("bgm").orEmpty().filter { it.endsWith(".mp3") }
+    private var player: MediaPlayer? = null
+    private var current: String? = null
+    private var ducked = false
+
+    fun start() {
+        if (player != null || tracks.isEmpty()) return
+        val next = (tracks - setOfNotNull(current).toSet()).ifEmpty { tracks }.random()
+        current = next
+        runCatching {
+            val mp = MediaPlayer()
+            context.assets.openFd("bgm/$next").use { mp.setDataSource(it.fileDescriptor, it.startOffset, it.length) }
+            mp.setOnCompletionListener {
+                it.release()
+                if (player === it) { player = null; start() }
+            }
+            mp.prepare()
+            player = mp
+            applyVolume()
+            mp.start()
+        }
+    }
+
+    fun duck(on: Boolean) {
+        ducked = on
+        applyVolume()
+    }
+
+    private fun applyVolume() {
+        val v = if (ducked) 0.08f else 0.3f
+        player?.setVolume(v, v)
+    }
+
+    fun pause() = player?.takeIf { it.isPlaying }?.pause()
+
+    fun resume() = player?.start()
+
+    fun stop() {
+        player?.release()
+        player = null
+    }
+}
+
 private data class MathAnswer(val problem: MathProblem, val given: Int?) {
     val correct: Boolean get() = given == problem.answer
 }
@@ -120,6 +168,7 @@ fun MathDrillScreen(
     var carry by rememberSaveable { mutableStateOf(CarryMode.Any) }
     var level by rememberSaveable { mutableStateOf(MathLevel.Easy) }
     var prompt by rememberSaveable { mutableStateOf(PromptMode.Text) }
+    var music by rememberSaveable { mutableStateOf(true) }
     var playing by remember { mutableStateOf(false) }
     // 每开一局递增，重新出题
     var session by remember { mutableStateOf(0) }
@@ -131,6 +180,7 @@ fun MathDrillScreen(
             carry = carry,
             level = level,
             prompt = prompt,
+            music = music,
             accent = accent,
             azure = azure,
             bestScore = { store.bestSpecialScore("math-${op.name}-${carry.name}", level.ordinal) },
@@ -153,6 +203,7 @@ fun MathDrillScreen(
             item { OptionCard("进位 / 退位", CarryMode.values().toList(), carry, { it.zh }) { carry = it } }
             item { OptionCard("难度", MathLevel.values().toList(), level, { "${it.zh} ${it.seconds}秒" }) { level = it } }
             item { OptionCard("出题方式", PromptMode.values().toList(), prompt, { it.zh }) { prompt = it } }
+            item { OptionCard("背景音乐", listOf(true, false), music, { if (it) "开" else "关" }) { music = it } }
             item {
                 val best = store.bestSpecialScore("math-${op.name}-${carry.name}", level.ordinal)
                 AppText(
@@ -225,6 +276,7 @@ private fun MathDrillRound(
     carry: CarryMode,
     level: MathLevel,
     prompt: PromptMode,
+    music: Boolean,
     accent: Accent,
     azure: AzureSpeaker,
     bestScore: () -> Int?,
@@ -235,6 +287,18 @@ private fun MathDrillRound(
     val context = LocalContext.current
     val clips = remember { ClipSequencePlayer(context, azure) }
     DisposableEffect(clips) { onDispose { clips.stop() } }
+    val bgm = remember { BackgroundMusic(context) }
+    DisposableEffect(bgm) { onDispose { bgm.stop() } }
+    // 切到后台时暂停背景音乐
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    DisposableEffect(lifecycle, bgm) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) bgm.pause()
+            if (event == Lifecycle.Event.ON_START) bgm.resume()
+        }
+        lifecycle.addObserver(observer)
+        onDispose { lifecycle.removeObserver(observer) }
+    }
     BackHandler(onBack = onExit)
 
     val problems = remember(key) { buildMathDrill(op, carry, Random(System.nanoTime())) }
@@ -248,15 +312,24 @@ private fun MathDrillRound(
     val problem = problems.getOrNull(index)
     val correctCount = answers.count { it.correct }
 
+    fun speak(p: MathProblem) {
+        bgm.duck(true)
+        clips.play(p, prompt, accent) { bgm.duck(false); timerRunning = true }
+    }
+
     fun submit(given: Int?) {
         if (phase != DrillPhase.Asking || problem == null) return
         clips.stop()
+        bgm.duck(false)
         answers += MathAnswer(problem, given)
         phase = DrillPhase.Feedback
     }
 
     LaunchedEffect(key, index) {
-        if (prompt != PromptMode.Text && problem != null) clips.play(problem, prompt, accent) { timerRunning = true }
+        if (prompt != PromptMode.Text && problem != null) speak(problem)
+    }
+    LaunchedEffect(key, phase == DrillPhase.Finished) {
+        if (music && phase != DrillPhase.Finished) bgm.start() else bgm.stop()
     }
     LaunchedEffect(key, index, timerRunning, phase) {
         if (!timerRunning || phase != DrillPhase.Asking) return@LaunchedEffect
@@ -331,7 +404,7 @@ private fun MathDrillRound(
                 )
             }
             if (prompt != PromptMode.Text && last == null) {
-                OutlinedButton(onClick = { clips.play(problem, prompt, accent) { timerRunning = true } }) {
+                OutlinedButton(onClick = { speak(problem) }) {
                     Icon(Icons.Default.VolumeUp, contentDescription = null)
                     Spacer(Modifier.width(6.dp))
                     AppText("再听一遍")
@@ -352,7 +425,11 @@ private fun MathDrillRound(
             Spacer(Modifier.weight(1f))
             NumberPad(
                 enabled = phase == DrillPhase.Asking,
-                onDigit = { d -> if (input.length < 3) input = (input + d).trimStart('0').ifEmpty { "0" } },
+                // 输对立即判对；答错仍要按确定（或等超时），否则输到一半就会被判错
+                onDigit = { d ->
+                    if (input.length < 3) input = (input + d).trimStart('0').ifEmpty { "0" }
+                    if (input.toIntOrNull() == problem.answer) submit(problem.answer)
+                },
                 onDelete = { input = input.dropLast(1) },
                 onSubmit = { input.toIntOrNull()?.let(::submit) }
             )
