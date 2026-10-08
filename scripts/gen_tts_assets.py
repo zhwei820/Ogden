@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""按 app/build/tts-manifest.json 预生成英文句子朗读音频到 app/src/main/assets/tts/<lang>/<sha1>.mp3（中文不预生成）。
+"""按 app/build/tts-manifest.json 预生成朗读音频到 app/src/main/assets/tts/<lang>/<sha1>.mp3（中文只有口算题片段）。
 
 清单由单元测试生成：./gradlew :app:testDebugUnitTest --tests '*TtsCoverageTest.writeManifest'
 文件名规则与 TtsTexts.ttsKey / AzureSpeaker 缓存一致；已存在的跳过，可中断后重跑。
@@ -26,7 +26,8 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "app/src/main/assets/tts"
 MANIFEST = ROOT / "app/build/tts-manifest.json"
 # 与 AzureVoice 一致；英文按设置里的 US / UK 口音各生成一份
-VOICES = {"en": [("en-US-JennyNeural", "en-US"), ("en-GB-SoniaNeural", "en-GB")], "en_us": [("en-US-JennyNeural", "en-US")]}
+VOICES = {"en": [("en-US-JennyNeural", "en-US"), ("en-GB-SoniaNeural", "en-GB")], "en_us": [("en-US-JennyNeural", "en-US")],
+          "zh": [("zh-CN-XiaoxiaoNeural", "zh-CN")]}
 # 打包进 APK，比运行时缓存用的 24kHz/48kbps 更省体积，语音清晰度够用
 OUTPUT_FORMAT = "audio-16khz-32kbitrate-mono-mp3"
 
@@ -138,7 +139,7 @@ def main():
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     jobs = []
     # en：美音 + 英音；en_us（常见搭配）只生成美音
-    for lang_group, texts in (("en", manifest["en"]), ("en_us", manifest.get("en_us", []))):
+    for lang_group, texts in (("en", manifest["en"]), ("en_us", manifest.get("en_us", [])), ("zh", manifest.get("zh", []))):
         for voice, lang in VOICES[lang_group]:
             out_dir = ASSETS / lang
             out_dir.mkdir(parents=True, exist_ok=True)

@@ -63,6 +63,7 @@ import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Feedback
+import androidx.compose.material.icons.filled.Calculate
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Menu
@@ -305,6 +306,7 @@ sealed class Screen {
     object ResourcePacks : Screen()
     object Privacy : Screen()
     object Feedback : Screen()
+    object MathDrill : Screen()
 }
 
 class OgdenRepository(private val context: Context) {
@@ -732,6 +734,7 @@ fun OgdenKidsApp() {
                     onSettings = { screen = Screen.Settings },
                     onPrivacy = { screen = Screen.Privacy },
                     onFeedback = { screen = Screen.Feedback },
+                    onMathDrill = { screen = Screen.MathDrill },
                     content = { padding ->
                         stateHolder.SaveableStateProvider("tab-${selectedTab.name}") {
                         when (selectedTab) {
@@ -1002,6 +1005,7 @@ fun OgdenKidsApp() {
                     links = emptyList()
                 )
                 Screen.Feedback -> FeedbackScreen(onBack = goBack)
+                Screen.MathDrill -> MathDrillScreen(store = progressStore, accent = accent, azure = azureSpeaker, onBack = goBack)
             }
             }
         }
@@ -1080,6 +1084,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.ResourcePacks -> "resource-packs"
     Screen.Privacy -> "privacy"
     Screen.Feedback -> "feedback"
+    Screen.MathDrill -> "math-drill"
 }
 
 private fun localAudioPath(text: String, accent: Accent): String? {
@@ -1128,6 +1133,7 @@ fun MainScaffold(
     onSettings: () -> Unit,
     onPrivacy: () -> Unit,
     onFeedback: () -> Unit,
+    onMathDrill: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     // 设置、隐私声明、反馈不常用，收进侧边抽屉，不占底部标签
@@ -1147,6 +1153,13 @@ fun MainScaffold(
                     AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft, fontSize = 13.sp)
                     AppText("当前版本：${BuildConfig.VERSION_NAME}", color = InkFaint, fontSize = 12.sp)
                 }
+                NavigationDrawerItem(
+                    label = { AppText("小游戏 · 口算练习", fontSize = 16.sp) },
+                    icon = { Icon(Icons.Default.Calculate, contentDescription = null) },
+                    selected = false,
+                    onClick = { closeThen(onMathDrill) },
+                    modifier = Modifier.padding(horizontal = 12.dp)
+                )
                 NavigationDrawerItem(
                     label = { AppText("软件设置", fontSize = 16.sp) },
                     icon = { Icon(Icons.Default.Settings, contentDescription = null) },
