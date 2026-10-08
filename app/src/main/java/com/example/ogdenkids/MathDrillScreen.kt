@@ -106,7 +106,7 @@ private class ClipSequencePlayer(private val context: Context, private val azure
     }
 }
 
-/** 随机循环播放 assets/bgm 里的背景音乐，一首放完换另一首；读题时压低音量。 */
+/** 随机循环播放 assets/bgm 里的背景音乐（scripts/gen_bgm.py 生成），一首放完换另一首；读题时压低音量。 */
 private class BackgroundMusic(private val context: Context) {
     private val tracks = context.assets.list("bgm").orEmpty().filter { it.endsWith(".mp3") }
     private var player: MediaPlayer? = null

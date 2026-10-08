@@ -7,7 +7,7 @@ enum class MathOp(val zh: String) { Add("加法"), Sub("减法"), Mixed("加减�
 /** 加法看个位是否进位，减法看个位是否退位。 */
 enum class CarryMode(val zh: String) { Without("不进退位"), With("含进退位"), Any("随机") }
 
-enum class MathLevel(val zh: String, val seconds: Int) { Easy("初级", 10), Medium("中级", 7), Hard("高级", 5) }
+enum class MathLevel(val zh: String, val seconds: Int) { Easy("初级", 20), Medium("中级", 15), Hard("高级", 8) }
 
 enum class PromptMode(val zh: String) { Text("文字"), VoiceZh("中文语音"), VoiceEn("英文语音") }
 
