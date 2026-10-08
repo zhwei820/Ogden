@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Backspace
+import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -58,7 +59,7 @@ import kotlinx.coroutines.delay
 import kotlin.random.Random
 
 /**
- * 顺序播放预生成的离线片段（数字 / 运算符 / 数字）：先全部 prepare，再用 setNextMediaPlayer 无缝接上，段间不卡顿。
+ * 顺序播放 assets/math 里的离线片段（数字 / 运算符 / 数字）：先全部 prepare，再用 setNextMediaPlayer 无缝接上，段间不卡顿。
  * 片段缺失（资源被删等）时整句交给 [azure] 兜底。
  */
 private class ClipSequencePlayer(private val context: Context, private val azure: AzureSpeaker) {
@@ -69,7 +70,7 @@ private class ClipSequencePlayer(private val context: Context, private val azure
         stop()
         val voice = if (mode == PromptMode.VoiceZh) AzureVoice.ZhCn else AzureVoice.english(accent)
         val clips = if (mode == PromptMode.VoiceZh) problem.chineseClips else problem.englishClips
-        val prepared = runCatching { clips.map { prepare(ttsAssetPath(voice, it)) } }.getOrNull()
+        val prepared = runCatching { problem.clipFiles.map { prepare("math/${voice.lang}/$it.mp3") } }.getOrNull()
         if (prepared == null || prepared.any { it == null }) {
             prepared?.forEach { it?.release() }
             azure.speak(clips.joinToString(" "), voice, onDone)
@@ -252,7 +253,7 @@ private fun <T> OptionCard(title: String, options: List<T>, selected: T, label: 
 }
 
 @Composable
-private fun DrillTopBar(title: String, subtitle: String, onBack: () -> Unit) {
+private fun DrillTopBar(title: String, subtitle: String, onBack: () -> Unit, action: (@Composable () -> Unit)? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -266,6 +267,7 @@ private fun DrillTopBar(title: String, subtitle: String, onBack: () -> Unit) {
             AppText(title, fontWeight = FontWeight.Bold)
             AppText(subtitle, color = InkFaint, fontSize = 12.sp)
         }
+        action?.invoke()
     }
 }
 
@@ -289,17 +291,6 @@ private fun MathDrillRound(
     DisposableEffect(clips) { onDispose { clips.stop() } }
     val bgm = remember { BackgroundMusic(context) }
     DisposableEffect(bgm) { onDispose { bgm.stop() } }
-    // 切到后台时暂停背景音乐
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    DisposableEffect(lifecycle, bgm) {
-        val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_STOP) bgm.pause()
-            if (event == Lifecycle.Event.ON_START) bgm.resume()
-        }
-        lifecycle.addObserver(observer)
-        onDispose { lifecycle.removeObserver(observer) }
-    }
-    BackHandler(onBack = onExit)
 
     val problems = remember(key) { buildMathDrill(op, carry, Random(System.nanoTime())) }
     val answers = remember(key) { mutableStateListOf<MathAnswer>() }
@@ -309,6 +300,8 @@ private fun MathDrillRound(
     // 语音出题时读完才开始计时
     var timerRunning by remember(key, index) { mutableStateOf(prompt == PromptMode.Text) }
     var remainingMs by remember(key, index) { mutableStateOf(level.seconds * 1000L) }
+    // 休息中：计时、读题、自动下一题都停住，题目被休息动画盖住
+    var paused by remember(key) { mutableStateOf(false) }
     val problem = problems.getOrNull(index)
     val correctCount = answers.count { it.correct }
 
@@ -316,6 +309,32 @@ private fun MathDrillRound(
         bgm.duck(true)
         clips.play(p, prompt, accent) { bgm.duck(false); timerRunning = true }
     }
+
+    fun pause() {
+        if (paused || phase == DrillPhase.Finished) return
+        paused = true
+        clips.stop()
+        bgm.duck(false)
+    }
+
+    fun resume() {
+        if (!paused) return
+        paused = false
+        // 题还没读完就被暂停的，回来重读一遍
+        if (phase == DrillPhase.Asking && !timerRunning && prompt != PromptMode.Text && problem != null) speak(problem)
+    }
+
+    // 切到后台：暂停答题和背景音乐
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    DisposableEffect(lifecycle, bgm, key) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) { bgm.pause(); pause() }
+            if (event == Lifecycle.Event.ON_START) bgm.resume()
+        }
+        lifecycle.addObserver(observer)
+        onDispose { lifecycle.removeObserver(observer) }
+    }
+    BackHandler(onBack = { if (paused) resume() else onExit() })
 
     fun submit(given: Int?) {
         if (phase != DrillPhase.Asking || problem == null) return
@@ -331,16 +350,16 @@ private fun MathDrillRound(
     LaunchedEffect(key, phase == DrillPhase.Finished) {
         if (music && phase != DrillPhase.Finished) bgm.start() else bgm.stop()
     }
-    LaunchedEffect(key, index, timerRunning, phase) {
-        if (!timerRunning || phase != DrillPhase.Asking) return@LaunchedEffect
+    LaunchedEffect(key, index, timerRunning, phase, paused) {
+        if (!timerRunning || phase != DrillPhase.Asking || paused) return@LaunchedEffect
         while (remainingMs > 0) {
             delay(100)
             remainingMs -= 100
         }
         submit(null)
     }
-    LaunchedEffect(key, index, phase) {
-        if (phase != DrillPhase.Feedback) return@LaunchedEffect
+    LaunchedEffect(key, index, phase, paused) {
+        if (phase != DrillPhase.Feedback || paused) return@LaunchedEffect
         delay(if (answers.lastOrNull()?.correct == true) 600 else 1500)
         if (index >= problems.lastIndex) {
             onFinish(answers.count { it.correct })
@@ -356,11 +375,24 @@ private fun MathDrillRound(
         DrillTopBar(
             if (phase == DrillPhase.Finished) "训练结果" else "第 ${index + 1} / ${problems.size} 题 · 答对 $correctCount",
             subtitle,
-            onExit
+            onExit,
+            action = if (phase != DrillPhase.Finished && !paused) {
+                {
+                    OutlinedButton(onClick = ::pause, modifier = Modifier.padding(end = 4.dp)) {
+                        Icon(Icons.Default.Pause, contentDescription = null)
+                        Spacer(Modifier.width(4.dp))
+                        AppText("休息")
+                    }
+                }
+            } else null
         )
     }) { padding ->
         if (phase == DrillPhase.Finished) {
             DrillResult(answers, bestScore(), Modifier.padding(padding), onRestart, onExit)
+            return@Scaffold
+        }
+        if (paused) {
+            RestOverlay(done = answers.size, total = problems.size, correct = correctCount, onResume = ::resume, modifier = Modifier.padding(padding))
             return@Scaffold
         }
         if (problem == null) return@Scaffold

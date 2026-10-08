@@ -14,7 +14,7 @@ data class TtsTexts(val english: Set<String>, val englishUsOnly: Set<String>)
 
 /**
  * 应用里所有可能经 AzureSpeaker 朗读的英文（单词本身走 assets/audio 的离线录音，不在此列）。
- * 中文除口算题片段（mathDrillClips）外不预生成，播放时在线合成并缓存在本机。
+ * 中文不预生成，播放时在线合成并缓存在本机。
  * 新增会朗读的内容时要同步加到这里，否则 TtsCoverageTest 会报缺音频。
  */
 fun speakableTexts(

@@ -20,6 +20,10 @@ data class MathProblem(val a: Int, val b: Int, val plus: Boolean) {
 
     val chineseClips: List<String>
         get() = listOf(chineseNumber(a), if (plus) "加" else "减", chineseNumber(b))
+
+    /** assets/math/<lang>/ 下的录音文件名（scripts/gen_math_audio.py 生成） */
+    val clipFiles: List<String>
+        get() = listOf("$a", if (plus) "add" else "sub", "$b")
 }
 
 const val MathDrillSize = 20
@@ -30,14 +34,6 @@ fun chineseNumber(n: Int): String = when {
     n == 100 -> "一百"
     n < 10 -> ChineseDigits[n]
     else -> (if (n < 20) "" else ChineseDigits[n / 10]) + "十" + (if (n % 10 == 0) "" else ChineseDigits[n % 10])
-}
-
-/** 口算题可能读到的全部片段；都要有离线录音（TtsCoverageTest 检查）。 */
-fun mathDrillClips(): Pair<Set<String>, Set<String>> {
-    val numbers = 0..100
-    val en = numbers.map(::numberWord).toSet() + "plus" + "minus"
-    val zh = numbers.map(::chineseNumber).toSet() + "加" + "减"
-    return en to zh
 }
 
 fun hasCarry(p: MathProblem): Boolean =

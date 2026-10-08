@@ -3,6 +3,7 @@ package com.example.ogdenkids
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.io.File
 import kotlin.random.Random
 
 class MathDrillTest {
@@ -34,6 +35,15 @@ class MathDrillTest {
         assertTrue(!hasCarry(MathProblem(32, 5, true)))
         assertTrue(hasCarry(MathProblem(42, 7, false)))
         assertTrue(!hasCarry(MathProblem(47, 2, false)))
+    }
+
+    @Test
+    fun everyClipHasBundledAudio() {
+        val names = (0..100).map { "$it" } + "add" + "sub"
+        val missing = listOf("zh-CN", "en-US", "en-GB").flatMap { lang -> names.map { "math/$lang/$it.mp3" } }
+            .filterNot { File("src/main/assets/$it").exists() }
+        assertTrue("缺口算录音，运行 scripts/gen_math_audio.py：$missing", missing.isEmpty())
+        assertEquals(listOf("35", "add", "48"), MathProblem(35, 48, true).clipFiles)
     }
 
     @Test

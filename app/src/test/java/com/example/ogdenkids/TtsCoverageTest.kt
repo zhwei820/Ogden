@@ -84,9 +84,8 @@ class TtsCoverageTest {
         out.parentFile.mkdirs()
         out.writeText(
             JSONObject()
-                .put("en", JSONArray((texts.english + mathDrillClips().first).sorted()))
+                .put("en", JSONArray(texts.english.sorted()))
                 .put("en_us", JSONArray(texts.englishUsOnly.sorted()))
-                .put("zh", JSONArray(mathDrillClips().second.sorted()))
                 .toString(1)
         )
     }
@@ -109,13 +108,5 @@ class TtsCoverageTest {
             texts.englishUsOnly.map { AzureVoice.EnUs to it }
         val absent = missing.filter { (voice, text) -> !File("src/main/assets/${ttsAssetPath(voice, text)}").exists() }
         assertTrue("${absent.size} 条缺少预生成音频，运行 scripts/gen_tts_assets.py；例如 ${absent.take(5)}", absent.isEmpty())
-    }
-
-    @Test
-    fun mathDrillClipsHaveBundledAudio() {
-        val (en, zh) = mathDrillClips()
-        val absent = en.flatMap { listOf(AzureVoice.EnUs to it, AzureVoice.EnGb to it) } + zh.map { AzureVoice.ZhCn to it }
-        val missing = absent.filterNot { (voice, text) -> File("src/main/assets/${ttsAssetPath(voice, text)}").exists() }
-        assertTrue("口算缺离线录音，运行 scripts/gen_tts_assets.py：$missing", missing.isEmpty())
     }
 }
