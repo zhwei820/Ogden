@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -41,6 +43,7 @@ internal fun MathCheckInCard(store: ProgressStore) {
     // 0 = 本月，-1 = 上个月…
     var monthOffset by remember { mutableStateOf(0) }
     var selected by remember { mutableStateOf(todayKey) }
+    var expanded by remember { mutableStateOf(false) }
     val month = (today.clone() as Calendar).apply {
         set(Calendar.DAY_OF_MONTH, 1)
         add(Calendar.MONTH, monthOffset)
@@ -61,14 +64,20 @@ internal fun MathCheckInCard(store: ProgressStore) {
             .border(1.dp, Line, RoundedCornerShape(18.dp))
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(Modifier.clickable { expanded = !expanded }, verticalAlignment = Alignment.CenterVertically) {
                 AppText("📅 打卡", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
                 AppText(
                     (if (store.mathDayLog(todayKey) != null) "今天已打卡 ✓" else "今天还没打卡") + " · 连续 $streak 天",
                     color = InkSoft,
                     fontSize = 14.sp
                 )
+                Icon(
+                    if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                    contentDescription = if (expanded) "收起" else "展开",
+                    tint = InkFaint
+                )
             }
+            if (!expanded) return@Column
             Row(verticalAlignment = Alignment.CenterVertically) {
                 IconButton(onClick = { monthOffset-- }) { Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "上个月") }
                 AppText(
