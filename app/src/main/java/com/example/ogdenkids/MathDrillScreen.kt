@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -51,17 +52,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import kotlin.random.Random
+import kotlinx.coroutines.delay
 
 /**
  * 顺序播放 assets/math 里的离线片段（数字 / 运算符 / 数字）：先全部 prepare，再用 setNextMediaPlayer 无缝接上，段间不卡顿。
@@ -413,7 +419,7 @@ private fun MathDrillRound(
         )
     }) { padding ->
         if (phase == DrillPhase.Finished) {
-            DrillResult(answers, bestScore(), Modifier.padding(padding), onRestart, onExit)
+            DrillResult(answers, bestScore(), subtitle, Modifier.padding(padding), onRestart, onExit)
             return@Scaffold
         }
         if (paused) {
@@ -550,34 +556,58 @@ private fun PadKey(modifier: Modifier, enabled: Boolean, onClick: () -> Unit, co
 }
 
 @Composable
-private fun DrillResult(answers: List<MathAnswer>, best: Int?, modifier: Modifier, onRestart: () -> Unit, onExit: () -> Unit) {
+private fun DrillResult(answers: List<MathAnswer>, best: Int?, subtitle: String, modifier: Modifier, onRestart: () -> Unit, onExit: () -> Unit) {
     val correct = answers.count { it.correct }
     val wrong = answers.filterNot { it.correct }
-    LazyColumn(
-        modifier = modifier.fillMaxSize(),
-        contentPadding = PaddingValues(24.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            AppText("答对 $correct / ${answers.size}", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 34.sp)
-        }
-        item { AppText(if (wrong.isEmpty()) "全对！太棒了！" else "再练一次，争取全对", color = InkSoft, fontSize = 18.sp) }
-        best?.let { item { AppText("最好成绩 $it / ${answers.size}", color = InkFaint) } }
-        if (wrong.isNotEmpty()) {
-            item { AppText("错题", fontWeight = FontWeight.Bold, modifier = Modifier.fillMaxWidth()) }
-            items(wrong) { a ->
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    AppText("${a.problem.text} = ${a.problem.answer}", fontSize = 18.sp)
-                    AppText(a.given?.let { "你答 $it" } ?: "超时", color = Error, fontSize = 16.sp)
+    val perfect = wrong.isEmpty()
+    val context = LocalContext.current
+    val view = LocalView.current
+    var cardBounds by remember { mutableStateOf<Rect?>(null) }
+    Box(modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(24.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            if (perfect) {
+                item { CongratsCard(answers.size, subtitle, Modifier.onGloballyPositioned { cardBounds = it.boundsInRoot() }) }
+                item {
+                    Button(
+                        onClick = {
+                            val bounds = cardBounds ?: return@Button
+                            val margin = (16 * view.resources.displayMetrics.density).toInt()
+                            shareImageToWeChat(context, captureRegion(view, bounds, margin, Paper.toArgb()))
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = WeChatGreen),
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("发送到微信", fontSize = 18.sp) }
+                }
+            } else {
+                item {
+                    AppText("答对 $correct / ${answers.size}", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 34.sp)
+                }
+                item { AppText("再练一次，争取全对", color = InkSoft, fontSize = 18.sp) }
+            }
+            best?.let { item { AppText("最好成绩 $it / ${answers.size}", color = InkFaint) } }
+            if (wrong.isNotEmpty()) {
+                item { AppText("错题", fontWeight = FontWeight.Bold, modifier = Modifier.fillMaxWidth()) }
+                items(wrong) { a ->
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                        AppText("${a.problem.text} = ${a.problem.answer}", fontSize = 18.sp)
+                        AppText(a.given?.let { "你答 $it" } ?: "超时", color = Error, fontSize = 16.sp)
+                    }
+                }
+            }
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Button(onClick = onRestart, modifier = Modifier.fillMaxWidth()) { Text("再练一次", fontSize = 18.sp) }
+                    OutlinedButton(onClick = onExit, modifier = Modifier.fillMaxWidth()) { Text("返回", fontSize = 18.sp) }
                 }
             }
         }
-        item {
-            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                Button(onClick = onRestart, modifier = Modifier.fillMaxWidth()) { Text("再练一次", fontSize = 18.sp) }
-                OutlinedButton(onClick = onExit, modifier = Modifier.fillMaxWidth()) { Text("返回", fontSize = 18.sp) }
-            }
-        }
+        if (perfect) ConfettiBurst()
     }
 }
+
+private val WeChatGreen = Color(0xFF07C160)
