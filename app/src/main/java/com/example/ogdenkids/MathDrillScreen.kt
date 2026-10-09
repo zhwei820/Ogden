@@ -2,6 +2,9 @@ package com.example.ogdenkids
 
 import android.content.Context
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
+import android.os.SystemClock
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -109,12 +112,14 @@ private class ClipSequencePlayer(private val context: Context, private val azure
     }
 }
 
-/** 随机循环播放 assets/bgm 里的背景音乐（scripts/gen_bgm.py 生成），一首放完换另一首；读题时压低音量。 */
+/** 随机循环播放 assets/bgm 里的背景音乐（scripts/gen_bgm.py 生成），一首放完换另一首；读题时压低音量，读完渐渐恢复。 */
 private class BackgroundMusic(private val context: Context) {
     private val tracks = context.assets.list("bgm").orEmpty().filter { it.endsWith(".mp3") }
     private var player: MediaPlayer? = null
     private var current: String? = null
     private var ducked = false
+    private var volume = NormalVolume
+    private val handler = Handler(Looper.getMainLooper())
 
     fun start() {
         if (player != null || tracks.isEmpty()) return
@@ -129,19 +134,30 @@ private class BackgroundMusic(private val context: Context) {
             }
             mp.prepare()
             player = mp
-            applyVolume()
+            mp.setVolume(volume, volume)
             mp.start()
         }
     }
 
     fun duck(on: Boolean) {
+        if (ducked == on) return
         ducked = on
-        applyVolume()
+        fadeTo(if (on) DuckedVolume else NormalVolume, if (on) 150L else 1500L)
     }
 
-    private fun applyVolume() {
-        val v = if (ducked) 0.08f else 0.3f
-        player?.setVolume(v, v)
+    // 用 Handler 逐帧调音量而不是 ValueAnimator：后者会被系统「动画时长缩放」关掉，渐变就没了
+    private fun fadeTo(target: Float, durationMs: Long) {
+        handler.removeCallbacksAndMessages(null)
+        val from = volume
+        val startAt = SystemClock.uptimeMillis()
+        handler.post(object : Runnable {
+            override fun run() {
+                val t = ((SystemClock.uptimeMillis() - startAt) / durationMs.toFloat()).coerceAtMost(1f)
+                volume = from + (target - from) * t
+                player?.setVolume(volume, volume)
+                if (t < 1f) handler.postDelayed(this, 30)
+            }
+        })
     }
 
     fun pause() = player?.takeIf { it.isPlaying }?.pause()
@@ -149,8 +165,15 @@ private class BackgroundMusic(private val context: Context) {
     fun resume() = player?.start()
 
     fun stop() {
+        handler.removeCallbacksAndMessages(null)
+        volume = if (ducked) DuckedVolume else NormalVolume
         player?.release()
         player = null
+    }
+
+    private companion object {
+        const val NormalVolume = 0.3f
+        const val DuckedVolume = 0.08f
     }
 }
 
