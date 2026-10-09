@@ -45,6 +45,7 @@ import kotlin.random.Random
 @Composable
 internal fun CongratsCard(total: Int, subtitle: String, modifier: Modifier = Modifier) {
     val date = remember { SimpleDateFormat("yyyy年M月d日", Locale.CHINA).format(Date()) }
+    val profile = LocalProfile.current
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -58,6 +59,18 @@ internal fun CongratsCard(total: Int, subtitle: String, modifier: Modifier = Mod
     ) {
         AppText("🏆", fontSize = 72.sp)
         AppText("Congratulations!", color = Color.White, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 30.sp)
+        profile?.let {
+            AppText(
+                "${it.zhName} · ${it.enName} · ${it.age} 岁",
+                color = Color.White,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .background(Color.White.copy(alpha = 0.22f), RoundedCornerShape(50))
+                    .padding(horizontal = 16.dp, vertical = 6.dp)
+            )
+        }
         AppText("全部答对，太厉害了！", color = Color.White, fontSize = 18.sp)
         AppText("$total / $total", color = Color.White, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 60.sp)
         AppText("⭐⭐⭐⭐⭐", fontSize = 26.sp)

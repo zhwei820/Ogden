@@ -64,6 +64,8 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.Calculate
+import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.SwitchAccount
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Menu
@@ -86,6 +88,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.IconButton
@@ -108,6 +111,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -307,6 +311,8 @@ sealed class Screen {
     object Privacy : Screen()
     object Feedback : Screen()
     object MathDrill : Screen()
+    /** [id] 为空表示新建用户 */
+    data class ProfileEdit(val id: String?) : Screen()
 }
 
 class OgdenRepository(private val context: Context) {
@@ -459,8 +465,8 @@ class OgdenRepository(private val context: Context) {
     }
 }
 
-class ProgressStore(context: Context) {
-    private val prefs = context.getSharedPreferences("ogden-progress", Context.MODE_PRIVATE)
+class ProgressStore(context: Context, profileId: String) {
+    private val prefs = context.getSharedPreferences(ProfileStore.progressPrefsName(profileId), Context.MODE_PRIVATE)
 
     fun progress(word: String) = WordProgress(
         favorite = set("favorites").contains(word),
@@ -601,8 +607,66 @@ class ProgressStore(context: Context) {
     }
 }
 
+/** 用户列表与切换 / 保存操作，交给侧边抽屉和「我的信息」页。 */
+class Accounts(
+    val profiles: List<Profile>,
+    val current: Profile,
+    val newId: () -> String,
+    val switchTo: (String) -> Unit,
+    val save: (Profile) -> Unit
+)
+
 @Composable
 fun OgdenKidsApp() {
+    val context = LocalContext.current
+    val profileStore = remember { ProfileStore(context) }
+    var profiles by remember { mutableStateOf(profileStore.profiles()) }
+    var currentId by remember { mutableStateOf(profileStore.currentId()) }
+    val current = profiles.firstOrNull { it.id == currentId } ?: profiles.firstOrNull()
+    fun switchTo(id: String) {
+        profileStore.switchTo(id)
+        currentId = id
+    }
+    fun save(profile: Profile) {
+        profileStore.save(profile)
+        profiles = profileStore.profiles()
+    }
+    if (current == null) {
+        AppTheme {
+            ProfileEditScreen(initial = null, newId = profileStore::newId, onSave = { save(it); switchTo(it.id) }, onBack = null)
+        }
+        return
+    }
+    val accounts = Accounts(profiles, current, profileStore::newId, ::switchTo, ::save)
+    // 换用户时整棵界面连同各页 remember 的状态一起重建，避免带着上一个人的进度
+    key(current.id) {
+        CompositionLocalProvider(LocalProfile provides current) { UserApp(accounts) }
+    }
+}
+
+@Composable
+private fun AppTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = lightColorScheme(
+            primary = Category.Operations.tint,
+            secondary = Category.GeneralThings.tint,
+            background = Paper,
+            surface = PaperElevated,
+            onPrimary = Color.White,
+            onBackground = Ink,
+            onSurface = Ink
+        ),
+        typography = MaterialTheme.typography.copy(
+            headlineLarge = MaterialTheme.typography.headlineLarge.copy(fontFamily = FontFamily.Serif),
+            headlineMedium = MaterialTheme.typography.headlineMedium.copy(fontFamily = FontFamily.Serif),
+            titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Serif)
+        ),
+        content = content
+    )
+}
+
+@Composable
+private fun UserApp(accounts: Accounts) {
     val context = LocalContext.current
     val repository = remember { OgdenRepository(context) }
     // 资源包装好或删掉后递增，重新加载词库（含词包里的词）
@@ -622,7 +686,7 @@ fun OgdenKidsApp() {
             things = keysOf(Category.GeneralThings, Category.Picturable, Category.Extended, Category.BabyTalk, Category.Informal)
         )
     }
-    val progressStore = remember { ProgressStore(context) }
+    val progressStore = remember { ProgressStore(context, accounts.current.id) }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
     var selectedTab by remember { mutableStateOf(Tab.Speech) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
@@ -687,22 +751,7 @@ fun OgdenKidsApp() {
         }
     }
 
-    MaterialTheme(
-        colorScheme = lightColorScheme(
-            primary = Category.Operations.tint,
-            secondary = Category.GeneralThings.tint,
-            background = Paper,
-            surface = PaperElevated,
-            onPrimary = Color.White,
-            onBackground = Ink,
-            onSurface = Ink
-        ),
-        typography = MaterialTheme.typography.copy(
-            headlineLarge = MaterialTheme.typography.headlineLarge.copy(fontFamily = FontFamily.Serif),
-            headlineMedium = MaterialTheme.typography.headlineMedium.copy(fontFamily = FontFamily.Serif),
-            titleLarge = MaterialTheme.typography.titleLarge.copy(fontFamily = FontFamily.Serif)
-        )
-    ) {
+    AppTheme {
         CompositionLocalProvider(
             LocalChineseMode provides chineseMode,
             LocalSpeechServices provides speechServices,
@@ -735,6 +784,8 @@ fun OgdenKidsApp() {
                     onPrivacy = { screen = Screen.Privacy },
                     onFeedback = { screen = Screen.Feedback },
                     onMathDrill = { screen = Screen.MathDrill },
+                    accounts = accounts,
+                    onProfile = { screen = Screen.ProfileEdit(it) },
                     content = { padding ->
                         stateHolder.SaveableStateProvider("tab-${selectedTab.name}") {
                         when (selectedTab) {
@@ -1006,6 +1057,15 @@ fun OgdenKidsApp() {
                 )
                 Screen.Feedback -> FeedbackScreen(onBack = goBack)
                 Screen.MathDrill -> MathDrillScreen(store = progressStore, accent = accent, azure = azureSpeaker, onBack = goBack)
+                is Screen.ProfileEdit -> ProfileEditScreen(
+                    initial = accounts.profiles.firstOrNull { it.id == current.id },
+                    newId = accounts.newId,
+                    onSave = { profile ->
+                        accounts.save(profile)
+                        if (profile.id == accounts.current.id) screen = Screen.Main else accounts.switchTo(profile.id)
+                    },
+                    onBack = goBack
+                )
             }
             }
         }
@@ -1085,6 +1145,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.Privacy -> "privacy"
     Screen.Feedback -> "feedback"
     Screen.MathDrill -> "math-drill"
+    is Screen.ProfileEdit -> "profile-${screen.id}"
 }
 
 private fun localAudioPath(text: String, accent: Accent): String? {
@@ -1134,6 +1195,8 @@ fun MainScaffold(
     onPrivacy: () -> Unit,
     onFeedback: () -> Unit,
     onMathDrill: () -> Unit,
+    accounts: Accounts,
+    onProfile: (id: String?) -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
     // 设置、隐私声明、反馈不常用，收进侧边抽屉，不占底部标签
@@ -1153,6 +1216,43 @@ fun MainScaffold(
                     AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft, fontSize = 13.sp)
                     AppText("当前版本：${BuildConfig.VERSION_NAME}", color = InkFaint, fontSize = 12.sp)
                 }
+                val me = accounts.current
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 12.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(Category.Operations.soft)
+                        .clickable { closeThen { onProfile(me.id) } }
+                        .padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    ProfileAvatar(me)
+                    Column(Modifier.weight(1f)) {
+                        AppText("${me.zhName} · ${me.enName}", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                        AppText("${me.age} 岁 · 查看我的信息", color = InkSoft, fontSize = 13.sp)
+                    }
+                }
+                accounts.profiles.filter { it.id != me.id }.forEach { other ->
+                    NavigationDrawerItem(
+                        label = { AppText("切换到 ${other.zhName} · ${other.enName}", fontSize = 16.sp) },
+                        icon = { Icon(Icons.Default.SwitchAccount, contentDescription = null) },
+                        selected = false,
+                        onClick = { closeThen { accounts.switchTo(other.id) } },
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+                }
+                if (accounts.profiles.size < MaxProfiles) {
+                    NavigationDrawerItem(
+                        label = { AppText("添加用户", fontSize = 16.sp) },
+                        icon = { Icon(Icons.Default.PersonAdd, contentDescription = null) },
+                        selected = false,
+                        onClick = { closeThen { onProfile(null) } },
+                        modifier = Modifier.padding(horizontal = 12.dp)
+                    )
+                }
+                Divider(Modifier.padding(horizontal = 24.dp, vertical = 8.dp), color = Line)
                 NavigationDrawerItem(
                     label = { AppText("小游戏 · 口算练习", fontSize = 16.sp) },
                     icon = { Icon(Icons.Default.Calculate, contentDescription = null) },
