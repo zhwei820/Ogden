@@ -219,7 +219,10 @@ fun MathDrillScreen(
             accent = accent,
             azure = azure,
             bestScore = { store.bestSpecialScore("math-${op.name}-${carry.name}", level.ordinal) },
-            onFinish = { correct -> store.saveSpecialScore("math-${op.name}-${carry.name}", level.ordinal, correct) },
+            onFinish = { correct ->
+                store.saveSpecialScore("math-${op.name}-${carry.name}", level.ordinal, correct)
+                store.recordMathRound(correct, MathDrillSize)
+            },
             onRestart = { session++ },
             onExit = { playing = false }
         )
@@ -234,6 +237,7 @@ fun MathDrillScreen(
             contentPadding = PaddingValues(18.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
+            item { MathCheckInCard(store) }
             item { OptionCard("题型", MathOp.values().toList(), op, { it.zh }) { op = it; store.saveMathDrillSetting("op", it.name) } }
             item { OptionCard("进位 / 退位", CarryMode.values().toList(), carry, { it.zh }) { carry = it; store.saveMathDrillSetting("carry", it.name) } }
             item { OptionCard("难度", MathLevel.values().toList(), level, { it.label }) { level = it; store.saveMathDrillSetting("level", it.name) } }

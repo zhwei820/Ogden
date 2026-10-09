@@ -142,6 +142,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.Locale
 import kotlin.math.ceil
 import androidx.compose.runtime.staticCompositionLocalOf
@@ -535,6 +536,13 @@ class ProgressStore(context: Context, profileId: String) {
     fun mathDrillSetting(key: String): String? = prefs.getString("mathDrill.$key", null)
 
     fun saveMathDrillSetting(key: String, value: String) = prefs.edit().putString("mathDrill.$key", value).apply()
+
+    fun mathDayLog(day: String): MathDayLog? = MathDayLog.parse(prefs.getString("mathDrill.day.$day", null))
+
+    fun recordMathRound(correct: Int, total: Int) {
+        val day = dayKey(Calendar.getInstance())
+        prefs.edit().putString("mathDrill.day.$day", (mathDayLog(day) ?: MathDayLog()).plusRound(correct, total).encode()).commit()
+    }
 
     fun bestThemeScore(level: Int, theme: SpeechTheme): Int? =
         prefs.getInt("themePractice.$level.${theme.key}", -1).takeIf { it >= 0 }

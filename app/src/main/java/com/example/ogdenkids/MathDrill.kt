@@ -1,5 +1,7 @@
 package com.example.ogdenkids
 
+import java.util.Calendar
+import java.util.Locale
 import kotlin.random.Random
 
 enum class MathOp(val zh: String) { Add("加法"), Sub("减法"), Mixed("加减混合") }
@@ -33,6 +35,35 @@ data class MathProblem(val a: Int, val b: Int, val plus: Boolean) {
 }
 
 const val MathDrillSize = 20
+
+/** 一天的口算打卡，存成 "局数,全对局数,答对题数,总题数"；只记做完的局。 */
+data class MathDayLog(val rounds: Int = 0, val perfect: Int = 0, val correct: Int = 0, val total: Int = 0) {
+    fun plusRound(correct: Int, total: Int) =
+        MathDayLog(rounds + 1, perfect + if (correct == total) 1 else 0, this.correct + correct, this.total + total)
+
+    fun encode() = "$rounds,$perfect,$correct,$total"
+
+    companion object {
+        fun parse(raw: String?): MathDayLog? =
+            raw?.split(',')?.mapNotNull { it.toIntOrNull() }?.takeIf { it.size == 4 }?.let { MathDayLog(it[0], it[1], it[2], it[3]) }
+    }
+}
+
+/** 本地时区的日期 "yyyy-MM-dd"，作打卡记录的键。 */
+fun dayKey(day: Calendar): String =
+    String.format(Locale.US, "%04d-%02d-%02d", day.get(Calendar.YEAR), day.get(Calendar.MONTH) + 1, day.get(Calendar.DAY_OF_MONTH))
+
+/** 连续打卡天数；今天还没练不算断，从昨天往前数。 */
+fun mathStreak(today: Calendar, checked: (String) -> Boolean): Int {
+    val day = today.clone() as Calendar
+    if (!checked(dayKey(day))) day.add(Calendar.DAY_OF_MONTH, -1)
+    var count = 0
+    while (checked(dayKey(day))) {
+        count++
+        day.add(Calendar.DAY_OF_MONTH, -1)
+    }
+    return count
+}
 
 private val ChineseDigits = listOf("零", "一", "二", "三", "四", "五", "六", "七", "八", "九")
 
