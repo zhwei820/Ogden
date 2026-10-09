@@ -8,6 +8,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -202,16 +204,16 @@ fun MathDrillScreen(
         ) {
             item { OptionCard("题型", MathOp.values().toList(), op, { it.zh }) { op = it } }
             item { OptionCard("进位 / 退位", CarryMode.values().toList(), carry, { it.zh }) { carry = it } }
-            item { OptionCard("难度", MathLevel.values().toList(), level, { "${it.zh} ${it.seconds}秒" }) { level = it } }
+            item { OptionCard("难度", MathLevel.values().toList(), level, { it.label }) { level = it } }
             item { OptionCard("出题方式", PromptMode.values().toList(), prompt, { it.zh }) { prompt = it } }
             item { OptionCard("背景音乐", listOf(true, false), music, { if (it) "开" else "关" }) { music = it } }
             item {
                 val best = store.bestSpecialScore("math-${op.name}-${carry.name}", level.ordinal)
                 AppText(
                     when (prompt) {
-                        PromptMode.Text -> "看算式，在规定时间内输入得数"
-                        PromptMode.VoiceZh -> "中文读出数字和运算符号，读完开始计时"
-                        PromptMode.VoiceEn -> "英文读出数字和运算符号（如 thirty-five plus seven），读完开始计时"
+                        PromptMode.Text -> if (level.timed) "看算式，在规定时间内输入得数" else "看算式，输入得数，不限时间"
+                        PromptMode.VoiceZh -> "中文读出数字和运算符号" + if (level.timed) "，读完开始计时" else "，不限时间"
+                        PromptMode.VoiceEn -> "英文读出数字和运算符号（如 thirty-five plus seven）" + if (level.timed) "，读完开始计时" else "，不限时间"
                     },
                     color = InkFaint,
                     fontSize = 13.sp
@@ -231,7 +233,7 @@ fun MathDrillScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun <T> OptionCard(title: String, options: List<T>, selected: T, label: (T) -> String, onSelect: (T) -> Unit) {
     Card(
@@ -243,7 +245,7 @@ private fun <T> OptionCard(title: String, options: List<T>, selected: T, label: 
     ) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             AppText(title, fontWeight = FontWeight.Bold)
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 options.forEach { option ->
                     FilterChip(selected = option == selected, onClick = { onSelect(option) }, label = { AppText(label(option)) })
                 }
@@ -351,7 +353,7 @@ private fun MathDrillRound(
         if (music && phase != DrillPhase.Finished) bgm.start() else bgm.stop()
     }
     LaunchedEffect(key, index, timerRunning, phase, paused) {
-        if (!timerRunning || phase != DrillPhase.Asking || paused) return@LaunchedEffect
+        if (!level.timed || !timerRunning || phase != DrillPhase.Asking || paused) return@LaunchedEffect
         while (remainingMs > 0) {
             delay(100)
             remainingMs -= 100
@@ -370,7 +372,7 @@ private fun MathDrillRound(
         }
     }
 
-    val subtitle = "${op.zh} · ${carry.zh} · ${level.zh} ${level.seconds}秒 · ${prompt.zh}"
+    val subtitle = "${op.zh} · ${carry.zh} · ${level.label} · ${prompt.zh}"
     Scaffold(containerColor = Paper, topBar = {
         DrillTopBar(
             if (phase == DrillPhase.Finished) "训练结果" else "第 ${index + 1} / ${problems.size} 题 · 答对 $correctCount",
@@ -405,13 +407,19 @@ private fun MathDrillRound(
             verticalArrangement = Arrangement.spacedBy(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LinearProgressIndicator(
-                progress = remainingMs / (level.seconds * 1000f),
-                modifier = Modifier.fillMaxWidth(),
-                color = if (remainingMs <= 3000) Error else Category.Operations.tint
-            )
+            if (level.timed) {
+                LinearProgressIndicator(
+                    progress = remainingMs / (level.seconds * 1000f),
+                    modifier = Modifier.fillMaxWidth(),
+                    color = if (remainingMs <= 3000) Error else Category.Operations.tint
+                )
+            }
             AppText(
-                if (timerRunning) "剩余 ${(remainingMs + 999) / 1000} 秒" else "正在读题…",
+                when {
+                    !timerRunning -> "正在读题…"
+                    level.timed -> "剩余 ${(remainingMs + 999) / 1000} 秒"
+                    else -> "不限时间，慢慢算"
+                },
                 color = InkFaint,
                 fontSize = 13.sp
             )
