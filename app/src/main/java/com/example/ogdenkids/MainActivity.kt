@@ -532,6 +532,10 @@ class ProgressStore(context: Context, profileId: String) {
         if (correct > (bestSpecialScore(key, level) ?: -1)) prefs.edit().putInt("special.$key.$level", correct).commit()
     }
 
+    fun mathDrillSetting(key: String): String? = prefs.getString("mathDrill.$key", null)
+
+    fun saveMathDrillSetting(key: String, value: String) = prefs.edit().putString("mathDrill.$key", value).apply()
+
     fun bestThemeScore(level: Int, theme: SpeechTheme): Int? =
         prefs.getInt("themePractice.$level.${theme.key}", -1).takeIf { it >= 0 }
 

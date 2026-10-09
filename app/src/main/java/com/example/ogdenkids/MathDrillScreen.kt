@@ -183,6 +183,9 @@ private class BackgroundMusic(private val context: Context) {
     }
 }
 
+private inline fun <reified T : Enum<T>> ProgressStore.mathOption(key: String, default: T): T =
+    enumValues<T>().firstOrNull { it.name == mathDrillSetting(key) } ?: default
+
 private data class MathAnswer(val problem: MathProblem, val given: Int?) {
     val correct: Boolean get() = given == problem.answer
 }
@@ -196,11 +199,11 @@ fun MathDrillScreen(
     azure: AzureSpeaker,
     onBack: () -> Unit
 ) {
-    var op by rememberSaveable { mutableStateOf(MathOp.Add) }
-    var carry by rememberSaveable { mutableStateOf(CarryMode.Any) }
-    var level by rememberSaveable { mutableStateOf(MathLevel.Easy) }
-    var prompt by rememberSaveable { mutableStateOf(PromptMode.Text) }
-    var music by rememberSaveable { mutableStateOf(true) }
+    var op by rememberSaveable { mutableStateOf(store.mathOption("op", MathOp.Add)) }
+    var carry by rememberSaveable { mutableStateOf(store.mathOption("carry", CarryMode.Any)) }
+    var level by rememberSaveable { mutableStateOf(store.mathOption("level", MathLevel.Easy)) }
+    var prompt by rememberSaveable { mutableStateOf(store.mathOption("prompt", PromptMode.Text)) }
+    var music by rememberSaveable { mutableStateOf(store.mathDrillSetting("music") != "false") }
     var playing by remember { mutableStateOf(false) }
     // 每开一局递增，重新出题
     var session by remember { mutableStateOf(0) }
@@ -231,11 +234,11 @@ fun MathDrillScreen(
             contentPadding = PaddingValues(18.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            item { OptionCard("题型", MathOp.values().toList(), op, { it.zh }) { op = it } }
-            item { OptionCard("进位 / 退位", CarryMode.values().toList(), carry, { it.zh }) { carry = it } }
-            item { OptionCard("难度", MathLevel.values().toList(), level, { it.label }) { level = it } }
-            item { OptionCard("出题方式", PromptMode.values().toList(), prompt, { it.zh }) { prompt = it } }
-            item { OptionCard("背景音乐", listOf(true, false), music, { if (it) "开" else "关" }) { music = it } }
+            item { OptionCard("题型", MathOp.values().toList(), op, { it.zh }) { op = it; store.saveMathDrillSetting("op", it.name) } }
+            item { OptionCard("进位 / 退位", CarryMode.values().toList(), carry, { it.zh }) { carry = it; store.saveMathDrillSetting("carry", it.name) } }
+            item { OptionCard("难度", MathLevel.values().toList(), level, { it.label }) { level = it; store.saveMathDrillSetting("level", it.name) } }
+            item { OptionCard("出题方式", PromptMode.values().toList(), prompt, { it.zh }) { prompt = it; store.saveMathDrillSetting("prompt", it.name) } }
+            item { OptionCard("背景音乐", listOf(true, false), music, { if (it) "开" else "关" }) { music = it; store.saveMathDrillSetting("music", it.toString()) } }
             item {
                 val best = store.bestSpecialScore("math-${op.name}-${carry.name}", level.ordinal)
                 AppText(
