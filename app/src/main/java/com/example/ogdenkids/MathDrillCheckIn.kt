@@ -77,43 +77,44 @@ internal fun MathCheckInCard(store: ProgressStore) {
                     tint = InkFaint
                 )
             }
-            if (!expanded) return@Column
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = { monthOffset-- }) { Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "上个月") }
-                AppText(
-                    "${month.get(Calendar.YEAR)}年${month.get(Calendar.MONTH) + 1}月 · 打卡 ${days.count { it.second != null }} 天",
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center
-                )
-                IconButton(onClick = { monthOffset++ }, enabled = monthOffset < 0) {
-                    Icon(Icons.Default.KeyboardArrowRight, contentDescription = "下个月")
-                }
-            }
-            WeekRow(listOf("一", "二", "三", "四", "五", "六", "日").map { w -> { AppText(w, color = InkFaint, fontSize = 12.sp) } })
-            (List(leading) { null } + days).chunked(7).forEach { week ->
-                WeekRow(week.map { entry ->
-                    {
-                        if (entry != null) {
-                            val (key, log) = entry
-                            DayCell(
-                                day = key.takeLast(2).trimStart('0'),
-                                log = log,
-                                isToday = key == todayKey,
-                                isSelected = key == selected,
-                                onClick = { selected = key }
-                            )
-                        }
+            if (expanded) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = { monthOffset-- }) { Icon(Icons.Default.KeyboardArrowLeft, contentDescription = "上个月") }
+                    AppText(
+                        "${month.get(Calendar.YEAR)}年${month.get(Calendar.MONTH) + 1}月 · 打卡 ${days.count { it.second != null }} 天",
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.Center
+                    )
+                    IconButton(onClick = { monthOffset++ }, enabled = monthOffset < 0) {
+                        Icon(Icons.Default.KeyboardArrowRight, contentDescription = "下个月")
                     }
-                })
+                }
+                WeekRow(listOf("一", "二", "三", "四", "五", "六", "日").map { w -> { AppText(w, color = InkFaint, fontSize = 12.sp) } })
+                (List(leading) { null } + days).chunked(7).forEach { week ->
+                    WeekRow(week.map { entry ->
+                        {
+                            if (entry != null) {
+                                val (key, log) = entry
+                                DayCell(
+                                    day = key.takeLast(2).trimStart('0'),
+                                    log = log,
+                                    isToday = key == todayKey,
+                                    isSelected = key == selected,
+                                    onClick = { selected = key }
+                                )
+                            }
+                        }
+                    })
+                }
+                val log = store.mathDayLog(selected)
+                val (_, m, d) = selected.split('-').map { it.toInt() }
+                AppText(
+                    "${m}月${d}日：" + if (log == null) "没有打卡" else
+                        "练了 ${log.rounds} 局" + (if (log.perfect > 0) "，全对 ${log.perfect} 局" else "") + "，答对 ${log.correct} / ${log.total} 题",
+                    color = InkSoft,
+                    fontSize = 14.sp
+                )
             }
-            val log = store.mathDayLog(selected)
-            val (_, m, d) = selected.split('-').map { it.toInt() }
-            AppText(
-                "${m}月${d}日：" + if (log == null) "没有打卡" else
-                    "练了 ${log.rounds} 局" + (if (log.perfect > 0) "，全对 ${log.perfect} 局" else "") + "，答对 ${log.correct} / ${log.total} 题",
-                color = InkSoft,
-                fontSize = 14.sp
-            )
         }
     }
 }

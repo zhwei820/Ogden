@@ -28,6 +28,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Backspace
 import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -340,6 +342,8 @@ private fun MathDrillRound(
     var remainingMs by remember(key, index) { mutableStateOf(level.seconds * 1000L) }
     // 休息中：计时、读题、自动下一题都停住，题目被休息动画盖住
     var paused by remember(key) { mutableStateOf(false) }
+    // 语音出题时点小眼睛偷看算式
+    var revealed by remember(key, index) { mutableStateOf(false) }
     val problem = problems.getOrNull(index)
     val correctCount = answers.count { it.correct }
 
@@ -461,7 +465,7 @@ private fun MathDrillRound(
             )
             Spacer(Modifier.height(8.dp))
             // 语音出题答完才亮出算式
-            val showText = prompt == PromptMode.Text || last != null
+            val showText = prompt == PromptMode.Text || last != null || revealed
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppText(
                     if (showText) "${problem.text} =" else "? ? =",
@@ -480,10 +484,19 @@ private fun MathDrillRound(
                 )
             }
             if (prompt != PromptMode.Text && last == null) {
-                OutlinedButton(onClick = { speak(problem) }) {
-                    Icon(Icons.Default.VolumeUp, contentDescription = null)
-                    Spacer(Modifier.width(6.dp))
-                    AppText("再听一遍")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    OutlinedButton(onClick = { speak(problem) }) {
+                        Icon(Icons.Default.VolumeUp, contentDescription = null)
+                        Spacer(Modifier.width(6.dp))
+                        AppText("再听一遍")
+                    }
+                    IconButton(onClick = { revealed = !revealed }) {
+                        Icon(
+                            if (revealed) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                            contentDescription = if (revealed) "隐藏题目" else "显示题目",
+                            tint = InkFaint
+                        )
+                    }
                 }
             }
             Box(Modifier.height(32.dp), contentAlignment = Alignment.Center) {
