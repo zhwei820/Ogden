@@ -699,6 +699,13 @@ private fun UserApp(accounts: Accounts) {
         )
     }
     val progressStore = remember { ProgressStore(context, accounts.current.id) }
+    // 最多 MaxProfiles 个用户，所以「另一个用户」至多一个
+    val peerReadAlongScore: (String) -> PeerScore? = remember(accounts.profiles) {
+        val peer = accounts.profiles.firstOrNull { it.id != accounts.current.id }
+        val peerStore = peer?.let { ProgressStore(context, it.id) }
+        val lookup: (String) -> PeerScore? = { sentence -> peerStore?.readAlongScore(sentence)?.let { PeerScore(peer.zhName, it) } }
+        lookup
+    }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
     var selectedTab by remember { mutableStateOf(Tab.Speech) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
@@ -902,6 +909,7 @@ private fun UserApp(accounts: Accounts) {
                         module = module,
                         level = speechLevel,
                         store = progressStore,
+                        peerReadAlongScore = peerReadAlongScore,
                         wordIndex = wordIndex,
                         lemmaVocabulary = lemmaVocabulary,
                         accent = accent,
@@ -1020,6 +1028,7 @@ private fun UserApp(accounts: Accounts) {
                     wordIndex = wordIndex,
                     lemmaVocabulary = lemmaVocabulary,
                     store = progressStore,
+                    peerReadAlongScore = peerReadAlongScore,
                     accent = accent,
                     onBack = goBack,
                     onLearnedChange = { version++ },
@@ -2298,6 +2307,7 @@ fun SpeechReaderScreen(
     wordIndex: Map<String, OgdenWord>,
     lemmaVocabulary: LemmaVocabulary,
     store: ProgressStore,
+    peerReadAlongScore: (String) -> PeerScore?,
     accent: Accent,
     onBack: () -> Unit,
     onLearnedChange: () -> Unit,
@@ -2406,7 +2416,8 @@ fun SpeechReaderScreen(
             repeating = repeatIndex == index,
             onRepeat = { startRepeat(index) },
             onReadAlong = { stopSpeaking(); readAlong = line },
-            readAlongScore = remember(line.en, readAlongVersion) { store.readAlongScore(line.en) }
+            readAlongScore = remember(line.en, readAlongVersion) { store.readAlongScore(line.en) },
+            peerScore = remember(line.en) { peerReadAlongScore(line.en) }
         )
     }
 
@@ -3176,6 +3187,8 @@ private fun HoldToTalkMic(recording: Boolean, level: Float, onPress: suspend Pre
     }
 }
 
+data class PeerScore(val name: String, val score: Int)
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SpeechLineRow(
@@ -3194,7 +3207,9 @@ fun SpeechLineRow(
     /** 长按卡片空白处：跟读评分（长按在单词上仍是选词） */
     onReadAlong: (() -> Unit)? = null,
     /** 跟读最好成绩；跟读过的卡片换底色 */
-    readAlongScore: Int? = null
+    readAlongScore: Int? = null,
+    /** 另一个用户这句的跟读最好成绩，只展示，不影响底色 */
+    peerScore: PeerScore? = null
 ) {
     val haptic = LocalHapticFeedback.current
     val text = buildAnnotatedString {
@@ -3254,24 +3269,24 @@ fun SpeechLineRow(
                     )
                 }
                 if (repeating) AppText("🔁 重复播放中", color = accent.tint, fontSize = 14.sp, fontWeight = FontWeight.Bold)
-                readAlongScore?.let {
-                    AppText(
-                        "🎤 跟读最佳 $it",
-                        color = if (it >= 75) Success else if (it >= 60) accent.tint else Error,
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                }
-                if (onReadAlong != null && readAlongScore == null) {
-                    AppText(
-                        "长按跟读",
-                        color = InkFaint.copy(alpha = 0.5f),
-                        fontSize = 11.sp,
-                        textAlign = TextAlign.End,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                if (readAlongScore != null || peerScore != null || onReadAlong != null) {
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.End),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        peerScore?.let { AppText("${it.name} ${it.score}", color = InkFaint, fontSize = 13.sp) }
+                        if (readAlongScore != null) {
+                            AppText(
+                                "🎤 跟读最佳 $readAlongScore",
+                                color = if (readAlongScore >= 75) Success else if (readAlongScore >= 60) accent.tint else Error,
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.SemiBold
+                            )
+                        } else if (onReadAlong != null) {
+                            AppText("长按跟读", color = InkFaint.copy(alpha = 0.5f), fontSize = 11.sp)
+                        }
+                    }
                 }
             }
             // 单击读一遍，长按反复朗读
@@ -4262,6 +4277,7 @@ fun SpecialModuleScreen(
     module: SpecialModule,
     level: Int,
     store: ProgressStore,
+    peerReadAlongScore: (String) -> PeerScore?,
     wordIndex: Map<String, OgdenWord>,
     lemmaVocabulary: LemmaVocabulary,
     accent: Accent,
@@ -4464,7 +4480,8 @@ fun SpecialModuleScreen(
                         repeatLoop(index)
                     },
                     onReadAlong = { stopSpeaking(); readAlong = line },
-                    readAlongScore = remember(line.en, readAlongVersion) { store.readAlongScore(line.en) }
+                    readAlongScore = remember(line.en, readAlongVersion) { store.readAlongScore(line.en) },
+                    peerScore = remember(line.en) { peerReadAlongScore(line.en) }
                 )
             }
         }
