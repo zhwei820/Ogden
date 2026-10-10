@@ -23,7 +23,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.foundation.gestures.PressGestureScope
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -114,6 +113,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.rememberCoroutineScope
@@ -3019,6 +3019,9 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     var state by remember(line.en) { mutableStateOf<ReadAlongState>(ReadAlongState.Idle) }
+    // 录音时仍显示上一次的结果：内容一缩，弹窗变矮，话筒就从手指下面挪走了
+    var previous by remember(line.en) { mutableStateOf<ReadAlongState>(ReadAlongState.Idle) }
+    val shown = if (state == ReadAlongState.Recording) previous else state
     var stopRequested by remember { mutableStateOf(false) }
     var level by remember { mutableStateOf(0f) }
     var playback by remember { mutableStateOf<AudioTrack?>(null) }
@@ -3028,6 +3031,7 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
         playback?.release()
         playback = null
         stopRequested = false
+        previous = state
         state = ReadAlongState.Recording
         scope.launch {
             val pcm = runCatching {
@@ -3076,7 +3080,7 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AppText("跟读评分", color = InkFaint, fontSize = 13.sp, modifier = Modifier.fillMaxWidth())
-            val result = (state as? ReadAlongState.Done)?.result
+            val result = (shown as? ReadAlongState.Done)?.result
             // 句子：评分后按词上色
             val tokens = remember(line.en) { tokenizeSpeech(line.en) }
             val colored = buildAnnotatedString {
@@ -3103,7 +3107,7 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
                 Text("听原句")
             }
 
-            when (val s = state) {
+            when (val s = shown) {
                 is ReadAlongState.Done -> {
                     val pron = s.result.pron.roundToInt()
                     val (stars, cheer) = when {
@@ -3134,12 +3138,7 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
             val current = state
             if (current != ReadAlongState.Scoring) {
                 val recording = current == ReadAlongState.Recording
-                HoldToTalkMic(recording, level) {
-                    if (requestRecording()) {
-                        tryAwaitRelease()
-                        stopRequested = true
-                    }
-                }
+                HoldToTalkMic(recording, level, onDown = ::requestRecording, onUp = { stopRequested = true })
                 AppText(
                     when {
                         recording -> "正在听……读完松开话筒"
@@ -3155,9 +3154,11 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
     }
 }
 
-/** 跟读话筒：录音时向外扩散波纹，按钮随音量起伏；[onPress] 在按下时调用，挂起到松开。 */
+/** 跟读话筒：录音时向外扩散波纹，按钮随音量起伏；[onDown] 返回 false 表示这次按住不录，松开时也不回调 [onUp]。 */
 @Composable
-private fun HoldToTalkMic(recording: Boolean, level: Float, onPress: suspend PressGestureScope.() -> Unit) {
+private fun HoldToTalkMic(recording: Boolean, level: Float, onDown: () -> Boolean, onUp: () -> Unit) {
+    val currentOnDown by rememberUpdatedState(onDown)
+    val currentOnUp by rememberUpdatedState(onUp)
     val color by animateColorAsState(if (recording) Error else Category.Operations.tint, label = "micColor")
     val scale by animateFloatAsState(if (recording) 1.08f + level * 0.3f else 1f, spring(stiffness = Spring.StiffnessMediumLow), label = "micScale")
     val ripple = rememberInfiniteTransition(label = "micRipple")
@@ -3179,7 +3180,19 @@ private fun HoldToTalkMic(recording: Boolean, level: Float, onPress: suspend Pre
                 .graphicsLayer { scaleX = scale; scaleY = scale }
                 .clip(CircleShape)
                 .background(color)
-                .pointerInput(Unit) { detectTapGestures(onPress = { onPress() }) },
+                // 不用 detectTapGestures：手指一滑会被弹窗的拖动抢走、滑出话筒也算取消。
+                // 这里按住期间吃掉所有移动，弹窗拖不动，只有手指全部抬起才算松开
+                .pointerInput(Unit) {
+                    awaitEachGesture {
+                        awaitFirstDown().consume()
+                        val recording = currentOnDown()
+                        do {
+                            val event = awaitPointerEvent()
+                            event.changes.forEach { it.consume() }
+                        } while (event.changes.any { it.pressed })
+                        if (recording) currentOnUp()
+                    }
+                },
             contentAlignment = Alignment.Center
         ) {
             Icon(Icons.Default.Mic, contentDescription = "按住跟读", tint = Color.White, modifier = Modifier.size(44.dp))
