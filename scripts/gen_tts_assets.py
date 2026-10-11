@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""按 app/build/tts-manifest.json 预生成英文句子朗读音频到 app/src/main/assets/tts/<lang>/<sha1>.mp3（中文不预生成）。
+"""按 app/build/tts-manifest.json 预生成朗读音频到 app/src/main/assets/tts/<lang>/<sha1>.mp3（中文只有天干地支）。
 
 清单由单元测试生成：./gradlew :app:testDebugUnitTest --tests '*TtsCoverageTest.writeManifest'
 文件名规则与 TtsTexts.ttsKey / AzureSpeaker 缓存一致；已存在的跳过，可中断后重跑。
@@ -27,6 +27,10 @@ ASSETS = ROOT / "app/src/main/assets/tts"
 MANIFEST = ROOT / "app/build/tts-manifest.json"
 # 与 AzureVoice 一致；英文按设置里的 US / UK 口音各生成一份
 VOICES = {"en": [("en-US-JennyNeural", "en-US"), ("en-GB-SoniaNeural", "en-GB")], "en_us": [("en-US-JennyNeural", "en-US")]}
+ZH_VOICE = ("zh-CN-XiaoxiaoNeural", "zh-CN")
+TONE_MARKS = {c: (base, tone) for base, marks in
+              {"a": "āáǎà", "e": "ēéěè", "i": "īíǐì", "o": "ōóǒò", "u": "ūúǔù", "ü": "ǖǘǚǜ"}.items()
+              for tone, c in enumerate(marks, 1)}
 # 打包进 APK，比运行时缓存用的 24kHz/48kbps 更省体积，语音清晰度够用
 OUTPUT_FORMAT = "audio-16khz-32kbitrate-mono-mp3"
 
@@ -49,6 +53,27 @@ try:
     import lameenc
 except ImportError:
     lameenc = None
+
+
+def sapi_pinyin(pinyin):
+    """jiǎ zǐ nián → jia 3 - zi 3 - nian 2（Azure 中文 phoneme 的 sapi 写法）。"""
+    out = []
+    for syllable in pinyin.split():
+        tone, letters = 5, []
+        for c in syllable:
+            base, t = TONE_MARKS.get(c, (c, None))
+            if t:
+                tone = t
+            letters.append("v" if base == "ü" else base)
+        out.append(f"{''.join(letters)} {tone}")
+    return " - ".join(out)
+
+
+def zh_ssml(text, pinyin):
+    # 单字容易读错，用拼音钉住读音；文件名仍按纯文本算，与 App 端一致
+    voice, lang = ZH_VOICE
+    return (f"<speak version='1.0' xml:lang='{lang}'><voice xml:lang='{lang}' name='{voice}'><prosody rate='-6%'>"
+            f"<phoneme alphabet='sapi' ph='{sapi_pinyin(pinyin)}'>{text}</phoneme></prosody></voice></speak>")
 
 
 def batch_ssml(texts, voice, lang):
@@ -146,7 +171,14 @@ def main():
                 target = out_dir / f"{key(voice, text)}.mp3"
                 if not (target.exists() and target.stat().st_size > 0):
                     jobs.append((text, voice, lang, target))
-    total = len(jobs)
+    zh_jobs = []
+    zh_dir = ASSETS / ZH_VOICE[1]
+    zh_dir.mkdir(parents=True, exist_ok=True)
+    for text, pinyin in manifest.get("zh", {}).items():
+        target = zh_dir / f"{key(ZH_VOICE[0], text)}.mp3"
+        if not (target.exists() and target.stat().st_size > 0):
+            zh_jobs.append((text, pinyin, target))
+    total = len(jobs) + len(zh_jobs)
     print(f"待生成 {total} 个，{'合并' if lameenc else '逐条'}模式", flush=True)
     done = [0]
     fallback = [0]
@@ -178,7 +210,13 @@ def main():
             write(target, encode_mp3(part))
         progress(len(batch))
 
+    def run_zh(job):
+        text, pinyin, target = job
+        write(target, request(zh_ssml(text, pinyin), sub_key, region, OUTPUT_FORMAT))
+        progress(1)
+
     with ThreadPoolExecutor(max_workers=4) as pool:
+        list(pool.map(run_zh, zh_jobs))
         if lameenc:
             groups = {}
             for job in jobs:

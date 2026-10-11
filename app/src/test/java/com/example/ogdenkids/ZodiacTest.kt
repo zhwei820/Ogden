@@ -36,6 +36,25 @@ class ZodiacTest {
     }
 
     @Test
+    fun ganzhiOfYearCycles() {
+        fun gz(year: Int) = ganzhiOfYear(year).let { (stem, zodiac) -> stem.zh + zodiac.branch }
+        assertEquals("甲子", gz(1984))
+        assertEquals("丙午", gz(2026))
+        assertEquals("癸亥", gz(2043))
+        assertEquals("庚子", gz(1900))
+    }
+
+    @Test
+    fun everyYearNameIsSpeakable() {
+        val utterances = ganzhiUtterances()
+        assertEquals(10 + 12 + 60, utterances.size)
+        (1..9999).forEach { year ->
+            val (stem, zodiac) = ganzhiOfYear(year)
+            assertTrue("$year", "${stem.zh}${zodiac.branch}年" in utterances)
+        }
+    }
+
+    @Test
     fun starSignEnglishNamesAreHeadwords() {
         val words = JSONArray(File("src/main/assets/ogden_words.json").readText(Charsets.UTF_8).trimStart('﻿'))
         val headwords = List(words.length()) { words.getJSONObject(it).getString("w") }.toSet()

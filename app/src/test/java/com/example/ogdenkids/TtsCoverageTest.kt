@@ -86,6 +86,7 @@ class TtsCoverageTest {
             JSONObject()
                 .put("en", JSONArray(texts.english.sorted()))
                 .put("en_us", JSONArray(texts.englishUsOnly.sorted()))
+                .put("zh", JSONObject(ganzhiUtterances()))
                 .toString(1)
         )
     }
@@ -108,5 +109,11 @@ class TtsCoverageTest {
             texts.englishUsOnly.map { AzureVoice.EnUs to it }
         val absent = missing.filter { (voice, text) -> !File("src/main/assets/${ttsAssetPath(voice, text)}").exists() }
         assertTrue("${absent.size} 条缺少预生成音频，运行 scripts/gen_tts_assets.py；例如 ${absent.take(5)}", absent.isEmpty())
+    }
+
+    @Test
+    fun ganzhiHasBundledAudio() {
+        val absent = ganzhiUtterances().keys.filterNot { File("src/main/assets/${ttsAssetPath(AzureVoice.ZhCn, it)}").exists() }
+        assertTrue("天干地支缺离线录音，运行 scripts/gen_tts_assets.py：$absent", absent.isEmpty())
     }
 }

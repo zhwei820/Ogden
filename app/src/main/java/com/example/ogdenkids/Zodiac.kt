@@ -1,6 +1,7 @@
 package com.example.ogdenkids
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,22 +11,36 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import java.util.Calendar
 
 /** [en] 是 ogden_words.json 里的词条，介绍里点英文名打开词典。 */
 data class StarSign(val symbol: String, val zh: String, val en: String, val startMonth: Int, val startDay: Int, val range: String, val intro: String)
@@ -98,11 +113,27 @@ private fun lunarYearOf(birthday: String): Int {
     return if (m * 100 + d < fm * 100 + fd) y - 1 else y
 }
 
-fun chineseZodiacOf(birthday: String): ChineseZodiac = ChineseZodiacs[Math.floorMod(lunarYearOf(birthday) - 4, 12)]
+fun chineseZodiacOf(birthday: String): ChineseZodiac = ganzhiOfYear(lunarYearOf(birthday)).second
+
+/** 农历 [year] 年（春节到下一个春节前）的干支。 */
+fun ganzhiOfYear(year: Int): Pair<HeavenlyStem, ChineseZodiac> =
+    HeavenlyStems[Math.floorMod(year - 4, 10)] to ChineseZodiacs[Math.floorMod(year - 4, 12)]
 
 /** 出生年的干支，如 戊戌。 */
-fun ganzhiOf(birthday: String): Pair<HeavenlyStem, ChineseZodiac> =
-    HeavenlyStems[Math.floorMod(lunarYearOf(birthday) - 4, 10)] to chineseZodiacOf(birthday)
+fun ganzhiOf(birthday: String): Pair<HeavenlyStem, ChineseZodiac> = ganzhiOfYear(lunarYearOf(birthday))
+
+/**
+ * 天干地支页与生肖页会朗读的全部中文 → 拼音（空格分隔）：单个天干、地支，以及 60 个「干支年」。
+ * 都有离线录音（scripts/gen_tts_assets.py 用拼音标注读音，避免单字读错）。
+ */
+fun ganzhiUtterances(): Map<String, String> =
+    HeavenlyStems.associate { it.zh to it.pinyin } +
+        ChineseZodiacs.associate { it.branch to it.pinyin } +
+        (0 until 60).associate { i ->
+            val stem = HeavenlyStems[i % 10]
+            val zodiac = ChineseZodiacs[i % 12]
+            "${stem.zh}${zodiac.branch}年" to "${stem.pinyin} ${zodiac.pinyin} nián"
+        }
 
 /** 全部星座 / 生肖 / 天干地支的介绍（[tab] 依次为 0 / 1 / 2），高亮自己的那个。点星座英文名打开词典，点汉字朗读。 */
 @Composable
@@ -176,9 +207,9 @@ private fun IntroRow(mine: Boolean, icon: String, intro: String, title: @Composa
     }
 }
 
-/** 汉字 + 拼音，点一下朗读。 */
+/** 汉字 + 拼音（[note] 写在汉字下方），点一下朗读。 */
 @Composable
-private fun SpokenChar(zh: String, pinyin: String, speak: (String) -> Unit, highlight: Boolean = false) {
+private fun SpokenChar(zh: String, pinyin: String, speak: (String) -> Unit, highlight: Boolean = false, note: String? = null) {
     Column(
         Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -189,6 +220,7 @@ private fun SpokenChar(zh: String, pinyin: String, speak: (String) -> Unit, high
     ) {
         AppText(pinyin, color = Category.Operations.tint, fontSize = 12.sp)
         AppText(zh, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+        if (note != null) AppText(note, color = InkSoft, fontSize = 12.sp)
     }
 }
 
@@ -208,14 +240,56 @@ private fun GanzhiPage(birthday: String, speak: (String) -> Unit) {
             AppText("${stem.zh}${zodiac.branch}年", fontWeight = FontWeight.Bold, fontSize = 20.sp)
             AppText("${stem.pinyin} ${zodiac.pinyin} nián", color = Category.Operations.tint, fontSize = 14.sp)
         }
+        YearLookup(speak)
         AppText("十天干", fontWeight = FontWeight.Bold, fontSize = 16.sp)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            HeavenlyStems.forEach { SpokenChar(it.zh, it.pinyin, speak, highlight = it == stem) }
+            HeavenlyStems.forEachIndexed { i, it -> SpokenChar(it.zh, it.pinyin, speak, highlight = it == stem, note = "${i + 1}") }
         }
         AppText("十二地支", fontWeight = FontWeight.Bold, fontSize = 16.sp)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-            ChineseZodiacs.forEach { SpokenChar(it.branch, it.pinyin, speak, highlight = it == zodiac) }
+            ChineseZodiacs.forEach { SpokenChar(it.branch, it.pinyin, speak, highlight = it == zodiac, note = "${it.emoji}${it.zh}") }
         }
         AppText("点汉字可以听读音", color = InkFaint, fontSize = 12.sp)
+    }
+}
+
+/** 输入或加减公历年份，查这一年的干支和生肖；点结果朗读。 */
+@Composable
+private fun YearLookup(speak: (String) -> Unit) {
+    var input by rememberSaveable { mutableStateOf(Calendar.getInstance().get(Calendar.YEAR).toString()) }
+    val year = input.toIntOrNull()?.takeIf { it in 1..9999 }
+    fun step(delta: Int) {
+        year?.let { input = (it + delta).coerceIn(1, 9999).toString() }
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+        AppText("查一查哪一年", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { step(-1) }) { Icon(Icons.Default.Remove, contentDescription = "上一年") }
+            OutlinedTextField(
+                input,
+                { input = it.filter(Char::isDigit).take(4) },
+                suffix = { Text("年") },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.width(120.dp)
+            )
+            IconButton(onClick = { step(1) }) { Icon(Icons.Default.Add, contentDescription = "下一年") }
+        }
+        if (year != null) {
+            val (stem, zodiac) = ganzhiOfYear(year)
+            val name = "${stem.zh}${zodiac.branch}年"
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(12.dp)).background(PaperElevated)
+                    .border(1.dp, Line, RoundedCornerShape(12.dp))
+                    .clickable { speak(name) }.padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                AppText(name, fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                AppText("${stem.pinyin} ${zodiac.pinyin} nián", color = Category.Operations.tint, fontSize = 14.sp)
+                AppText("${zodiac.emoji}${zodiac.zh}年", fontSize = 16.sp)
+            }
+            AppText("从这一年的春节开始算，春节前出生的属上一年。", color = InkFaint, fontSize = 12.sp)
+        }
     }
 }
