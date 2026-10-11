@@ -313,7 +313,7 @@ sealed class Screen {
     object Feedback : Screen()
     object MathDrill : Screen()
     /** [id] 为空表示新建用户 */
-    data class ProfileEdit(val id: String?) : Screen()
+    data class ProfileEdit(val id: String?, val returnTo: Screen = Main) : Screen()
 }
 
 class OgdenRepository(private val context: Context) {
@@ -625,7 +625,11 @@ class Accounts(
     val current: Profile,
     val newId: () -> String,
     val switchTo: (String) -> Unit,
-    val save: (Profile) -> Unit
+    val save: (Profile) -> Unit,
+    /** 换用户会重建整棵界面，抽屉随之重置；从抽屉里切换时用它让新界面的抽屉保持打开。 */
+    val reopenDrawer: Boolean,
+    val switchFromDrawer: (String) -> Unit,
+    val drawerReopened: () -> Unit
 )
 
 @Composable
@@ -634,6 +638,7 @@ fun OgdenKidsApp() {
     val profileStore = remember { ProfileStore(context) }
     var profiles by remember { mutableStateOf(profileStore.profiles()) }
     var currentId by remember { mutableStateOf(profileStore.currentId()) }
+    var reopenDrawer by remember { mutableStateOf(false) }
     val current = profiles.firstOrNull { it.id == currentId } ?: profiles.firstOrNull()
     fun switchTo(id: String) {
         profileStore.switchTo(id)
@@ -649,7 +654,12 @@ fun OgdenKidsApp() {
         }
         return
     }
-    val accounts = Accounts(profiles, current, profileStore::newId, ::switchTo, ::save)
+    val accounts = Accounts(
+        profiles, current, profileStore::newId, ::switchTo, ::save,
+        reopenDrawer = reopenDrawer,
+        switchFromDrawer = { reopenDrawer = true; switchTo(it) },
+        drawerReopened = { reopenDrawer = false }
+    )
     // 换用户时整棵界面连同各页 remember 的状态一起重建，避免带着上一个人的进度
     key(current.id) {
         CompositionLocalProvider(LocalProfile provides current) { UserApp(accounts) }
@@ -763,6 +773,7 @@ private fun UserApp(accounts: Accounts) {
                 screen = Screen.SpecialModulePage(current.key)
             }
             Screen.ResourcePacks -> screen = Screen.Settings
+            is Screen.ProfileEdit -> screen = current.returnTo
             else -> {
                 azureSpeaker.stop()
                 screen = Screen.Main
@@ -774,7 +785,8 @@ private fun UserApp(accounts: Accounts) {
         CompositionLocalProvider(
             LocalChineseMode provides chineseMode,
             LocalSpeechServices provides speechServices,
-            LocalSelectionController provides selectionController
+            LocalSelectionController provides selectionController,
+            LocalEditProfile provides { screen = Screen.ProfileEdit(accounts.current.id, returnTo = screen) }
         ) {
         Surface(color = Paper, modifier = Modifier.fillMaxSize().dismissSelectionOnOutsideTap(selectionController)) {
             BackHandler(onBack = goBack)
@@ -1083,7 +1095,7 @@ private fun UserApp(accounts: Accounts) {
                     newId = accounts.newId,
                     onSave = { profile ->
                         accounts.save(profile)
-                        if (profile.id == accounts.current.id) screen = Screen.Main else accounts.switchTo(profile.id)
+                        if (profile.id == accounts.current.id) screen = current.returnTo else accounts.switchTo(profile.id)
                     },
                     onBack = goBack
                 )
@@ -1221,7 +1233,8 @@ fun MainScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     // 设置、隐私声明、反馈不常用，收进侧边抽屉，不占底部标签
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val drawerState = rememberDrawerState(if (accounts.reopenDrawer) DrawerValue.Open else DrawerValue.Closed)
+    LaunchedEffect(Unit) { accounts.drawerReopened() }
     val scope = rememberCoroutineScope()
     fun closeThen(action: () -> Unit) {
         scope.launch { drawerState.close() }
@@ -1260,7 +1273,7 @@ fun MainScaffold(
                         label = { AppText("切换到 ${other.zhName} · ${other.enName}", fontSize = 16.sp) },
                         icon = { Icon(Icons.Default.SwitchAccount, contentDescription = null) },
                         selected = false,
-                        onClick = { closeThen { accounts.switchTo(other.id) } },
+                        onClick = { accounts.switchFromDrawer(other.id) },
                         modifier = Modifier.padding(horizontal = 12.dp)
                     )
                 }
