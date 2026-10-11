@@ -315,6 +315,7 @@ fun ResourcePacksScreen(onBack: () -> Unit, onPacksChanged: () -> Unit) {
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             AppText("资源下载", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(

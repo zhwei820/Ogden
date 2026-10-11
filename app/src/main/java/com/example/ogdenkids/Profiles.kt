@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -110,6 +111,20 @@ fun ProfileAvatar(profile: Profile, size: Int = 44) {
         contentAlignment = Alignment.Center
     ) {
         AppText(profile.zhName.take(1), color = Color.White, fontWeight = FontWeight.Bold, fontSize = (size * 0.42f).sp)
+    }
+}
+
+/** 页面顶栏右侧的当前用户，提示本页成绩记在谁名下。 */
+@Composable
+fun CurrentUserChip() {
+    val profile = LocalProfile.current ?: return
+    Row(
+        modifier = Modifier.padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(6.dp)
+    ) {
+        ProfileAvatar(profile, size = 28)
+        AppText(profile.zhName, color = InkSoft, fontSize = 13.sp, maxLines = 1)
     }
 }
 

@@ -308,6 +308,7 @@ private fun DrillTopBar(title: String, subtitle: String, onBack: () -> Unit, act
             AppText(subtitle, color = InkFaint, fontSize = 12.sp)
         }
         action?.invoke()
+        CurrentUserChip()
     }
 }
 

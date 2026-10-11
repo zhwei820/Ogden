@@ -1319,6 +1319,8 @@ fun MainScaffold(
                         Icon(Icons.Default.Menu, contentDescription = "菜单")
                     }
                     AppText("Anna English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, color = InkSoft)
+                    Spacer(Modifier.weight(1f))
+                    CurrentUserChip()
                 }
             },
             bottomBar = {
@@ -1542,6 +1544,7 @@ fun LevelSelectionScreen(
                 Text(category.label, fontWeight = FontWeight.Bold)
                 AppText("${category.zh} · $levels 个关卡", color = InkFaint, fontSize = 12.sp)
             }
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -1819,6 +1822,7 @@ fun WordDetailScreen(
                     tint = if (visibleProgress.favorite) Error else InkFaint
                 )
             }
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -2041,6 +2045,7 @@ fun WordCollectionScreen(
             if (onPractice != null && words.isNotEmpty()) {
                 TextButton(onClick = onPractice) { AppText("练习错词", fontWeight = FontWeight.Bold) }
             }
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -2449,6 +2454,7 @@ fun SpeechReaderScreen(
             TextButton(onClick = { showTranslation = !showTranslation }) {
                 AppText(if (showTranslation) "收起译文" else "显示译文", fontSize = 13.sp)
             }
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -3494,6 +3500,7 @@ fun SpeechWordListScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             AppText("课文生词 · ${words.size}", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -3556,6 +3563,7 @@ fun SettingsScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             AppText("软件设置", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -3614,6 +3622,7 @@ fun FeedbackScreen(onBack: () -> Unit) {
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             AppText("意见反馈", fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -3709,6 +3718,7 @@ fun LegalInfoScreen(
         ) {
             IconButton(onClick = onBack) { Icon(Icons.Default.ArrowBack, contentDescription = "返回") }
             AppText(title, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -3868,6 +3878,7 @@ fun PracticeScreen(
                 AppText(customTitle ?: if (reviewOnly) "错词复习" else "${category.zh} · 第 $level 关", fontWeight = FontWeight.Bold)
                 AppText("${index.coerceAtMost(source.size)} / ${source.size} · 答对 $correctCount", color = InkFaint, fontSize = 12.sp)
             }
+            CurrentUserChip()
         }
     }) { padding ->
         if (word == null) {
@@ -4097,6 +4108,7 @@ fun ThemePracticeScreen(
                     fontSize = 12.sp
                 )
             }
+            CurrentUserChip()
         }
     }) { padding ->
         if (finished || question == null) {
@@ -4376,6 +4388,7 @@ fun SpecialModuleScreen(
                 Text("${module.icon} ${module.zh}", fontWeight = FontWeight.Bold)
                 AppText("${module.en} · ${module.words.size} 个词 · ${module.sentences.size} 个句子", color = InkFaint, fontSize = 12.sp)
             }
+            CurrentUserChip()
         }
     }) { padding ->
         LazyColumn(
@@ -4914,6 +4927,7 @@ fun SpecialPracticeScreen(
                     fontSize = 12.sp
                 )
             }
+            CurrentUserChip()
         }
     }) { padding ->
         if (finished || question == null) {
