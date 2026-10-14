@@ -53,6 +53,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 
+/*
+* Mutopia
+* */
 /** [degree] 为简谱数字（0 = 休止），[octave] 为高低八度点数 */
 data class SongNote(val midi: Int?, val beats: Double, val degree: Int, val octave: Int, val accidental: String, val barAfter: Boolean)
 
