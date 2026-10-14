@@ -1,6 +1,9 @@
 package com.example.ogdenkids
 
 import android.content.Context
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -162,7 +167,7 @@ private fun parseTitle(line: String): Pair<String, String> {
 }
 
 /**
- * 解析粘贴的曲谱：不含简谱的行，下一行是简谱就当歌词，否则当新一首的歌名。
+ * 解析粘贴的曲谱：带《》或编号的行是歌名；其他不含简谱的行，下一行是简谱就当歌词，否则也当歌名。
  * [lowUnderscore] 为真时把 `_` 当低音点（很多网上的简谱这样写），此时没法表示半拍。
  */
 fun parseImport(text: String, lowUnderscore: Boolean): List<ImportedSong> {
@@ -175,7 +180,9 @@ fun parseImport(text: String, lowUnderscore: Boolean): List<ImportedSong> {
         val line = if (isNotationLine(normalized)) normalized else raws[i]
         if (!isNotationLine(normalized)) {
             val next = lines.getOrNull(i + 1)
-            if (next != null && isNotationLine(next)) {
+            // 带书名号或「1.」编号的行一定是歌名，哪怕下一行直接就是简谱
+            val titleLike = '《' in line || Regex("""^\d+\s*[.、)）]""").containsMatchIn(line)
+            if (!titleLike && next != null && isNotationLine(next)) {
                 pendingLyric = line
             } else {
                 val (title, origin) = parseTitle(line)
@@ -218,6 +225,13 @@ fun MusicSongImportScreen(editKey: String?, onDone: () -> Unit, onBack: () -> Un
     val parsed = remember(text, lowUnderscore) { parseImport(text, lowUnderscore) }
     val savable = parsed.filter { it.noteCount > 0 }
     val synth = rememberToneSynth()
+    // 从 txt 文件读进来，接在已粘贴内容的后面，保存前照样能预览和改
+    val openFile = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri ?: return@rememberLauncherForActivityResult
+        runCatching { context.contentResolver.openInputStream(uri)?.use { it.bufferedReader(Charsets.UTF_8).readText() } }
+            .onSuccess { loaded -> if (!loaded.isNullOrBlank()) text = if (text.isBlank()) loaded.trim() else text.trimEnd() + "\n" + loaded.trim() }
+            .onFailure { Toast.makeText(context, "读取文件失败", Toast.LENGTH_SHORT).show() }
+    }
 
     Scaffold(containerColor = Paper, topBar = {
         MusicTopBar(if (editing != null) "✏️ 编辑曲谱" else "＋ 粘贴导入曲谱", "只存在这台手机上", onBack)
@@ -241,6 +255,12 @@ fun MusicSongImportScreen(editKey: String?, onDone: () -> Unit, onBack: () -> Un
                     AppText("格式：一行歌名，然后「歌词一行、简谱一行」交替；可以一次粘贴好几首。", color = MusicTint, fontSize = 14.sp)
                     AppText("简谱：1-7 音，0 休止，1' 高音，5, 低音，#4 升音，- 延长一拍，_ 半拍，. 附点，| 小节线。", color = MusicTint, fontSize = 14.sp)
                     AppText("歌词每个字对一个音，对不上会在下面提示。", color = MusicTint, fontSize = 14.sp)
+                }
+            }
+            item {
+                OutlinedButton(onClick = { openFile.launch(arrayOf("text/*")) }, shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Default.FileOpen, contentDescription = null)
+                    AppText("  从 txt 文件导入")
                 }
             }
             item {
