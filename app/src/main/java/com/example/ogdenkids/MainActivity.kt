@@ -325,6 +325,8 @@ sealed class Screen {
     object MathDrill : Screen()
     data class MusicLessonPage(val lesson: MusicLesson) : Screen()
     data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
+    object MusicSongList : Screen()
+    data class MusicSongPage(val song: Song) : Screen()
     /** [id] 为空表示新建用户 */
     data class ProfileEdit(val id: String?, val returnTo: Screen = Main) : Screen()
 }
@@ -788,6 +790,7 @@ private fun UserApp(accounts: Accounts) {
             }
             Screen.ResourcePacks -> screen = Screen.Settings
             is Screen.MusicGamePage -> screen = current.returnTo
+            is Screen.MusicSongPage -> screen = Screen.MusicSongList
             is Screen.ProfileEdit -> screen = current.returnTo
             else -> {
                 azureSpeaker.stop()
@@ -842,7 +845,8 @@ private fun UserApp(accounts: Accounts) {
                             store = progressStore,
                             padding = padding,
                             onLesson = { screen = Screen.MusicLessonPage(it) },
-                            onGame = { screen = Screen.MusicGamePage(it) }
+                            onGame = { screen = Screen.MusicGamePage(it) },
+                            onSongs = { screen = Screen.MusicSongList }
                         )
                         Section.English -> when (selectedTab) {
                             Tab.Challenge -> ChallengeScreen(
@@ -1123,6 +1127,8 @@ private fun UserApp(accounts: Accounts) {
                     onBack = goBack
                 )
                 is Screen.MusicGamePage -> MusicGameScreen(game = current.game, store = progressStore, onBack = goBack)
+                Screen.MusicSongList -> MusicSongListScreen(store = progressStore, onSong = { screen = Screen.MusicSongPage(it) }, onBack = goBack)
+                is Screen.MusicSongPage -> MusicSongScreen(song = current.song, store = progressStore, onBack = goBack)
                 is Screen.ProfileEdit -> ProfileEditScreen(
                     initial = accounts.profiles.firstOrNull { it.id == current.id },
                     newId = accounts.newId,
@@ -1213,6 +1219,8 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.MathDrill -> "math-drill"
     is Screen.MusicLessonPage -> "music-lesson-${screen.lesson.name}"
     is Screen.MusicGamePage -> "music-game-${screen.game.name}"
+    Screen.MusicSongList -> "music-songs"
+    is Screen.MusicSongPage -> "music-song-${screen.song.key}"
     is Screen.ProfileEdit -> "profile-${screen.id}"
 }
 

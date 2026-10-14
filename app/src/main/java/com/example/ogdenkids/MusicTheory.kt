@@ -2,6 +2,7 @@ package com.example.ogdenkids
 
 import android.app.Activity
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -27,6 +28,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
@@ -51,7 +53,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -60,10 +67,10 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
-private val MusicTint = Color(0xFF7C3AED)
-private val MusicSoft = Color(0xFFEDE9FE)
-private val RightSoft = Color(0xFFDCFCE7)
-private val WrongSoft = Color(0xFFFEE2E2)
+internal val MusicTint = Color(0xFF7C3AED)
+internal val MusicSoft = Color(0xFFEDE9FE)
+internal val RightSoft = Color(0xFFDCFCE7)
+internal val WrongSoft = Color(0xFFFEE2E2)
 
 const val MusicRoundSize = 10
 
@@ -98,14 +105,14 @@ private val Twinkle = listOf(60, 60, 67, 67, 69, 69, 67, 65, 65, 64, 64, 62, 62,
     .mapIndexed { i, m -> m to if (i == 6 || i == 13) 2.0 else 1.0 }
 
 @Composable
-private fun rememberSynth(): ToneSynth {
+internal fun rememberToneSynth(): ToneSynth {
     val synth = remember { ToneSynth() }
     DisposableEffect(synth) { onDispose { synth.release() } }
     return synth
 }
 
 @Composable
-fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (MusicLesson) -> Unit, onGame: (MusicGame) -> Unit) {
+fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (MusicLesson) -> Unit, onGame: (MusicGame) -> Unit, onSongs: () -> Unit) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -131,6 +138,15 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
                 onClick = { onLesson(lesson) }
             )
         }
+        item { SectionTitle("跟着弹", "先听一遍，再看着简谱在键盘上弹") }
+        item {
+            MusicEntryCard(
+                badge = "🎹",
+                title = "儿歌弹奏",
+                subtitle = "${Songs.size} 首儿歌 · 已弹完 ${Songs.count { store.bestSpecialScore("song-${it.key}", 0) != null }} 首",
+                onClick = onSongs
+            )
+        }
         item { SectionTitle("乐理小游戏", "每局 $MusicRoundSize 题，边玩边记") }
         items(MusicGame.values().toList()) { game ->
             val best = store.bestSpecialScore("music-${game.key}", 0)
@@ -150,7 +166,7 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
 }
 
 @Composable
-private fun MusicEntryCard(badge: String, title: String, subtitle: String, onClick: () -> Unit) {
+internal fun MusicEntryCard(badge: String, title: String, subtitle: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -177,7 +193,7 @@ private fun MusicEntryCard(badge: String, title: String, subtitle: String, onCli
 }
 
 @Composable
-private fun MusicTopBar(title: String, subtitle: String, onBack: () -> Unit, rotatable: Boolean = false) {
+internal fun MusicTopBar(title: String, subtitle: String, onBack: () -> Unit, rotatable: Boolean = false) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -196,20 +212,53 @@ private fun MusicTopBar(title: String, subtitle: String, onBack: () -> Unit, rot
     }
 }
 
-/** 键盘竖屏下琴键太窄，允许手动横过来；离开页面恢复跟随系统 */
+/** 键盘竖屏下琴键太窄，允许手动横过来；方向由 [keyboardScreenLandscape] 在离开页面时恢复 */
 @Composable
-private fun LandscapeToggle() {
+internal fun LandscapeToggle() {
     val activity = LocalContext.current as? Activity ?: return
-    var landscape by remember { mutableStateOf(activity.requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE) }
-    DisposableEffect(activity) {
-        onDispose { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED }
-    }
+    val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
     IconButton(onClick = {
-        landscape = !landscape
         activity.requestedOrientation =
-            if (landscape) ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+            if (landscape) ActivityInfo.SCREEN_ORIENTATION_PORTRAIT else ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
     }) {
         Icon(Icons.Default.ScreenRotation, contentDescription = if (landscape) "恢复竖屏" else "横屏", tint = if (landscape) MusicTint else InkSoft)
+    }
+}
+
+/**
+ * 带钢琴键盘的页面调用：横屏时隐藏系统状态栏 / 导航栏，把空间都给键盘（页面自己也不画顶栏）；
+ * 离开页面恢复系统栏和跟随系统的方向。返回当前是否横屏。
+ */
+@Composable
+internal fun keyboardScreenLandscape(): Boolean {
+    val activity = LocalContext.current as? Activity
+    val view = LocalView.current
+    val landscape = LocalConfiguration.current.orientation == Configuration.ORIENTATION_LANDSCAPE
+    DisposableEffect(activity) {
+        onDispose { activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED }
+    }
+    DisposableEffect(activity, landscape) {
+        val controller = activity?.window?.let { WindowCompat.getInsetsController(it, view) }
+        if (landscape) {
+            controller?.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            controller?.hide(WindowInsetsCompat.Type.systemBars())
+        }
+        onDispose { controller?.show(WindowInsetsCompat.Type.systemBars()) }
+    }
+    return landscape
+}
+
+/** 横屏去掉顶栏后，返回和转屏按钮浮在右上角 */
+@Composable
+internal fun LandscapeCorner(onBack: () -> Unit, modifier: Modifier = Modifier) {
+    Row(
+        modifier
+            .padding(4.dp)
+            .clip(RoundedCornerShape(12.dp))
+            .background(PaperElevated.copy(alpha = 0.9f))
+    ) {
+        LandscapeToggle()
+        IconButton(onClick = onBack) { Icon(Icons.Default.Close, contentDescription = "返回") }
     }
 }
 
@@ -217,10 +266,12 @@ private fun LandscapeToggle() {
 
 @Composable
 fun MusicLessonScreen(lesson: MusicLesson, onLesson: (MusicLesson) -> Unit, onPractice: (MusicGame) -> Unit, onBack: () -> Unit) {
-    val synth = rememberSynth()
+    val synth = rememberToneSynth()
     val lessons = MusicLesson.values()
+    val landscape = if (lesson.hasKeyboard) keyboardScreenLandscape() else false
+    Box {
     Scaffold(containerColor = Paper, topBar = {
-        MusicTopBar("${lesson.emoji} ${lesson.title}", "第 ${lesson.ordinal + 1} / ${lessons.size} 课 · ${lesson.summary}", onBack, rotatable = lesson.hasKeyboard)
+        if (!landscape) MusicTopBar("${lesson.emoji} ${lesson.title}", "第 ${lesson.ordinal + 1} / ${lessons.size} 课 · ${lesson.summary}", onBack, rotatable = lesson.hasKeyboard)
     }) { padding ->
         // 换课时回到顶部
         val scroll = remember(lesson) { androidx.compose.foundation.ScrollState(0) }
@@ -256,6 +307,8 @@ fun MusicLessonScreen(lesson: MusicLesson, onLesson: (MusicLesson) -> Unit, onPr
                 } ?: Spacer(Modifier.weight(1f))
             }
         }
+    }
+    if (landscape) LandscapeCorner(onBack, Modifier.align(Alignment.TopEnd))
     }
 }
 
@@ -736,7 +789,7 @@ fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
 
 @Composable
 private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeave: () -> Unit) {
-    val synth = rememberSynth()
+    val synth = rememberToneSynth()
     var session by remember { mutableStateOf(0) }
     val questions = remember(session) { buildRound(game, Random(System.nanoTime()), g) }
     val results = remember(session) { mutableStateListOf<Boolean>() }
@@ -771,10 +824,13 @@ private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeav
         }
     }
 
+    val landscape = if (game.hasKeyboard) keyboardScreenLandscape() else false
+    val progress = if (phase == MusicPhase.Finished) "本局结束" else "第 ${index + 1} / ${questions.size} 题 · 答对 $correct"
+    Box {
     Scaffold(containerColor = Paper, topBar = {
-        MusicTopBar(
+        if (!landscape) MusicTopBar(
             "${game.emoji} ${game.title}" + if (game == MusicGame.Names) " · ${nameGroupTitle(g)}" else "",
-            if (phase == MusicPhase.Finished) "本局结束" else "第 ${index + 1} / ${questions.size} 题 · 答对 $correct",
+            progress,
             leave,
             rotatable = game.hasKeyboard
         )
@@ -784,14 +840,14 @@ private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeav
                 .fillMaxSize()
                 .padding(padding)
                 .verticalScroll(rememberScrollState())
-                .padding(18.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+                .padding(horizontal = 18.dp, vertical = if (landscape) 6.dp else 18.dp),
+            verticalArrangement = Arrangement.spacedBy(if (landscape) 8.dp else 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if (landscape) AppText(progress, color = InkFaint, fontSize = 13.sp)
             if (phase == MusicPhase.Finished || question == null) {
                 MusicResult(correct, store.bestSpecialScore("music-${game.key}", g), onAgain = { synth.stop(); session++ }, onBack = leave, backLabel = if (game == MusicGame.Names) "换一组" else "返回")
-                return@Column
-            }
+            } else {
             AppText(question.prompt, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
             when (val v = question.visual) {
                 Visual.None -> Unit
@@ -809,7 +865,9 @@ private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeav
                         chosen?.let { put(it, if (it == question.answer) RightSoft else WrongSoft) }
                         put(question.answer, RightSoft)
                     } else emptyMap()
-                    PianoKeyboard(60, 71, height = 190.dp, marks = marks, onKey = { answer(it) })
+                    // 横屏时题目一行、反馈一行，剩下的高度都给键盘
+                    val height = if (landscape) (LocalConfiguration.current.screenHeightDp - 110).coerceAtLeast(150).dp else 190.dp
+                    PianoKeyboard(60, 71, height = height, marks = marks, onKey = { answer(it) })
                 }
             }
             if (question.sound.isNotEmpty()) {
@@ -846,7 +904,10 @@ private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeav
                     fontSize = 18.sp
                 )
             }
+            }
         }
+    }
+    if (landscape) LandscapeCorner(leave, Modifier.align(Alignment.TopEnd))
     }
 }
 
