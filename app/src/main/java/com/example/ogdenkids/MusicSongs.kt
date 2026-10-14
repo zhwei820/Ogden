@@ -201,7 +201,8 @@ fun MusicSongScreen(song: Song, store: ProgressStore, onBack: () -> Unit) {
     fun press(midi: Int) {
         if (demo) { demo = false; demoPos = -1 }
         synth.note(midi)
-        if (finished) return
+        // 不能用外面的 finished：键盘的点击回调可能还是弹完前那次组合里的
+        if (pos >= notes.size) return
         if (midi == notes[pos].midi) pos = nextPlayable(pos + 1) else { mistakes++; wrongKey = midi }
     }
 

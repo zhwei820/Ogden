@@ -3,108 +3,162 @@ package com.example.ogdenkids
 import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
-import java.util.concurrent.Executors
-import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.PI
 import kotlin.math.exp
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sin
+import kotlin.math.tanh
 
 /** [start] / [duration] 单位为秒；[click] 为节拍器的短促敲击声 */
 data class Tone(val start: Double, val duration: Double, val midi: Int, val volume: Float = 0.8f, val click: Boolean = false)
 
 fun midiFrequency(midi: Int): Double = 440.0 * 2.0.pow((midi - 69) / 12.0)
 
-/** 乐理课的发声都在本地实时合成，不依赖音频素材，离线可用 */
+/**
+ * 乐理课的发声都在本地实时合成，不依赖音频素材，离线可用。
+ *
+ * 一条流式 AudioTrack 常开，由混音线程把各个声部叠加写入。不能每个音单独建 AudioTrack、
+ * 来新音就 stop 旧的：波形在非零处被硬切断会爆音。停止一律走短淡出。
+ */
 class ToneSynth {
-    private val executor = Executors.newSingleThreadExecutor()
-    // 每次 play / stop 递增：渲染完发现已被更新的请求取代就丢弃
-    private val generation = AtomicInteger()
-    private var track: AudioTrack? = null
+    private val lock = Object()
+    private val voices = ArrayList<Voice>()
+    // 已交给混音的帧数，新声部的起点以它为基准
+    private var frame = 0L
+    @Volatile private var running = true
 
-    fun play(tones: List<Tone>) {
-        if (tones.isEmpty()) return
-        val gen = generation.incrementAndGet()
-        executor.execute {
-            if (gen != generation.get()) return@execute
-            val pcm = render(tones)
-            if (gen != generation.get()) return@execute
-            releaseTrack()
-            val t = AudioTrack.Builder()
-                .setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_MEDIA)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
-                )
-                .setAudioFormat(
-                    AudioFormat.Builder()
-                        .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
-                        .setSampleRate(SampleRate)
-                        .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
-                        .build()
-                )
-                .setBufferSizeInBytes(pcm.size * 2)
-                .setTransferMode(AudioTrack.MODE_STATIC)
-                .build()
-            t.write(pcm, 0, pcm.size)
-            t.play()
-            track = t
-        }
+    init {
+        Thread(::loop, "ToneSynth").apply { priority = Thread.MAX_PRIORITY }.start()
     }
 
-    fun note(midi: Int, duration: Double = 0.9, volume: Float = 0.8f) = play(listOf(Tone(0.0, duration, midi, volume)))
-
-    fun stop() {
-        generation.incrementAndGet()
-        executor.execute { releaseTrack() }
+    /** 播放一段音序，先淡出正在响的 */
+    fun play(tones: List<Tone>) = synchronized(lock) {
+        fadeAll()
+        add(tones)
     }
 
-    fun release() {
-        stop()
-        executor.shutdown()
+    /** 单个音（按琴键），与正在响的音自然叠加 */
+    fun note(midi: Int, duration: Double = 0.9, volume: Float = 0.8f) = synchronized(lock) {
+        add(listOf(Tone(0.0, duration, midi, volume)))
     }
 
-    private fun releaseTrack() {
-        track?.let {
-            runCatching { it.stop() }
-            it.release()
-        }
-        track = null
+    fun stop() = synchronized(lock) { fadeAll() }
+
+    fun release() = synchronized(lock) {
+        running = false
+        lock.notifyAll()
     }
 
-    private fun render(tones: List<Tone>): ShortArray {
-        val end = tones.maxOf { it.start + it.duration } + Tail
-        val buf = FloatArray((end * SampleRate).toInt())
-        for (tone in tones) {
-            val from = (tone.start * SampleRate).toInt()
-            val len = min(((tone.duration + Tail) * SampleRate).toInt(), buf.size - from)
-            val w = 2 * PI * midiFrequency(tone.midi) / SampleRate
-            for (i in 0 until len) {
-                val t = i.toDouble() / SampleRate
-                val v = if (tone.click) {
-                    sin(w * i) * exp(-t * 60)
-                } else {
-                    val attack = min(1.0, t / 0.005)
-                    val release = if (t > tone.duration) max(0.0, 1 - (t - tone.duration) / Tail) else 1.0
-                    val env = attack * release * (0.7 * exp(-t * 1.5) + 0.3 * exp(-t * 6))
-                    // 叠几个泛音，听起来像简化的钢琴，而不是纯正弦波的「嘀」
-                    env * (sin(w * i) + 0.45 * sin(2 * w * i) + 0.2 * sin(3 * w * i) + 0.1 * sin(4 * w * i)) / 1.75
+    private fun add(tones: List<Tone>) {
+        tones.forEach { voices += Voice(it, frame + (it.start * SampleRate).toLong()) }
+        lock.notifyAll()
+    }
+
+    private fun fadeAll() = voices.forEach { it.fade() }
+
+    private fun loop() {
+        val minBuf = AudioTrack.getMinBufferSize(SampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT)
+        val track = AudioTrack.Builder()
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_MEDIA)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                    .build()
+            )
+            .setAudioFormat(
+                AudioFormat.Builder()
+                    .setEncoding(AudioFormat.ENCODING_PCM_16BIT)
+                    .setSampleRate(SampleRate)
+                    .setChannelMask(AudioFormat.CHANNEL_OUT_MONO)
+                    .build()
+            )
+            .setBufferSizeInBytes(max(minBuf, Chunk * 4))
+            .setTransferMode(AudioTrack.MODE_STREAM)
+            .build()
+        val mix = FloatArray(Chunk)
+        val out = ShortArray(Chunk)
+        var idle = 0
+        track.play()
+        try {
+            while (running) {
+                synchronized(lock) {
+                    // 静默一秒就暂停，有新音再继续，免得一直空转
+                    if (voices.isEmpty() && idle > SampleRate) {
+                        track.pause()
+                        while (voices.isEmpty() && running) lock.wait()
+                        track.play()
+                        idle = 0
+                    }
+                    mix.fill(0f)
+                    voices.forEach { it.render(mix, frame) }
+                    voices.removeAll { it.done }
+                    frame += Chunk
+                    idle = if (voices.isEmpty()) idle + Chunk else 0
                 }
-                buf[from + i] += (v * tone.volume * 0.4).toFloat()
+                if (!running) break
+                // 软限幅：和弦叠加时不削波
+                for (i in 0 until Chunk) out[i] = (tanh(mix[i].toDouble()) * Short.MAX_VALUE).toInt().toShort()
+                track.write(out, 0, Chunk)
+            }
+        } finally {
+            runCatching { track.stop() }
+            track.release()
+        }
+    }
+
+    private class Voice(val tone: Tone, val startFrame: Long) {
+        private val w = 2 * PI * midiFrequency(tone.midi) / SampleRate
+        private val durFrames = (tone.duration * SampleRate).toLong()
+        private val tailFrames = (Tail * SampleRate).toLong()
+        private val attackFrames = 0.005 * SampleRate
+        private val k1 = exp(-1.5 / SampleRate)
+        private val k2 = exp(-6.0 / SampleRate)
+        private val kClick = exp(-60.0 / SampleRate)
+        private var e1 = 1.0
+        private var e2 = 1.0
+        private var t = 0L
+        private var gain = 1.0
+        private var fading = false
+        var done = false
+            private set
+
+        fun fade() {
+            fading = true
+        }
+
+        fun render(mix: FloatArray, frame0: Long) {
+            for (i in mix.indices) {
+                if (frame0 + i < startFrame) {
+                    // 还没轮到就被停掉的，直接作废
+                    if (fading) { done = true; return }
+                    continue
+                }
+                if (t > durFrames + tailFrames || gain <= 0) { done = true; return }
+                if (fading) gain -= 1.0 / (FadeSeconds * SampleRate)
+                val v = if (tone.click) {
+                    sin(w * t) * e1
+                } else {
+                    val attack = min(1.0, t / attackFrames)
+                    val release = if (t > durFrames) 1 - (t - durFrames).toDouble() / tailFrames else 1.0
+                    // 叠几个泛音，听起来像简化的钢琴，而不是纯正弦波的「嘀」
+                    attack * release * (0.7 * e1 + 0.3 * e2) *
+                        (sin(w * t) + 0.45 * sin(2 * w * t) + 0.2 * sin(3 * w * t) + 0.1 * sin(4 * w * t)) / 1.75
+                }
+                mix[i] += (v * tone.volume * 0.4 * max(0.0, gain)).toFloat()
+                e1 *= if (tone.click) kClick else k1
+                e2 *= k2
+                t++
             }
         }
-        // 只在会削波时整体压低；不做归一化，否则力度演示的强弱差别会被抹平
-        val peak = buf.maxOfOrNull { kotlin.math.abs(it) } ?: 0f
-        val scale = if (peak > 0.95f) 0.95f / peak else 1f
-        return ShortArray(buf.size) { (buf[it] * scale * Short.MAX_VALUE).toInt().toShort() }
     }
 
     private companion object {
         const val SampleRate = 22050
+        const val Chunk = 256
         const val Tail = 0.3
+        const val FadeSeconds = 0.02
     }
 }
 
