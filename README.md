@@ -1,4 +1,4 @@
-# Anna English
+# Anna Learning
 
 一款面向中文英语学习者的原生 Android 单词 App，基于 Kotlin + Jetpack Compose 构建。它围绕 Anna English 的 850 个基础词展开，把词库、发音、闯关和复习都放在离线可用的移动端体验里。
 

@@ -68,6 +68,8 @@ import androidx.compose.material.icons.filled.SwitchAccount
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MusicNote
+import androidx.compose.material.icons.filled.Translate
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.RecordVoiceOver
 import androidx.compose.material.icons.filled.Refresh
@@ -100,6 +102,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.lightColorScheme
@@ -270,6 +273,14 @@ data class WordProgress(
     val mastered: Boolean get() = correct > 0 && !mistake
 }
 
+/** 底部一级标签 */
+enum class Section(val title: String, val icon: ImageVector) {
+    English("英语", Icons.Default.Translate),
+    Math("数学", Icons.Default.Calculate),
+    Music("音乐", Icons.Default.MusicNote)
+}
+
+/** 英语下的二级标签 */
 enum class Tab(val title: String, val icon: ImageVector) {
     Speech("课文", Icons.Default.RecordVoiceOver),
     Challenge("闯关", Icons.Default.EmojiEvents),
@@ -312,6 +323,8 @@ sealed class Screen {
     object Privacy : Screen()
     object Feedback : Screen()
     object MathDrill : Screen()
+    data class MusicLessonPage(val lesson: MusicLesson) : Screen()
+    data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
     /** [id] 为空表示新建用户 */
     data class ProfileEdit(val id: String?, val returnTo: Screen = Main) : Screen()
 }
@@ -717,6 +730,7 @@ private fun UserApp(accounts: Accounts) {
         lookup
     }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
+    var selectedSection by remember { mutableStateOf(Section.English) }
     var selectedTab by remember { mutableStateOf(Tab.Speech) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
@@ -773,6 +787,7 @@ private fun UserApp(accounts: Accounts) {
                 screen = Screen.SpecialModulePage(current.key)
             }
             Screen.ResourcePacks -> screen = Screen.Settings
+            is Screen.MusicGamePage -> screen = current.returnTo
             is Screen.ProfileEdit -> screen = current.returnTo
             else -> {
                 azureSpeaker.stop()
@@ -809,17 +824,27 @@ private fun UserApp(accounts: Accounts) {
             stateHolder.SaveableStateProvider(screenKey(screen)) {
             when (val current = screen) {
                 Screen.Main -> MainScaffold(
+                    selectedSection = selectedSection,
+                    onSection = { selectedSection = it },
                     selectedTab = selectedTab,
                     onTab = { selectedTab = it },
                     onSettings = { screen = Screen.Settings },
                     onPrivacy = { screen = Screen.Privacy },
                     onFeedback = { screen = Screen.Feedback },
-                    onMathDrill = { screen = Screen.MathDrill },
                     accounts = accounts,
                     onProfile = { screen = Screen.ProfileEdit(it) },
                     content = { padding ->
-                        stateHolder.SaveableStateProvider("tab-${selectedTab.name}") {
-                        when (selectedTab) {
+                        val tabKey = if (selectedSection == Section.English) "tab-${selectedTab.name}" else "section-${selectedSection.name}"
+                        stateHolder.SaveableStateProvider(tabKey) {
+                        when (selectedSection) {
+                        Section.Math -> MathHomeScreen(store = progressStore, padding = padding, onMathDrill = { screen = Screen.MathDrill })
+                        Section.Music -> MusicHomeScreen(
+                            store = progressStore,
+                            padding = padding,
+                            onLesson = { screen = Screen.MusicLessonPage(it) },
+                            onGame = { screen = Screen.MusicGamePage(it) }
+                        )
+                        Section.English -> when (selectedTab) {
                             Tab.Challenge -> ChallengeScreen(
                                 words = words,
                                 store = progressStore,
@@ -859,6 +884,7 @@ private fun UserApp(accounts: Accounts) {
                                 onFavorites = { screen = Screen.WordCollection("收藏夹", "favorites") },
                                 onSpeechWords = { screen = Screen.SpeechWords }
                             )
+                        }
                         }
                         }
                     }
@@ -1090,6 +1116,13 @@ private fun UserApp(accounts: Accounts) {
                 )
                 Screen.Feedback -> FeedbackScreen(onBack = goBack)
                 Screen.MathDrill -> MathDrillScreen(store = progressStore, accent = accent, azure = azureSpeaker, onBack = goBack)
+                is Screen.MusicLessonPage -> MusicLessonScreen(
+                    lesson = current.lesson,
+                    onLesson = { screen = Screen.MusicLessonPage(it) },
+                    onPractice = { screen = Screen.MusicGamePage(it, returnTo = current) },
+                    onBack = goBack
+                )
+                is Screen.MusicGamePage -> MusicGameScreen(game = current.game, store = progressStore, onBack = goBack)
                 is Screen.ProfileEdit -> ProfileEditScreen(
                     initial = accounts.profiles.firstOrNull { it.id == current.id },
                     newId = accounts.newId,
@@ -1178,6 +1211,8 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.Privacy -> "privacy"
     Screen.Feedback -> "feedback"
     Screen.MathDrill -> "math-drill"
+    is Screen.MusicLessonPage -> "music-lesson-${screen.lesson.name}"
+    is Screen.MusicGamePage -> "music-game-${screen.game.name}"
     is Screen.ProfileEdit -> "profile-${screen.id}"
 }
 
@@ -1222,12 +1257,13 @@ fun AppText(
 
 @Composable
 fun MainScaffold(
+    selectedSection: Section,
+    onSection: (Section) -> Unit,
     selectedTab: Tab,
     onTab: (Tab) -> Unit,
     onSettings: () -> Unit,
     onPrivacy: () -> Unit,
     onFeedback: () -> Unit,
-    onMathDrill: () -> Unit,
     accounts: Accounts,
     onProfile: (id: String?) -> Unit,
     content: @Composable (PaddingValues) -> Unit
@@ -1246,8 +1282,8 @@ fun MainScaffold(
         drawerContent = {
             ModalDrawerSheet(drawerContainerColor = PaperElevated) {
                 Column(Modifier.padding(24.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Anna English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 26.sp)
-                    AppText("英语单词学习 · 离线词库 · US/UK 单词发音", color = InkSoft, fontSize = 13.sp)
+                    Text("Anna Learning", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 26.sp)
+                    AppText("英语 · 数学 · 音乐", color = InkSoft, fontSize = 13.sp)
                     AppText("当前版本：${BuildConfig.VERSION_NAME}", color = InkFaint, fontSize = 12.sp)
                 }
                 val me = accounts.current
@@ -1288,13 +1324,6 @@ fun MainScaffold(
                 }
                 Divider(Modifier.padding(horizontal = 24.dp, vertical = 8.dp), color = Line)
                 NavigationDrawerItem(
-                    label = { AppText("小游戏 · 口算练习", fontSize = 16.sp) },
-                    icon = { Icon(Icons.Default.Calculate, contentDescription = null) },
-                    selected = false,
-                    onClick = { closeThen(onMathDrill) },
-                    modifier = Modifier.padding(horizontal = 12.dp)
-                )
-                NavigationDrawerItem(
                     label = { AppText("软件设置", fontSize = 16.sp) },
                     icon = { Icon(Icons.Default.Settings, contentDescription = null) },
                     selected = false,
@@ -1321,30 +1350,43 @@ fun MainScaffold(
         Scaffold(
             containerColor = Paper,
             topBar = {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Paper)
-                        .padding(horizontal = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                        Icon(Icons.Default.Menu, contentDescription = "菜单")
+                Column(Modifier.background(Paper)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                            Icon(Icons.Default.Menu, contentDescription = "菜单")
+                        }
+                        AppText("Anna Learning", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, color = InkSoft)
+                        Spacer(Modifier.weight(1f))
+                        CurrentUserChip()
                     }
-                    AppText("Anna English", fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, color = InkSoft)
-                    Spacer(Modifier.weight(1f))
-                    CurrentUserChip()
+                    if (selectedSection == Section.English) {
+                        TabRow(selectedTabIndex = selectedTab.ordinal, containerColor = Paper) {
+                            Tab.values().forEach { tab ->
+                                androidx.compose.material3.Tab(
+                                    selected = selectedTab == tab,
+                                    onClick = { onTab(tab) },
+                                    text = { AppText(tab.title, maxLines = 1) },
+                                    icon = { Icon(tab.icon, contentDescription = null) }
+                                )
+                            }
+                        }
+                    }
                 }
             },
             bottomBar = {
                 Column {
                     NavigationBar(containerColor = PaperElevated) {
-                        Tab.values().forEach { tab ->
+                        Section.values().forEach { section ->
                             NavigationBarItem(
-                                selected = selectedTab == tab,
-                                onClick = { onTab(tab) },
-                                icon = { Icon(tab.icon, contentDescription = tab.title) },
-                                label = { AppText(tab.title) }
+                                selected = selectedSection == section,
+                                onClick = { onSection(section) },
+                                icon = { Icon(section.icon, contentDescription = section.title) },
+                                label = { AppText(section.title) }
                             )
                         }
                     }
@@ -1399,7 +1441,7 @@ fun ChallengeScreen(
     ) {
         item {
             HeroCard(
-                title = "Anna English",
+                title = "Anna Learning",
                 subtitle = "850 + ${words.count { it.category == Category.Extended }} 拓展词闯关 · 中英双语 · 离线可学",
                 action = "继续之前",
                 onAction = onContinue
@@ -1442,7 +1484,29 @@ fun ChallengeScreen(
 }
 
 @Composable
-fun HeroCard(title: String, subtitle: String, action: String, onAction: () -> Unit) {
+fun MathHomeScreen(store: ProgressStore, padding: PaddingValues, onMathDrill: () -> Unit) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(padding),
+        contentPadding = PaddingValues(18.dp),
+        verticalArrangement = Arrangement.spacedBy(14.dp)
+    ) {
+        item {
+            HeroCard(
+                title = "口算闯关",
+                subtitle = "100 以内加减法 · 每局 $MathDrillSize 题",
+                action = "开始",
+                onAction = onMathDrill,
+                note = "每天一局，坚持打卡"
+            )
+        }
+        item { MathCheckInCard(store) }
+    }
+}
+
+@Composable
+fun HeroCard(title: String, subtitle: String, action: String, onAction: () -> Unit, note: String = "今日完成 10 词就很好") {
     Card(
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
         shape = RoundedCornerShape(18.dp),
@@ -1467,7 +1531,7 @@ fun HeroCard(title: String, subtitle: String, action: String, onAction: () -> Un
                     Spacer(Modifier.width(6.dp))
                     AppText(action)
                 }
-                AppText("今日完成 10 词就很好", color = InkFaint, fontSize = 13.sp)
+                AppText(note, color = InkFaint, fontSize = 13.sp)
             }
         }
     }
@@ -3790,7 +3854,7 @@ fun LegalInfoScreen(
 fun privacySections() = listOf(
     LegalSection(
         "基本说明",
-        "Anna English 是一款面向英语单词学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
+        "Anna Learning 是一款面向英语、数学等学习的应用。本应用尊重并保护用户隐私，不会收集、上传、出售或共享任何用户个人信息。"
     ),
     LegalSection(
         "可能使用的权限",
@@ -3802,7 +3866,7 @@ fun privacySections() = listOf(
     ),
     LegalSection(
         "适用范围",
-        "本应用适合希望学习 Anna English 850 词及拓展词的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
+        "本应用适合希望学习 Ogden 850 词、拓展词及口算练习的用户使用，不要求提供个人信息，也不会主动收集身份、位置、联系方式或其他敏感数据。"
     ),
     LegalSection(
         "本地数据与删除",

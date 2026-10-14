@@ -195,7 +195,7 @@ fun ProfileEditScreen(initial: Profile?, newId: () -> String, onSave: (Profile) 
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             if (onBack == null) {
-                AppText("欢迎使用 Anna English", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                AppText("欢迎使用 Anna Learning", fontWeight = FontWeight.Bold, fontSize = 22.sp)
                 AppText("先填一下小朋友的信息，学习进度会记在这个用户下面。最多可以建 $MaxProfiles 个用户。", color = InkSoft)
             }
             OutlinedTextField(zhName, { zhName = it.take(12) }, label = { Text("中文名") }, singleLine = true, modifier = Modifier.fillMaxWidth())

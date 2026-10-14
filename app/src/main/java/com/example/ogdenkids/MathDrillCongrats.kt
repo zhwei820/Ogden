@@ -75,7 +75,7 @@ internal fun CongratsCard(total: Int, subtitle: String, modifier: Modifier = Mod
         AppText("$total / $total", color = Color.White, fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold, fontSize = 60.sp)
         AppText("⭐⭐⭐⭐⭐", fontSize = 26.sp)
         AppText(subtitle, color = Color.White.copy(alpha = 0.92f), fontSize = 14.sp, textAlign = TextAlign.Center)
-        AppText("$date · Anna English 口算小游戏", color = Color.White.copy(alpha = 0.75f), fontSize = 12.sp, textAlign = TextAlign.Center)
+        AppText("$date · Anna Learning 口算小游戏", color = Color.White.copy(alpha = 0.75f), fontSize = 12.sp, textAlign = TextAlign.Center)
     }
 }
 
