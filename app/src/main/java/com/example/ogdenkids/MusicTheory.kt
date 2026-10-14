@@ -1,5 +1,7 @@
 package com.example.ogdenkids
 
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +27,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ScreenRotation
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -47,6 +50,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -62,9 +66,9 @@ private val WrongSoft = Color(0xFFFEE2E2)
 
 const val MusicRoundSize = 10
 
-enum class MusicGame(val key: String, val emoji: String, val title: String, val desc: String) {
+enum class MusicGame(val key: String, val emoji: String, val title: String, val desc: String, val hasKeyboard: Boolean = false) {
     Names("names", "🔤", "唱名对对碰", "唱名、音名、简谱互相配对"),
-    FindKey("key", "🎹", "找琴键", "看唱名，在键盘上找到它"),
+    FindKey("key", "🎹", "找琴键", "看唱名，在键盘上找到它", hasKeyboard = true),
     ReadStaff("staff", "🎼", "认五线谱", "看五线谱上的音符，选出唱名"),
     HighLow("pitch", "👂", "听音高低", "听两个音，第二个更高还是更低"),
     NoteValue("value", "⏱️", "音符拍数", "看音符或休止符，说出几拍"),
@@ -73,18 +77,18 @@ enum class MusicGame(val key: String, val emoji: String, val title: String, val 
     Ear("ear", "🎵", "听音认唱名", "先听 do，再听一个音，猜唱名")
 }
 
-enum class MusicLesson(val emoji: String, val title: String, val summary: String, val practice: MusicGame?) {
+enum class MusicLesson(val emoji: String, val title: String, val summary: String, val practice: MusicGame?, val hasKeyboard: Boolean = false) {
     Notes("🎵", "七个基本音", "do re mi fa sol la si，音名和简谱", MusicGame.Names),
-    Keyboard("🎹", "认识钢琴键盘", "白键黑键，找到 do，什么是八度", MusicGame.FindKey),
+    Keyboard("🎹", "认识钢琴键盘", "白键黑键，找到 do，什么是八度", MusicGame.FindKey, hasKeyboard = true),
     Pitch("👂", "音的高低", "高音、低音，旋律往上走还是往下走", MusicGame.HighLow),
     Staff("🎼", "五线谱与高音谱号", "线和间，音符住在哪里", MusicGame.ReadStaff),
     Values("⏱️", "音符与时值", "全音符、二分、四分、八分、十六分音符", MusicGame.NoteValue),
     Rests("🤫", "休止符", "音乐里的安静时刻", MusicGame.NoteValue),
     Meter("🥁", "节拍与拍号", "2/4、3/4、4/4 拍的强弱规律", MusicGame.Meter),
-    Accidentals("♯", "升号、降号与半音", "黑键的名字，半音和全音", MusicGame.FindKey),
+    Accidentals("♯", "升号、降号与半音", "黑键的名字，半音和全音", MusicGame.FindKey, hasKeyboard = true),
     Scale("🪜", "C 大调音阶", "全全半全全全半", MusicGame.Ear),
     Intervals("📏", "音程", "两个音之间的距离", MusicGame.Ear),
-    Chords("🎭", "三和弦", "大三和弦明亮，小三和弦柔和", MusicGame.Chord),
+    Chords("🎭", "三和弦", "大三和弦明亮，小三和弦柔和", MusicGame.Chord, hasKeyboard = true),
     Expression("🚀", "速度与力度", "Allegro、Andante，p 与 f", null)
 }
 
@@ -167,7 +171,7 @@ private fun MusicEntryCard(badge: String, title: String, subtitle: String, onCli
 }
 
 @Composable
-private fun MusicTopBar(title: String, subtitle: String, onBack: () -> Unit) {
+private fun MusicTopBar(title: String, subtitle: String, onBack: () -> Unit, rotatable: Boolean = false) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -181,7 +185,25 @@ private fun MusicTopBar(title: String, subtitle: String, onBack: () -> Unit) {
             AppText(title, fontWeight = FontWeight.Bold)
             AppText(subtitle, color = InkFaint, fontSize = 12.sp)
         }
+        if (rotatable) LandscapeToggle()
         CurrentUserChip()
+    }
+}
+
+/** 键盘竖屏下琴键太窄，允许手动横过来；离开页面恢复跟随系统 */
+@Composable
+private fun LandscapeToggle() {
+    val activity = LocalContext.current as? Activity ?: return
+    var landscape by remember { mutableStateOf(activity.requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE) }
+    DisposableEffect(activity) {
+        onDispose { activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED }
+    }
+    IconButton(onClick = {
+        landscape = !landscape
+        activity.requestedOrientation =
+            if (landscape) ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE else ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+    }) {
+        Icon(Icons.Default.ScreenRotation, contentDescription = if (landscape) "恢复竖屏" else "横屏", tint = if (landscape) MusicTint else InkSoft)
     }
 }
 
@@ -192,7 +214,7 @@ fun MusicLessonScreen(lesson: MusicLesson, onLesson: (MusicLesson) -> Unit, onPr
     val synth = rememberSynth()
     val lessons = MusicLesson.values()
     Scaffold(containerColor = Paper, topBar = {
-        MusicTopBar("${lesson.emoji} ${lesson.title}", "第 ${lesson.ordinal + 1} / ${lessons.size} 课 · ${lesson.summary}", onBack)
+        MusicTopBar("${lesson.emoji} ${lesson.title}", "第 ${lesson.ordinal + 1} / ${lessons.size} 课 · ${lesson.summary}", onBack, rotatable = lesson.hasKeyboard)
     }) { padding ->
         // 换课时回到顶部
         val scroll = remember(lesson) { androidx.compose.foundation.ScrollState(0) }
@@ -324,7 +346,20 @@ private fun LessonContent(lesson: MusicLesson, synth: ToneSynth) {
                     "do 到高音 do" to { synth.play(melody(CMajorMidis.map { it to 1.0 } + (72 to 2.0), bpm = 120)) },
                     "小星星" to { synth.play(melody(Twinkle, bpm = 110)) }
                 )
-                Para("《小星星》用简谱写出来是：1 1 5 5 | 6 6 5 - | 4 4 3 3 | 2 2 1 -")
+                Para("《小星星》用简谱写出来是：")
+                Text(
+                    "1 1 5 5 | 6 6 5 – | 4 4 3 3 | 2 2 1 –",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MusicTint,
+                    maxLines = 1,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(MusicSoft)
+                        .padding(vertical = 10.dp)
+                )
             }
         }
         MusicLesson.Keyboard -> {
@@ -715,7 +750,8 @@ fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
         MusicTopBar(
             "${game.emoji} ${game.title}",
             if (phase == MusicPhase.Finished) "本局结束" else "第 ${index + 1} / ${questions.size} 题 · 答对 $correct",
-            onBack
+            onBack,
+            rotatable = game.hasKeyboard
         )
     }) { padding ->
         Column(
