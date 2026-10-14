@@ -133,10 +133,15 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
         item { SectionTitle("乐理小游戏", "每局 $MusicRoundSize 题，边玩边记") }
         items(MusicGame.values().toList()) { game ->
             val best = store.bestSpecialScore("music-${game.key}", 0)
+            val perfect = NameGroups.indices.count { store.bestSpecialScore("music-${game.key}", it) == MusicRoundSize }
             MusicEntryCard(
                 badge = game.emoji,
                 title = game.title,
-                subtitle = game.desc + if (best != null) " · 最好 $best / $MusicRoundSize" else "",
+                subtitle = game.desc + when {
+                    game == MusicGame.Names -> " · ${NameGroups.size} 组，满分 $perfect 组"
+                    best != null -> " · 最好 $best / $MusicRoundSize"
+                    else -> ""
+                },
                 onClick = { onGame(game) }
             )
         }
@@ -636,7 +641,14 @@ private fun <T> pickOptions(correct: T, pool: List<T>, rng: Random, count: Int =
     return options to options.indexOf(correct)
 }
 
-private fun buildRound(game: MusicGame, rng: Random): List<MusicQuestion> {
+private val NameSystems = listOf("唱名" to Solfege, "音名" to NoteLetters, "简谱" to (1..7).map { "$it" })
+
+/** 唱名对对碰：三套名字里挑两套、分先后，共 6 组，每组单独记成绩（[ProgressStore.bestSpecialScore] 的 level 即组号） */
+private val NameGroups = listOf(0 to 1, 0 to 2, 1 to 0, 1 to 2, 2 to 0, 2 to 1)
+
+private fun nameGroupTitle(group: Int) = NameGroups[group].let { (f, t) -> "${NameSystems[f].first} → ${NameSystems[t].first}" }
+
+private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQuestion> {
     // 同一局里尽量不连着出同一题
     var last: Any? = null
     fun <T> pick(pool: List<T>): T = pool.filter { it != last || pool.size == 1 }.random(rng).also { last = it }
@@ -644,10 +656,7 @@ private fun buildRound(game: MusicGame, rng: Random): List<MusicQuestion> {
         when (game) {
             MusicGame.Names -> {
                 val d = pick(Solfege.indices.toList())
-                val systems = listOf(
-                    Triple("唱名", Solfege, "sol"), Triple("音名", NoteLetters, "G"), Triple("简谱", (1..7).map { "$it" }, "5")
-                )
-                val (from, to) = systems.indices.shuffled(rng).take(2).map { systems[it] }
+                val (from, to) = NameGroups[group].let { (f, t) -> NameSystems[f] to NameSystems[t] }
                 val (opts, ans) = pickOptions(to.second[d], to.second, rng)
                 MusicQuestion("${from.first}「${from.second[d]}」对应的${to.first}是？", Visual.Big(from.second[d]), opts, ans, reveal = listOf(Tone(0.0, 0.8, CMajorMidis[d])))
             }
@@ -714,14 +723,19 @@ private enum class MusicPhase { Asking, Feedback, Finished }
 fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
     val synth = rememberSynth()
     var session by remember { mutableStateOf(0) }
-    val questions = remember(session) { buildRound(game, Random(System.nanoTime())) }
+    // 唱名对对碰先选组，其他游戏只有一组
+    var group by remember { mutableStateOf(if (game == MusicGame.Names) null else 0) }
+    group ?: return NameGroupPicker(store, onGroup = { group = it; session++ }, onBack = onBack)
+    val g = group ?: 0
+    val questions = remember(session, g) { buildRound(game, Random(System.nanoTime()), g) }
     val results = remember(session) { mutableStateListOf<Boolean>() }
     var index by remember(session) { mutableStateOf(0) }
     var phase by remember(session) { mutableStateOf(MusicPhase.Asking) }
     var chosen by remember(session, index) { mutableStateOf<Int?>(null) }
     val question = questions.getOrNull(index)
     val correct = results.count { it }
-    BackHandler(onBack = onBack)
+    val leave: () -> Unit = { synth.stop(); if (game == MusicGame.Names) group = null else onBack() }
+    BackHandler(onBack = leave)
 
     fun answer(choice: Int) {
         if (phase != MusicPhase.Asking || question == null) return
@@ -738,7 +752,7 @@ fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
         if (phase != MusicPhase.Feedback) return@LaunchedEffect
         delay(if (results.lastOrNull() == true) 1000 else 2200)
         if (index >= questions.lastIndex) {
-            store.saveSpecialScore("music-${game.key}", 0, results.count { it })
+            store.saveSpecialScore("music-${game.key}", g, results.count { it })
             phase = MusicPhase.Finished
         } else {
             index++
@@ -748,9 +762,9 @@ fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
 
     Scaffold(containerColor = Paper, topBar = {
         MusicTopBar(
-            "${game.emoji} ${game.title}",
+            "${game.emoji} ${game.title}" + if (game == MusicGame.Names) " · ${nameGroupTitle(g)}" else "",
             if (phase == MusicPhase.Finished) "本局结束" else "第 ${index + 1} / ${questions.size} 题 · 答对 $correct",
-            onBack,
+            leave,
             rotatable = game.hasKeyboard
         )
     }) { padding ->
@@ -764,7 +778,7 @@ fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (phase == MusicPhase.Finished || question == null) {
-                MusicResult(correct, store.bestSpecialScore("music-${game.key}", 0), onAgain = { synth.stop(); session++ }, onBack = onBack)
+                MusicResult(correct, store.bestSpecialScore("music-${game.key}", g), onAgain = { synth.stop(); session++ }, onBack = leave, backLabel = if (game == MusicGame.Names) "换一组" else "返回")
                 return@Column
             }
             AppText(question.prompt, fontSize = 22.sp, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
@@ -826,7 +840,35 @@ fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
 }
 
 @Composable
-private fun MusicResult(correct: Int, best: Int?, onAgain: () -> Unit, onBack: () -> Unit) {
+private fun NameGroupPicker(store: ProgressStore, onGroup: (Int) -> Unit, onBack: () -> Unit) {
+    BackHandler(onBack = onBack)
+    Scaffold(containerColor = Paper, topBar = {
+        MusicTopBar("${MusicGame.Names.emoji} ${MusicGame.Names.title}", "选一组练习 · 每组 $MusicRoundSize 题", onBack)
+    }) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
+            contentPadding = PaddingValues(18.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(NameGroups.indices.toList()) { i ->
+                val (f, t) = NameGroups[i]
+                val best = store.bestSpecialScore("music-${MusicGame.Names.key}", i)
+                MusicEntryCard(
+                    badge = "${i + 1}",
+                    title = nameGroupTitle(i),
+                    subtitle = "看 ${NameSystems[f].second[4]}，选 ${NameSystems[t].second[4]}" +
+                        if (best != null) " · 最好 $best / $MusicRoundSize" + if (best == MusicRoundSize) " ⭐" else "" else "",
+                    onClick = { onGroup(i) }
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun MusicResult(correct: Int, best: Int?, onAgain: () -> Unit, onBack: () -> Unit, backLabel: String) {
     val stars = when {
         correct == MusicRoundSize -> "⭐⭐⭐"
         correct >= MusicRoundSize * 0.7 -> "⭐⭐"
@@ -845,5 +887,5 @@ private fun MusicResult(correct: Int, best: Int?, onAgain: () -> Unit, onBack: (
         shape = RoundedCornerShape(14.dp),
         colors = ButtonDefaults.buttonColors(containerColor = MusicTint)
     ) { AppText("再来一局", fontWeight = FontWeight.Bold) }
-    OutlinedButton(onClick = onBack, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) { AppText("返回") }
+    OutlinedButton(onClick = onBack, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(14.dp)) { AppText(backLabel) }
 }
