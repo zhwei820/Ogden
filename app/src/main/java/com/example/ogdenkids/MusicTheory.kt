@@ -143,7 +143,7 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
             MusicEntryCard(
                 badge = "🎹",
                 title = "儿歌弹奏",
-                subtitle = "${Songs.size} 首儿歌 · 已弹完 ${Songs.count { store.bestSpecialScore("song-${it.key}", 0) != null }} 首",
+                subtitle = "${Songs.size} 首内置曲目 · 已弹完 ${Songs.count { store.bestSpecialScore("song-${it.key}", 0) != null }} 首",
                 onClick = onSongs
             )
         }
