@@ -122,11 +122,11 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
     ) {
         item {
             HeroCard(
-                title = "乐理小课堂",
-                subtitle = "${MusicLesson.values().size} 节乐理课 · ${MusicGame.values().size} 个听音认谱小游戏",
-                action = "从第一课开始",
-                onAction = { onLesson(MusicLesson.Notes) },
-                note = "每节课都能点一点、听一听"
+                title = "🎹 儿歌弹奏",
+                subtitle = "${Songs.size} 首曲目 · 已弹完 ${Songs.count { store.bestSpecialScore("song-${it.key}", 0) != null }} 首 · 也能导入自己的曲谱",
+                action = "开始弹奏",
+                onAction = onSongs,
+                note = "先听一遍，再看着简谱跟着弹"
             )
         }
         item { SectionTitle("乐理课堂", "从认识音符到三和弦，按顺序学最轻松") }
@@ -136,15 +136,6 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
                 title = "${lesson.emoji} ${lesson.title}",
                 subtitle = lesson.summary,
                 onClick = { onLesson(lesson) }
-            )
-        }
-        item { SectionTitle("跟着弹", "先听一遍，再看着简谱在键盘上弹") }
-        item {
-            MusicEntryCard(
-                badge = "🎹",
-                title = "儿歌弹奏",
-                subtitle = "${Songs.size} 首内置曲目 · 已弹完 ${Songs.count { store.bestSpecialScore("song-${it.key}", 0) != null }} 首",
-                onClick = onSongs
             )
         }
         item { SectionTitle("乐理小游戏", "每局 $MusicRoundSize 题，边玩边记") }

@@ -8,6 +8,9 @@ import android.net.Uri
 import android.icu.text.Transliterator
 import android.os.Build
 import android.os.Bundle
+import androidx.core.content.pm.ShortcutInfoCompat
+import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.graphics.drawable.IconCompat
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -193,9 +196,38 @@ import kotlin.math.sin
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 进程被系统回收后重建时 intent 还是当初那个，只在全新启动时跳转
+        if (savedInstanceState == null) takeShortcut(intent)
+        pushShortcuts()
         setContent { OgdenKidsApp() }
     }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        takeShortcut(intent)
+    }
+
+    private fun takeShortcut(intent: Intent?) {
+        intent?.getStringExtra(ShortcutExtra)?.let { PendingShortcut.value = it }
+    }
+
+    /** 桌面长按图标出现的快捷方式；用动态快捷方式，debug / release 包名不同也能用 */
+    private fun pushShortcuts() {
+        val songs = ShortcutInfoCompat.Builder(this, ShortcutSongs)
+            .setShortLabel("儿歌弹奏")
+            .setLongLabel("跟着简谱弹儿歌")
+            .setIcon(IconCompat.createWithResource(this, R.drawable.ic_shortcut_piano))
+            .setIntent(Intent(this, MainActivity::class.java).setAction(Intent.ACTION_VIEW).putExtra(ShortcutExtra, ShortcutSongs))
+            .build()
+        runCatching { ShortcutManagerCompat.pushDynamicShortcut(this, songs) }
+    }
 }
+
+private const val ShortcutExtra = "shortcut"
+internal const val ShortcutSongs = "songs"
+
+/** 桌面快捷方式要打开的页面，由 [UserApp] 消费后清空 */
+internal val PendingShortcut = mutableStateOf<String?>(null)
 
 internal val Paper = Color(0xFFFAF6ED)
 internal val PaperElevated = Color(0xFFFFFDF7)
@@ -735,6 +767,14 @@ private fun UserApp(accounts: Accounts) {
     }
     var screen by remember { mutableStateOf<Screen>(Screen.Main) }
     var selectedSection by remember { mutableStateOf(Section.English) }
+    val shortcut = PendingShortcut.value
+    LaunchedEffect(shortcut) {
+        if (shortcut == ShortcutSongs) {
+            selectedSection = Section.Music
+            screen = Screen.MusicSongList
+        }
+        PendingShortcut.value = null
+    }
     var selectedTab by remember { mutableStateOf(Tab.Speech) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
