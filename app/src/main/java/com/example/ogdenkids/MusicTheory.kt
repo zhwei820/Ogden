@@ -166,7 +166,7 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
 }
 
 @Composable
-internal fun MusicEntryCard(badge: String, title: String, subtitle: String, onClick: () -> Unit) {
+internal fun MusicEntryCard(badge: String, title: String, subtitle: String, onClick: () -> Unit, trailing: (@Composable () -> Unit)? = null) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -189,6 +189,7 @@ internal fun MusicEntryCard(badge: String, title: String, subtitle: String, onCl
             AppText(title, fontWeight = FontWeight.Bold, fontSize = 17.sp)
             AppText(subtitle, color = InkFaint, fontSize = 13.sp)
         }
+        trailing?.invoke()
     }
 }
 

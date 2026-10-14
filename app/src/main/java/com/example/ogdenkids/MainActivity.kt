@@ -327,6 +327,8 @@ sealed class Screen {
     data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
     object MusicSongList : Screen()
     data class MusicSongPage(val song: Song) : Screen()
+    /** [editKey] 为空表示新导入 */
+    data class MusicSongImport(val editKey: String?) : Screen()
     /** [id] 为空表示新建用户 */
     data class ProfileEdit(val id: String?, val returnTo: Screen = Main) : Screen()
 }
@@ -790,7 +792,7 @@ private fun UserApp(accounts: Accounts) {
             }
             Screen.ResourcePacks -> screen = Screen.Settings
             is Screen.MusicGamePage -> screen = current.returnTo
-            is Screen.MusicSongPage -> screen = Screen.MusicSongList
+            is Screen.MusicSongPage, is Screen.MusicSongImport -> screen = Screen.MusicSongList
             is Screen.ProfileEdit -> screen = current.returnTo
             else -> {
                 azureSpeaker.stop()
@@ -1127,7 +1129,13 @@ private fun UserApp(accounts: Accounts) {
                     onBack = goBack
                 )
                 is Screen.MusicGamePage -> MusicGameScreen(game = current.game, store = progressStore, onBack = goBack)
-                Screen.MusicSongList -> MusicSongListScreen(store = progressStore, onSong = { screen = Screen.MusicSongPage(it) }, onBack = goBack)
+                Screen.MusicSongList -> MusicSongListScreen(
+                    store = progressStore,
+                    onSong = { screen = Screen.MusicSongPage(it) },
+                    onImport = { screen = Screen.MusicSongImport(it) },
+                    onBack = goBack
+                )
+                is Screen.MusicSongImport -> MusicSongImportScreen(editKey = current.editKey, onDone = goBack, onBack = goBack)
                 is Screen.MusicSongPage -> MusicSongScreen(song = current.song, store = progressStore, onBack = goBack)
                 is Screen.ProfileEdit -> ProfileEditScreen(
                     initial = accounts.profiles.firstOrNull { it.id == current.id },
@@ -1221,6 +1229,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.MusicGamePage -> "music-game-${screen.game.name}"
     Screen.MusicSongList -> "music-songs"
     is Screen.MusicSongPage -> "music-song-${screen.song.key}"
+    is Screen.MusicSongImport -> "music-song-import-${screen.editKey}"
     is Screen.ProfileEdit -> "profile-${screen.id}"
 }
 

@@ -22,9 +22,12 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Stop
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -32,6 +35,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -42,6 +46,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -55,12 +60,39 @@ data class SongNote(val midi: Int?, val beats: Double, val degree: Int, val octa
  * [notation] 是 C 调简谱：`5,` 低音、`1'` 高音、`#4` / `b7` 升降，
  * `_` 减半（八分）、`__` 十六分、`.` 附点、每个 `-` 延长一拍，`|` 小节线，`0` 休止。
  */
-class Song(val key: String, val title: String, val origin: String, val level: Int, val meter: String, val bpm: Int, notation: String) {
-    val notes: List<SongNote> = parseJianpu(notation)
+class Song(
+    val key: String,
+    val title: String,
+    val origin: String,
+    /** 难度 1..3；0 = 用户自己导入的 */
+    val level: Int,
+    val meter: String,
+    val bpm: Int,
+    val notes: List<SongNote>,
+    /** 与 [notes] 一一对应的歌词字，休止和没配上字的为 null；没有歌词时为空 */
+    val lyrics: List<String?> = emptyList()
+) {
+    constructor(key: String, title: String, origin: String, level: Int, meter: String, bpm: Int, notation: String) :
+        this(key, title, origin, level, meter, bpm, parseJianpu(notation))
 }
 
 private val MajorOffsets = listOf(0, 2, 4, 5, 7, 9, 11)
 private val NoteToken = Regex("""([#b]?)([0-7])([',]*)([_.\-]*)""")
+
+/** 单个简谱记号，看不懂返回 null */
+fun parseNoteToken(token: String): SongNote? {
+    val m = NoteToken.matchEntire(token) ?: return null
+    val (acc, d, oct, dur) = m.destructured
+    val degree = d.toInt()
+    val octave = oct.count { it == '\'' } - oct.count { it == ',' }
+    var beats = 1.0
+    repeat(dur.count { it == '_' }) { beats /= 2 }
+    if ('.' in dur) beats *= 1.5
+    beats += dur.count { it == '-' }
+    val shift = when (acc) { "#" -> 1; "b" -> -1; else -> 0 }
+    val midi = if (degree == 0) null else 60 + MajorOffsets[degree - 1] + 12 * octave + shift
+    return SongNote(midi, beats, degree, octave, acc.replace("#", "♯").replace("b", "♭"), false)
+}
 
 fun parseJianpu(notation: String): List<SongNote> {
     val notes = mutableListOf<SongNote>()
@@ -69,17 +101,7 @@ fun parseJianpu(notation: String): List<SongNote> {
             notes.lastOrNull()?.let { notes[notes.lastIndex] = it.copy(barAfter = true) }
             return@forEach
         }
-        val m = NoteToken.matchEntire(token) ?: error("简谱写错了：$token")
-        val (acc, d, oct, dur) = m.destructured
-        val degree = d.toInt()
-        val octave = oct.count { it == '\'' } - oct.count { it == ',' }
-        var beats = 1.0
-        repeat(dur.count { it == '_' }) { beats /= 2 }
-        if ('.' in dur) beats *= 1.5
-        beats += dur.count { it == '-' }
-        val shift = when (acc) { "#" -> 1; "b" -> -1; else -> 0 }
-        val midi = if (degree == 0) null else 60 + MajorOffsets[degree - 1] + 12 * octave + shift
-        notes += SongNote(midi, beats, degree, octave, acc.replace("#", "♯").replace("b", "♭"), false)
+        notes += parseNoteToken(token) ?: error("简谱写错了：$token")
     }
     return notes
 }
@@ -124,14 +146,39 @@ val Songs = listOf(
         "3 3_ 5_ 6_ 1'_ 1'_ 6_ | 5 5_ 6_ 5- | 3 3_ 5_ 6_ 1'_ 1'_ 6_ | 5 5_ 6_ 5- | 5 5 5 3_ 5_ | 6 6 5- | 3 2_ 3_ 5 3_ 2_ | 1 1_ 2_ 1- |")
 )
 
+/** 整首歌连同休止的时间排成音序 */
+fun songTones(song: Song): List<Tone> {
+    val beat = 60.0 / song.bpm
+    var at = 0.0
+    return song.notes.mapNotNull { note ->
+        val tone = note.midi?.let { Tone(at, note.beats * beat * 0.95, it) }
+        at += note.beats * beat
+        tone
+    }
+}
+
 private fun songStars(stars: Int?) = when (stars) {
     null -> ""
     else -> " · " + "⭐".repeat(stars)
 }
 
 @Composable
-fun MusicSongListScreen(store: ProgressStore, onSong: (Song) -> Unit, onBack: () -> Unit) {
-    Scaffold(containerColor = Paper, topBar = { MusicTopBar("🎹 跟着弹", "${Songs.size} 首儿歌 · 先听一遍，再跟着弹", onBack) }) { padding ->
+fun MusicSongListScreen(store: ProgressStore, onSong: (Song) -> Unit, onImport: (editKey: String?) -> Unit, onBack: () -> Unit) {
+    val context = LocalContext.current
+    val customStore = remember { CustomSongStore(context) }
+    var version by remember { mutableStateOf(0) }
+    val custom = remember(version) { customStore.songs() }
+    var deleting by remember { mutableStateOf<Song?>(null) }
+    deleting?.let { song ->
+        AlertDialog(
+            onDismissRequest = { deleting = null },
+            title = { AppText("删除曲谱") },
+            text = { AppText("确定删除「${song.title}」吗？") },
+            confirmButton = { TextButton(onClick = { customStore.delete(song.key); version++; deleting = null }) { AppText("删除", color = Error) } },
+            dismissButton = { TextButton(onClick = { deleting = null }) { AppText("取消") } }
+        )
+    }
+    Scaffold(containerColor = Paper, topBar = { MusicTopBar("🎹 跟着弹", "${Songs.size + custom.size} 首 · 先听一遍，再跟着弹", onBack) }) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -139,6 +186,23 @@ fun MusicSongListScreen(store: ProgressStore, onSong: (Song) -> Unit, onBack: ()
             contentPadding = PaddingValues(18.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item { SectionTitle("我的曲谱", "把歌名、歌词、简谱粘贴进来，只存在这台手机上") }
+            items(custom, key = { it.key }) { song ->
+                MusicEntryCard(
+                    badge = "♪",
+                    title = song.title,
+                    subtitle = "${song.origin} · ${song.notes.count { it.midi != null }} 个音" + songStars(store.bestSpecialScore("song-${song.key}", 0)),
+                    onClick = { onSong(song) },
+                    trailing = {
+                        IconButton(onClick = { onImport(song.key) }) { Icon(Icons.Default.Edit, contentDescription = "编辑", tint = InkSoft) }
+                        IconButton(onClick = { deleting = song }) { Icon(Icons.Default.Delete, contentDescription = "删除", tint = InkSoft) }
+                    }
+                )
+            }
+            item {
+                MusicEntryCard(badge = "＋", title = "粘贴导入曲谱", subtitle = "一行歌名，然后歌词、简谱一行一行交替", onClick = { onImport(null) })
+            }
+            item { SectionTitle("内置儿歌", "传统民歌、童谣和古典旋律") }
             items(Songs) { song ->
                 MusicEntryCard(
                     badge = "${Songs.indexOf(song) + 1}",
@@ -222,7 +286,7 @@ fun MusicSongScreen(song: Song, store: ProgressStore, onBack: () -> Unit) {
                 .padding(horizontal = if (landscape) 8.dp else 12.dp, vertical = if (landscape) 4.dp else 12.dp),
             verticalArrangement = Arrangement.spacedBy(if (landscape) 4.dp else 12.dp)
         ) {
-            if (!landscape) JianpuStrip(notes, current, played = if (demo) -1 else pos)
+            if (!landscape) JianpuStrip(notes, song.lyrics, current, played = if (demo) -1 else pos)
             Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 OutlinedButton(onClick = { if (demo) { demo = false; synth.stop() } else { restart(); demo = true } }, shape = RoundedCornerShape(12.dp), contentPadding = PaddingValues(horizontal = 12.dp)) {
                     Icon(if (demo) Icons.Default.Stop else Icons.Default.PlayArrow, contentDescription = null)
@@ -246,7 +310,7 @@ fun MusicSongScreen(song: Song, store: ProgressStore, onBack: () -> Unit) {
                     IconButton(onClick = onBack) { Icon(Icons.Default.Close, contentDescription = "返回") }
                 }
             }
-            if (landscape) JianpuStrip(notes, current, played = if (demo) -1 else pos, compact = true)
+            if (landscape) JianpuStrip(notes, song.lyrics, current, played = if (demo) -1 else pos, compact = true)
             else AppText(
                 if (demo || finished) status else "跟着弹：$status",
                 color = if (finished && !demo) Success else InkSoft,
@@ -285,7 +349,7 @@ private fun starsFor(mistakes: Int) = when {
 
 /** 简谱条：当前音高亮，已弹过的变淡，自动滚到当前位置 */
 @Composable
-private fun JianpuStrip(notes: List<SongNote>, current: Int, played: Int, compact: Boolean = false) {
+private fun JianpuStrip(notes: List<SongNote>, lyrics: List<String?>, current: Int, played: Int, compact: Boolean = false) {
     val state = rememberLazyListState()
     LaunchedEffect(current) {
         if (current >= 0) state.animateScrollToItem(maxOf(0, current - 3))
@@ -328,6 +392,7 @@ private fun JianpuStrip(notes: List<SongNote>, current: Int, played: Int, compac
                         repeat(lines) { Box(Modifier.width(12.dp).height(2.dp).background(color)) }
                     }
                     Text(if (note.octave < 0) "•" else " ", fontSize = 9.sp, color = color, lineHeight = 9.sp)
+                    if (lyrics.isNotEmpty()) AppText(lyrics.getOrNull(i) ?: " ", fontSize = if (compact) 11.sp else 13.sp, color = color, maxLines = 1)
                 }
                 if (note.barAfter) Box(Modifier.padding(horizontal = 4.dp).width(1.dp).height(if (compact) 28.dp else 36.dp).background(Line))
             }
