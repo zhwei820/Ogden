@@ -42,6 +42,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -721,20 +722,30 @@ private enum class MusicPhase { Asking, Feedback, Finished }
 
 @Composable
 fun MusicGameScreen(game: MusicGame, store: ProgressStore, onBack: () -> Unit) {
-    val synth = rememberSynth()
-    var session by remember { mutableStateOf(0) }
     // 唱名对对碰先选组，其他游戏只有一组
     var group by remember { mutableStateOf(if (game == MusicGame.Names) null else 0) }
-    group ?: return NameGroupPicker(store, onGroup = { group = it; session++ }, onBack = onBack)
-    val g = group ?: 0
-    val questions = remember(session, g) { buildRound(game, Random(System.nanoTime()), g) }
+    val g = group
+    if (g == null) {
+        NameGroupPicker(store, onGroup = { group = it }, onBack = onBack)
+    } else {
+        key(g) {
+            MusicGameRound(game, g, store, onLeave = { if (game == MusicGame.Names) group = null else onBack() })
+        }
+    }
+}
+
+@Composable
+private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeave: () -> Unit) {
+    val synth = rememberSynth()
+    var session by remember { mutableStateOf(0) }
+    val questions = remember(session) { buildRound(game, Random(System.nanoTime()), g) }
     val results = remember(session) { mutableStateListOf<Boolean>() }
     var index by remember(session) { mutableStateOf(0) }
     var phase by remember(session) { mutableStateOf(MusicPhase.Asking) }
     var chosen by remember(session, index) { mutableStateOf<Int?>(null) }
     val question = questions.getOrNull(index)
     val correct = results.count { it }
-    val leave: () -> Unit = { synth.stop(); if (game == MusicGame.Names) group = null else onBack() }
+    val leave: () -> Unit = { synth.stop(); onLeave() }
     BackHandler(onBack = leave)
 
     fun answer(choice: Int) {
