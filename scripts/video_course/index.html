@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>儿歌英语课</title>
+<style>
+:root {
+  --bg: #fff8ec; --card: #ffffff; --ink: #3b2f2a; --muted: #8a7b72;
+  --brand: #ff8a3d; --brand-ink: #fff; --ok: #3bb273; --bad: #e5484d;
+  --soft: #ffe9d4; --line: #f1e3d3; --radius: 18px;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.6 -apple-system, "PingFang SC", "Helvetica Neue", sans-serif; }
+button { font: inherit; cursor: pointer; border: 0; border-radius: 999px; }
+header { position: sticky; top: 0; z-index: 5; height: 64px; display: flex; align-items: center; gap: 12px; padding: 0 16px; background: var(--bg); border-bottom: 1px solid var(--line); }
+header h1 { margin: 0; font-size: 22px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pill { padding: 8px 16px; background: var(--soft); color: var(--ink); }
+.pill.on { background: var(--brand); color: var(--brand-ink); }
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+.hidden { display: none !important; }
+
+/* home */
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+.card { background: var(--card); border-radius: var(--radius); overflow: hidden; box-shadow: 0 2px 0 var(--line); cursor: pointer; transition: transform .15s; }
+.card:hover { transform: translateY(-3px); }
+.card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: var(--soft); }
+.card .meta { padding: 10px 14px 14px; }
+.card .zh { font-weight: 700; font-size: 18px; }
+.card .en { color: var(--muted); font-size: 14px; }
+.stars { color: #ffb400; letter-spacing: 2px; font-size: 14px; }
+
+/* lesson */
+.lesson { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+@media (max-width: 860px) { .lesson { grid-template-columns: 1fr; } }
+/* 吸在标题栏下；单词卡等带定位的元素滚上来时要从它下面过 */
+.player { position: sticky; top: 64px; z-index: 4; background: var(--bg); padding-bottom: 8px; }
+video { width: 100%; border-radius: var(--radius); background: #000; display: block; }
+.sub { min-height: 56px; margin-top: 10px; padding: 10px 16px; background: var(--card); border-radius: var(--radius); font-size: 22px; font-weight: 600; text-align: center; }
+.ctrls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.panel { background: var(--card); border-radius: var(--radius); padding: 16px; }
+.intro { background: var(--soft); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; }
+.row { display: flex; align-items: center; gap: 10px; padding: 10px 4px; border-bottom: 1px dashed var(--line); }
+.row:last-child { border-bottom: 0; }
+.row .txt { flex: 1; }
+.row .en { font-size: 20px; font-weight: 600; }
+.row .zh { color: var(--muted); }
+.icon { width: 40px; height: 40px; flex: none; background: var(--soft); font-size: 18px; }
+.icon:disabled { opacity: .3; cursor: default; }
+.line { padding: 6px 8px; border-radius: 10px; cursor: pointer; }
+.line:hover { background: var(--soft); }
+.line.now { background: var(--brand); color: var(--brand-ink); }
+.line .t { color: var(--muted); font-size: 13px; margin-right: 8px; }
+.line.now .t { color: var(--brand-ink); }
+.vocab { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.word { position: relative; background: var(--bg); border-radius: 14px; padding: 12px; text-align: center; }
+.word .en { font-size: 22px; font-weight: 700; }
+.word .zh { color: var(--muted); }
+.word .acts { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
+.star { position: absolute; top: 6px; right: 6px; width: 32px; height: 32px; background: none; font-size: 18px; opacity: .35; }
+.star.on { opacity: 1; }
+
+/* quiz + review */
+.q { font-size: 26px; font-weight: 700; text-align: center; margin: 12px 0 4px; }
+.qzh { text-align: center; color: var(--muted); margin-bottom: 12px; }
+.opts { display: grid; gap: 10px; }
+.opt { padding: 14px; background: var(--bg); font-size: 20px; border-radius: 14px; }
+.opt.ok { background: var(--ok); color: #fff; }
+.opt.bad { background: var(--bad); color: #fff; }
+.center { text-align: center; }
+.big { font-size: 56px; }
+.flash { margin: 20px auto; max-width: 420px; min-height: 220px; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--card); border-radius: var(--radius); cursor: pointer; box-shadow: 0 2px 0 var(--line); padding: 20px; }
+.flash .en { font-size: 42px; font-weight: 800; }
+.flash .zh { font-size: 26px; color: var(--muted); }
+.progress { height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; margin-bottom: 8px; }
+.progress div { height: 100%; background: var(--brand); transition: width .3s; }
+.empty { color: var(--muted); text-align: center; padding: 40px 0; }
+</style>
+</head>
+<body>
+<header>
+  <button class="pill hidden" id="back">← 返回</button>
+  <h1 id="title">🎵 儿歌英语课</h1>
+  <button class="pill" id="navHome">课程</button>
+  <button class="pill" id="navReview">生词本 <span id="wcount"></span></button>
+</header>
+<main>
+  <section id="home">
+    <div class="filters" id="filters"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section id="lesson" class="hidden">
+    <div class="lesson">
+      <div class="player">
+        <video id="video" controls playsinline preload="metadata"></video>
+        <div class="sub" id="sub">&nbsp;</div>
+        <div class="ctrls">
+          <button class="pill" id="slow">🐢 慢速</button>
+          <button class="pill" id="loop">🔁 单句循环</button>
+          <button class="pill on" id="subToggle">字幕 开</button>
+        </div>
+      </div>
+      <div>
+        <div class="tabs" id="tabs"></div>
+        <div class="panel" id="panel"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="review" class="hidden"></section>
+</main>
+
+<script src="data.js"></script>
+<script>
+const L = window.LESSONS || [];
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const fmt = t => `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
+
+// progress: { stars: {lessonId: 0-3}, words: {word: {word, zh, lesson, wrong}} }
+const KEY = 'singsing-course-v1';
+let P = { stars: {}, words: {} };
+try { P = Object.assign(P, JSON.parse(localStorage.getItem(KEY)) || {}); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(P)); } catch (e) {} updateCount(); };
+const updateCount = () => { const n = Object.keys(P.words).length; $('#wcount').textContent = n ? `(${n})` : ''; };
+
+function speak(text, rate = 0.8) {
+  text = text.replace(/_+/g, 'blank');
+  // Android WebView 没有 speechSynthesis，App 注入 AppTts 用自己的朗读
+  if (window.AppTts) { AppTts.speak(text); return; }
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US'; u.rate = rate;
+  const v = speechSynthesis.getVoices().find(v => /en[-_]US/.test(v.lang) && /Samantha|Google|Ava|Allison/.test(v.name));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+const starsOf = n => '★'.repeat(n) + '☆'.repeat(3 - n);
+
+/* ---------- navigation ---------- */
+function show(view) {
+  for (const id of ['home', 'lesson', 'review']) $('#' + id).classList.toggle('hidden', id !== view);
+  // 在 App 里由系统返回键回退，不显示页内返回
+  $('#back').classList.toggle('hidden', view === 'home' || !!window.AppTts);
+  $('#navHome').classList.toggle('on', view === 'home');
+  $('#navReview').classList.toggle('on', view === 'review');
+  if (view !== 'lesson') { video.pause(); $('#title').textContent = '🎵 儿歌英语课'; }
+  scrollTo(0, 0);
+}
+$('#back').onclick = () => location.hash = '';
+$('#navHome').onclick = () => location.hash = '';
+$('#navReview').onclick = () => location.hash = 'review';
+window.onhashchange = route;
+function route() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (h === 'review') { renderReview(); show('review'); }
+  else if (L.find(l => l.id === h)) { openLesson(L.find(l => l.id === h)); show('lesson'); }
+  else { renderHome(); show('home'); }
+}
+
+/* ---------- home ---------- */
+let levelFilter = 0;
+const LEVELS = ['全部', '⭐ 单词', '⭐⭐ 短语', '⭐⭐⭐ 句子'];
+function renderHome() {
+  $('#filters').innerHTML = LEVELS.map((n, i) => `<button class="pill ${i === levelFilter ? 'on' : ''}" data-l="${i}">${n}</button>`).join('');
+  $('#filters').onclick = e => { if (e.target.dataset.l) { levelFilter = +e.target.dataset.l; renderHome(); } };
+  const list = L.filter(l => !levelFilter || l.level === levelFilter);
+  $('#grid').innerHTML = list.map(l => `
+    <div class="card" data-id="${l.id}">
+      <img src="${l.cover}" loading="lazy" alt="">
+      <div class="meta">
+        <div class="zh">${esc(l.topic_zh)}</div>
+        <div class="en">${esc(l.topic_en)}</div>
+        <div class="stars">${starsOf(P.stars[l.id] || 0)}</div>
+      </div>
+    </div>`).join('') || '<div class="empty">还没有课程，先运行 build.py</div>';
+  $('#grid').onclick = e => { const c = e.target.closest('.card'); if (c) location.hash = c.dataset.id; };
+}
+
+/* ---------- lesson ---------- */
+const video = $('#video');
+let cur = null, tab = 'text', loopLine = null, subOn = true;
+const TABS = { text: '📖 课文', vocab: '🔤 单词', sent: '💬 句型', lyrics: '🎤 字幕', quiz: '🏆 复习' };
+
+function openLesson(l) {
+  if (cur !== l) {
+    cur = l; tab = 'text'; loopLine = null;
+    video.src = l.video; video.poster = l.cover; video.playbackRate = 1;
+    $('#slow').classList.remove('on'); $('#loop').classList.remove('on');
+  }
+  $('#title').textContent = `${l.topic_zh} · ${l.topic_en}`;
+  renderTabs();
+}
+function renderTabs() {
+  $('#tabs').innerHTML = Object.entries(TABS).map(([k, n]) => `<button class="pill ${k === tab ? 'on' : ''}" data-k="${k}">${n}</button>`).join('');
+  renderPanel();
+}
+$('#tabs').onclick = e => { if (e.target.dataset.k) { tab = e.target.dataset.k; renderTabs(); } };
+
+function seek(t) { if (t == null) return; video.currentTime = Math.max(0, t - 0.3); video.play(); }
+const playBtn = t => `<button class="icon" title="看视频" data-seek="${t ?? ''}" ${t == null ? 'disabled' : ''}>▶️</button>`;
+const sayBtn = s => `<button class="icon" title="读一读" data-say="${esc(s)}">🔊</button>`;
+
+function renderPanel() {
+  const l = cur, p = $('#panel');
+  if (tab === 'text') {
+    p.innerHTML = `<div class="intro">${esc(l.intro_zh)}</div>
+      <button class="pill" data-sayall>🔊 朗读全文</button>
+      ${l.passage.map(s => `<div class="row"><div class="txt"><div class="en">${esc(s.en)}</div><div class="zh">${esc(s.zh)}</div></div>${sayBtn(s.en)}</div>`).join('')}`;
+  } else if (tab === 'vocab') {
+    p.innerHTML = `<div class="vocab">${l.vocab.map(v => `
+      <div class="word">
+        <button class="star ${P.words[v.word] ? 'on' : ''}" data-star="${esc(v.word)}" title="加入生词本">⭐</button>
+        <div class="en">${esc(v.word)}</div><div class="zh">${esc(v.zh)}</div>
+        <div class="acts">${sayBtn(v.word)}${playBtn(v.t)}</div>
+      </div>`).join('')}</div>`;
+  } else if (tab === 'sent') {
+    p.innerHTML = l.sentences.map(s => `
+      <div class="row"><div class="txt">
+        <div class="en">${esc(s.en)}</div><div class="zh">${esc(s.zh)}</div>
+        <div>例：<b>${esc(s.example)}</b></div>
+      </div>${sayBtn(s.example)}${playBtn(s.t)}</div>`).join('');
+  } else if (tab === 'lyrics') {
+    p.innerHTML = l.lines.map((s, i) => `<div class="line" data-i="${i}"><span class="t">${fmt(s.t)}</span>${esc(s.text)}</div>`).join('');
+    syncLines(true);
+  } else if (tab === 'quiz') {
+    startQuiz(p, l.quiz.map(q => ({ ...q })), score => {
+      const stars = score >= 1 ? 3 : score >= 0.7 ? 2 : score > 0 ? 1 : 0;
+      P.stars[l.id] = Math.max(P.stars[l.id] || 0, stars); save();
+      return stars;
+    }, l);
+  }
+}
+
+$('#panel').addEventListener('click', e => {
+  const b = e.target.closest('button, .line');
+  if (!b) return;
+  if (b.dataset.say) speak(b.dataset.say);
+  else if (b.hasAttribute('data-sayall')) speak(cur.passage.map(s => s.en).join(' '));
+  else if (b.dataset.seek) seek(+b.dataset.seek);
+  else if (b.dataset.star) {
+    const v = cur.vocab.find(v => v.word === b.dataset.star);
+    if (P.words[v.word]) delete P.words[v.word]; else P.words[v.word] = { word: v.word, zh: v.zh, lesson: cur.id, wrong: 0 };
+    b.classList.toggle('on'); save();
+  } else if (b.classList.contains('line')) {
+    const i = +b.dataset.i; seek(cur.lines[i].t);
+    if (loopLine != null) loopLine = i;
+  }
+});
+
+/* subtitles + single-line loop */
+function lineAt(t) {
+  if (!cur) return -1;
+  let i = -1;
+  for (let k = 0; k < cur.lines.length && cur.lines[k].t <= t + 0.2; k++) i = k;
+  return i;
+}
+let lastIdx = -2;
+function syncLines(force) {
+  const i = lineAt(video.currentTime);
+  if (loopLine != null && loopLine >= 0) {
+    const end = cur.lines[loopLine + 1]?.t ?? video.duration;
+    if (video.currentTime >= end - 0.05 || video.currentTime < cur.lines[loopLine].t - 1) video.currentTime = cur.lines[loopLine].t;
+  }
+  if (i === lastIdx && !force) return;
+  lastIdx = i;
+  $('#sub').textContent = subOn && i >= 0 ? cur.lines[i].text : ' ';
+  if (tab === 'lyrics') {
+    document.querySelectorAll('.line.now').forEach(n => n.classList.remove('now'));
+    const n = document.querySelector(`.line[data-i="${i}"]`);
+    if (n) { n.classList.add('now'); if (!force) n.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+  }
+}
+video.addEventListener('timeupdate', () => syncLines(false));
+video.addEventListener('seeked', () => syncLines(true));
+$('#slow').onclick = e => { video.playbackRate = video.playbackRate === 1 ? 0.75 : 1; e.target.classList.toggle('on', video.playbackRate !== 1); };
+$('#loop').onclick = e => { loopLine = loopLine == null ? Math.max(0, lineAt(video.currentTime)) : null; e.target.classList.toggle('on', loopLine != null); };
+$('#subToggle').onclick = e => { subOn = !subOn; e.target.classList.toggle('on', subOn); e.target.textContent = subOn ? '字幕 开' : '字幕 关'; syncLines(true); };
+
+/* ---------- quiz (shared by lesson review and word book) ---------- */
+function startQuiz(el, qs, onDone, lesson) {
+  let i = 0, right = 0, locked = false;
+  const draw = () => {
+    if (i >= qs.length) {
+      const stars = onDone(right / qs.length);
+      el.innerHTML = `<div class="center"><div class="big">${stars === 3 ? '🎉' : '👍'}</div>
+        <div class="stars" style="font-size:32px">${starsOf(stars)}</div>
+        <p>答对 ${right} / ${qs.length} 题</p>
+        <button class="pill on" data-again>再来一次</button></div>`;
+      el.querySelector('[data-again]').onclick = () => startQuiz(el, qs, onDone, lesson);
+      return;
+    }
+    const q = qs[i];
+    const prompt = { en2zh: '这个单词是什么意思？', zh2en: '用英语怎么说？', fill: '选词填空' }[q.type] || '';
+    el.innerHTML = `<div class="progress"><div style="width:${i / qs.length * 100}%"></div></div>
+      <div class="qzh">${prompt}</div>
+      <div class="q">${esc(q.q)} ${q.type !== 'zh2en' ? sayBtn(q.q) : ''}</div>
+      <div class="qzh">${esc(q.zh || '')}</div>
+      <div class="opts">${q.options.map((o, k) => `<button class="opt" data-k="${k}">${esc(o)}</button>`).join('')}</div>`;
+    locked = false;
+    el.querySelector('.q [data-say]')?.addEventListener('click', ev => { ev.stopPropagation(); speak(q.q); });
+    el.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      if (locked) return; locked = true;
+      const k = +b.dataset.k, ok = k === q.answer;
+      b.classList.add(ok ? 'ok' : 'bad');
+      el.querySelectorAll('.opt')[q.answer].classList.add('ok');
+      if (ok) right++; else if (lesson) addWrong(q, lesson);
+      const en = q.type === 'zh2en' ? q.options[q.answer] : q.type === 'fill' ? q.q.replace(/_+/, q.options[q.answer]) : q.q;
+      speak(en);
+      setTimeout(() => { i++; draw(); }, ok ? 900 : 1800);
+    });
+  };
+  draw();
+}
+function addWrong(q, lesson) {
+  const en = q.type === 'zh2en' ? q.options[q.answer] : q.type === 'en2zh' ? q.q : null;
+  const v = en && lesson.vocab.find(v => v.word.toLowerCase() === en.toLowerCase());
+  if (!v) return;
+  const w = P.words[v.word] || (P.words[v.word] = { word: v.word, zh: v.zh, lesson: lesson.id, wrong: 0 });
+  w.wrong++; save();
+}
+
+/* ---------- word book review ---------- */
+function renderReview() {
+  const el = $('#review');
+  const words = Object.values(P.words).sort((a, b) => b.wrong - a.wrong);
+  if (!words.length) {
+    el.innerHTML = `<div class="empty"><div class="big">📒</div>生词本是空的。<br>在课程「单词」里点 ⭐，或者复习时答错的单词，会自动收进来。</div>`;
+    return;
+  }
+  let i = 0, flipped = false;
+  const deck = words.slice();
+  const draw = () => {
+    if (!deck.length) { el.innerHTML = `<div class="empty"><div class="big">🎉</div>全部记住啦！</div>`; return; }
+    const w = deck[i % deck.length];
+    const l = L.find(l => l.id === w.lesson);
+    el.innerHTML = `<div class="center">
+      <div class="qzh">还剩 ${deck.length} 个 · 点卡片翻面</div>
+      <div class="flash" id="card"><div class="en">${esc(w.word)}</div><div class="zh">${flipped ? esc(w.zh) : '❓'}</div></div>
+      <button class="pill" data-say="${esc(w.word)}">🔊 听</button>
+      ${l ? `<button class="pill" data-go="${l.id}">🎬 回到《${esc(l.topic_zh)}》</button>` : ''}
+      <p><button class="pill" data-again>😕 再练练</button> <button class="pill on" data-know>😄 记住了</button></p>
+    </div>`;
+    if (!flipped) speak(w.word);
+  };
+  el.onclick = e => {
+    const b = e.target.closest('button, #card');
+    if (!b) return;
+    const w = deck[i % deck.length];
+    if (b.id === 'card') { flipped = !flipped; draw(); }
+    else if (b.dataset.say) speak(b.dataset.say);
+    else if (b.dataset.go) location.hash = b.dataset.go;
+    else if (b.hasAttribute('data-again')) { i++; flipped = false; draw(); }
+    else if (b.hasAttribute('data-know')) { delete P.words[w.word]; save(); deck.splice(i % deck.length, 1); flipped = false; draw(); }
+  };
+  draw();
+}
+
+window.speechSynthesis?.getVoices();
+updateCount();
+route();
+</script>
+</body>
+</html>
