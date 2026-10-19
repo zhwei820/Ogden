@@ -50,7 +50,8 @@ import java.security.MessageDigest
 import java.util.zip.ZipInputStream
 
 /**
- * 可下载的资源包：词包（words.json + 发音）、语音包（tts/ 下的句子朗读）、课文包或教材包（speeches.json + 朗读）。
+ * 可下载的资源包：词包（words.json + 发音）、语音包（tts/ 下的句子朗读）、课文包或教材包（speeches.json + 朗读）、
+ * 视频课（course/index.html 网页 + 各集视频，course.json 记标题与课数）。
  * zip 内路径与 assets 一致（audio/us/…、tts/en-US/…），查找发音时同一个相对路径先查已装的包、再查 assets。
  * @param dataFile 包内必须有的数据文件，格式与 assets 里同名文件一致；缺了不予安装
  */
@@ -58,7 +59,8 @@ enum class PackType(val code: String, val label: String, val dataFile: String?) 
     Words("words", "词包", "words.json"),
     Voice("voice", "语音包", null),
     Lessons("lessons", "课文包", "speeches.json"),
-    Textbook("textbook", "教材", "speeches.json");
+    Textbook("textbook", "教材", "speeches.json"),
+    Course("course", "视频课", "course.json");
 
     companion object {
         fun fromCode(code: String) = values().firstOrNull { it.code == code }
@@ -128,6 +130,10 @@ class PackStore(private val root: File) {
         return installed.filterValues { it.type == type }.keys
             .mapNotNull { File(File(root, it), name).takeIf(File::isFile)?.readText() }
     }
+
+    /** 所有已装 [type] 包的目录。 */
+    fun installedDirs(type: PackType): List<File> =
+        installed.filterValues { it.type == type }.keys.map { File(root, it) }.filter(File::isDirectory)
 
     /** 把已校验的 zip 解压安装为 [pack]；先解到临时目录，整体改名后才生效，中途失败不留半个包。 */
     @Synchronized

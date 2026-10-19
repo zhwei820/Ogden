@@ -25,7 +25,9 @@ def build_zip_from_dir(pack_dir):
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         for path in sorted(pack_dir.rglob("*")):
             if path.is_file() and path.name not in ("pack.json", ".DS_Store"):
-                zf.write(path, path.relative_to(pack_dir).as_posix())
+                # 视频、图片本身已压缩，再 deflate 只是白耗时间
+                compress = zipfile.ZIP_STORED if path.suffix in (".mp4", ".jpg", ".png") else zipfile.ZIP_DEFLATED
+                zf.write(path, path.relative_to(pack_dir).as_posix(), compress_type=compress)
     return buffer.getvalue()
 
 

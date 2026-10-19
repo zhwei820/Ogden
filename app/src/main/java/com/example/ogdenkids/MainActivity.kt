@@ -355,6 +355,7 @@ sealed class Screen {
     object Privacy : Screen()
     object Feedback : Screen()
     object MathDrill : Screen()
+    data class VideoCoursePage(val course: VideoCourse) : Screen()
     data class MusicLessonPage(val lesson: MusicLesson) : Screen()
     data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
     object MusicSongList : Screen()
@@ -744,6 +745,7 @@ private fun UserApp(accounts: Accounts) {
     var packVersion by remember { mutableStateOf(0) }
     val words = remember(packVersion) { repository.loadWords() }
     val speeches = remember(packVersion) { repository.loadSpeeches() }
+    val videoCourses = remember(packVersion) { loadVideoCourses(PackStore.of(context)) }
     val lessonWords = remember(speeches) { speeches.flatMap { it.words }.map { it.lowercase() }.toSet() }
     val specialModules = remember { repository.loadSpecialModules() }
     val wordIndex = remember(words) { words.associateBy { it.word.lowercase() } }
@@ -919,6 +921,8 @@ private fun UserApp(accounts: Accounts) {
                                 onPractice = { theme -> screen = Screen.ThemePractice(speechLevel, theme) },
                                 modules = specialModules,
                                 onSpecial = { module -> screen = Screen.SpecialModulePage(module.key) },
+                                videoCourses = videoCourses,
+                                onVideoCourse = { screen = Screen.VideoCoursePage(it) },
                                 padding = padding,
                                 onOpen = { screen = Screen.SpeechReader(it) }
                             )
@@ -1161,6 +1165,12 @@ private fun UserApp(accounts: Accounts) {
                     links = emptyList()
                 )
                 Screen.Feedback -> FeedbackScreen(onBack = goBack)
+                is Screen.VideoCoursePage -> VideoCourseScreen(
+                    course = current.course,
+                    onSpeak = speakEnglish,
+                    onStopSpeaking = { azureSpeaker.stop() },
+                    onBack = goBack
+                )
                 Screen.MathDrill -> MathDrillScreen(store = progressStore, accent = accent, azure = azureSpeaker, onBack = goBack)
                 is Screen.MusicLessonPage -> MusicLessonScreen(
                     lesson = current.lesson,
@@ -1265,6 +1275,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.Privacy -> "privacy"
     Screen.Feedback -> "feedback"
     Screen.MathDrill -> "math-drill"
+    is Screen.VideoCoursePage -> "video-course-${screen.course.dir.name}"
     is Screen.MusicLessonPage -> "music-lesson-${screen.lesson.name}"
     is Screen.MusicGamePage -> "music-game-${screen.game.name}"
     Screen.MusicSongList -> "music-songs"
@@ -2224,6 +2235,8 @@ fun SpeechListScreen(
     onPractice: (SpeechTheme) -> Unit,
     modules: List<SpecialModule>,
     onSpecial: (SpecialModule) -> Unit,
+    videoCourses: List<VideoCourse>,
+    onVideoCourse: (VideoCourse) -> Unit,
     padding: PaddingValues,
     onOpen: (Speech) -> Unit
 ) {
@@ -2345,6 +2358,18 @@ fun SpeechListScreen(
         }
         item {
             Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                // 放在专项训练同一项里：另起一项会让 themeStarts 的起始下标错位
+                videoCourses.forEach { course ->
+                    OutlinedButton(
+                        onClick = { onVideoCourse(course) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(14.dp)
+                    ) {
+                        Text("🎬", fontSize = 22.sp)
+                        AppText(course.title, fontWeight = FontWeight.Bold, color = Ink, modifier = Modifier.padding(start = 10.dp).weight(1f))
+                        AppText("${course.count} 课", color = InkFaint, fontSize = 13.sp)
+                    }
+                }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

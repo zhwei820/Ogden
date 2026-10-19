@@ -12,3 +12,4 @@ tools/
 keystore/
 dist/
 videos
+scripts/mock_packs/course-*/
