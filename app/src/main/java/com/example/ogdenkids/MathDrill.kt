@@ -7,7 +7,7 @@ import kotlin.random.Random
 enum class MathOp(val zh: String) { Add("加法"), Sub("减法"), Mixed("加减混合") }
 
 /** 加法看个位是否进位，减法看个位是否退位。 */
-enum class CarryMode(val zh: String) { Without("不进退位"), With("含进退位"), Any("随机") }
+enum class CarryMode(val zh: String) { With("含进退位"), Any("随机") }
 
 /** 最好成绩按 ordinal 存，新难度只能往后加；seconds = 0 表示不计时。 */
 enum class MathLevel(val zh: String, val seconds: Int) {
@@ -86,7 +86,6 @@ fun buildMathDrill(op: MathOp, carry: CarryMode, random: Random, size: Int = Mat
             MathOp.Mixed -> random.nextBoolean()
         }
         val wantCarry = when (carry) {
-            CarryMode.Without -> false
             CarryMode.With -> true
             CarryMode.Any -> random.nextBoolean()
         }

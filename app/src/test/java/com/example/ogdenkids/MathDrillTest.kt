@@ -23,7 +23,6 @@ class MathDrillTest {
                 }
                 when (carry) {
                     CarryMode.With -> assertTrue(p.toString(), hasCarry(p))
-                    CarryMode.Without -> assertTrue(p.toString(), !hasCarry(p) && p.answer < 100)
                     CarryMode.Any -> Unit
                 }
             }
