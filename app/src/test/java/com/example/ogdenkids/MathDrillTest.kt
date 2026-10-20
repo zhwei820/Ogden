@@ -15,11 +15,20 @@ class MathDrillTest {
             assertEquals(MathDrillSize, drill.size)
             assertEquals(drill.size, drill.toSet().size)
             drill.forEach { p ->
-                assertTrue(p.toString(), p.a in 1..100 && p.b in 1..99 && p.answer in 0..100)
+                assertTrue(p.toString(), p.numbers.all { it in 1..100 } && p.answer in 0..100)
+                val addSub = p.ops.filter { it == MathOperator.Plus || it == MathOperator.Minus }
+                val mulDiv = p.ops - addSub.toSet()
                 when (op) {
-                    MathOp.Add -> assertTrue(p.plus)
-                    MathOp.Sub -> assertTrue(!p.plus)
-                    MathOp.Mixed -> Unit
+                    MathOp.Add -> assertEquals(listOf(MathOperator.Plus), p.ops)
+                    MathOp.Sub -> assertEquals(listOf(MathOperator.Minus), p.ops)
+                    MathOp.Mixed -> assertEquals(1, addSub.size)
+                    MathOp.MulDivAddSub -> {
+                        assertTrue(p.toString(), addSub.size == 1 && mulDiv.size == 1)
+                        val i = p.ops.indexOf(mulDiv[0])
+                        val (x, y) = p.numbers[i] to p.numbers[i + 1]
+                        if (mulDiv[0] == MathOperator.Times) assertTrue(p.toString(), x in 2..9 && y in 2..9)
+                        else assertTrue(p.toString(), x % y == 0 && y in 2..9 && x / y in 2..9)
+                    }
                 }
                 when (carry) {
                     CarryMode.With -> assertTrue(p.toString(), hasCarry(p))
@@ -38,8 +47,22 @@ class MathDrillTest {
     }
 
     @Test
+    fun mulDivGoesBeforeAddSub() {
+        val times = MathProblem(listOf(7, 8, 19), listOf(MathOperator.Times, MathOperator.Minus))
+        assertEquals(37, times.answer)
+        assertTrue("56 − 19 个位退位", hasCarry(times))
+        val divide = MathProblem(listOf(30, 56, 7), listOf(MathOperator.Plus, MathOperator.Divide))
+        assertEquals(38, divide.answer)
+        assertTrue("30 + 8 个位不进位", !hasCarry(divide))
+        assertEquals("30 + 56 ÷ 7", divide.text)
+        assertEquals(listOf("30", "add", "56", "div", "7"), divide.clipFiles)
+        assertEquals(listOf("thirty", "plus", "fifty-six", "divided by", "seven"), divide.englishClips)
+        assertEquals(listOf("七", "乘", "八", "减", "十九"), times.chineseClips)
+    }
+
+    @Test
     fun everyClipHasBundledAudio() {
-        val names = (0..100).map { "$it" } + "add" + "sub"
+        val names = (0..100).map { "$it" } + MathOperator.values().map { it.clip }
         val missing = listOf("zh-CN", "en-US", "en-GB").flatMap { lang -> names.map { "math/$lang/$it.mp3" } }
             .filterNot { File("src/main/assets/$it").exists() }
         assertTrue("缺口算录音，运行 scripts/gen_math_audio.py：$missing", missing.isEmpty())

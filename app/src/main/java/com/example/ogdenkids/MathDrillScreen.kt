@@ -231,7 +231,7 @@ fun MathDrillScreen(
         return
     }
 
-    Scaffold(containerColor = Paper, topBar = { DrillTopBar("🧮 口算小游戏", "100 以内加减法 · 每局 $MathDrillSize 题", onBack) }) { padding ->
+    Scaffold(containerColor = Paper, topBar = { DrillTopBar("🧮 口算小游戏", "100 以内加减 · 乘除加减混合 · 每局 $MathDrillSize 题", onBack) }) { padding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -472,7 +472,8 @@ private fun MathDrillRound(
                     if (showText) "${problem.text} =" else "? ? =",
                     fontFamily = FontFamily.Serif,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 44.sp
+                    // 三个数的算式 44sp 在手机上放不下
+                    fontSize = if (problem.numbers.size > 2) 32.sp else 44.sp
                 )
                 Spacer(Modifier.width(12.dp))
                 AnswerBox(

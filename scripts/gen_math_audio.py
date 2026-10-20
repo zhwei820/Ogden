@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""生成口算小游戏读题用的离线录音到 app/src/main/assets/math/<lang>/{0..100,add,sub}.mp3。
+"""生成口算小游戏读题用的离线录音到 app/src/main/assets/math/<lang>/{0..100,add,sub,mul,div}.mp3。
 
 与 App 其他朗读（tts/，统一 -6% 语速）分开：读题要快、段间不能有空档，所以语速调快并裁掉首尾静音。
 数字读法须与 MathDrill.kt 的 chineseNumber / numberWord 一致。
@@ -42,7 +42,8 @@ def en(n):
 
 def texts(lang):
     words = zh if lang == "zh-CN" else en
-    ops = {"add": "加", "sub": "减"} if lang == "zh-CN" else {"add": "plus", "sub": "minus"}
+    ops = ({"add": "加", "sub": "减", "mul": "乘", "div": "除以"} if lang == "zh-CN"
+           else {"add": "plus", "sub": "minus", "mul": "times", "div": "divided by"})
     return {str(n): words(n) for n in range(101)} | ops
 
 
