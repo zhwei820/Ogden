@@ -136,18 +136,12 @@ private fun randomAddSub(plus: Boolean, random: Random): MathProblem = if (plus)
     MathProblem(a, random.nextInt(1, a), false)
 }
 
-/** 表内乘除（因数、除数、商都在 2..9）得 m，再与 c 加减；乘除那段在前在后随机。 */
+/** 表内乘除（因数、除数、商都在 2..9）得 m，再与 c 加减；乘除总写在前面。 */
 private fun randomMulDivAddSub(plus: Boolean, random: Random): MathProblem {
     val x = random.nextInt(2, 10)
     val y = random.nextInt(2, 10)
     val (pair, mulOp) = if (random.nextBoolean()) listOf(x, y) to MathOperator.Times else listOf(x * y, y) to MathOperator.Divide
     val m = mulOp.apply(pair[0], pair[1])
-    val addOp = if (plus) MathOperator.Plus else MathOperator.Minus
-    val mFirst = random.nextBoolean()
-    val c = when {
-        plus -> random.nextInt(1, 101 - m)
-        mFirst -> random.nextInt(1, m)
-        else -> random.nextInt(m, 100)
-    }
-    return if (mFirst) MathProblem(pair + c, listOf(mulOp, addOp)) else MathProblem(listOf(c) + pair, listOf(addOp, mulOp))
+    val c = if (plus) random.nextInt(1, 101 - m) else random.nextInt(1, m)
+    return MathProblem(pair + c, listOf(mulOp, if (plus) MathOperator.Plus else MathOperator.Minus))
 }

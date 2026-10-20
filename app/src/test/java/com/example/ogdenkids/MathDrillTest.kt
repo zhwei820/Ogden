@@ -23,9 +23,8 @@ class MathDrillTest {
                     MathOp.Sub -> assertEquals(listOf(MathOperator.Minus), p.ops)
                     MathOp.Mixed -> assertEquals(1, addSub.size)
                     MathOp.MulDivAddSub -> {
-                        assertTrue(p.toString(), addSub.size == 1 && mulDiv.size == 1)
-                        val i = p.ops.indexOf(mulDiv[0])
-                        val (x, y) = p.numbers[i] to p.numbers[i + 1]
+                        assertTrue(p.toString(), addSub.size == 1 && mulDiv.size == 1 && p.ops[0] == mulDiv[0])
+                        val (x, y) = p.numbers[0] to p.numbers[1]
                         if (mulDiv[0] == MathOperator.Times) assertTrue(p.toString(), x in 2..9 && y in 2..9)
                         else assertTrue(p.toString(), x % y == 0 && y in 2..9 && x / y in 2..9)
                     }

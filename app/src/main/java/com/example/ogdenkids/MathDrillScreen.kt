@@ -552,8 +552,6 @@ private fun NumberPad(enabled: Boolean, onDigit: (Char) -> Unit, onDelete: () ->
             }
         }
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            PadKey(Modifier.weight(1f), enabled, onDelete) { Icon(Icons.Default.Backspace, contentDescription = "删除") }
-            PadKey(Modifier.weight(1f), enabled, { onDigit('0') }) { Text("0", fontSize = 26.sp) }
             Button(
                 onClick = onSubmit,
                 enabled = enabled,
@@ -562,6 +560,8 @@ private fun NumberPad(enabled: Boolean, onDigit: (Char) -> Unit, onDelete: () ->
                     .height(60.dp),
                 shape = RoundedCornerShape(14.dp)
             ) { Text("确定", fontSize = 20.sp, fontWeight = FontWeight.Bold) }
+            PadKey(Modifier.weight(1f), enabled, { onDigit('0') }) { Text("0", fontSize = 26.sp) }
+            PadKey(Modifier.weight(1f), enabled, onDelete) { Icon(Icons.Default.Backspace, contentDescription = "删除") }
         }
     }
 }
