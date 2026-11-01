@@ -106,4 +106,24 @@ class ChessTest {
         assertTrue(stuckPieceHint(start, parseSq("a1"))!!.contains("挡住"))
         assertEquals(null, stuckPieceHint(start, parseSq("g1")))
     }
+
+    @Test
+    fun checkmateIsExplained() {
+        // 底线杀：黑车 a1 将军，白王 g1 被自己的兵 f2/g2/h2 堵住
+        val backRank = ChessPosition.fromFen("6k1/8/8/8/8/8/5PPP/r5K1 w - - 0 1")
+        val e = explainMate(backRank, matedIsPlayer = true)!!
+        assertEquals(setOf(parseSq("a1")), e.checkers)
+        assertTrue(e.lines.joinToString(), e.lines.any { it.contains("a1 的车") && it.contains("你的王") })
+        assertTrue(e.lines.any { it.contains("f2、g2、h2") && it.contains("自己的棋子") })
+        assertTrue(e.lines.any { it.contains("f1、h1") && it.contains("a1 的车") })
+        assertEquals(setOf(parseSq("f1"), parseSq("h1")), e.deniedSquares)
+
+        // 学者杀：f7 的后贴身将军，由 c4 的象保护
+        val scholar = ChessPosition.fromFen("r1bqkb1r/pppp1Qpp/2n2n2/4p3/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 4")
+        val s = explainMate(scholar, matedIsPlayer = false)!!
+        assertTrue(s.lines.any { it.contains("贴身将军") })
+        assertTrue(s.lines.any { it.contains("你的 f7 的后") })
+
+        assertEquals(null, explainMate(ChessPosition.fromFen(ChessPosition.START_FEN), true))
+    }
 }
