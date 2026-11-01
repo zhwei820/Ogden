@@ -4,20 +4,26 @@ import android.media.MediaPlayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -26,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -49,19 +56,27 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import kotlin.math.abs
+import kotlin.math.roundToInt
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import kotlin.math.abs
 
 private val LightSquare = Color(0xFFF0D9B5)
 private val DarkSquare = Color(0xFFB58863)
@@ -98,6 +113,7 @@ fun ChessHomeScreen(
             ChessRowCard(
                 leading = { PieceGlyph(lesson.glyph, 36.dp) },
                 title = lesson.title,
+                titleEn = lesson.en,
                 subtitle = "${lesson.levels.size} 关",
                 trailing = "⭐ $got/${lesson.levels.size * 3}",
                 onClick = { onLesson(i) }
@@ -143,8 +159,29 @@ private fun ChessSectionTitle(title: String, subtitle: String) {
     }
 }
 
+/** 可点击的英文单词，点开词典详情页（同生肖页的星座英文） */
 @Composable
-private fun ChessRowCard(leading: @Composable () -> Unit, title: String, subtitle: String, trailing: String, onClick: () -> Unit) {
+private fun DictionaryWord(word: String, fontSize: androidx.compose.ui.unit.TextUnit = 16.sp) {
+    val services = LocalSpeechServices.current
+    Text(
+        word,
+        color = Category.Operations.tint,
+        fontSize = fontSize,
+        fontWeight = FontWeight.SemiBold,
+        textDecoration = TextDecoration.Underline,
+        modifier = Modifier.clickable { services.lookup(word)?.let(services.openWord) }
+    )
+}
+
+@Composable
+private fun ChessRowCard(
+    leading: @Composable () -> Unit,
+    title: String,
+    subtitle: String,
+    trailing: String,
+    onClick: () -> Unit,
+    titleEn: String? = null
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
         shape = RoundedCornerShape(14.dp),
@@ -155,7 +192,10 @@ private fun ChessRowCard(leading: @Composable () -> Unit, title: String, subtitl
             Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) { leading() }
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
-                AppText(title, fontWeight = FontWeight.SemiBold, color = Ink)
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AppText(title, fontWeight = FontWeight.SemiBold, color = Ink)
+                    titleEn?.let { DictionaryWord(it) }
+                }
                 AppText(subtitle, color = InkFaint, fontSize = 13.sp)
             }
             AppText(trailing, color = InkSoft, fontSize = 14.sp)
@@ -299,6 +339,26 @@ private class TapMover(val onMove: (ChessMove) -> Unit) {
     }
 }
 
+/** 进入棋盘页面时循环播放数学挑战的背景音乐；切到后台暂停 */
+@Composable
+private fun ChessBackgroundMusic() {
+    val context = LocalContext.current
+    val bgm = remember { BackgroundMusic(context) }
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    DisposableEffect(bgm, lifecycle) {
+        bgm.start()
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_STOP) bgm.pause()
+            if (event == Lifecycle.Event.ON_START) bgm.resume()
+        }
+        lifecycle.addObserver(observer)
+        onDispose {
+            lifecycle.removeObserver(observer)
+            bgm.stop()
+        }
+    }
+}
+
 @Composable
 private fun CheerSound() {
     val context = LocalContext.current
@@ -314,19 +374,69 @@ private fun CheerSound() {
     }
 }
 
+/**
+ * 棋盘占满可用区域（取宽高较小者做正方形）；说明和按钮放在可拖动、可收起的浮窗里。
+ * [expandKey] 变化时（换关、答对 / 答错等）自动展开浮窗。
+ */
 @Composable
-private fun ScreenColumn(content: @Composable () -> Unit) {
-    Column(
-        Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) { content() }
+private fun ChessLayout(
+    expandKey: Any?,
+    board: @Composable (Modifier) -> Unit,
+    info: @Composable ColumnScope.() -> Unit
+) {
+    var expanded by rememberSaveable { mutableStateOf(true) }
+    var offset by remember { mutableStateOf(Offset.Zero) }
+    LaunchedEffect(expandKey) { expanded = true }
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        val landscape = maxWidth > maxHeight
+        val panelMaxHeight = maxHeight * 0.6f
+        board(Modifier.align(Alignment.Center).size(minOf(maxWidth, maxHeight)))
+        val panelAlign = if (landscape) Alignment.CenterEnd else Alignment.BottomCenter
+        val drag = Modifier.pointerInput(Unit) {
+            detectDragGestures { change, amount ->
+                change.consume()
+                offset += amount
+            }
+        }
+        Box(
+            Modifier.align(panelAlign).padding(12.dp)
+                .offset { IntOffset(offset.x.roundToInt(), offset.y.roundToInt()) }
+        ) {
+            if (expanded) {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PaperElevated.copy(alpha = 0.95f)),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = CardDefaults.cardElevation(6.dp),
+                    modifier = Modifier.widthIn(max = 360.dp).heightIn(max = panelMaxHeight)
+                ) {
+                    Row(drag.fillMaxWidth().padding(start = 14.dp), verticalAlignment = Alignment.CenterVertically) {
+                        AppText("💡 提示", fontWeight = FontWeight.SemiBold, color = InkSoft, modifier = Modifier.weight(1f))
+                        IconButton(onClick = { expanded = false }) { Icon(Icons.Default.ExpandMore, contentDescription = "收起") }
+                    }
+                    Column(
+                        Modifier.verticalScroll(rememberScrollState()).padding(start = 14.dp, end = 14.dp, bottom = 14.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        content = info
+                    )
+                }
+            } else {
+                Box(
+                    drag.background(PaperElevated.copy(alpha = 0.95f), RoundedCornerShape(50))
+                        .border(1.dp, Line, RoundedCornerShape(50))
+                        .clickable { expanded = true }
+                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                ) { AppText("💡 展开提示", color = InkSoft, fontWeight = FontWeight.SemiBold) }
+            }
+        }
+    }
 }
 
 // ---------- 认识棋子 ----------
 
 @Composable
 fun ChessLessonScreen(lessonIndex: Int, store: ChessStore, onLesson: (Int) -> Unit, onBack: () -> Unit) {
+    ChessBackgroundMusic()
     val lesson = ChessLessons[lessonIndex]
     var level by rememberSaveable { mutableStateOf(0) }
     var attempt by remember { mutableStateOf(0) }
@@ -369,13 +479,10 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
     }
     val earned = if (done) starsFor(moves, level.par) else 0
     LaunchedEffect(done) { if (done) store.saveLessonStars(lesson.key, levelIndex, earned) }
-    ScreenColumn {
-        AppText(lesson.intro, color = InkSoft)
-        AppText(
-            if (level.stars.isNotEmpty()) "收集所有星星 ⭐" else "吃掉所有黑子",
-            fontWeight = FontWeight.SemiBold
-        )
+    if (done) CheerSound()
+    ChessLayout(expandKey = done, board = { m ->
         ChessBoardView(
+            modifier = m,
             pos = pos,
             flipped = false,
             selected = mover.selected,
@@ -384,9 +491,19 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
             stars = stars,
             onTap = { if (!done) mover.tap(pos, it, movable = true, autoQueen = true) }
         )
+    }) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            PieceGlyph(lesson.glyph, 32.dp)
+            AppText(lesson.title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            DictionaryWord(lesson.en, 18.sp)
+        }
+        AppText(lesson.intro, color = InkSoft)
+        AppText(
+            if (level.stars.isNotEmpty()) "收集所有星星 ⭐" else "吃掉所有黑子",
+            fontWeight = FontWeight.SemiBold
+        )
         AppText("已走 $moves 步 · 最少 ${level.par} 步", color = InkFaint)
         if (done) {
-            CheerSound()
             AppText("⭐".repeat(earned) + "☆".repeat(3 - earned), fontSize = 32.sp)
             AppText(if (earned == 3) "太棒了，用了最少的步数！" else "完成！试试用更少的步数？", fontWeight = FontWeight.SemiBold)
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -403,6 +520,7 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
 
 @Composable
 fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit) {
+    ChessBackgroundMusic()
     val context = LocalContext.current
     val chapter = PuzzleChapters.first { it.key == chapterKey }
     val puzzles by produceState<List<ChessPuzzle>?>(null, chapterKey) {
@@ -471,7 +589,20 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
         }
     }
     val active = state == PuzzleState.Solving || state == PuzzleState.Wrong
-    ScreenColumn {
+    mover.Dialog(playerWhite)
+    if (state == PuzzleState.Solved) CheerSound()
+    ChessLayout(expandKey = state, board = { m ->
+        ChessBoardView(
+            modifier = m,
+            pos = pos,
+            flipped = !playerWhite,
+            selected = mover.selected,
+            targets = if (active) mover.targets(pos) else emptySet(),
+            lastMove = lastMove,
+            hint = hint,
+            onTap = { if (active) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
+        )
+    }) {
         AppText(
             when (state) {
                 PuzzleState.Opponent -> if (step == 0) "对手先走一步…" else "对手应着…"
@@ -487,16 +618,6 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
                 else -> Ink
             }
         )
-        ChessBoardView(
-            pos = pos,
-            flipped = !playerWhite,
-            selected = mover.selected,
-            targets = if (active) mover.targets(pos) else emptySet(),
-            lastMove = lastMove,
-            hint = hint,
-            onTap = { if (active) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
-        )
-        mover.Dialog(playerWhite)
         AppText("难度 ${puzzle.rating}", color = InkFaint, fontSize = 13.sp)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             if (active) {
@@ -512,7 +633,6 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
                 Button(onClick = onNext) { AppText("下一题") }
             }
         }
-        if (state == PuzzleState.Solved) CheerSound()
     }
 }
 
@@ -520,6 +640,7 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
 
 @Composable
 fun ChessPlayScreen(bot: ChessBot, playerWhite: Boolean, store: ChessStore, onBack: () -> Unit) {
+    ChessBackgroundMusic()
     var game by remember { mutableStateOf(0) }
     Column(Modifier.fillMaxSize().background(Paper)) {
         ChessTopBar("${bot.emoji} 对战${bot.title}", "你执${if (playerWhite) "白" else "黑"} · ${bot.desc}", onBack)
@@ -559,7 +680,19 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
     val playerWon = outcome == if (playerWhite) ChessOutcome.WhiteMates else ChessOutcome.BlackMates
     LaunchedEffect(outcome) { if (playerWon) store.recordBotWin(bot) }
 
-    ScreenColumn {
+    mover.Dialog(playerWhite)
+    if (playerWon) CheerSound()
+    ChessLayout(expandKey = outcome, board = { m ->
+        ChessBoardView(
+            modifier = m,
+            pos = pos,
+            flipped = !playerWhite,
+            selected = mover.selected,
+            targets = mover.targets(pos),
+            lastMove = record.moves.lastOrNull(),
+            onTap = { if (outcome == null && !thinking) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
+        )
+    }) {
         AppText(
             when {
                 outcome != null -> outcome.text
@@ -570,15 +703,6 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
             fontWeight = FontWeight.SemiBold,
             color = if (pos.inCheck() && outcome == null) Error else Ink
         )
-        ChessBoardView(
-            pos = pos,
-            flipped = !playerWhite,
-            selected = mover.selected,
-            targets = mover.targets(pos),
-            lastMove = record.moves.lastOrNull(),
-            onTap = { if (outcome == null && !thinking) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
-        )
-        mover.Dialog(playerWhite)
         Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
             OutlinedButton(
                 enabled = !thinking && record.moves.isNotEmpty(),
@@ -603,7 +727,6 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Bold
             )
-            if (playerWon) CheerSound()
         }
     }
 }

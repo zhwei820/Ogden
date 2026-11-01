@@ -42,11 +42,11 @@ class StarLevel(val pieces: String, starSquares: String = "") {
     }
 }
 
-class ChessLesson(val key: String, val title: String, val glyph: Int, val intro: String, val levels: List<StarLevel>)
+class ChessLesson(val key: String, val title: String, val en: String, val glyph: Int, val intro: String, val levels: List<StarLevel>)
 
 val ChessLessons = listOf(
     ChessLesson(
-        "rook", "车", Pc.ROOK, "车走直线：横着、竖着都行，一次想走多远就走多远，但不能跳过别的棋子。",
+        "rook", "车", "rook", Pc.ROOK, "车走直线：横着、竖着都行，一次想走多远就走多远，但不能跳过别的棋子。",
         listOf(
             StarLevel("Ra1", "a6"),
             StarLevel("Ra1", "a6 f6"),
@@ -57,7 +57,7 @@ val ChessLessons = listOf(
         )
     ),
     ChessLesson(
-        "bishop", "象", Pc.BISHOP, "象走斜线，一次可以走很多格。象永远待在同一种颜色的格子上。",
+        "bishop", "象", "bishop", Pc.BISHOP, "象走斜线，一次可以走很多格。象永远待在同一种颜色的格子上。",
         listOf(
             StarLevel("Bc1", "f4"),
             StarLevel("Bc1", "a3 d6"),
@@ -67,7 +67,7 @@ val ChessLessons = listOf(
         )
     ),
     ChessLesson(
-        "queen", "后", Pc.QUEEN, "后是最强的棋子：车的直线 + 象的斜线，八个方向都能走。",
+        "queen", "后", "queen", Pc.QUEEN, "后是最强的棋子：车的直线 + 象的斜线，八个方向都能走。",
         listOf(
             StarLevel("Qd1", "d6 h2"),
             StarLevel("Qd4", "a7 g7 g1 a1"),
@@ -76,7 +76,7 @@ val ChessLessons = listOf(
         )
     ),
     ChessLesson(
-        "knight", "马", Pc.KNIGHT, "马走「日」字：先直走两格再拐一格。马是唯一能跳过别的棋子的。",
+        "knight", "马", "knight", Pc.KNIGHT, "马走「日」字：先直走两格再拐一格。马是唯一能跳过别的棋子的。",
         listOf(
             StarLevel("Nb1", "c3"),
             StarLevel("Nb1", "c3 e4"),
@@ -86,7 +86,7 @@ val ChessLessons = listOf(
         )
     ),
     ChessLesson(
-        "king", "王", Pc.KING, "王每次只能走一格，八个方向都可以。王最重要：被将死就输了！",
+        "king", "王", "king", Pc.KING, "王每次只能走一格，八个方向都可以。王最重要：被将死就输了！",
         listOf(
             StarLevel("Ke1", "e2"),
             StarLevel("Ke1", "d3 f3"),
@@ -94,7 +94,7 @@ val ChessLessons = listOf(
         )
     ),
     ChessLesson(
-        "pawn", "兵", Pc.PAWN, "兵只能向前走一格，第一步可以走两格；吃子要斜着向前吃。兵走到对面底线会变成后！",
+        "pawn", "兵", "pawn", Pc.PAWN, "兵只能向前走一格，第一步可以走两格；吃子要斜着向前吃。兵走到对面底线会变成后！",
         listOf(
             StarLevel("Pe2", "e4"),
             StarLevel("Pe2", "e3 e5"),

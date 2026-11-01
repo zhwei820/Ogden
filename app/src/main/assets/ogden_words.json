@@ -20680,5 +20680,116 @@
         ],
         "ipa_uk": "/ˈzəʊdiæk/",
         "ipa_us": "/ˈzoʊdiæk/"
+    },
+    {
+        "w": "chess",
+        "np": true,
+        "c": "ex",
+        "zh": "国际象棋",
+        "en": "a board game for two players, each with sixteen pieces",
+        "ex": "Let's play chess after dinner.",
+        "exz": "晚饭后我们下国际象棋吧。",
+        "s": [
+            "game",
+            "king",
+            "queen"
+        ],
+        "ipa_uk": "/tʃes/",
+        "ipa_us": "/tʃes/"
+    },
+    {
+        "w": "king",
+        "np": true,
+        "c": "ex",
+        "zh": "国王;（国际象棋）王",
+        "en": "a man who rules a country; the most important chess piece",
+        "ex": "Keep your king safe!",
+        "exz": "保护好你的王！",
+        "ex2": "The king lives in a big castle.",
+        "exz2": "国王住在一座大城堡里。",
+        "s": [
+            "queen",
+            "castle",
+            "chess"
+        ],
+        "ipa_uk": "/kɪŋ/",
+        "ipa_us": "/kɪŋ/"
+    },
+    {
+        "w": "queen",
+        "np": true,
+        "c": "ex",
+        "zh": "女王;王后;（国际象棋）后",
+        "en": "a woman who rules a country; the strongest chess piece",
+        "ex": "The queen can move in any direction.",
+        "exz": "后可以朝任何方向走。",
+        "ex2": "The queen wears a gold crown.",
+        "exz2": "女王戴着金色的王冠。",
+        "s": [
+            "king",
+            "chess"
+        ],
+        "ipa_uk": "/kwiːn/",
+        "ipa_us": "/kwin/"
+    },
+    {
+        "w": "rook",
+        "np": true,
+        "c": "ex",
+        "zh": "（国际象棋）车",
+        "en": "a chess piece that moves in straight lines",
+        "ex": "The rook moves up, down, left and right.",
+        "exz": "车可以上下左右走。",
+        "s": [
+            "castle",
+            "chess"
+        ],
+        "ipa_uk": "/rʊk/",
+        "ipa_us": "/rʊk/"
+    },
+    {
+        "w": "bishop",
+        "np": true,
+        "c": "ex",
+        "zh": "主教;（国际象棋）象",
+        "en": "a leader in the church; a chess piece that moves on the diagonals",
+        "ex": "The bishop always stays on one color.",
+        "exz": "象永远待在同一种颜色的格子上。",
+        "s": [
+            "chess",
+            "queen"
+        ],
+        "ipa_uk": "/ˈbɪʃəp/",
+        "ipa_us": "/ˈbɪʃəp/"
+    },
+    {
+        "w": "knight",
+        "np": true,
+        "c": "ex",
+        "zh": "骑士;（国际象棋）马",
+        "en": "a soldier who rode a horse long ago; a chess piece that jumps",
+        "ex": "The knight can jump over other pieces.",
+        "exz": "马可以跳过别的棋子。",
+        "s": [
+            "horse",
+            "chess"
+        ],
+        "ipa_uk": "/naɪt/",
+        "ipa_us": "/naɪt/"
+    },
+    {
+        "w": "pawn",
+        "np": true,
+        "c": "ex",
+        "zh": "（国际象棋）兵",
+        "en": "the smallest chess piece",
+        "ex": "A pawn can become a queen.",
+        "exz": "兵可以变成后。",
+        "s": [
+            "chess",
+            "king"
+        ],
+        "ipa_uk": "/pɔːn/",
+        "ipa_us": "/pɔn/"
     }
 ]
