@@ -209,6 +209,8 @@ class MainActivity : ComponentActivity() {
 
     private fun takeShortcut(intent: Intent?) {
         intent?.getStringExtra(ShortcutExtra)?.let { PendingShortcut.value = it }
+        intent?.getStringExtra(OpenSpeechExtra)?.let { PendingOpen.value = OpenSpeechExtra to it }
+        intent?.getStringExtra(OpenWordExtra)?.let { PendingOpen.value = OpenWordExtra to it }
     }
 
     /** 桌面长按图标出现的快捷方式；用动态快捷方式，debug / release 包名不同也能用 */
@@ -228,6 +230,9 @@ internal const val ShortcutSongs = "songs"
 
 /** 桌面快捷方式要打开的页面，由 [UserApp] 消费后清空 */
 internal val PendingShortcut = mutableStateOf<String?>(null)
+
+/** 划词卡片里点的课文 / 单词：([OpenSpeechExtra] 或 [OpenWordExtra]) to id，由 [UserApp] 消费后清空 */
+internal val PendingOpen = mutableStateOf<Pair<String, String>?>(null)
 
 internal val Paper = Color(0xFFFAF6ED)
 internal val PaperElevated = Color(0xFFFFFDF7)
@@ -717,7 +722,7 @@ fun OgdenKidsApp() {
 }
 
 @Composable
-private fun AppTheme(content: @Composable () -> Unit) {
+internal fun AppTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = lightColorScheme(
             primary = Category.Operations.tint,
@@ -750,15 +755,7 @@ private fun UserApp(accounts: Accounts) {
     val specialModules = remember { repository.loadSpecialModules() }
     val wordIndex = remember(words) { words.associateBy { it.word.lowercase() } }
     val practiceWords = remember(words) { words.filter { it.practice } }
-    val lemmaVocabulary = remember(words) {
-        fun keysOf(vararg categories: Category) =
-            words.filter { it.category in categories }.map { it.word.lowercase() }.toSet()
-        LemmaVocabulary(
-            words = wordIndex.keys,
-            qualities = keysOf(Category.Qualities, Category.Opposites, Category.Extended, Category.BabyTalk, Category.Informal),
-            things = keysOf(Category.GeneralThings, Category.Picturable, Category.Extended, Category.BabyTalk, Category.Informal)
-        )
-    }
+    val lemmaVocabulary = remember(words) { buildLemmaVocabulary(words) }
     val progressStore = remember { ProgressStore(context, accounts.current.id) }
     // 最多 MaxProfiles 个用户，所以「另一个用户」至多一个
     val peerReadAlongScore: (String) -> PeerScore? = remember(accounts.profiles) {
@@ -789,6 +786,20 @@ private fun UserApp(accounts: Accounts) {
     val speak = rememberSpeaker(accent, azureSpeaker)
     DisposableEffect(azureSpeaker) {
         onDispose { azureSpeaker.release() }
+    }
+    val pendingOpen = PendingOpen.value
+    LaunchedEffect(pendingOpen) {
+        val (kind, id) = pendingOpen ?: return@LaunchedEffect
+        val target = when (kind) {
+            OpenSpeechExtra -> speeches.firstOrNull { it.id == id }?.let { Screen.SpeechReader(it) }
+            else -> wordIndex[id.lowercase()]?.let { Screen.Detail(it) }
+        }
+        if (target != null) {
+            azureSpeaker.stop()
+            selectedSection = Section.English
+            screen = target
+        }
+        PendingOpen.value = null
     }
     val speakEnglish: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.english(accent)) }
     val speakChinese: (String) -> Unit = { azureSpeaker.speak(it, AzureVoice.ZhCn) }
@@ -2211,7 +2222,7 @@ fun WordCollectionScreen(
     }
 }
 
-private val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "数理", TextbookLevel to "教材")
+internal val SpeechLevelNames = mapOf(1 to "一级", 2 to "二级", 3 to "三级", StemLevel to "数理", TextbookLevel to "教材")
 private val SpeechLevelThemes = mapOf(1 to "起步", 2 to "成长", 3 to "表达", StemLevel to "启蒙", TextbookLevel to "同步")
 
 /** 课文列表里的一组：一个生活 / 学科主题（[theme] 非空，带主题练习），或教材的一个单元。 */
