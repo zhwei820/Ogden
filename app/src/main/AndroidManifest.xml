@@ -1,6 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 跟读达标后拉起 Bryce Zane 游戏（targetSdk 30+ 要声明才能看到它） -->
+    <queries>
+        <package android:name="com.brycezane.game" />
+    </queries>
 
     <application
         android:allowBackup="true"
@@ -12,11 +16,19 @@
         android:supportsRtl="true">
         <activity
             android:name=".MainActivity"
+            android:launchMode="singleTask"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboardHidden"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- annalearning://speech/<课文 id>：Bryce Zane 游戏里点地上的课文牌跳过来 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="annalearning" android:host="speech" />
             </intent-filter>
         </activity>
         <!-- 独立 taskAffinity + 不进最近任务：卡片浮在调用方 App 上，关掉即回原处 -->

@@ -209,8 +209,13 @@ class MainActivity : ComponentActivity() {
 
     private fun takeShortcut(intent: Intent?) {
         intent?.getStringExtra(ShortcutExtra)?.let { PendingShortcut.value = it }
-        intent?.getStringExtra(OpenSpeechExtra)?.let { PendingOpen.value = OpenSpeechExtra to it }
-        intent?.getStringExtra(OpenWordExtra)?.let { PendingOpen.value = OpenWordExtra to it }
+        intent?.getStringExtra(OpenSpeechExtra)?.let { PendingOpen.value = OpenRequest(OpenSpeechExtra, it) }
+        intent?.getStringExtra(OpenWordExtra)?.let { PendingOpen.value = OpenRequest(OpenWordExtra, it) }
+        intent?.data?.takeIf { it.scheme == "annalearning" && it.host == "speech" }?.let { uri ->
+            uri.lastPathSegment?.let {
+                PendingOpen.value = OpenRequest(OpenSpeechExtra, it, uri.getQueryParameter("line")?.toIntOrNull(), uri.getQueryParameter("from") == GameFrom)
+            }
+        }
     }
 
     /** 桌面长按图标出现的快捷方式；用动态快捷方式，debug / release 包名不同也能用 */
@@ -231,8 +236,11 @@ internal const val ShortcutSongs = "songs"
 /** 桌面快捷方式要打开的页面，由 [UserApp] 消费后清空 */
 internal val PendingShortcut = mutableStateOf<String?>(null)
 
-/** 划词卡片里点的课文 / 单词：([OpenSpeechExtra] 或 [OpenWordExtra]) to id，由 [UserApp] 消费后清空 */
-internal val PendingOpen = mutableStateOf<Pair<String, String>?>(null)
+/** 从外部要打开的课文 / 单词；[line] 是课文 lines 的下标（定位到那一句） */
+internal data class OpenRequest(val kind: String, val id: String, val line: Int? = null, val fromGame: Boolean = false)
+
+/** 划词卡片或 annalearning:// 链接要打开的页面，由 [UserApp] 消费后清空 */
+internal val PendingOpen = mutableStateOf<OpenRequest?>(null)
 
 internal val Paper = Color(0xFFFAF6ED)
 internal val PaperElevated = Color(0xFFFFFDF7)
@@ -348,7 +356,8 @@ sealed class Screen {
     data class Levels(val category: Category) : Screen()
     data class Practice(val category: Category, val level: Int, val reviewOnly: Boolean = false, val returnTo: Screen = Main) : Screen()
     data class WordCollection(val title: String, val kind: String) : Screen()
-    data class SpeechReader(val speech: Speech) : Screen()
+    /** [fromLink]：从别的 App（游戏 / 划词卡片）跳进来的，返回时直接退出，回到那个 App */
+    data class SpeechReader(val speech: Speech, val focus: SpeechFocus? = null, val fromLink: Boolean = false) : Screen()
     data class ThemePractice(val level: Int, val theme: SpeechTheme) : Screen()
     data class WordPractice(val title: String, val words: List<String>, val returnTo: Screen) : Screen()
     data class SpecialPractice(val topic: SpecialTopic, val level: Int) : Screen()
@@ -789,10 +798,12 @@ private fun UserApp(accounts: Accounts) {
     }
     val pendingOpen = PendingOpen.value
     LaunchedEffect(pendingOpen) {
-        val (kind, id) = pendingOpen ?: return@LaunchedEffect
-        val target = when (kind) {
-            OpenSpeechExtra -> speeches.firstOrNull { it.id == id }?.let { Screen.SpeechReader(it) }
-            else -> wordIndex[id.lowercase()]?.let { Screen.Detail(it) }
+        val request = pendingOpen ?: return@LaunchedEffect
+        val target = when (request.kind) {
+            OpenSpeechExtra -> speeches.firstOrNull { it.id == request.id }?.let { speech ->
+                Screen.SpeechReader(speech, request.line?.takeIf { it in speech.lines.indices }?.let { SpeechFocus(it, challenge = request.fromGame) }, fromLink = true)
+            }
+            else -> wordIndex[request.id.lowercase()]?.let { Screen.Detail(it) }
         }
         if (target != null) {
             azureSpeaker.stop()
@@ -844,6 +855,11 @@ private fun UserApp(accounts: Accounts) {
                 screen = Screen.SpecialModulePage(current.key)
             }
             Screen.ResourcePacks -> screen = Screen.Settings
+            is Screen.SpeechReader -> {
+                azureSpeaker.stop()
+                screen = Screen.Main
+                if (current.fromLink) (context as? Activity)?.finish()
+            }
             is Screen.MusicGamePage -> screen = current.returnTo
             is Screen.MusicSongPage, is Screen.MusicSongImport -> screen = Screen.MusicSongList
             is Screen.ProfileEdit -> screen = current.returnTo
@@ -1124,6 +1140,7 @@ private fun UserApp(accounts: Accounts) {
                 )
                 is Screen.SpeechReader -> SpeechReaderScreen(
                     speech = current.speech,
+                    focus = current.focus,
                     wordIndex = wordIndex,
                     lemmaVocabulary = lemmaVocabulary,
                     store = progressStore,
@@ -1137,7 +1154,14 @@ private fun UserApp(accounts: Accounts) {
                     onStopSpeaking = { azureSpeaker.stop() },
                     onOpenWord = {
                         azureSpeaker.stop()
-                        screen = Screen.Detail(it, returnTo = current)
+                        screen = Screen.Detail(it, returnTo = current.copy(focus = null))
+                    },
+                    onChallengePassed = { sentenceId, score ->
+                        azureSpeaker.stop()
+                        if (returnToGame(context, sentenceId, score)) {
+                            screen = Screen.Main
+                            (context as? Activity)?.finish()
+                        }
                     },
                     onPracticeWords = { list ->
                         azureSpeaker.stop()
@@ -1145,7 +1169,7 @@ private fun UserApp(accounts: Accounts) {
                             "${current.speech.title} · 单词练习",
                             // 没掌握的词排前面，多练几轮就能把本课单词练全
                             list.shuffled().sortedBy { w -> wordIndex[w.lowercase()]?.let { progressStore.progress(it.word).mastered } ?: true }.take(10),
-                            current
+                            current.copy(focus = null)
                         )
                     }
                 )
@@ -1265,6 +1289,30 @@ fun rememberSpeaker(accent: Accent, azure: AzureSpeaker): (String) -> Unit {
             }
         }
     }
+}
+
+/**
+ * 定位到课文第 [line] 句；[nonce] 让同一课同一句再次跳来时也会重新滚动。
+ * [challenge]：游戏跳来的跟读挑战，进来就弹跟读，达到 [GamePassScore] 分后带着成绩跳回游戏。
+ */
+data class SpeechFocus(val line: Int, val challenge: Boolean = false, val nonce: Long = System.nanoTime())
+
+/** annalearning://speech/<id>?line=<n>&from=brycezane */
+internal const val GameFrom = "brycezane"
+internal const val GamePackage = "com.brycezane.game"
+const val GamePassScore = 90
+
+/**
+ * 把跟读成绩带回游戏：extras ogden_sentence（游戏里的句子 id「<课文 id>_<lines 下标>」）、ogden_score。
+ * 游戏回到前台时读这两个 extra 发奖励（bryce-zane 的 OgdenLink.take_reward）。没装游戏返回 false。
+ */
+fun returnToGame(context: Context, sentenceId: String, score: Int): Boolean {
+    val launch = context.packageManager.getLaunchIntentForPackage(GamePackage) ?: return false
+    context.startActivity(
+        launch.putExtra("ogden_sentence", sentenceId).putExtra("ogden_score", score)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    )
+    return true
 }
 
 /** 页面的状态保存键：同一个词 / 课文 / 分类复用同一份滚动位置。 */
@@ -2479,6 +2527,7 @@ private fun lessonWordKey(token: SpeechToken, word: OgdenWord?) = word?.word?.lo
 @Composable
 fun SpeechReaderScreen(
     speech: Speech,
+    focus: SpeechFocus? = null,
     wordIndex: Map<String, OgdenWord>,
     lemmaVocabulary: LemmaVocabulary,
     store: ProgressStore,
@@ -2491,7 +2540,9 @@ fun SpeechReaderScreen(
     onSpeakChinese: (text: String, onDone: (() -> Unit)?) -> Unit,
     onStopSpeaking: () -> Unit,
     onOpenWord: (OgdenWord) -> Unit,
-    onPracticeWords: (List<String>) -> Unit
+    onPracticeWords: (List<String>) -> Unit,
+    /** 游戏跟读挑战达标：(游戏句子 id, 分数) */
+    onChallengePassed: (String, Int) -> Unit = { _, _ -> }
 ) {
     var selected by remember(speech.id) { mutableStateOf<SelectedSpeechWord?>(null) }
     // 正在朗读的句子（下标同 SelectedSpeechWord.line）；playingAll 为 true 时读完一句自动接下一句
@@ -2567,6 +2618,16 @@ fun SpeechReaderScreen(
         repeatLoop(index)
     }
 
+    // 从外部定位过来的那一句：滚到它并描金边，直到开始朗读别的句子
+    var focusedIndex by remember(focus) { mutableStateOf(focus?.line) }
+    LaunchedEffect(focus) {
+        // 滚到前一项（第 0 句时是课文标题），让这句不贴着顶栏
+        focus?.let { listState.scrollToItem(it.line) }
+    }
+    LaunchedEffect(speakingIndex) {
+        if (speakingIndex != null && speakingIndex != focusedIndex) focusedIndex = null
+    }
+
     LaunchedEffect(speakingIndex, playingAll) {
         // 列表第 0 项是课文标题，句子从第 1 项开始
         val index = speakingIndex
@@ -2585,6 +2646,7 @@ fun SpeechReaderScreen(
             selectedRange = selected?.takeIf { it.line == index }?.token?.range,
             showTranslation = showTranslation,
             speaking = speakingIndex == index,
+            focused = focusedIndex == index,
             onSpeakEnglish = { speakOne(index, chinese = false) },
             onSpeakChinese = { speakOne(index, chinese = true) },
             onTokenClick = { selected = SelectedSpeechWord(index, it) },
@@ -2736,8 +2798,30 @@ fun SpeechReaderScreen(
         }
     }
 
+    val challengeLine = focus?.takeIf { it.challenge }?.line
+    LaunchedEffect(focus) {
+        if (challengeLine != null) readAlong = speech.lines[challengeLine]
+    }
+    // 挑战句达标：留一会儿让孩子看到分数，再跳回游戏
+    var passedScore by remember(focus) { mutableStateOf<Int?>(null) }
+    LaunchedEffect(passedScore) {
+        val score = passedScore ?: return@LaunchedEffect
+        delay(1800)
+        onChallengePassed("${speech.id}_$challengeLine", score)
+    }
+
     readAlong?.let { line ->
-        ReadAlongSheet(line, onScored = { store.saveReadAlongScore(line.en, it); readAlongVersion++ }) { readAlong = null }
+        ReadAlongSheet(
+            line,
+            banner = if (challengeLine != null && line == speech.lines[challengeLine]) {
+                if (passedScore != null) "达标！野外存档 +1，正在返回游戏…" else "读到 $GamePassScore 分以上，回游戏领 1 次野外存档"
+            } else null,
+            onScored = {
+                store.saveReadAlongScore(line.en, it)
+                readAlongVersion++
+                if (challengeLine != null && line == speech.lines[challengeLine] && it >= GamePassScore) passedScore = it
+            }
+        ) { readAlong = null }
     }
 
     // 弹窗一出来就朗读标题上的词：词表词用离线录音，缩写和词表外的词读原文
@@ -3190,7 +3274,7 @@ private sealed class ReadAlongState {
 /** 跟读评分：录一遍、交给 Azure 发音评估，按词标颜色并给出总分。 */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: () -> Unit) {
+fun ReadAlongSheet(line: SpeechLine, banner: String? = null, onScored: (Int) -> Unit = {}, onDismiss: () -> Unit) {
     val services = LocalSpeechServices.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -3256,6 +3340,7 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AppText("跟读评分", color = InkFaint, fontSize = 13.sp, modifier = Modifier.fillMaxWidth())
+            banner?.let { AppText(it, color = Category.Picturable.tint, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth()) }
             val result = (shown as? ReadAlongState.Done)?.result
             // 句子：评分后按词上色
             val tokens = remember(line.en) { tokenizeSpeech(line.en) }
@@ -3390,6 +3475,8 @@ fun SpeechLineRow(
     onSpeakEnglish: () -> Unit,
     onSpeakChinese: () -> Unit,
     onTokenClick: (SpeechToken) -> Unit,
+    /** 从外部链接定位到的句子：金色粗边框 */
+    focused: Boolean = false,
     repeating: Boolean = false,
     /** 长按右侧喇叭：反复朗读这一句 */
     onRepeat: (() -> Unit)? = null,
@@ -3425,8 +3512,16 @@ fun SpeechLineRow(
         shape = RoundedCornerShape(14.dp),
         modifier = Modifier
             .border(
-                if (speaking) 2.dp else 1.dp,
-                if (speaking) accent.tint else Line,
+                when {
+                    focused -> 3.dp
+                    speaking -> 2.dp
+                    else -> 1.dp
+                },
+                when {
+                    speaking -> accent.tint
+                    focused -> Category.Picturable.tint
+                    else -> Line
+                },
                 RoundedCornerShape(14.dp)
             )
             .combinedClickable(
