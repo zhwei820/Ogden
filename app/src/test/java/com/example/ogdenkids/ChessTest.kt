@@ -67,4 +67,43 @@ class ChessTest {
             }
         }
     }
+
+    @Test
+    fun specialMovesAreExplained() {
+        val castle = ChessPosition.fromFen("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1")
+        assertTrue(specialSelectHint(castle, parseSq("e1"))!!.contains("王车易位"))
+        assertTrue(specialMoveNote(castle, ChessMove.parse("e1g1"), true)!!.contains("王车易位"))
+        assertEquals(null, specialMoveNote(castle, ChessMove.parse("e1f1"), true))
+
+        val ep = ChessPosition.fromFen("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1")
+        assertTrue(specialSelectHint(ep, parseSq("e5"))!!.contains("过路兵"))
+        assertTrue(specialMoveNote(ep, ChessMove.parse("e5d6"), false)!!.contains("对方吃过路兵"))
+        assertEquals(null, specialMoveNote(ep, ChessMove.parse("e5e6"), true))
+
+        val promo = ChessPosition.fromFen("4k3/1P6/8/8/8/8/8/4K3 w - - 0 1")
+        assertTrue(specialSelectHint(promo, parseSq("b7"))!!.contains("升变"))
+        assertTrue(specialMoveNote(promo, ChessMove.parse("b7b8n"), true)!!.contains("变成了马"))
+    }
+
+    @Test
+    fun illegalMovesAreExplained() {
+        // 白王 e1 不能走 d2/e2/f2：黑车 a2 控制第二横线
+        val king = ChessPosition.fromFen("4k3/8/8/8/8/8/r7/4K3 w - - 0 1")
+        val kingHint = illegalMoveHint(king, parseSq("e1"), parseSq("e2"))
+        assertTrue(kingHint, kingHint.contains("王不能走到 e2") && kingHint.contains("a2 的车"))
+
+        // 白象 d2 被 b4 的黑象牵制在 e1 王前
+        val pin = ChessPosition.fromFen("4k3/8/8/8/1b6/8/3B4/4K3 w - - 0 1")
+        assertTrue(illegalMoveHint(pin, parseSq("d2"), parseSq("e3")).contains("牵制"))
+
+        // 被将军时走无关的子
+        val check = ChessPosition.fromFen("4k3/8/8/8/8/8/P7/r3K3 w - - 0 1")
+        assertTrue(illegalMoveHint(check, parseSq("a2"), parseSq("a3")).contains("正被将军"))
+
+        val start = ChessPosition.fromFen(ChessPosition.START_FEN)
+        assertTrue(illegalMoveHint(start, parseSq("g1"), parseSq("g3")).contains("日"))
+        assertTrue(illegalMoveHint(start, parseSq("a1"), parseSq("a4")).contains("挡住"))
+        assertTrue(stuckPieceHint(start, parseSq("a1"))!!.contains("挡住"))
+        assertEquals(null, stuckPieceHint(start, parseSq("g1")))
+    }
 }

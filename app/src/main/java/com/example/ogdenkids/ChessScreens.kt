@@ -84,6 +84,7 @@ private val LastMoveTint = Color(0x66F6E05E)
 private val SelectedTint = Color(0x8862B35B)
 private val HintTint = Color(0x883B82F6)
 private val TargetDot = Color(0x55000000)
+private val SpecialRing = Color(0xFFF59E0B)
 
 // ---------- 首页 ----------
 
@@ -247,6 +248,7 @@ fun ChessBoardView(
     onTap: (Int) -> Unit,
     stars: Set<Int> = emptySet(),
     hint: Int? = null,
+    special: Set<Int> = emptySet(),
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(modifier.fillMaxWidth().aspectRatio(1f).border(2.dp, DarkSquare)) {
@@ -268,6 +270,7 @@ fun ChessBoardView(
                     ) {
                         if (sq in stars) AppText("⭐", fontSize = with(LocalDensity.current) { (cell * 0.55f).toSp() })
                         if (pos[sq] != 0) PieceGlyph(pos[sq], cell)
+                        if (sq in special) Box(Modifier.size(cell * 0.86f).border(4.dp, SpecialRing, CircleShape))
                         if (sq in targets) {
                             if (pos[sq] != 0) {
                                 Box(Modifier.size(cell).border(3.dp, TargetDot, CircleShape))
@@ -311,6 +314,24 @@ private fun PromotionDialog(white: Boolean, onPick: (Int) -> Unit, onDismiss: ()
 private class TapMover(val onMove: (ChessMove) -> Unit) {
     var selected by mutableStateOf<Int?>(null)
     var pendingPromotion by mutableStateOf<Pair<Int, Int>?>(null)
+    /** 特殊走法的提示浮条 */
+    var note by mutableStateOf<String?>(null)
+    private var promotionPos: ChessPosition? = null
+
+    /** 记一步棋（包括对手 / AI 的），是特殊走法就弹讲解 */
+    fun announce(pos: ChessPosition, m: ChessMove, byPlayer: Boolean) {
+        specialMoveNote(pos, m, byPlayer)?.let { note = it }
+    }
+
+    private fun move(pos: ChessPosition, m: ChessMove) {
+        announce(pos, m, byPlayer = true)
+        onMove(m)
+    }
+
+    fun specialTargets(pos: ChessPosition): Set<Int> {
+        val s = selected ?: return emptySet()
+        return pos.legalMoves().filter { it.from == s && isSpecialMove(pos, it) }.map { it.to }.toSet()
+    }
 
     fun targets(pos: ChessPosition): Set<Int> {
         val s = selected ?: return emptySet()
@@ -323,19 +344,32 @@ private class TapMover(val onMove: (ChessMove) -> Unit) {
         if (s != null && sq in targets(pos)) {
             selected = null
             if (isPromotionMove(pos, s, sq)) {
-                if (autoQueen) onMove(ChessMove(s, sq, Pc.QUEEN)) else pendingPromotion = s to sq
+                if (autoQueen) move(pos, ChessMove(s, sq, Pc.QUEEN)) else {
+                    promotionPos = pos
+                    pendingPromotion = s to sq
+                }
             } else {
-                onMove(ChessMove(s, sq))
+                move(pos, ChessMove(s, sq))
             }
+        } else if (movable && mine && s != sq) {
+            selected = sq
+            (stuckPieceHint(pos, sq) ?: specialSelectHint(pos, sq))?.let { note = it }
+        } else if (movable && s != null && s != sq) {
+            // 保留选中，孩子看完提示可以直接换个格子
+            note = illegalMoveHint(pos, s, sq)
         } else {
-            selected = if (movable && mine && s != sq) sq else null
+            selected = null
         }
     }
 
     @Composable
     fun Dialog(white: Boolean) {
         val p = pendingPromotion ?: return
-        PromotionDialog(white, onPick = { pendingPromotion = null; onMove(ChessMove(p.first, p.second, it)) }, onDismiss = { pendingPromotion = null })
+        PromotionDialog(white, onPick = {
+            pendingPromotion = null
+            val m = ChessMove(p.first, p.second, it)
+            promotionPos?.let { pos -> move(pos, m) } ?: onMove(m)
+        }, onDismiss = { pendingPromotion = null })
     }
 }
 
@@ -381,6 +415,8 @@ private fun CheerSound() {
 @Composable
 private fun ChessLayout(
     expandKey: Any?,
+    note: String? = null,
+    onNoteDismiss: () -> Unit = {},
     board: @Composable (Modifier) -> Unit,
     info: @Composable ColumnScope.() -> Unit
 ) {
@@ -391,6 +427,19 @@ private fun ChessLayout(
         val landscape = maxWidth > maxHeight
         val panelMaxHeight = maxHeight * 0.6f
         board(Modifier.align(Alignment.Center).size(minOf(maxWidth, maxHeight)))
+        if (note != null) {
+            LaunchedEffect(note) {
+                delay(8000)
+                onNoteDismiss()
+            }
+            Box(
+                Modifier.align(Alignment.TopCenter).padding(12.dp).widthIn(max = 520.dp)
+                    .background(Color(0xF2FFF7E0), RoundedCornerShape(14.dp))
+                    .border(2.dp, SpecialRing, RoundedCornerShape(14.dp))
+                    .clickable(onClick = onNoteDismiss)
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ) { AppText(note, color = Ink, fontWeight = FontWeight.Medium) }
+        }
         val panelAlign = if (landscape) Alignment.CenterEnd else Alignment.BottomCenter
         val drag = Modifier.pointerInput(Unit) {
             detectDragGestures { change, amount ->
@@ -480,13 +529,14 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
     val earned = if (done) starsFor(moves, level.par) else 0
     LaunchedEffect(done) { if (done) store.saveLessonStars(lesson.key, levelIndex, earned) }
     if (done) CheerSound()
-    ChessLayout(expandKey = done, board = { m ->
+    ChessLayout(expandKey = done, note = mover.note, onNoteDismiss = { mover.note = null }, board = { m ->
         ChessBoardView(
             modifier = m,
             pos = pos,
             flipped = false,
             selected = mover.selected,
             targets = mover.targets(pos),
+            special = mover.specialTargets(pos),
             lastMove = lastMove,
             stars = stars,
             onTap = { if (!done) mover.tap(pos, it, movable = true, autoQueen = true) }
@@ -555,21 +605,6 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
     var hint by remember { mutableStateOf<Int?>(null) }
     val playerWhite = !initial.whiteToMove
 
-    fun applyNext() {
-        val m = ChessMove.parse(puzzle.moves[step])
-        pos = pos.play(m)
-        lastMove = m
-        step++
-    }
-
-    LaunchedEffect(step, state) {
-        if (state == PuzzleState.Opponent && step < puzzle.moves.size && step % 2 == 0) {
-            delay(if (step == 0) 700 else 450)
-            applyNext()
-            state = PuzzleState.Solving
-        }
-    }
-
     val mover = remember {
         TapMover { m ->
             val expected = puzzle.moves[step]
@@ -588,16 +623,34 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
             }
         }
     }
+
+    fun applyNext() {
+        val m = ChessMove.parse(puzzle.moves[step])
+        mover.announce(pos, m, byPlayer = step % 2 == 1)
+        pos = pos.play(m)
+        lastMove = m
+        step++
+    }
+
+    LaunchedEffect(step, state) {
+        if (state == PuzzleState.Opponent && step < puzzle.moves.size && step % 2 == 0) {
+            delay(if (step == 0) 700 else 450)
+            applyNext()
+            state = PuzzleState.Solving
+        }
+    }
+
     val active = state == PuzzleState.Solving || state == PuzzleState.Wrong
     mover.Dialog(playerWhite)
     if (state == PuzzleState.Solved) CheerSound()
-    ChessLayout(expandKey = state, board = { m ->
+    ChessLayout(expandKey = state, note = mover.note, onNoteDismiss = { mover.note = null }, board = { m ->
         ChessBoardView(
             modifier = m,
             pos = pos,
             flipped = !playerWhite,
             selected = mover.selected,
             targets = if (active) mover.targets(pos) else emptySet(),
+            special = if (active) mover.specialTargets(pos) else emptySet(),
             lastMove = lastMove,
             hint = hint,
             onTap = { if (active) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
@@ -671,6 +724,7 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
             delay((500 - (System.currentTimeMillis() - started)).coerceAtLeast(0))
             thinking = false
             if (m != null) {
+                mover.announce(pos, m, byPlayer = false)
                 record.play(m)
                 version++
             }
@@ -682,13 +736,14 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
 
     mover.Dialog(playerWhite)
     if (playerWon) CheerSound()
-    ChessLayout(expandKey = outcome, board = { m ->
+    ChessLayout(expandKey = outcome, note = mover.note, onNoteDismiss = { mover.note = null }, board = { m ->
         ChessBoardView(
             modifier = m,
             pos = pos,
             flipped = !playerWhite,
             selected = mover.selected,
             targets = mover.targets(pos),
+            special = mover.specialTargets(pos),
             lastMove = record.moves.lastOrNull(),
             onTap = { if (outcome == null && !thinking) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
         )
