@@ -253,3 +253,69 @@ fun stuckPieceHint(pos: ChessPosition, sq: Int): String? {
         else -> "🚫 这个${name}被牵制了：它一走开，你的王就会被吃，所以不能动。"
     }
 }
+
+class MateExplanation(val lines: List<String>, val checkers: Set<Int>, val deniedSquares: Set<Int>)
+
+/** 正在将军行棋方的对方棋子 */
+fun checkersOf(pos: ChessPosition): Set<Int> {
+    val king = pos.kingSquare(pos.whiteToMove)
+    if (king < 0) return emptySet()
+    return ChessPosition(pos.board, !pos.whiteToMove).pseudoMoves().filter { it.to == king }.map { it.from }.toSet()
+}
+
+/** 讲解 [pos]（行棋方已被将杀）为什么是将杀；不是将杀返回 null。[matedIsPlayer] 决定用「你」还是「对方」。 */
+fun explainMate(pos: ChessPosition, matedIsPlayer: Boolean): MateExplanation? {
+    if (!pos.inCheck() || pos.legalMoves().isNotEmpty()) return null
+    val us = pos.whiteToMove
+    val king = pos.kingSquare(us)
+    val checkers = checkersOf(pos)
+    val mine = if (matedIsPlayer) "你" else "对方"
+    val theirs = if (matedIsPlayer) "对方" else "你"
+    fun name(sq: Int) = "${sqName(sq)} 的${AllPieceNames[abs(pos[sq])]}"
+    val lines = mutableListOf<String>()
+
+    lines += if (checkers.size >= 2) {
+        "⚔️ 双将！${theirs}的 ${checkers.joinToString("、") { name(it) }} 同时在将军${mine}的王（${sqName(king)}）。双将挡不住也吃不完，王只能自己逃。"
+    } else {
+        "⚔️ ${theirs}的 ${name(checkers.first())} 正在将军${mine}的王（${sqName(king)}）。"
+    }
+
+    // 王的每个邻格：被自己人堵住，还是被对方控制
+    val ownBlocked = mutableListOf<Int>()
+    val controlledBy = linkedMapOf<Int, MutableList<Int>>()
+    val f0 = king % 8
+    val r0 = king / 8
+    for (d in ChessPosition.KING_DIRS) {
+        val f = f0 + d[0]
+        val r = r0 + d[1]
+        if (f !in 0..7 || r !in 0..7) continue
+        val sq = r * 8 + f
+        if (pos[sq] != 0 && (pos[sq] > 0) == us) {
+            ownBlocked += sq
+            continue
+        }
+        val after = pos.play(ChessMove(king, sq))
+        val attacker = ChessPosition(after.board, !us).pseudoMoves().firstOrNull { it.to == sq }?.from ?: continue
+        controlledBy.getOrPut(attacker) { mutableListOf() } += sq
+    }
+    if (ownBlocked.isNotEmpty()) {
+        lines += "🧱 王旁边的 ${ownBlocked.sorted().joinToString("、") { sqName(it) }} 被${mine}自己的棋子堵住了。"
+    }
+    controlledBy.forEach { (attacker, squares) ->
+        lines += "❌ ${squares.sorted().joinToString("、") { sqName(it) }} 被${theirs}的 ${name(attacker)} 控制着，王走过去会被吃。"
+    }
+
+    if (checkers.size == 1) {
+        val checker = checkers.first()
+        lines += "🚫 ${mine}没有棋子能安全地吃掉 ${name(checker)}。"
+        val df = abs(checker % 8 - f0)
+        val dr = abs(checker / 8 - r0)
+        lines += when {
+            abs(pos[checker]) == Pc.KNIGHT -> "🐴 马的将军是跳过来的，中间没法挡。"
+            maxOf(df, dr) <= 1 -> "🚫 贴身将军，中间没有空格可以挡。"
+            else -> "🚫 也没有棋子能挡在将军的路线上。"
+        }
+    }
+    lines += "所以王无路可逃，这就是将杀！"
+    return MateExplanation(lines, checkers, controlledBy.values.flatten().toSet())
+}
