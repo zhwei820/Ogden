@@ -388,7 +388,8 @@ sealed class Screen {
     data class MathUnitPage(val key: String) : Screen()
     data class MathUnitPractice(val key: String) : Screen()
     data class ChessLesson(val index: Int) : Screen()
-    data class ChessPuzzles(val chapter: String, val startIndex: Int? = null, val returnTo: Screen = Main) : Screen()
+    data class ChessPuzzles(val chapter: String, val startPuzzleId: String? = null, val returnTo: Screen = Main) : Screen()
+    data class ChessRules(val index: Int) : Screen()
     object ChessPuzzleHistory : Screen()
     data class ChessPlay(val bot: ChessBot, val playerWhite: Boolean) : Screen()
     object ChessHistory : Screen()
@@ -902,7 +903,14 @@ private fun UserApp(accounts: Accounts) {
                 stateHolder.removeState(screenKey(current))
                 screen = Screen.MathUnitPage(current.key)
             }
-            is Screen.ChessPuzzles -> screen = current.returnTo
+            is Screen.ChessPuzzles -> {
+                stateHolder.removeState(screenKey(current))
+                screen = current.returnTo
+            }
+            is Screen.ChessLesson, is Screen.ChessRules -> {
+                stateHolder.removeState(screenKey(current))
+                screen = Screen.Main
+            }
             else -> {
                 azureSpeaker.stop()
                 screen = Screen.Main
@@ -964,7 +972,8 @@ private fun UserApp(accounts: Accounts) {
                             onPuzzles = { screen = Screen.ChessPuzzles(it) },
                             onPlay = { bot, white -> screen = Screen.ChessPlay(bot, white) },
                             onHistory = { screen = Screen.ChessHistory },
-                            onPuzzleHistory = { screen = Screen.ChessPuzzleHistory }
+                            onPuzzleHistory = { screen = Screen.ChessPuzzleHistory },
+                            onRules = { screen = Screen.ChessRules(it) }
                         )
                         Section.Music -> MusicHomeScreen(
                             store = progressStore,
@@ -1280,10 +1289,11 @@ private fun UserApp(accounts: Accounts) {
                     MathUnitPracticeScreen(unit, progressStore, onBack = goBack)
                 }
                 is Screen.ChessLesson -> ChessLessonScreen(current.index, chessStore, onLesson = { screen = Screen.ChessLesson(it) }, onBack = goBack)
-                is Screen.ChessPuzzles -> ChessPuzzleScreen(current.chapter, chessStore, onBack = goBack, startIndex = current.startIndex)
+                is Screen.ChessPuzzles -> ChessPuzzleScreen(current.chapter, chessStore, onBack = goBack, startPuzzleId = current.startPuzzleId)
+                is Screen.ChessRules -> ChessRulesScreen(current.index, chessStore, onLesson = { screen = Screen.ChessRules(it) }, onBack = goBack)
                 Screen.ChessPuzzleHistory -> ChessPuzzleHistoryScreen(
                     chessStore,
-                    onOpen = { chapter, index -> screen = Screen.ChessPuzzles(chapter, index, returnTo = Screen.ChessPuzzleHistory) },
+                    onOpen = { chapter, id -> screen = Screen.ChessPuzzles(chapter, id, returnTo = Screen.ChessPuzzleHistory) },
                     onBack = goBack
                 )
                 is Screen.ChessPlay -> ChessPlayScreen(current.bot, current.playerWhite, chessStore, onBack = goBack)
@@ -1419,7 +1429,8 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.MathUnitPage -> "math-unit-${screen.key}"
     is Screen.MathUnitPractice -> "math-unit-practice-${screen.key}"
     is Screen.ChessLesson -> "chess-lesson-${screen.index}"
-    is Screen.ChessPuzzles -> "chess-puzzles-${screen.chapter}-${screen.startIndex}"
+    is Screen.ChessPuzzles -> "chess-puzzles-${screen.chapter}-${screen.startPuzzleId}"
+    is Screen.ChessRules -> "chess-rules-${screen.index}"
     Screen.ChessPuzzleHistory -> "chess-puzzle-history"
     is Screen.ChessPlay -> "chess-play-${screen.bot.name}-${screen.playerWhite}"
     Screen.ChessHistory -> "chess-history"

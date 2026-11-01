@@ -126,7 +126,8 @@ fun ChessHomeScreen(
     onPuzzles: (String) -> Unit,
     onPlay: (ChessBot, Boolean) -> Unit,
     onHistory: () -> Unit,
-    onPuzzleHistory: () -> Unit
+    onPuzzleHistory: () -> Unit,
+    onRules: (Int) -> Unit
 ) {
     val context = LocalContext.current
     val bank by produceState<Map<String, List<ChessPuzzle>>>(emptyMap()) {
@@ -151,14 +152,38 @@ fun ChessHomeScreen(
                 onClick = { onLesson(i) }
             )
         }
-        item { ChessSectionTitle("第二步 · 做题练战术", "每章 400 题，越往后越难") }
+        item { ChessSectionTitle("第二步 · 基本规则", "将军、将杀、易位……下棋前先弄懂") }
+        items(RuleLessons.size) { i ->
+            val lesson = RuleLessons[i]
+            val got = lesson.levels.indices.sumOf { store.lessonStars("rule-${lesson.key}", it) }
+            ChessRowCard(
+                leading = { AppText(lesson.emoji, fontSize = 28.sp) },
+                title = lesson.title,
+                subtitle = "${lesson.levels.size} 关",
+                trailing = "⭐ $got/${lesson.levels.size * 3}",
+                onClick = { onRules(i) }
+            )
+        }
+        item {
+            val sizes = bank.values.map { it.size }.distinct()
+            ChessSectionTitle(
+                "第三步 · 做题练战术",
+                when {
+                    sizes.size == 1 -> "每章 ${sizes[0]} 题，越往后越难"
+                    sizes.isNotEmpty() -> "共 ${bank.values.sumOf { it.size }} 题，越往后越难"
+                    else -> "越往后越难"
+                }
+            )
+        }
         items(PuzzleChapters) { chapter ->
-            val total = bank[chapter.key]?.size ?: 0
+            val list = bank[chapter.key].orEmpty()
+            val total = list.size
+            val solved = remember(list) { store.solvedPuzzles(chapter.key).let { ids -> list.count { it.id in ids } } }
             ChessRowCard(
                 leading = { AppText("🧩", fontSize = 28.sp) },
                 title = chapter.title,
                 subtitle = chapter.desc,
-                trailing = if (total > 0) "${store.puzzleIndex(chapter.key).coerceAtMost(total)}/$total" else "",
+                trailing = if (total > 0) "$solved/$total" else "",
                 onClick = { onPuzzles(chapter.key) }
             )
         }
@@ -173,7 +198,7 @@ fun ChessHomeScreen(
             )
         }
         item {
-            ChessSectionTitle("第三步 · 和电脑下棋", "从小猫咪开始，赢了再挑战下一个")
+            ChessSectionTitle("第四步 · 和电脑下棋", "从小猫咪开始，赢了再挑战下一个")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 AppText("我执", color = InkSoft)
                 FilterChip(selected = playWhite, onClick = { playWhite = true }, label = { AppText("白棋（先走）") })
@@ -633,7 +658,7 @@ private fun MateExplanationCard(explanation: MateExplanation) {
 fun ChessLessonScreen(lessonIndex: Int, store: ChessStore, onLesson: (Int) -> Unit, onBack: () -> Unit) {
     ChessBackgroundMusic()
     val lesson = ChessLessons[lessonIndex]
-    var level by rememberSaveable { mutableStateOf(0) }
+    var level by rememberSaveable { mutableStateOf(firstUnfinished(lesson.levels.size) { store.lessonStars(lesson.key, it) }) }
     var attempt by remember { mutableStateOf(0) }
     Column(Modifier.fillMaxSize().background(Paper)) {
         ChessTopBar("${lesson.title} 怎么走", "第 ${level + 1} / ${lesson.levels.size} 关", onBack)
@@ -642,6 +667,7 @@ fun ChessLessonScreen(lessonIndex: Int, store: ChessStore, onLesson: (Int) -> Un
                 lesson = lesson,
                 levelIndex = level,
                 store = store,
+                onPick = { level = it },
                 onRetry = { attempt++ },
                 onNext = {
                     when {
@@ -656,7 +682,7 @@ fun ChessLessonScreen(lessonIndex: Int, store: ChessStore, onLesson: (Int) -> Un
 }
 
 @Composable
-private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, onRetry: () -> Unit, onNext: () -> Unit) {
+private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, onPick: (Int) -> Unit, onRetry: () -> Unit, onNext: () -> Unit) {
     val level = lesson.levels[levelIndex]
     var pos by remember { mutableStateOf(level.start) }
     var stars by remember { mutableStateOf(level.stars) }
@@ -693,11 +719,18 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
             AppText(lesson.title, fontWeight = FontWeight.Bold, fontSize = 18.sp)
             DictionaryWord(lesson.en, 18.sp)
         }
+        LevelPicker(lesson.levels.size, levelIndex, { store.lessonStars(lesson.key, it) }, onPick)
         AppText(lesson.intro, color = InkSoft)
+        val hasEnemies = level.start.board.any { it < 0 }
         AppText(
-            if (level.stars.isNotEmpty()) "收集所有星星 ⭐" else "吃掉所有黑子",
+            when {
+                level.stars.isNotEmpty() && hasEnemies -> "收集所有星星 ⭐，还要吃掉所有黑子"
+                level.stars.isNotEmpty() -> "收集所有星星 ⭐"
+                else -> "吃掉所有黑子"
+            },
             fontWeight = FontWeight.SemiBold
         )
+        if (!done) AppText("还剩 $remaining 个目标", color = InkSoft, fontSize = 14.sp)
         AppText("已走 $moves 步 · 最少 ${level.par} 步", color = InkFaint)
         if (done) {
             AppText("⭐".repeat(earned) + "☆".repeat(3 - earned), fontSize = 32.sp)
@@ -715,19 +748,28 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
 // ---------- 战术题 ----------
 
 @Composable
-fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit, startIndex: Int? = null) {
+fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit, startPuzzleId: String? = null) {
     ChessBackgroundMusic()
     val context = LocalContext.current
     val chapter = PuzzleChapters.first { it.key == chapterKey }
     val puzzles by produceState<List<ChessPuzzle>?>(null, chapterKey) {
         value = withContext(Dispatchers.IO) { PuzzleBank.load(context)[chapterKey].orEmpty() }
     }
-    var index by rememberSaveable { mutableStateOf(startIndex ?: store.puzzleIndex(chapterKey)) }
+    // 从指定的题，或者本章第一道还没做对的题开始；题库加载完才知道是第几题
+    var index by rememberSaveable { mutableStateOf(-1) }
     val list = puzzles
+    LaunchedEffect(list) {
+        if (!list.isNullOrEmpty() && index < 0) {
+            val solved = store.solvedPuzzles(chapterKey)
+            index = startPuzzleId?.let { id -> list.indexOfFirst { it.id == id } }?.takeIf { it >= 0 }
+                ?: list.indexOfFirst { it.id !in solved }.takeIf { it >= 0 }
+                ?: 0
+        }
+    }
     Column(Modifier.fillMaxSize().background(Paper)) {
         val total = list?.size ?: 0
-        ChessTopBar(chapter.title, if (total > 0) "第 ${(index % total) + 1} / $total 题" else chapter.desc, onBack)
-        if (!list.isNullOrEmpty()) {
+        ChessTopBar(chapter.title, if (total > 0 && index >= 0) "第 ${(index % total) + 1} / $total 题" else chapter.desc, onBack)
+        if (!list.isNullOrEmpty() && index >= 0) {
             val puzzle = list[index % list.size]
             key(puzzle.id) {
                 PuzzleRound(
@@ -737,12 +779,10 @@ fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit,
                     onPrevious = if (index > 0) ({ index-- }) else null,
                     onFinished = { mistakes, revealed ->
                         store.recordPuzzle(PuzzleAttempt(puzzle.id, chapterKey, index, puzzle.rating, mistakes, revealed, System.currentTimeMillis()))
+                        // 只有自己做对才算进度；看答案的题下次还会从这里开始
+                        if (!revealed) store.markSolved(chapterKey, puzzle.id)
                     },
-                    onNext = {
-                        index++
-                        // 回头重做旧题不把进度往回拉
-                        if (index > store.puzzleIndex(chapterKey)) store.savePuzzleIndex(chapterKey, index)
-                    }
+                    onNext = { index++ }
                 )
             }
         }
@@ -1119,7 +1159,7 @@ private enum class PuzzleFilter(val label: String) { All("全部"), Missed("错�
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChessPuzzleHistoryScreen(store: ChessStore, onOpen: (chapter: String, index: Int) -> Unit, onBack: () -> Unit) {
+fun ChessPuzzleHistoryScreen(store: ChessStore, onOpen: (chapter: String, puzzleId: String) -> Unit, onBack: () -> Unit) {
     val log = remember { store.puzzleLog() }
     val format = remember { SimpleDateFormat("M月d日 HH:mm", Locale.CHINA) }
     var filter by rememberSaveable { mutableStateOf(PuzzleFilter.All) }
@@ -1155,10 +1195,122 @@ fun ChessPuzzleHistoryScreen(store: ChessStore, onOpen: (chapter: String, index:
                         title = "${chapter?.title ?: attempt.chapter} 第 ${attempt.index + 1} 题",
                         subtitle = "${format.format(Date(attempt.time))} · 难度 ${attempt.rating}",
                         trailing = attempt.label,
-                        onClick = { onOpen(attempt.chapter, attempt.index) }
+                        onClick = { onOpen(attempt.chapter, attempt.puzzleId) }
                     )
                 }
             }
+        }
+    }
+}
+
+/** 第一个还没拿满三星的关卡；全满就从第 1 关开始 */
+private fun firstUnfinished(count: Int, stars: (Int) -> Int): Int = (0 until count).firstOrNull { stars(it) < 3 } ?: 0
+
+@Composable
+private fun LevelPicker(count: Int, current: Int, stars: (Int) -> Int, onPick: (Int) -> Unit) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        for (i in 0 until count) {
+            val got = stars(i)
+            Column(
+                Modifier.weight(1f)
+                    .background(if (i == current) SelectedTint else PaperElevated, RoundedCornerShape(10.dp))
+                    .border(1.dp, Line, RoundedCornerShape(10.dp))
+                    .clickable { onPick(i) }
+                    .padding(vertical = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                AppText("${i + 1}", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                AppText(if (got > 0) "⭐".repeat(got) else "·", fontSize = 9.sp)
+            }
+        }
+    }
+}
+
+// ---------- 基本规则 ----------
+
+@Composable
+fun ChessRulesScreen(lessonIndex: Int, store: ChessStore, onLesson: (Int) -> Unit, onBack: () -> Unit) {
+    ChessBackgroundMusic()
+    val lesson = RuleLessons[lessonIndex]
+    val starKey = "rule-${lesson.key}"
+    var level by rememberSaveable { mutableStateOf(firstUnfinished(lesson.levels.size) { store.lessonStars(starKey, it) }) }
+    var attempt by remember { mutableStateOf(0) }
+    Column(Modifier.fillMaxSize().background(Paper)) {
+        ChessTopBar("${lesson.emoji} ${lesson.title}", "第 ${level + 1} / ${lesson.levels.size} 关", onBack)
+        key(level, attempt) {
+            RuleRound(
+                lesson = lesson,
+                levelIndex = level,
+                store = store,
+                onPick = { level = it },
+                onRetry = { attempt++ },
+                onNext = {
+                    when {
+                        level < lesson.levels.lastIndex -> level++
+                        lessonIndex < RuleLessons.lastIndex -> onLesson(lessonIndex + 1)
+                        else -> onBack()
+                    }
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun RuleRound(lesson: RuleLesson, levelIndex: Int, store: ChessStore, onPick: (Int) -> Unit, onRetry: () -> Unit, onNext: () -> Unit) {
+    val level = lesson.levels[levelIndex]
+    val starKey = "rule-${lesson.key}"
+    var pos by remember { mutableStateOf(level.start) }
+    var lastMove by remember { mutableStateOf<ChessMove?>(null) }
+    var mistakes by remember { mutableStateOf(0) }
+    var feedback by remember { mutableStateOf<String?>(null) }
+    var done by remember { mutableStateOf(false) }
+    val mover = remember {
+        TapMover { m ->
+            val problem = ruleMoveFeedback(pos, m, level.goal)
+            if (problem == null) {
+                pos = pos.play(m)
+                lastMove = m
+                feedback = null
+                done = true
+            } else {
+                mistakes++
+                feedback = problem
+            }
+        }
+    }
+    val earned = when (mistakes) { 0 -> 3; 1 -> 2; else -> 1 }
+    LaunchedEffect(done) { if (done) store.saveLessonStars(starKey, levelIndex, earned) }
+    if (done) CheerSound()
+    val mate = remember(pos, done) { if (done) explainMate(pos, matedIsPlayer = false) else null }
+    mover.Dialog(true)
+    ChessLayout(expandKey = done to feedback, note = mover.note, onNoteDismiss = { mover.note = null }, board = { m ->
+        ChessBoardView(
+            modifier = m,
+            pos = pos,
+            flipped = false,
+            selected = mover.selected,
+            targets = if (done) emptySet() else mover.targets(pos),
+            special = if (done) emptySet() else mover.specialTargets(pos),
+            lastMove = lastMove,
+            denied = mate?.deniedSquares.orEmpty(),
+            onTap = { if (!done) mover.tap(pos, it, movable = pos.whiteToMove) }
+        )
+    }) {
+        LevelPicker(lesson.levels.size, levelIndex, { store.lessonStars(starKey, it) }, onPick)
+        AppText(lesson.intro, color = InkSoft)
+        AppText("你执白棋：${level.goal.task}", fontWeight = FontWeight.SemiBold)
+        feedback?.let { AppText(it, color = Error, fontWeight = FontWeight.Medium) }
+        if (done) {
+            AppText("⭐".repeat(earned) + "☆".repeat(3 - earned), fontSize = 32.sp)
+            AppText(if (earned == 3) "一次就做对了！" else "做对了！", fontWeight = FontWeight.SemiBold, color = Success)
+            mate?.let { MateExplanationCard(it) }
+            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedButton(onClick = onRetry) { AppText("再来一次") }
+                Button(onClick = onNext) { AppText("下一关") }
+            }
+        } else {
+            OutlinedButton(onClick = onRetry) { AppText("重新开始") }
         }
     }
 }

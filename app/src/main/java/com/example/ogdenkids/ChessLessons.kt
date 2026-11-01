@@ -10,7 +10,7 @@ class StarLevel(val pieces: String, starSquares: String = "") {
     val stars: Set<Int> = starSquares.split(' ').filter { it.isNotBlank() }.map(::parseSq).toSet()
     val start: ChessPosition get() = ChessPosition.fromPieces(pieces)
 
-    /** 收齐所有目标的最少步数（BFS；入门关只有一个白子，状态空间很小） */
+    /** 收齐所有目标的最少步数（BFS；入门关只有一个白子，状态空间很小）；收不齐返回 -1 */
     val par: Int by lazy {
         val startPos = start
         val enemies = (0 until 64).filter { startPos[it] < 0 }
@@ -40,7 +40,7 @@ class StarLevel(val pieces: String, starSquares: String = "") {
             }
             frontier = next
         }
-        depth
+        -1
     }
 }
 
@@ -64,7 +64,7 @@ val ChessLessons = listOf(
             StarLevel("Bc1", "f4"),
             StarLevel("Bc1", "a3 d6"),
             StarLevel("Bf1", "b5 e8 h5"),
-            StarLevel("Bd4 pb6 pg7 pg1", ""),
+            StarLevel("Bd4 pb6 pg7 ph2", ""),
             StarLevel("Bc1", "h6 f8 a3 c5")
         )
     ),
@@ -73,7 +73,7 @@ val ChessLessons = listOf(
         listOf(
             StarLevel("Qd1", "d6 h2"),
             StarLevel("Qd4", "a7 g7 g1 a1"),
-            StarLevel("Qa1 pb7 pe4 ph1 pf8", ""),
+            StarLevel("Qa1 pb7 pe4 ph2 pf7", ""),
             StarLevel("Qe1 pe5", "e8 a4 h4")
         )
     ),
@@ -88,7 +88,7 @@ val ChessLessons = listOf(
         )
     ),
     ChessLesson(
-        "king", "王", "king", Pc.KING, "王每次只能走一格，八个方向都可以。王最重要：被将死就输了！",
+        "king", "王", "king", Pc.KING, "王每次只能走一格，八个方向都可以。王不能走到会被对方吃掉的格子。王最重要：被将死就输了！",
         listOf(
             StarLevel("Ke1", "e2"),
             StarLevel("Ke1", "d3 f3"),
@@ -118,17 +118,18 @@ class ChessPuzzle(val id: String, val fen: String, val moves: List<String>, val 
 
 class PuzzleChapter(val key: String, val title: String, val desc: String)
 
+/** 按章节平均难度由易到难排（scripts 抽题时统计：1027 → 1242，单题上限 1500 分） */
 val PuzzleChapters = listOf(
     PuzzleChapter("mate1", "一步将杀", "找到一步就将死对方的棋"),
-    PuzzleChapter("hanging", "吃掉白送的子", "对方有没保护的子，吃掉它"),
-    PuzzleChapter("fork", "捉双", "一个子同时攻击两个目标"),
-    PuzzleChapter("pin", "牵制", "让对方的子不敢动"),
-    PuzzleChapter("skewer", "串击", "打跑前面的大子，吃掉后面的"),
     PuzzleChapter("backrank", "底线杀", "王被自己的兵堵在底线"),
-    PuzzleChapter("discovered", "闪击", "挪开一个子，露出后面的攻击"),
     PuzzleChapter("mate2", "两步将杀", "连续两步将死对方"),
-    PuzzleChapter("pawnend", "兵残局", "让兵走到底线升变"),
-    PuzzleChapter("mate3", "三步将杀", "连续三步将死对方")
+    PuzzleChapter("skewer", "串击", "打跑前面的大子，吃掉后面的"),
+    PuzzleChapter("fork", "捉双", "一个子同时攻击两个目标"),
+    PuzzleChapter("discovered", "闪击", "挪开一个子，露出后面的攻击"),
+    PuzzleChapter("hanging", "吃掉白送的子", "对方有没保护的子，吃掉它"),
+    PuzzleChapter("pawnend", "兵残局", "兵和王的残局，找到赢棋的走法"),
+    PuzzleChapter("mate3", "三步将杀", "连续三步将死对方"),
+    PuzzleChapter("pin", "牵制", "让对方的子不敢动")
 )
 
 object PuzzleBank {
@@ -150,9 +151,15 @@ class ChessStore(context: Context, profileId: String) {
         if (stars > lessonStars(key, level)) prefs.edit().putInt("chess.lesson.$key.$level", stars).apply()
     }
 
-    /** 下一道要做的题的序号（同时也是已做完的题数） */
-    fun puzzleIndex(chapter: String): Int = prefs.getInt("chess.puzzle.$chapter", 0)
-    fun savePuzzleIndex(chapter: String, index: Int) = prefs.edit().putInt("chess.puzzle.$chapter", index).apply()
+    /** 自己做对（没看答案）的题 id；按 id 记，题库重排也不会错位 */
+    fun solvedPuzzles(chapter: String): Set<String> =
+        prefs.getStringSet("chess.solved.$chapter", null)
+            ?: puzzleLog().filter { it.chapter == chapter && !it.revealed }.map { it.puzzleId }.toSet()
+
+    fun markSolved(chapter: String, puzzleId: String) {
+        val now = solvedPuzzles(chapter)
+        if (puzzleId !in now) prefs.edit().putStringSet("chess.solved.$chapter", now + puzzleId).apply()
+    }
 
     fun botWins(bot: ChessBot): Int = prefs.getInt("chess.wins.${bot.name}", 0)
     fun recordBotWin(bot: ChessBot) = prefs.edit().putInt("chess.wins.${bot.name}", botWins(bot) + 1).apply()
@@ -427,4 +434,89 @@ fun explainMate(pos: ChessPosition, matedIsPlayer: Boolean): MateExplanation? {
     }
     lines += "所以王无路可逃，这就是将杀！"
     return MateExplanation(lines, checkers, controlledBy.values.flatten().toSet())
+}
+
+// ---------- 基本规则（棋子走法之后、战术题之前） ----------
+
+enum class RuleGoal(val task: String) {
+    Check("走一步，将对方的军"),
+    Escape("你被将军了！走一步解除将军"),
+    Mate("走一步，将死对方"),
+    Castle("走一步王车易位"),
+    EnPassant("用吃过路兵的方法吃掉对方的兵")
+}
+
+class RuleLevel(val fen: String, val goal: RuleGoal) {
+    val start: ChessPosition get() = ChessPosition.fromFen(fen)
+}
+
+class RuleLesson(val key: String, val title: String, val emoji: String, val intro: String, val levels: List<RuleLevel>)
+
+val RuleLessons = listOf(
+    RuleLesson(
+        "check", "将军", "⚔️", "走一步棋后，如果能直接吃到对方的王，就叫「将军」。被将军的一方必须马上解除。",
+        listOf(
+            RuleLevel("4k3/8/8/8/8/8/8/R3K3 w - - 0 1", RuleGoal.Check),
+            RuleLevel("4k3/8/8/8/4N3/8/8/4K3 w - - 0 1", RuleGoal.Check),
+            RuleLevel("4k3/8/8/8/8/8/8/4KB2 w - - 0 1", RuleGoal.Check)
+        )
+    ),
+    RuleLesson(
+        "escape", "解将", "🛡️", "被将军时有三种办法：王躲开、用别的子挡住、吃掉将军的子。不解除将军的棋都不能走。",
+        listOf(
+            RuleLevel("4k3/8/8/8/8/8/3P4/r3K3 w - - 0 1", RuleGoal.Escape),
+            RuleLevel("4k3/8/8/8/8/8/4q3/4K3 w - - 0 1", RuleGoal.Escape),
+            RuleLevel("r3k3/8/8/8/8/2N5/1P6/KR6 w - - 0 1", RuleGoal.Escape)
+        )
+    ),
+    RuleLesson(
+        "mate", "将杀", "👑", "将军之后，对方怎么走都解除不了，就是「将杀」，将杀的一方赢棋！",
+        listOf(
+            RuleLevel("6k1/5ppp/8/8/8/8/8/R5K1 w - - 0 1", RuleGoal.Mate),
+            RuleLevel("7k/R7/8/8/8/8/8/1R4K1 w - - 0 1", RuleGoal.Mate),
+            RuleLevel("k7/8/1K6/8/8/8/8/7Q w - - 0 1", RuleGoal.Mate)
+        )
+    ),
+    RuleLesson(
+        "stalemate", "小心逼和", "🤝", "如果对方没有被将军，却一步棋也走不了，叫「逼和」，算和棋！快赢的时候要小心，别把对方逼和了。",
+        listOf(
+            RuleLevel("k7/8/2K5/8/8/8/8/1Q6 w - - 0 1", RuleGoal.Mate),
+            RuleLevel("7k/8/6K1/8/8/8/8/5Q2 w - - 0 1", RuleGoal.Mate)
+        )
+    ),
+    RuleLesson(
+        "castle", "王车易位", "🏰", "王向车的方向走两格，车跳到王的另一边。要求王和车都没动过、中间没有棋子、王没被将军、王经过的格子没被攻击。",
+        listOf(
+            RuleLevel("4k3/8/8/8/8/8/8/R3K2R w KQ - 0 1", RuleGoal.Castle),
+            RuleLevel("4k3/8/b7/8/8/8/8/R3K2R w KQ - 0 1", RuleGoal.Castle)
+        )
+    ),
+    RuleLesson(
+        "enpassant", "吃过路兵", "👻", "对方的兵第一步走两格，正好停在你的兵旁边，你可以马上斜着吃掉它，就像它只走了一格。只有紧接着的这一步能吃。",
+        listOf(
+            RuleLevel("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1", RuleGoal.EnPassant),
+            RuleLevel("4k3/8/8/1pP5/8/8/8/4K3 w - b6 0 1", RuleGoal.EnPassant)
+        )
+    )
+)
+
+/** 判断规则关的一步：达成目标返回 null，否则返回给孩子的提示 */
+fun ruleMoveFeedback(pos: ChessPosition, m: ChessMove, goal: RuleGoal): String? {
+    val after = pos.play(m)
+    val mate = after.inCheck() && after.legalMoves().isEmpty()
+    val stalemate = !after.inCheck() && after.legalMoves().isEmpty()
+    return when (goal) {
+        RuleGoal.Check -> if (after.inCheck()) null else "这步没有将军：走完以后，你的棋子吃不到对方的王。"
+        RuleGoal.Escape -> null
+        RuleGoal.Mate -> when {
+            mate -> null
+            stalemate -> "🤝 这是逼和！对方没被将军，却一步也走不了，结果是和棋。换一步试试。"
+            after.inCheck() -> "这步是将军，但对方还能逃走或解将，还不是将杀。"
+            else -> "这步没有将军，更不是将杀。"
+        }
+        RuleGoal.Castle -> if (abs(pos[m.from]) == Pc.KING && abs(m.to - m.from) == 2) null else "这不是王车易位：选中王，往车的方向走两格。"
+        RuleGoal.EnPassant ->
+            if (abs(pos[m.from]) == Pc.PAWN && m.to == pos.ep && pos[m.to] == 0) null
+            else "这不是吃过路兵：用你的兵斜着走到对方兵刚刚跳过的那一格。"
+    }
 }

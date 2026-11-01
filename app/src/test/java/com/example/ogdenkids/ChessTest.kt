@@ -5,6 +5,7 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
+import kotlin.math.abs
 
 class ChessTest {
     private fun perft(pos: ChessPosition, depth: Int): Long =
@@ -41,7 +42,43 @@ class ChessTest {
     fun everyLessonLevelIsSolvable() {
         for (lesson in ChessLessons) lesson.levels.forEachIndexed { i, level ->
             assertTrue("${lesson.key} #$i par=${level.par}", level.par in 1..12)
+            // 兵不能站在第一行或第八行
+            val start = level.start
+            assertTrue("${lesson.key} #$i", (0 until 64).none { abs(start[it]) == Pc.PAWN && (it / 8 == 0 || it / 8 == 7) })
         }
+    }
+
+    @Test
+    fun unsolvableStarLevelIsReported() {
+        // 深色格的象永远走不到浅色格的星星
+        assertEquals(-1, StarLevel("Bc1", "c2").par)
+    }
+
+    @Test
+    fun ruleLevelsHaveARealChoice() {
+        for (lesson in RuleLessons) lesson.levels.forEachIndexed { i, level ->
+            val pos = level.start
+            val where = "${lesson.key} #$i"
+            val moves = pos.legalMoves()
+            val good = moves.filter { ruleMoveFeedback(pos, it, level.goal) == null }
+            assertTrue(where, good.isNotEmpty())
+            if (level.goal == RuleGoal.Escape) assertTrue(where, pos.inCheck())
+            else assertTrue("$where 每一步都对就没有练习意义", good.size < moves.size)
+        }
+        // 「小心逼和」关里真的有逼和的陷阱
+        for (level in RuleLessons.first { it.key == "stalemate" }.levels) {
+            val pos = level.start
+            assertTrue(level.fen, pos.legalMoves().any { m -> pos.play(m).let { !it.inCheck() && it.legalMoves().isEmpty() } })
+        }
+    }
+
+    @Test
+    fun puzzlesAreKidSizedAndChaptersGetHarder() {
+        val rows = File("src/main/assets/chess/puzzles.csv").readLines().filter { it.isNotBlank() }.map { it.split(',') }
+        assertTrue(rows.all { it[4].toInt() <= 1500 && it[3].split(' ').size <= 8 })
+        val avg = rows.groupBy { it[0] }.mapValues { (_, r) -> r.sumOf { it[4].toInt() } / r.size }
+        val ordered = PuzzleChapters.map { avg.getValue(it.key) }
+        assertEquals(ordered.sorted(), ordered)
     }
 
     @Test
