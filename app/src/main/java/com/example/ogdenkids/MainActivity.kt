@@ -183,6 +183,10 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import kotlin.random.Random
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.StrokeCap
@@ -2814,7 +2818,7 @@ fun SpeechReaderScreen(
         ReadAlongSheet(
             line,
             banner = if (challengeLine != null && line == speech.lines[challengeLine]) {
-                if (passedScore != null) "达标！野外存档 +1，正在返回游戏…" else "读到 $GamePassScore 分以上，回游戏领 1 次野外存档"
+                if (passedScore != null) "达标！回满血、野外存档 +1，正在返回游戏…" else "读到 $GamePassScore 分以上，回游戏回满血、领 1 次野外存档"
             } else null,
             onScored = {
                 store.saveReadAlongScore(line.en, it)
@@ -3331,10 +3335,16 @@ fun ReadAlongSheet(line: SpeechLine, banner: String? = null, onScored: (Int) -> 
         return true
     }
 
-    ModalBottomSheet(onDismissRequest = { stopRequested = true; onDismiss() }, containerColor = PaperElevated) {
+    // 横屏（从横屏游戏跳来）时半展开只露出句子，话筒在屏幕外：直接全展开，放不下就滚动
+    ModalBottomSheet(
+        onDismissRequest = { stopRequested = true; onDismiss() },
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = PaperElevated
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
                 .padding(start = 22.dp, end = 22.dp, bottom = 36.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -3342,8 +3352,9 @@ fun ReadAlongSheet(line: SpeechLine, banner: String? = null, onScored: (Int) -> 
             AppText("跟读评分", color = InkFaint, fontSize = 13.sp, modifier = Modifier.fillMaxWidth())
             banner?.let { AppText(it, color = Category.Picturable.tint, fontSize = 16.sp, fontWeight = FontWeight.SemiBold, modifier = Modifier.fillMaxWidth()) }
             val result = (shown as? ReadAlongState.Done)?.result
-            // 句子：评分后按词上色
+            // 句子：评分后按词上色；点词在句子下方查词
             val tokens = remember(line.en) { tokenizeSpeech(line.en) }
+            var picked by remember(line.en) { mutableStateOf<SpeechToken?>(null) }
             val colored = buildAnnotatedString {
                 append(line.en)
                 result?.words?.takeIf { it.size == tokens.size }?.forEachIndexed { i, w ->
@@ -3360,7 +3371,17 @@ fun ReadAlongSheet(line: SpeechLine, banner: String? = null, onScored: (Int) -> 
                     )
                 }
             }
-            Text(colored, fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, color = Ink)
+            ClickableText(
+                picked?.let { p -> AnnotatedString.Builder(colored).apply { addStyle(SpanStyle(background = Category.Picturable.soft), p.range.first, p.range.last + 1) }.toAnnotatedString() } ?: colored,
+                style = TextStyle(fontFamily = FontFamily.Serif, fontSize = 26.sp, lineHeight = 36.sp, fontWeight = FontWeight.SemiBold, textAlign = TextAlign.Center, color = Ink),
+                onClick = { offset ->
+                    tokens.firstOrNull { offset in it.range }?.let {
+                        picked = it
+                        services.speakEnglish(it.text)
+                    }
+                }
+            )
+            picked?.let { ReadAlongWordPeek(it.text) }
             AppText(line.zh, color = InkSoft, fontSize = 17.sp, textAlign = TextAlign.Center)
             OutlinedButton(onClick = { services.speakEnglish(line.en) }) {
                 Icon(Icons.Default.VolumeUp, contentDescription = null)
@@ -3410,6 +3431,29 @@ fun ReadAlongSheet(line: SpeechLine, banner: String? = null, onScored: (Int) -> 
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center
                 )
+            }
+        }
+    }
+}
+
+/** 跟读弹窗里点到的词：一行释义，不离开弹窗（游戏跳来的跟读挑战不能被打断）。 */
+@Composable
+private fun ReadAlongWordPeek(surface: String) {
+    val services = LocalSpeechServices.current
+    val contraction = contractionOf(surface)
+    val word = if (contraction == null) services.lookup(surface) else null
+    val (head, meaning) = when {
+        contraction != null -> expandContraction(surface, contraction) to contraction.zh
+        word != null -> word.word to word.zh
+        else -> surface to (services.related(surface)?.zh ?: "不在词表中")
+    }
+    Card(colors = CardDefaults.cardColors(containerColor = Paper), shape = RoundedCornerShape(12.dp), modifier = Modifier.fillMaxWidth()) {
+        Row(Modifier.padding(start = 14.dp, top = 4.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text(head, fontFamily = FontFamily.Serif, fontSize = 22.sp, fontWeight = FontWeight.SemiBold, color = word?.category?.tint ?: Ink)
+            Spacer(Modifier.width(12.dp))
+            AppText(meaning, color = InkSoft, fontSize = 17.sp, maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.weight(1f))
+            IconButton(onClick = { services.speakEnglish(head) }) {
+                Icon(Icons.Default.VolumeUp, contentDescription = "读单词", tint = Category.Operations.tint)
             }
         }
     }
