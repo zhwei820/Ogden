@@ -23,12 +23,13 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!-- annalearning://speech/<课文 id>：Bryce Zane 游戏里点地上的课文牌跳过来 -->
+            <!-- annalearning://speech/<课文 id>、annalearning://special/<专项模块 key>：Bryce Zane 游戏里点地上的课文牌跳过来 -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="annalearning" android:host="speech" />
+                <data android:scheme="annalearning" android:host="special" />
             </intent-filter>
         </activity>
         <!-- 独立 taskAffinity + 不进最近任务：卡片浮在调用方 App 上，关掉即回原处 -->
