@@ -1,6 +1,5 @@
 package com.example.ogdenkids
 
-import android.media.MediaPlayer
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
@@ -526,21 +525,6 @@ private fun ChessBackgroundMusic() {
             lifecycle.removeObserver(observer)
             bgm.stop()
         }
-    }
-}
-
-@Composable
-private fun CheerSound() {
-    val context = LocalContext.current
-    DisposableEffect(Unit) {
-        val player = runCatching {
-            MediaPlayer().apply {
-                context.assets.openFd("sfx/cheer.mp3").use { setDataSource(it.fileDescriptor, it.startOffset, it.length) }
-                prepare()
-                start()
-            }
-        }.getOrNull()
-        onDispose { player?.release() }
     }
 }
 

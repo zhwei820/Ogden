@@ -586,19 +586,7 @@ private fun DrillResult(answers: List<MathAnswer>, best: Int?, subtitle: String,
     val context = LocalContext.current
     val view = LocalView.current
     var cardBounds by remember { mutableStateOf<Rect?>(null) }
-    if (perfect) {
-        DisposableEffect(Unit) {
-            // scripts/gen_cheer.py 生成
-            val cheer = runCatching {
-                MediaPlayer().apply {
-                    context.assets.openFd("sfx/cheer.mp3").use { setDataSource(it.fileDescriptor, it.startOffset, it.length) }
-                    prepare()
-                    start()
-                }
-            }.getOrNull()
-            onDispose { cheer?.release() }
-        }
-    }
+    if (perfect) CheerSound()
     Box(modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),

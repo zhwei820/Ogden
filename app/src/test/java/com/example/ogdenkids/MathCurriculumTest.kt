@@ -28,10 +28,58 @@ class MathCurriculumTest {
 
     @Test
     fun roundsAreFullAndNonRepeating() {
-        for (unit in MathUnits) {
-            val round = buildMathUnitRound(unit, Random(7))
-            assertEquals(unit.key, MathUnitRoundSize, round.size)
+        for (unit in MathUnits) repeat(100) { seed ->
+            val round = buildMathUnitRound(unit, Random(seed))
+            assertEquals("${unit.key} seed=$seed", MathUnitRoundSize, round.size)
             assertEquals(unit.key, round.size, round.map { it.prompt }.toSet().size)
+        }
+    }
+
+    @Test
+    fun unitsFollowTextbookOrder() {
+        assertEquals("g3-time", mathUnitsOf(3).first().key)
+        val g3 = mathUnitsOf(3).map { it.key }
+        assertTrue(g3.indexOf("g3-rem") == g3.indexOf("g3-div1") - 1)
+        assertTrue(mathUnitsOf(3).first { it.key == "g3-rem" }.title.startsWith("复习"))
+        val g4 = mathUnitsOf(4).map { it.key }
+        assertTrue(g4.indexOf("g4-mixed") < g4.indexOf("g4-laws"))
+        val g6 = mathUnitsOf(6).map { it.key }
+        assertEquals(listOf("g6-fracmul", "g6-fracdiv", "g6-ratio", "g6-circle", "g6-percent", "g6-neg", "g6-cylinder", "g6-prop"), g6)
+    }
+
+    @Test
+    fun unlikeFractionsKeepDifferentDenominators() {
+        val q = Regex("""^(\d+)/(\d+) [+−] (\d+)/(\d+) = \?$""")
+        repeat(500) { seed ->
+            val prompt = mathUnit("g5-fracadd")!!.generate(Random(seed)).prompt
+            val m = q.find(prompt) ?: error(prompt)
+            assertTrue(prompt, m.groupValues[2] != m.groupValues[4])
+        }
+    }
+
+    @Test
+    fun explanationsMatchTheQuestion() {
+        // 加法解析只在真的进位时才说进位
+        repeat(300) { seed ->
+            val q = mathUnit("g3-add")!!.generate(Random(seed))
+            val m = Regex("""^(\d+) \+ (\d+)""").find(q.prompt) ?: return@repeat
+            val a = m.groupValues[1].toInt()
+            val b = m.groupValues[2].toInt()
+            assertEquals(q.prompt, a % 10 + b % 10 >= 10, q.explain.contains("个位") )
+        }
+        // 小数乘除法题面不出现被去掉小数点的「整数小数」，解析里的整数和题面一致
+        repeat(300) { seed ->
+            val q = mathUnit("g5-decmul")!!.generate(Random(seed))
+            val a = q.prompt.substringBefore(" ×")
+            assertTrue(q.prompt, "." in a)
+            assertTrue("${q.prompt} / ${q.explain}", q.explain.contains(a.replace(".", "").trimStart('0') + " ×"))
+            val d = mathUnit("g5-decdiv")!!.generate(Random(seed))
+            assertTrue(d.prompt, "." in d.prompt.substringAfter("÷ ").substringBefore(" ="))
+        }
+        // 负数统一用「−」
+        repeat(300) { seed ->
+            val q = mathUnit("g6-neg")!!.generate(Random(seed))
+            assertFalse(q.prompt, (listOf(q.prompt, q.explain) + q.options).any { "-" in it })
         }
     }
 

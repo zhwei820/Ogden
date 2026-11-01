@@ -31,6 +31,16 @@ private fun gcd(a: Long, b: Long): Long = if (b == 0L) kotlin.math.abs(a) else g
 private fun dec(v: BigDecimal): String = v.stripTrailingZeros().toPlainString()
 private fun dec(v: String) = BigDecimal(v)
 private fun tenths(n: Int) = BigDecimal(n).movePointLeft(1)
+
+/** 真正的一位小数（排除 2.0 这类整数），否则题面显示「2」而解析按「20」讲 */
+private fun Random.realTenths(from: Int, to: Int): BigDecimal {
+    var n = ri(from, to)
+    while (n % 10 == 0) n = ri(from, to)
+    return tenths(n)
+}
+
+/** 负数用数学减号「−」，和知识点、其他题目一致 */
+private fun signed(n: Int) = if (n < 0) "−${-n}" else "$n"
 private fun hundredths(n: Int) = BigDecimal(n).movePointLeft(2)
 private val Pi = BigDecimal("3.14")
 
@@ -70,7 +80,7 @@ private fun choice(
     val picked = mutableListOf<String>()
     for (w in wrong.shuffled(r)) {
         if (picked.size == 3) break
-        if (w.isBlank()) continue
+        if (w.isBlank() || w.startsWith("0/")) continue
         if (same(w, answer) || picked.any { same(it, w) }) continue
         picked += w
     }
@@ -137,12 +147,20 @@ private val Grade3 = listOf(
         val b = r.ri(108, 899)
         if (r.nextBoolean()) {
             val ans = (a + b).toLong()
-            choice(r, "$a + $b = ?", "$ans", intWrong(ans, ans - 10, ans - 100), "$a + $b = $ans。个位、十位满十都要向前进一。")
+            val onesCarry = a % 10 + b % 10 >= 10
+            val tensCarry = a / 10 % 10 + b / 10 % 10 + (if (onesCarry) 1 else 0) >= 10
+            val how = listOfNotNull("个位".takeIf { onesCarry }, "十位".takeIf { tensCarry })
+            val note = if (how.isEmpty()) "这题每一位都不满十，不用进位。" else "${how.joinToString("、")}满十，要向前一位进一。"
+            choice(r, "$a + $b = ?", "$ans", intWrong(ans, ans - 10, ans - 100), "$a + $b = $ans。$note")
         } else {
             val big = maxOf(a, b) + 100
             val small = minOf(a, b)
             val ans = (big - small).toLong()
-            choice(r, "$big − $small = ?", "$ans", intWrong(ans, ans + 10, ans + 100), "$big − $small = $ans。不够减时向前一位借一当十，别忘了前一位要少 1。")
+            val onesBorrow = big % 10 < small % 10
+            val tensBorrow = big / 10 % 10 - (if (onesBorrow) 1 else 0) < small / 10 % 10
+            val how = listOfNotNull("个位".takeIf { onesBorrow }, "十位".takeIf { tensBorrow })
+            val note = if (how.isEmpty()) "这题每一位都够减，不用退位。" else "${how.joinToString("、")}不够减，要向前一位借一当十，前一位记得少 1。"
+            choice(r, "$big − $small = ?", "$ans", intWrong(ans, ans + 10, ans + 100), "$big − $small = $ans。$note")
         }
     },
     MathUnit(
@@ -164,7 +182,7 @@ private val Grade3 = listOf(
         choice(r, "$a ÷ $b = ?", "$q", intWrong(q.toLong(), q * 10L, (q / 10).toLong()), "$a ÷ $b = $q。验算：$q × $b = $a。")
     },
     MathUnit(
-        "g3-rem", 3, "有余数的除法",
+        "g3-rem", 3, "复习：有余数的除法",
         listOf("余数一定要比除数小。", "被除数 = 商 × 除数 + 余数。")
     ) { r ->
         val b = r.ri(3, 9)
@@ -391,7 +409,7 @@ private val Grade4 = listOf(
             val a = r.ri(25, 100)
             val b = r.ri(20, 150 - a)
             val ans = (180 - a - b).toLong()
-            choice(r, "三角形的两个角分别是 $a° 和 $b°，第三个角是多少度？", "${ans}°", intWrong(ans, 360L - a - b, 90L - a - b + 90, ans + 10).map { "$it°" }, "180° − $a° − $b° = $ans°。")
+            choice(r, "三角形的两个角分别是 $a° 和 $b°，第三个角是多少度？", "${ans}°", intWrong(ans, 360L - a - b, (a + b).toLong(), ans + 10).map { "$it°" }, "180° − $a° − $b° = $ans°。")
         } else {
             val top = r.ri(10, 80) * 2
             val ans = ((180 - top) / 2).toLong()
@@ -419,8 +437,8 @@ private val Grade5 = listOf(
         "g5-decmul", 5, "小数乘法",
         listOf("先按整数乘法算出积。", "再数两个因数一共有几位小数，就从积的右边数出几位点上小数点。")
     ) { r ->
-        val a = tenths(r.ri(11, 99))
-        val b = if (r.nextBoolean()) tenths(r.ri(11, 59)) else BigDecimal(r.ri(3, 9))
+        val a = r.realTenths(11, 99)
+        val b = if (r.nextBoolean()) r.realTenths(11, 59) else BigDecimal(r.ri(3, 9))
         val ans = a * b
         val places = a.scale() + b.scale()
         choice(r, "${dec(a)} × ${dec(b)} = ?", dec(ans), decWrong(ans), "按整数算 ${a.unscaledValue()} × ${b.unscaledValue()} = ${a.unscaledValue() * b.unscaledValue()}，因数一共 $places 位小数，积就是 ${dec(ans)}。", ::sameNumber)
@@ -429,8 +447,8 @@ private val Grade5 = listOf(
         "g5-decdiv", 5, "小数除法",
         listOf("除数是小数：把除数和被除数同时扩大相同的倍数，使除数变成整数。", "商的小数点和被除数的小数点对齐。")
     ) { r ->
-        val b = tenths(r.ri(2, 49))
-        val q = if (r.nextBoolean()) tenths(r.ri(11, 99)) else BigDecimal(r.ri(2, 30))
+        val b = r.realTenths(2, 49)
+        val q = if (r.nextBoolean()) r.realTenths(11, 99) else BigDecimal(r.ri(2, 30))
         val a = b * q
         choice(r, "${dec(a)} ÷ ${dec(b)} = ?", dec(q), decWrong(q), "除数和被除数同时乘 10：${dec(a.movePointRight(1))} ÷ ${dec(b.movePointRight(1))} = ${dec(q)}。", ::sameNumber)
     },
@@ -520,8 +538,14 @@ private val Grade5 = listOf(
         val b = r.ri(2, 9)
         var d = r.ri(2, 9)
         if (d == b) d = if (b < 9) b + 1 else b - 1
-        val x = Fr(r.ri(1, b - 1).toLong(), b.toLong())
-        val y = Fr(r.ri(1, d - 1).toLong(), d.toLong())
+        // 分子与分母互质，避免约分后分母变得相同（如 2/6 → 1/3 与 2/3）
+        fun proper(den: Int): Fr {
+            var num = r.ri(1, den - 1)
+            while (gcd(num.toLong(), den.toLong()) != 1L) num = r.ri(1, den - 1)
+            return Fr(num.toLong(), den.toLong())
+        }
+        val x = proper(b)
+        val y = proper(d)
         val plus = r.nextBoolean() || x == y
         val (p, q) = if (plus) x to y else if (x.n * y.d > y.n * x.d) x to y else y to x
         val ans = if (plus) p + q else p - q
@@ -592,7 +616,7 @@ private val Grade6 = listOf(
         val (m, n) = pairs.random(r)
         if (r.nextBoolean()) {
             val k = r.ri(2, 12)
-            choice(r, "化简比 ${m * k} : ${n * k} = ?", "$m : $n", listOf("$n : $m", "${m * 2} : ${n * 2}".takeIf { k % 2 != 0 } ?: "${m + 1} : $n", "${m * k} : $n", "$m : ${n + 1}"), "前项后项同时除以 $k：${m * k} : ${n * k} = $m : $n。")
+            choice(r, "化简比 ${m * k} : ${n * k} = ?", "$m : $n", listOf("$n : $m", "${m * k / 2} : ${n * k / 2}".takeIf { k % 2 == 0 && k > 2 } ?: "${m + 1} : $n", "${m * k} : $n", "$m : ${n + 1}"), "前项后项同时除以 $k：${m * k} : ${n * k} = $m : $n。")
         } else {
             val each = r.ri(2, 20)
             val total = (m + n) * each
@@ -628,14 +652,17 @@ private val Grade6 = listOf(
         "g6-circle", 6, "圆",
         listOf("圆的周长 = 2 × π × r = π × d。", "圆的面积 = π × r × r。", "π 取 3.14。")
     ) { r ->
-        val radius = r.ri(1, 10)
+        val radius = r.ri(1, 20)
         val rr = BigDecimal(radius)
+        val byDiameter = r.nextBoolean()
+        val given = if (byDiameter) "直径 ${radius * 2}" else "半径 $radius"
+        val toRadius = if (byDiameter) "半径 = ${radius * 2} ÷ 2 = $radius，" else ""
         if (r.nextBoolean()) {
             val ans = Pi * rr * BigDecimal(2)
-            choice(r, "半径 $radius 厘米的圆，周长是多少厘米？（π 取 3.14）", dec(ans), listOf(dec(Pi * rr), dec(Pi * rr * rr), dec(ans + BigDecimal.ONE), dec(Pi * rr * BigDecimal(4))), "2 × 3.14 × $radius = ${dec(ans)} 厘米。", ::sameNumber)
+            choice(r, "${given} 厘米的圆，周长是多少厘米？（π 取 3.14）", dec(ans), listOf(dec(Pi * rr), dec(Pi * rr * rr), dec(ans + BigDecimal.ONE), dec(Pi * rr * BigDecimal(4))), "${toRadius}2 × 3.14 × $radius = ${dec(ans)} 厘米。", ::sameNumber)
         } else {
             val ans = Pi * rr * rr
-            choice(r, "半径 $radius 米的圆，面积是多少平方米？（π 取 3.14）", dec(ans), listOf(dec(Pi * rr * BigDecimal(2)), dec(Pi * rr * BigDecimal(4) * rr), dec(Pi * rr), dec(ans + BigDecimal.TEN)), "3.14 × $radius × $radius = ${dec(ans)} 平方米。", ::sameNumber)
+            choice(r, "${given} 米的圆，面积是多少平方米？（π 取 3.14）", dec(ans), listOf(dec(Pi * rr * BigDecimal(2)), dec(Pi * rr * BigDecimal(4) * rr), dec(Pi * rr), dec(ans + BigDecimal.TEN)), "${toRadius}3.14 × $radius × $radius = ${dec(ans)} 平方米。", ::sameNumber)
         }
     },
     MathUnit(
@@ -657,13 +684,13 @@ private val Grade6 = listOf(
             val start = r.ri(-12, -1)
             val up = r.ri(3, 15)
             val ans = start + up
-            choice(r, "早上气温 ${start}℃，中午升高了 ${up}℃，中午气温是多少？", "${ans}℃", listOf("${-ans}℃", "${start - up}℃", "${-start + up}℃", "${ans + 1}℃").distinct(), "$start + $up = $ans，中午是 ${ans}℃。")
+            choice(r, "早上气温 ${signed(start)}℃，中午升高了 ${up}℃，中午气温是多少？", "${signed(ans)}℃", listOf("${signed(-ans)}℃", "${signed(start - up)}℃", "${signed(-start + up)}℃", "${signed(ans + 1)}℃").distinct(), "${signed(start)} + $up = ${signed(ans)}，中午是 ${signed(ans)}℃。")
         } else {
             val a = r.ri(-9, -1)
             var b = r.ri(-9, -1)
             if (a == b) b = if (a > -9) a - 1 else a + 1
             val bigger = maxOf(a, b)
-            choice(r, "$a 和 $b 哪个大？", "$bigger", listOf("${minOf(a, b)}", "一样大", "${-bigger}"), "负数离 0 越近越大，所以 $bigger 更大。")
+            choice(r, "${signed(a)} 和 ${signed(b)} 哪个大？", signed(bigger), listOf(signed(minOf(a, b)), "一样大", signed(-bigger)), "负数离 0 越近越大，所以 ${signed(bigger)} 更大。")
         }
     },
     MathUnit(
@@ -682,7 +709,21 @@ private val Grade6 = listOf(
     }
 )
 
-val MathUnits: List<MathUnit> = Grade3 + Grade4 + Grade5 + Grade6
+/** 人教版教材顺序（上册在前、下册在后）；「复习：有余数的除法」是二年级下册内容，放在除数是一位数的除法前面 */
+private val TextbookOrder = listOf(
+    "g3-time", "g3-add", "g3-mul1", "g3-perimeter", "g3-frac",
+    "g3-rem", "g3-div1", "g3-mul2", "g3-area", "g3-dec",
+    "g4-big", "g4-mul3", "g4-div2",
+    "g4-mixed", "g4-laws", "g4-triangle", "g4-dec", "g4-avg",
+    "g5-decmul", "g5-decdiv", "g5-eq", "g5-area",
+    "g5-factor", "g5-cuboid", "g5-reduce", "g5-fracadd",
+    "g6-fracmul", "g6-fracdiv", "g6-ratio", "g6-circle", "g6-percent",
+    "g6-neg", "g6-cylinder", "g6-prop"
+)
+
+val MathUnits: List<MathUnit> = (Grade3 + Grade4 + Grade5 + Grade6).let { all ->
+    TextbookOrder.map { key -> all.first { it.key == key } }
+}
 
 fun buildMathUnitRound(unit: MathUnit, random: Random): List<MathQuestion> {
     val seen = mutableSetOf<String>()

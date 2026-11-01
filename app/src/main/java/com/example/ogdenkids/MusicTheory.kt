@@ -74,13 +74,16 @@ internal val WrongSoft = Color(0xFFFEE2E2)
 
 const val MusicRoundSize = 10
 
+/** 顺序与课程一致：按第一次被课程用到的先后排列，[Ear] 是综合练习放最后 */
 enum class MusicGame(val key: String, val emoji: String, val title: String, val desc: String, val hasKeyboard: Boolean = false) {
     Names("names", "🔤", "唱名对对碰", "唱名、音名、简谱互相配对"),
     FindKey("key", "🎹", "找琴键", "看唱名，在键盘上找到它", hasKeyboard = true),
-    ReadStaff("staff", "🎼", "认五线谱", "看五线谱上的音符，选出唱名"),
     HighLow("pitch", "👂", "听音高低", "听两个音，第二个更高还是更低"),
+    ReadStaff("staff", "🎼", "认五线谱", "看五线谱上的音符，选出唱名"),
     NoteValue("value", "⏱️", "音符拍数", "看音符或休止符，说出几拍"),
     Meter("meter", "🥁", "听拍子", "听强弱节拍，判断几拍子"),
+    HalfStep("half", "♯", "黑键与半音", "找黑键，分清半音和全音", hasKeyboard = true),
+    Interval("interval", "📏", "数音程", "数一数、听一听，两个音是几度"),
     Chord("chord", "🎭", "听和弦", "大三和弦明亮，小三和弦柔和"),
     Ear("ear", "🎵", "听音认唱名", "先听 do，再听一个音，猜唱名")
 }
@@ -93,9 +96,9 @@ enum class MusicLesson(val emoji: String, val title: String, val summary: String
     Values("⏱️", "音符与时值", "全音符、二分、四分、八分、十六分音符", MusicGame.NoteValue),
     Rests("🤫", "休止符", "音乐里的安静时刻", MusicGame.NoteValue),
     Meter("🥁", "节拍与拍号", "2/4、3/4、4/4 拍的强弱规律", MusicGame.Meter),
-    Accidentals("♯", "升号、降号与半音", "黑键的名字，半音和全音", MusicGame.FindKey, hasKeyboard = true),
-    Scale("🪜", "C 大调音阶", "全全半全全全半", MusicGame.Ear),
-    Intervals("📏", "音程", "两个音之间的距离", MusicGame.Ear),
+    Accidentals("♯", "升号、降号与半音", "黑键的名字，半音和全音", MusicGame.HalfStep, hasKeyboard = true),
+    Scale("🪜", "C 大调音阶", "全全半全全全半", MusicGame.HalfStep),
+    Intervals("📏", "音程", "两个音之间的距离", MusicGame.Interval),
     Chords("🎭", "三和弦", "大三和弦明亮，小三和弦柔和", MusicGame.Chord, hasKeyboard = true),
     Expression("🚀", "速度与力度", "Allegro、Andante，p 与 f", null)
 }
@@ -140,16 +143,17 @@ fun MusicHomeScreen(store: ProgressStore, padding: PaddingValues, onLesson: (Mus
         }
         item { SectionTitle("乐理小游戏", "每局 $MusicRoundSize 题，边玩边记") }
         items(MusicGame.values().toList()) { game ->
-            val best = store.bestSpecialScore("music-${game.key}", 0)
-            val perfect = NameGroups.indices.count { store.bestSpecialScore("music-${game.key}", it) == MusicRoundSize }
+            val lesson = MusicLesson.values().firstOrNull { it.practice == game }
+            val progress = if (game == MusicGame.Names) {
+                val perfect = NameGroups.indices.count { store.bestSpecialScore("music-${game.key}", it) == MusicRoundSize }
+                " · ${NameGroups.size} 组，满分 $perfect 组"
+            } else {
+                store.bestSpecialScore("music-${game.key}", 0)?.let { " · 最好 $it / $MusicRoundSize" }.orEmpty()
+            }
             MusicEntryCard(
                 badge = game.emoji,
                 title = game.title,
-                subtitle = game.desc + when {
-                    game == MusicGame.Names -> " · ${NameGroups.size} 组，满分 $perfect 组"
-                    best != null -> " · 最好 $best / $MusicRoundSize"
-                    else -> ""
-                },
+                subtitle = (if (lesson != null) "第 ${lesson.ordinal + 1} 课 · " else "综合练习 · ") + game.desc + progress,
                 onClick = { onGame(game) }
             )
         }
@@ -594,7 +598,7 @@ private fun LessonContent(lesson: MusicLesson, synth: ToneSynth) {
                     names.indices.map { i ->
                         listOf(
                             names[i],
-                            "do-${if (i == 7) "do" else Solfege[i]}",
+                            if (i == 7) "do-高 do" else "do-${Solfege[i]}",
                             listOf("完全一样", "挨着，有点挤", "甜美和谐", "开阔", "空旷稳定", "温柔", "紧张想解决", "像一个音")[i]
                         )
                     }
@@ -602,17 +606,17 @@ private fun LessonContent(lesson: MusicLesson, synth: ToneSynth) {
                 Tip("点每一行：先分开弹两个音，再一起弹。")
             }
             LessonCard("用歌记音程") {
-                Para("很多熟悉的歌开头就是一个音程：《小星星》开头 1 1 5 5，do 跳到 sol 就是五度；《两只老虎》1 2 3 1，一步一步是二度。")
+                Para("很多熟悉的歌开头就是一个音程：《小星星》开头 1 1 5 5，do 跳到 sol 就是五度；《两只老虎》开头 1 2 3，一步一步走，每一步都是二度（接着 3 回到 1，是三度）。")
                 PlayButtons(
                     "小星星（五度）" to { synth.play(melody(Twinkle.take(4), bpm = 100)) },
-                    "两只老虎（二度）" to { synth.play(melody(listOf(60 to 1.0, 62 to 1.0, 64 to 1.0, 60 to 1.0), bpm = 100)) }
+                    "两只老虎 1 2 3（二度）" to { synth.play(melody(listOf(60 to 1.0, 62 to 1.0, 64 to 1.0), bpm = 100)) }
                 )
             }
         }
         MusicLesson.Chords -> {
             LessonCard("三个音叠在一起") {
                 Para("隔一个音取一个，比如 do、mi、sol，三个音同时弹，就是一个「三和弦」。最下面的音叫「根音」，它的名字就是和弦的名字：do mi sol 是 C 和弦。")
-                StaffView(listOf(StaffSymbol.Note(-2, NoteKind.Whole), StaffSymbol.Note(0, NoteKind.Whole), StaffSymbol.Note(2, NoteKind.Whole), StaffSymbol.Bar)) { synth.play(chord(listOf(60, 64, 67))) }
+                StaffView(listOf(StaffSymbol.Chord(listOf(-2, 0, 2)), StaffSymbol.Bar)) { synth.play(chord(listOf(60, 64, 67))) }
                 PianoKeyboard(60, 72, label = { m -> if (m in setOf(60, 64, 67)) Solfege[degreeOf(m)!!] else null }, marks = mapOf(60 to MusicSoft, 64 to MusicSoft, 67 to MusicSoft), onKey = { synth.note(it) })
                 PlayButtons("C 和弦" to { synth.play(brokenChord(listOf(60, 64, 67))) })
             }
@@ -663,7 +667,7 @@ private fun LessonContent(lesson: MusicLesson, synth: ToneSynth) {
 
 // ---------------------------------------------------------------- 小游戏
 
-private sealed class Visual {
+internal sealed class Visual {
     object None : Visual()
     data class Staff(val symbols: List<StaffSymbol>) : Visual()
     data class Big(val text: String) : Visual()
@@ -671,7 +675,7 @@ private sealed class Visual {
     object Keys : Visual()
 }
 
-private data class MusicQuestion(
+internal data class MusicQuestion(
     val prompt: String,
     val visual: Visual = Visual.None,
     val options: List<String> = emptyList(),
@@ -694,7 +698,7 @@ private val NameGroups = listOf(0 to 1, 0 to 2, 1 to 0, 1 to 2, 2 to 0, 2 to 1)
 
 private fun nameGroupTitle(group: Int) = NameGroups[group].let { (f, t) -> "${NameSystems[f].first} → ${NameSystems[t].first}" }
 
-private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQuestion> {
+internal fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQuestion> {
     // 同一局里尽量不连着出同一题
     var last: Any? = null
     fun <T> pick(pool: List<T>): T = pool.filter { it != last || pool.size == 1 }.random(rng).also { last = it }
@@ -711,8 +715,11 @@ private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQues
                 val ask = listOf("唱名 ${Solfege[d]}", "音名 ${NoteLetters[d]}", "简谱 ${d + 1}").random(rng)
                 MusicQuestion("在键盘上找到 $ask", Visual.Keys, answer = CMajorMidis[d])
             }
+            MusicGame.HalfStep -> halfStepQuestion(rng, ::pick)
+            MusicGame.Interval -> intervalQuestion(rng, ::pick)
             MusicGame.ReadStaff -> {
-                val midi = pick(listOf(60, 62, 64, 65, 67, 69, 71, 72, 74, 76, 77, 79))
+                // 只考课上教过的 C4（下加一线）到 C5
+                val midi = pick(listOf(60, 62, 64, 65, 67, 69, 71, 72))
                 val (opts, ans) = pickOptions(Solfege[degreeOf(midi)!!], Solfege, rng)
                 MusicQuestion("这个音符的唱名是？", Visual.Staff(listOf(StaffSymbol.Note(staffStep(midi)))), opts, ans, reveal = listOf(Tone(0.0, 0.8, midi)))
             }
@@ -721,7 +728,8 @@ private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQues
                 val diff = rng.nextInt(2, 10) * if (rng.nextBoolean()) 1 else -1
                 MusicQuestion(
                     "第二个音比第一个音？", Visual.Big("🎵 → 🎵"), listOf("更高 ↗", "更低 ↘"), if (diff > 0) 0 else 1,
-                    sound = listOf(Tone(0.0, 0.7, a), Tone(0.9, 0.7, a + diff))
+                    sound = listOf(Tone(0.0, 0.7, a), Tone(0.9, 0.7, a + diff)),
+                    reveal = listOf(Tone(0.0, 0.7, a), Tone(0.9, 0.7, a + diff))
                 )
             }
             MusicGame.NoteValue -> {
@@ -739,7 +747,8 @@ private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQues
                 MusicQuestion(
                     "听节拍器，这是几拍子？", Visual.Big("🥁"),
                     listOf("2 拍子 · 强 弱", "3 拍子 · 强 弱 弱", "4 拍子 · 强 弱 次强 弱"), meter - 2,
-                    sound = metronome(meter * 3 + 1, 108, meter)
+                    sound = metronome(meter * 3 + 1, 108, meter),
+                    reveal = metronome(meter * 2 + 1, 108, meter)
                 )
             }
             MusicGame.Chord -> {
@@ -747,7 +756,8 @@ private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQues
                 val major = rng.nextBoolean()
                 MusicQuestion(
                     "这个和弦听起来是？", Visual.Big("🎹"), listOf("大三和弦 · 明亮 ☀️", "小三和弦 · 柔和 🌧"), if (major) 0 else 1,
-                    sound = brokenChord(listOf(root, root + if (major) 4 else 3, root + 7))
+                    sound = brokenChord(listOf(root, root + if (major) 4 else 3, root + 7)),
+                    reveal = brokenChord(listOf(root, root + if (major) 4 else 3, root + 7))
                 )
             }
             MusicGame.Ear -> {
@@ -756,11 +766,81 @@ private fun buildRound(game: MusicGame, rng: Random, group: Int): List<MusicQues
                 val (opts, ans) = pickOptions(Solfege[d], Solfege, rng)
                 MusicQuestion(
                     "先听 do，第二个音是？", Visual.Big("do → ?"), opts, ans,
-                    sound = listOf(Tone(0.0, 0.7, 60), Tone(1.0, 0.9, CMajorMidis[d]))
+                    sound = listOf(Tone(0.0, 0.7, 60), Tone(1.0, 0.9, CMajorMidis[d])),
+                    // 答完再听一遍「do → 正确的音」，把声音和名字对上
+                    reveal = listOf(Tone(0.0, 0.7, 60), Tone(1.0, 0.9, CMajorMidis[d]))
                 )
             }
         }
     }
+}
+
+/** 黑键（C4–B4）和它的两个名字 */
+private val BlackKeyNames = mapOf(61 to "C♯ / D♭", 63 to "D♯ / E♭", 66 to "F♯ / G♭", 68 to "G♯ / A♭", 70 to "A♯ / B♭")
+
+/** 键的名字，答错时告诉孩子正确的是哪个键 */
+private fun keyName(midi: Int): String =
+    BlackKeyNames[midi] ?: degreeOf(midi)!!.let { d -> "${Solfege[d]}（${NoteLetters[d]}，简谱 ${d + 1}）" }
+
+private fun halfStepQuestion(rng: Random, pick: (List<Int>) -> Int): MusicQuestion = when (pick(listOf(0, 1, 2))) {
+    // 在键盘上找黑键
+    0 -> {
+        val midi = BlackKeyNames.keys.toList().random(rng)
+        val names = BlackKeyNames.getValue(midi).split(" / ")
+        val ask = if (rng.nextBoolean()) names[0] else names[1]
+        MusicQuestion("在键盘上找到 $ask", Visual.Keys, answer = midi)
+    }
+    // 升高 / 降低半音后是哪个音
+    1 -> {
+        val white = CMajorMidis.filter { it + 1 in BlackKeyNames }.random(rng)
+        val up = rng.nextBoolean()
+        val target = if (up) white + 1 else white - 1
+        val d = degreeOf(white)!!
+        val correct = BlackKeyNames[target] ?: keyName(target)
+        val pool = BlackKeyNames.values.toList() + CMajorMidis.map { BlackKeyNames[it] ?: keyName(it) }
+        val (opts, ans) = pickOptions(correct, pool.distinct(), rng)
+        MusicQuestion(
+            "${NoteLetters[d]}（${Solfege[d]}）${if (up) "升高" else "降低"}半音，是哪个音？", Visual.Big(if (up) "${NoteLetters[d]} ♯" else "${NoteLetters[d]} ♭"),
+            opts, ans, reveal = listOf(Tone(0.0, 0.6, white), Tone(0.7, 0.8, target))
+        )
+    }
+    // C 大调相邻两级之间是半音还是全音（全全半全全全半）
+    else -> {
+        val i = rng.nextInt(7)
+        val from = CMajorMidis[i]
+        val to = if (i == 6) 72 else CMajorMidis[i + 1]
+        val half = to - from == 1
+        MusicQuestion(
+            "${Solfege[i]} 到 ${if (i == 6) "高 do" else Solfege[i + 1]}，是半音还是全音？", Visual.Big("${NoteLetters[i]} → ${NoteLetters[(i + 1) % 7]}"),
+            listOf("半音（中间没有黑键）", "全音（中间隔一个黑键）"), if (half) 0 else 1,
+            reveal = listOf(Tone(0.0, 0.6, from), Tone(0.7, 0.8, to))
+        )
+    }
+}
+
+private val IntervalNames = listOf("一度", "二度", "三度", "四度", "五度", "六度", "七度", "八度")
+
+private fun intervalQuestion(rng: Random, pick: (List<Int>) -> Int): MusicQuestion {
+    if (rng.nextBoolean()) {
+        // 数一数：两个唱名之间是几度（从自己数起）
+        val low = rng.nextInt(0, 6)
+        val size = pick((1..(7 - low).coerceAtMost(7)).toList())
+        val high = low + size
+        val highName = if (high == 7) "高 do" else Solfege[high]
+        val (opts, ans) = pickOptions(IntervalNames[size], IntervalNames.drop(1), rng)
+        val a = CMajorMidis[low]
+        val b = if (high == 7) 72 else CMajorMidis[high]
+        return MusicQuestion(
+            "数一数：${Solfege[low]} 到 $highName 是几度？", Visual.Big("${Solfege[low]} → $highName"), opts, ans,
+            reveal = listOf(Tone(0.0, 0.6, a), Tone(0.7, 0.7, b)) + chord(listOf(a, b), 1.5, 1.0)
+        )
+    }
+    // 听一听：先 do 再一个音，是几度
+    val size = pick((1..7).toList())
+    val top = if (size == 7) 72 else CMajorMidis[size]
+    val (opts, ans) = pickOptions(IntervalNames[size], IntervalNames.drop(1), rng)
+    val sound = listOf(Tone(0.0, 0.6, 60), Tone(0.7, 0.7, top)) + chord(listOf(60, top), 1.5, 1.0)
+    return MusicQuestion("先听 do，再听一个音，它们相隔几度？", Visual.Big("do → ?"), opts, ans, sound = sound, reveal = sound)
 }
 
 private enum class MusicPhase { Asking, Feedback, Finished }
@@ -806,7 +886,8 @@ private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeav
     }
     LaunchedEffect(session, index, phase) {
         if (phase != MusicPhase.Feedback) return@LaunchedEffect
-        delay(if (results.lastOrNull() == true) 1000 else 2200)
+        // 答错时留够时间听完正确的声音
+        delay(if (results.lastOrNull() == true) 1000 else if (question?.reveal.isNullOrEmpty()) 2200 else 3200)
         if (index >= questions.lastIndex) {
             store.saveSpecialScore("music-${game.key}", g, results.count { it })
             phase = MusicPhase.Finished
@@ -890,7 +971,7 @@ private fun MusicGameRound(game: MusicGame, g: Int, store: ProgressStore, onLeav
             if (phase == MusicPhase.Feedback) {
                 val right = results.lastOrNull() == true
                 AppText(
-                    if (right) "答对啦！" else "正确答案：" + if (question.visual == Visual.Keys) "绿色的键" else question.options[question.answer],
+                    if (right) "答对啦！" else "正确答案：" + if (question.visual == Visual.Keys) "绿色的键 ${keyName(question.answer)}" else question.options[question.answer],
                     color = if (right) Success else Error,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
@@ -933,12 +1014,8 @@ private fun NameGroupPicker(store: ProgressStore, onGroup: (Int) -> Unit, onBack
 
 @Composable
 private fun MusicResult(correct: Int, best: Int?, onAgain: () -> Unit, onBack: () -> Unit, backLabel: String) {
-    val stars = when {
-        correct == MusicRoundSize -> "⭐⭐⭐"
-        correct >= MusicRoundSize * 0.7 -> "⭐⭐"
-        correct >= MusicRoundSize * 0.4 -> "⭐"
-        else -> "💪"
-    }
+    val stars = roundStars(correct, MusicRoundSize)
+    if (correct == MusicRoundSize) CheerSound()
     Spacer(Modifier.height(24.dp))
     Text(stars, fontSize = 48.sp)
     AppText("答对 $correct / $MusicRoundSize", fontSize = 28.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Serif)

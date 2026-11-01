@@ -67,6 +67,8 @@ enum class NoteKind(val zh: String, val beats: String, val beatValue: Double, va
 sealed class StaffSymbol {
     data class Note(val step: Int, val kind: NoteKind = NoteKind.Quarter, val accidental: String? = null) : StaffSymbol()
     data class Rest(val kind: NoteKind) : StaffSymbol()
+    /** 和弦：几个音竖着叠在同一个位置，表示同时发声 */
+    data class Chord(val steps: List<Int>, val kind: NoteKind = NoteKind.Whole) : StaffSymbol()
     data class Time(val top: Int, val bottom: Int) : StaffSymbol()
     object Bar : StaffSymbol()
 }
@@ -117,6 +119,7 @@ fun StaffView(
             val color = colors[i] ?: Ink
             when (symbol) {
                 is StaffSymbol.Note -> drawNote(x, symbol, color, g, ::y)
+                is StaffSymbol.Chord -> symbol.steps.forEach { drawNote(x, StaffSymbol.Note(it, symbol.kind), color, g, ::y) }
                 is StaffSymbol.Rest -> drawRest(x, symbol.kind, color, g, ::y)
                 is StaffSymbol.Time -> {
                     drawLabel(symbol.top.toString(), x, y(5f) + g * 0.85f, g * 2.3f, color, bold = true)

@@ -1,6 +1,5 @@
 package com.example.ogdenkids
 
-import android.media.MediaPlayer
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -26,17 +25,16 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -120,7 +118,7 @@ private fun CourseCard(title: String, content: @Composable () -> Unit) {
 
 @Composable
 fun MathUnitPracticeScreen(unit: MathUnit, store: ProgressStore, onBack: () -> Unit) {
-    var round by remember { mutableStateOf(0) }
+    var round by rememberSaveable { mutableStateOf(0) }
     Column(Modifier.fillMaxSize().background(Paper)) {
         MusicTopBar("${unit.title} · 练习", "${GradeNames[unit.grade]} · 每局 $MathUnitRoundSize 题", onBack)
         key(round) { PracticeRound(unit, store, onAgain = { round++ }, onBack = onBack) }
@@ -129,10 +127,12 @@ fun MathUnitPracticeScreen(unit: MathUnit, store: ProgressStore, onBack: () -> U
 
 @Composable
 private fun PracticeRound(unit: MathUnit, store: ProgressStore, onAgain: () -> Unit, onBack: () -> Unit) {
-    val questions = remember { buildMathUnitRound(unit, Random(System.nanoTime())) }
-    var index by remember { mutableStateOf(0) }
-    var chosen by remember { mutableStateOf<String?>(null) }
-    var correct by remember { mutableStateOf(0) }
+    // 题目由种子决定，转屏或进程被回收后用同一个种子重建，进度不丢
+    val seed by rememberSaveable { mutableStateOf(System.nanoTime()) }
+    val questions = remember(seed) { buildMathUnitRound(unit, Random(seed)) }
+    var index by rememberSaveable { mutableStateOf(0) }
+    var chosen by rememberSaveable { mutableStateOf<String?>(null) }
+    var correct by rememberSaveable { mutableStateOf(0) }
     val finished = index >= questions.size
     var best by remember { mutableStateOf(store.bestSpecialScore(scoreKey(unit), 0)) }
     LaunchedEffect(finished) {
@@ -147,13 +147,8 @@ private fun PracticeRound(unit: MathUnit, store: ProgressStore, onAgain: () -> U
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (finished) {
-            if (correct == questions.size) Cheer()
-            val stars = when {
-                correct == questions.size -> "⭐⭐⭐"
-                correct >= questions.size * 0.7 -> "⭐⭐"
-                correct >= questions.size * 0.4 -> "⭐"
-                else -> "💪"
-            }
+            if (correct == questions.size) CheerSound()
+            val stars = roundStars(correct, questions.size)
             Spacer(Modifier.height(24.dp))
             Text(stars, fontSize = 48.sp)
             AppText("答对 $correct / ${questions.size}", fontSize = 28.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Serif)
@@ -219,20 +214,5 @@ private fun PracticeRound(unit: MathUnit, store: ProgressStore, onAgain: () -> U
                 ) { AppText(if (index == questions.lastIndex) "看成绩" else "下一题", fontWeight = FontWeight.Bold) }
             }
         }
-    }
-}
-
-@Composable
-private fun Cheer() {
-    val context = LocalContext.current
-    DisposableEffect(Unit) {
-        val player = runCatching {
-            MediaPlayer().apply {
-                context.assets.openFd("sfx/cheer.mp3").use { setDataSource(it.fileDescriptor, it.startOffset, it.length) }
-                prepare()
-                start()
-            }
-        }.getOrNull()
-        onDispose { player?.release() }
     }
 }
