@@ -126,4 +126,35 @@ class ChessTest {
 
         assertEquals(null, explainMate(ChessPosition.fromFen(ChessPosition.START_FEN), true))
     }
+
+    @Test
+    fun savedGameRoundTripsAndMovesAreDescribed() {
+        val game = SavedGame(42L, ChessBot.Fox, false, listOf("f2f3", "e7e5", "g2g4", "d8h4"), ChessOutcome.BlackMates)
+        val back = SavedGame.fromJson(game.toJson())
+        assertEquals(listOf("f2f3", "e7e5", "g2g4", "d8h4"), back.moves)
+        assertEquals(ChessBot.Fox, back.bot)
+        assertTrue(back.playerWon)
+        assertEquals(null, SavedGame.fromJson(SavedGame(1L, ChessBot.Lion, true, emptyList(), null).toJson()).outcome)
+
+        var pos = ChessPosition.fromFen(ChessPosition.START_FEN)
+        val texts = game.moves.map { uci -> val m = ChessMove.parse(uci); describeMove(pos, m).also { pos = pos.play(m) } }
+        assertEquals("白 兵 f2→f3", texts[0])
+        assertEquals("黑 后 d8→h4 将杀！", texts[3])
+
+        val castle = ChessPosition.fromFen("r3k2r/8/8/8/8/8/8/R3K2R w KQkq - 0 1")
+        assertEquals("白 王车易位", describeMove(castle, ChessMove.parse("e1g1")))
+        val ep = ChessPosition.fromFen("4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1")
+        assertEquals("白 兵 e5 吃 d6", describeMove(ep, ChessMove.parse("e5d6")))
+    }
+
+    @Test
+    fun puzzleAttemptRoundTrips() {
+        val a = PuzzleAttempt("abc", "fork", 11, 640, 2, false, 99L)
+        val b = PuzzleAttempt.fromJson(a.toJson())
+        assertEquals("fork", b.chapter)
+        assertEquals(11, b.index)
+        assertEquals("👍 错 2 次后做对", b.label)
+        assertEquals("✅ 一次做对", PuzzleAttempt("x", "mate1", 0, 400, 0, false, 1L).label)
+        assertEquals("👀 看了答案", PuzzleAttempt("x", "mate1", 0, 400, 3, true, 1L).label)
+    }
 }

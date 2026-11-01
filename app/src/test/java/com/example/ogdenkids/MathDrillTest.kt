@@ -99,4 +99,10 @@ class MathDrillTest {
         assertEquals(1, mathStreak(today) { it in days })
         assertEquals(0, mathStreak(today) { false })
     }
+
+    @Test
+    fun hidingPureAddSubLeavesOnlyMixedOps() {
+        assertEquals(listOf(MathOp.Mixed, MathOp.MulDivAddSub), mathOpsFor(hidePureAddSub = true))
+        assertEquals(MathOp.values().toList(), mathOpsFor(hidePureAddSub = false))
+    }
 }

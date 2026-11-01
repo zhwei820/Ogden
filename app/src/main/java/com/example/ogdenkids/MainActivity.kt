@@ -106,6 +106,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -384,9 +385,14 @@ sealed class Screen {
     object Privacy : Screen()
     object Feedback : Screen()
     object MathDrill : Screen()
+    data class MathUnitPage(val key: String) : Screen()
+    data class MathUnitPractice(val key: String) : Screen()
     data class ChessLesson(val index: Int) : Screen()
-    data class ChessPuzzles(val chapter: String) : Screen()
+    data class ChessPuzzles(val chapter: String, val startIndex: Int? = null, val returnTo: Screen = Main) : Screen()
+    object ChessPuzzleHistory : Screen()
     data class ChessPlay(val bot: ChessBot, val playerWhite: Boolean) : Screen()
+    object ChessHistory : Screen()
+    data class ChessReplay(val gameId: Long) : Screen()
     data class VideoCoursePage(val course: VideoCourse) : Screen()
     data class MusicLessonPage(val lesson: MusicLesson) : Screen()
     data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
@@ -805,6 +811,7 @@ private fun UserApp(accounts: Accounts) {
     var selectedTab by remember { mutableStateOf(Tab.Speech) }
     var accent by remember { mutableStateOf(progressStore.savedAccent()) }
     var chineseMode by remember { mutableStateOf(progressStore.savedChineseMode()) }
+    var hidePureAddSub by remember { mutableStateOf(progressStore.mathDrillSetting(HidePureAddSubKey) == "true") }
     var version by remember { mutableStateOf(0) }
     var confirmExit by remember { mutableStateOf(false) }
     // 每个页面 / 标签各自保存 rememberSaveable 状态（含列表滚动位置），切回来时恢复
@@ -890,6 +897,12 @@ private fun UserApp(accounts: Accounts) {
             is Screen.MusicGamePage -> screen = current.returnTo
             is Screen.MusicSongPage, is Screen.MusicSongImport -> screen = Screen.MusicSongList
             is Screen.ProfileEdit -> screen = current.returnTo
+            is Screen.ChessReplay -> screen = Screen.ChessHistory
+            is Screen.MathUnitPractice -> {
+                stateHolder.removeState(screenKey(current))
+                screen = Screen.MathUnitPage(current.key)
+            }
+            is Screen.ChessPuzzles -> screen = current.returnTo
             else -> {
                 azureSpeaker.stop()
                 screen = Screen.Main
@@ -938,13 +951,20 @@ private fun UserApp(accounts: Accounts) {
                         val tabKey = if (selectedSection == Section.English) "tab-${selectedTab.name}" else "section-${selectedSection.name}"
                         stateHolder.SaveableStateProvider(tabKey) {
                         when (selectedSection) {
-                        Section.Math -> MathHomeScreen(store = progressStore, padding = padding, onMathDrill = { screen = Screen.MathDrill })
+                        Section.Math -> MathHomeScreen(
+                            store = progressStore,
+                            padding = padding,
+                            onMathDrill = { screen = Screen.MathDrill },
+                            onUnit = { screen = Screen.MathUnitPage(it.key) }
+                        )
                         Section.Chess -> ChessHomeScreen(
                             store = chessStore,
                             padding = padding,
                             onLesson = { screen = Screen.ChessLesson(it) },
                             onPuzzles = { screen = Screen.ChessPuzzles(it) },
-                            onPlay = { bot, white -> screen = Screen.ChessPlay(bot, white) }
+                            onPlay = { bot, white -> screen = Screen.ChessPlay(bot, white) },
+                            onHistory = { screen = Screen.ChessHistory },
+                            onPuzzleHistory = { screen = Screen.ChessPuzzleHistory }
                         )
                         Section.Music -> MusicHomeScreen(
                             store = progressStore,
@@ -1234,6 +1254,8 @@ private fun UserApp(accounts: Accounts) {
                     onAccent = { accent = it; progressStore.saveAccent(it) },
                     onChineseMode = { chineseMode = it; progressStore.saveChineseMode(it) },
                     onResourcePacks = { screen = Screen.ResourcePacks },
+                    hidePureAddSub = hidePureAddSub,
+                    onHidePureAddSub = { hidePureAddSub = it; progressStore.saveMathDrillSetting(HidePureAddSubKey, it.toString()) },
                     onBack = goBack
                 )
                 Screen.ResourcePacks -> ResourcePacksScreen(onBack = goBack, onPacksChanged = { packVersion++ })
@@ -1251,9 +1273,22 @@ private fun UserApp(accounts: Accounts) {
                     onBack = goBack
                 )
                 Screen.MathDrill -> MathDrillScreen(store = progressStore, accent = accent, azure = azureSpeaker, onBack = goBack)
+                is Screen.MathUnitPage -> mathUnit(current.key)?.let { unit ->
+                    MathUnitScreen(unit, progressStore, onPractice = { screen = Screen.MathUnitPractice(unit.key) }, onBack = goBack)
+                }
+                is Screen.MathUnitPractice -> mathUnit(current.key)?.let { unit ->
+                    MathUnitPracticeScreen(unit, progressStore, onBack = goBack)
+                }
                 is Screen.ChessLesson -> ChessLessonScreen(current.index, chessStore, onLesson = { screen = Screen.ChessLesson(it) }, onBack = goBack)
-                is Screen.ChessPuzzles -> ChessPuzzleScreen(current.chapter, chessStore, onBack = goBack)
+                is Screen.ChessPuzzles -> ChessPuzzleScreen(current.chapter, chessStore, onBack = goBack, startIndex = current.startIndex)
+                Screen.ChessPuzzleHistory -> ChessPuzzleHistoryScreen(
+                    chessStore,
+                    onOpen = { chapter, index -> screen = Screen.ChessPuzzles(chapter, index, returnTo = Screen.ChessPuzzleHistory) },
+                    onBack = goBack
+                )
                 is Screen.ChessPlay -> ChessPlayScreen(current.bot, current.playerWhite, chessStore, onBack = goBack)
+                Screen.ChessHistory -> ChessHistoryScreen(chessStore, onOpen = { screen = Screen.ChessReplay(it) }, onBack = goBack)
+                is Screen.ChessReplay -> ChessReplayScreen(current.gameId, chessStore, onBack = goBack)
                 is Screen.MusicLessonPage -> MusicLessonScreen(
                     lesson = current.lesson,
                     onLesson = { screen = Screen.MusicLessonPage(it) },
@@ -1381,9 +1416,14 @@ private fun screenKey(screen: Screen): String = when (screen) {
     Screen.Privacy -> "privacy"
     Screen.Feedback -> "feedback"
     Screen.MathDrill -> "math-drill"
+    is Screen.MathUnitPage -> "math-unit-${screen.key}"
+    is Screen.MathUnitPractice -> "math-unit-practice-${screen.key}"
     is Screen.ChessLesson -> "chess-lesson-${screen.index}"
-    is Screen.ChessPuzzles -> "chess-puzzles-${screen.chapter}"
+    is Screen.ChessPuzzles -> "chess-puzzles-${screen.chapter}-${screen.startIndex}"
+    Screen.ChessPuzzleHistory -> "chess-puzzle-history"
     is Screen.ChessPlay -> "chess-play-${screen.bot.name}-${screen.playerWhite}"
+    Screen.ChessHistory -> "chess-history"
+    is Screen.ChessReplay -> "chess-replay-${screen.gameId}"
     is Screen.VideoCoursePage -> "video-course-${screen.course.dir.name}"
     is Screen.MusicLessonPage -> "music-lesson-${screen.lesson.name}"
     is Screen.MusicGamePage -> "music-game-${screen.game.name}"
@@ -1661,7 +1701,8 @@ fun ChallengeScreen(
 }
 
 @Composable
-fun MathHomeScreen(store: ProgressStore, padding: PaddingValues, onMathDrill: () -> Unit) {
+fun MathHomeScreen(store: ProgressStore, padding: PaddingValues, onMathDrill: () -> Unit, onUnit: (MathUnit) -> Unit) {
+    var grade by rememberSaveable { mutableStateOf(store.mathDrillSetting("courseGrade")?.toIntOrNull() ?: 3) }
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -1679,6 +1720,14 @@ fun MathHomeScreen(store: ProgressStore, padding: PaddingValues, onMathDrill: ()
             )
         }
         item { MathCheckInCard(store) }
+        item {
+            MathCourseSection(
+                store = store,
+                grade = grade,
+                onGrade = { grade = it; store.saveMathDrillSetting("courseGrade", it.toString()) },
+                onUnit = onUnit
+            )
+        }
     }
 }
 
@@ -3934,6 +3983,8 @@ fun SettingsScreen(
     onAccent: (Accent) -> Unit,
     onChineseMode: (ChineseMode) -> Unit,
     onResourcePacks: () -> Unit,
+    hidePureAddSub: Boolean,
+    onHidePureAddSub: (Boolean) -> Unit,
     onBack: () -> Unit
 ) {
     Scaffold(containerColor = Paper, topBar = {
@@ -3975,6 +4026,29 @@ fun SettingsScreen(
                             onAccent = onAccent,
                             onChineseMode = onChineseMode
                         )
+                    }
+                }
+            }
+            item {
+                SectionTitle("数学", "口算题型，只对当前用户生效")
+            }
+            item {
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = PaperElevated),
+                    shape = RoundedCornerShape(18.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .border(1.dp, Line, RoundedCornerShape(18.dp))
+                ) {
+                    Row(
+                        Modifier.fillMaxWidth().clickable { onHidePureAddSub(!hidePureAddSub) }.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            AppText("去掉纯加法、纯减法", fontWeight = FontWeight.SemiBold)
+                            AppText("打开后口算只出加减混合、乘除加减混合", color = InkFaint, fontSize = 13.sp)
+                        }
+                        Switch(checked = hidePureAddSub, onCheckedChange = onHidePureAddSub)
                     }
                 }
             }

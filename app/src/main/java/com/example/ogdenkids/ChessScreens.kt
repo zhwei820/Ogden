@@ -38,7 +38,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.Pause
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.SkipPrevious
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -88,6 +94,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.abs
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -116,7 +125,9 @@ fun ChessHomeScreen(
     padding: PaddingValues,
     onLesson: (Int) -> Unit,
     onPuzzles: (String) -> Unit,
-    onPlay: (ChessBot, Boolean) -> Unit
+    onPlay: (ChessBot, Boolean) -> Unit,
+    onHistory: () -> Unit,
+    onPuzzleHistory: () -> Unit
 ) {
     val context = LocalContext.current
     val bank by produceState<Map<String, List<ChessPuzzle>>>(emptyMap()) {
@@ -153,6 +164,16 @@ fun ChessHomeScreen(
             )
         }
         item {
+            val count = remember { store.puzzleLog().size }
+            ChessRowCard(
+                leading = { AppText("📜", fontSize = 28.sp) },
+                title = "做题记录",
+                subtitle = "看看做过的题，错过的再做一遍",
+                trailing = if (count > 0) "$count 题" else "",
+                onClick = onPuzzleHistory
+            )
+        }
+        item {
             ChessSectionTitle("第三步 · 和电脑下棋", "从小猫咪开始，赢了再挑战下一个")
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                 AppText("我执", color = InkSoft)
@@ -168,6 +189,16 @@ fun ChessHomeScreen(
                 subtitle = bot.desc,
                 trailing = if (wins > 0) "🏆 $wins" else "",
                 onClick = { onPlay(bot, playWhite) }
+            )
+        }
+        item {
+            val count = remember { store.games().size }
+            ChessRowCard(
+                leading = { AppText("📜", fontSize = 28.sp) },
+                title = "对局记录",
+                subtitle = "回看下过的棋，一步一步复盘",
+                trailing = if (count > 0) "$count 盘" else "",
+                onClick = onHistory
             )
         }
     }
@@ -700,14 +731,14 @@ private fun StarRound(lesson: ChessLesson, levelIndex: Int, store: ChessStore, o
 // ---------- 战术题 ----------
 
 @Composable
-fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit) {
+fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit, startIndex: Int? = null) {
     ChessBackgroundMusic()
     val context = LocalContext.current
     val chapter = PuzzleChapters.first { it.key == chapterKey }
     val puzzles by produceState<List<ChessPuzzle>?>(null, chapterKey) {
         value = withContext(Dispatchers.IO) { PuzzleBank.load(context)[chapterKey].orEmpty() }
     }
-    var index by rememberSaveable { mutableStateOf(store.puzzleIndex(chapterKey)) }
+    var index by rememberSaveable { mutableStateOf(startIndex ?: store.puzzleIndex(chapterKey)) }
     val list = puzzles
     Column(Modifier.fillMaxSize().background(Paper)) {
         val total = list?.size ?: 0
@@ -715,10 +746,20 @@ fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit)
         if (!list.isNullOrEmpty()) {
             val puzzle = list[index % list.size]
             key(puzzle.id) {
-                PuzzleRound(puzzle, chapter, onNext = {
-                    index++
-                    store.savePuzzleIndex(chapterKey, index)
-                })
+                PuzzleRound(
+                    puzzle,
+                    chapter,
+                    previous = remember(puzzle.id) { store.lastAttempt(puzzle.id) },
+                    onPrevious = if (index > 0) ({ index-- }) else null,
+                    onFinished = { mistakes, revealed ->
+                        store.recordPuzzle(PuzzleAttempt(puzzle.id, chapterKey, index, puzzle.rating, mistakes, revealed, System.currentTimeMillis()))
+                    },
+                    onNext = {
+                        index++
+                        // 回头重做旧题不把进度往回拉
+                        if (index > store.puzzleIndex(chapterKey)) store.savePuzzleIndex(chapterKey, index)
+                    }
+                )
             }
         }
     }
@@ -727,7 +768,15 @@ fun ChessPuzzleScreen(chapterKey: String, store: ChessStore, onBack: () -> Unit)
 private enum class PuzzleState { Opponent, Solving, Wrong, Solved, Revealed }
 
 @Composable
-private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () -> Unit) {
+private fun PuzzleRound(
+    puzzle: ChessPuzzle,
+    chapter: PuzzleChapter,
+    previous: PuzzleAttempt?,
+    onPrevious: (() -> Unit)?,
+    onFinished: (mistakes: Int, revealed: Boolean) -> Unit,
+    onNext: () -> Unit
+) {
+    var mistakes by remember { mutableStateOf(0) }
     val initial = remember { ChessPosition.fromFen(puzzle.fen) }
     var pos by remember { mutableStateOf(initial) }
     var step by remember { mutableStateOf(0) }
@@ -750,6 +799,7 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
                 hint = null
                 state = if (step >= puzzle.moves.size) PuzzleState.Solved else PuzzleState.Opponent
             } else {
+                mistakes++
                 state = PuzzleState.Wrong
             }
         }
@@ -775,6 +825,7 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
     mover.Dialog(playerWhite)
     if (state == PuzzleState.Solved) CheerSound()
     val finished = state == PuzzleState.Solved || state == PuzzleState.Revealed
+    LaunchedEffect(finished) { if (finished) onFinished(mistakes, state == PuzzleState.Revealed) }
     val mate = remember(pos, finished) { if (finished) explainMate(pos, matedIsPlayer = false) else null }
     ChessLayout(expandKey = state, note = mover.note, onNoteDismiss = { mover.note = null }, board = { m ->
         ChessBoardView(
@@ -790,6 +841,35 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
             onTap = { if (active) mover.tap(pos, it, movable = pos.whiteToMove == playerWhite) }
         )
     }) {
+        // 按钮固定在提示框顶部、始终占位（不能点时置灰），下面的文字变长变短都不会让它们挪位置
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            TextButton(onClick = { onPrevious?.invoke() }, enabled = onPrevious != null) { AppText("‹ 上一题") }
+            Spacer(Modifier.weight(1f))
+            // 做完了，或者以前做过的题，可以往后翻
+            val canNext = finished || previous != null
+            if (finished) {
+                Button(onClick = onNext) { AppText("下一题 ›") }
+            } else {
+                TextButton(onClick = onNext, enabled = canNext) { AppText("下一题 ›") }
+            }
+        }
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            OutlinedButton(
+                onClick = { hint = ChessMove.parse(puzzle.moves[step]).from },
+                enabled = active,
+                modifier = Modifier.weight(1f)
+            ) { AppText("提示") }
+            OutlinedButton(
+                onClick = {
+                    mover.selected = null
+                    hint = null
+                    while (step < puzzle.moves.size) applyNext()
+                    state = PuzzleState.Revealed
+                },
+                enabled = active,
+                modifier = Modifier.weight(1f)
+            ) { AppText("看答案") }
+        }
         AppText(
             when (state) {
                 PuzzleState.Opponent -> if (step == 0) "对手先走一步…" else "对手应着…"
@@ -805,22 +885,12 @@ private fun PuzzleRound(puzzle: ChessPuzzle, chapter: PuzzleChapter, onNext: () 
                 else -> Ink
             }
         )
+        AppText(
+            "难度 ${puzzle.rating}" + if (previous != null) " · 上次：${previous.label}" else "",
+            color = InkFaint,
+            fontSize = 13.sp
+        )
         mate?.let { MateExplanationCard(it) }
-        AppText("难度 ${puzzle.rating}", color = InkFaint, fontSize = 13.sp)
-        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            if (active) {
-                OutlinedButton(onClick = { hint = ChessMove.parse(puzzle.moves[step]).from }) { AppText("提示") }
-                OutlinedButton(onClick = {
-                    mover.selected = null
-                    hint = null
-                    while (step < puzzle.moves.size) applyNext()
-                    state = PuzzleState.Revealed
-                }) { AppText("看答案") }
-            }
-            if (state == PuzzleState.Solved || state == PuzzleState.Revealed) {
-                Button(onClick = onNext) { AppText("下一题") }
-            }
-        }
     }
 }
 
@@ -850,6 +920,11 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
             version++
         }
     }
+    val gameId = remember { System.currentTimeMillis() }
+    fun save() = store.saveGame(SavedGame(gameId, bot, playerWhite, record.moves.map { it.uci() }, record.outcome()))
+    LaunchedEffect(outcome) { if (outcome != null) save() }
+    // 没下完就离开 / 重新开始：走过几步的也留个记录
+    DisposableEffect(Unit) { onDispose { if (record.outcome() == null && record.moves.size >= 4) save() } }
 
     LaunchedEffect(version) {
         if (outcome == null && pos.whiteToMove != playerWhite) {
@@ -920,6 +995,186 @@ private fun PlayRound(bot: ChessBot, playerWhite: Boolean, store: ChessStore, on
                 fontWeight = FontWeight.Bold
             )
             mate?.let { MateExplanationCard(it) }
+        }
+    }
+}
+
+
+// ---------- 对局记录 ----------
+
+@Composable
+fun ChessHistoryScreen(store: ChessStore, onOpen: (Long) -> Unit, onBack: () -> Unit) {
+    val games = remember { store.games() }
+    val format = remember { SimpleDateFormat("M月d日 HH:mm", Locale.CHINA) }
+    Column(Modifier.fillMaxSize().background(Paper)) {
+        ChessTopBar("📜 对局记录", "最近 ${games.size} 盘，点开可以复盘", onBack)
+        if (games.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                AppText("还没有对局记录，去和电脑下一盘吧！", color = InkFaint)
+            }
+        } else {
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(18.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(games, key = { it.id }) { game ->
+                    ChessRowCard(
+                        leading = { AppText(game.bot.emoji, fontSize = 30.sp) },
+                        title = "对战${game.bot.title} · 执${if (game.playerWhite) "白" else "黑"}",
+                        subtitle = "${format.format(Date(game.id))} · ${(game.moves.size + 1) / 2} 回合",
+                        trailing = resultLabel(game),
+                        onClick = { onOpen(game.id) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+private fun resultLabel(game: SavedGame): String = when {
+    game.outcome == null -> "未下完"
+    game.playerWon -> "🏆 赢"
+    game.playerLost -> "输"
+    else -> "🤝 和"
+}
+
+@Composable
+fun ChessReplayScreen(gameId: Long, store: ChessStore, onBack: () -> Unit) {
+    val game = remember { store.games().firstOrNull { it.id == gameId } }
+    Column(Modifier.fillMaxSize().background(Paper)) {
+        ChessTopBar(
+            if (game != null) "复盘：对战${game.bot.title} ${game.bot.emoji}" else "复盘",
+            if (game != null) "你执${if (game.playerWhite) "白" else "黑"} · ${resultLabel(game)}" else "",
+            onBack
+        )
+        if (game != null) ReplayBody(game)
+    }
+}
+
+@Composable
+private fun ReplayBody(game: SavedGame) {
+    // 按记录重放；遇到不合法的步（理论上不会）就停在那里
+    val replay = remember(game.id) {
+        val positions = mutableListOf(ChessPosition.fromFen(ChessPosition.START_FEN))
+        val moves = mutableListOf<ChessMove>()
+        for (uci in game.moves) {
+            val m = positions.last().legalMoves().firstOrNull { it.uci() == uci } ?: break
+            moves += m
+            positions += positions.last().play(m)
+        }
+        positions to moves
+    }
+    val (positions, moves) = replay
+    val descriptions = remember(game.id) { moves.mapIndexed { i, m -> describeMove(positions[i], m) } }
+    var ply by rememberSaveable { mutableStateOf(0) }
+    var playing by remember { mutableStateOf(false) }
+    LaunchedEffect(playing, ply) {
+        if (playing) {
+            if (ply < moves.size) {
+                delay(1200)
+                ply++
+            } else {
+                playing = false
+            }
+        }
+    }
+    val pos = positions[ply]
+    val mate = remember(ply) { explainMate(pos, matedIsPlayer = pos.whiteToMove == game.playerWhite) }
+    ChessLayout(expandKey = Unit, board = { m ->
+        ChessBoardView(
+            modifier = m,
+            pos = pos,
+            flipped = !game.playerWhite,
+            selected = null,
+            targets = emptySet(),
+            lastMove = moves.getOrNull(ply - 1),
+            denied = mate?.deniedSquares.orEmpty(),
+            onTap = {}
+        )
+    }) {
+        AppText(
+            if (ply == 0) "开局" else "第 $ply / ${moves.size} 步：${descriptions[ply - 1]}",
+            fontWeight = FontWeight.SemiBold
+        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            IconButton(onClick = { playing = false; ply = 0 }, enabled = ply > 0) { Icon(Icons.Default.SkipPrevious, contentDescription = "回到开局") }
+            IconButton(onClick = { playing = false; ply-- }, enabled = ply > 0) { Icon(Icons.Default.ChevronLeft, contentDescription = "上一步") }
+            IconButton(onClick = { playing = !playing }, enabled = ply < moves.size || playing) {
+                Icon(if (playing) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = if (playing) "暂停" else "自动播放")
+            }
+            IconButton(onClick = { playing = false; ply++ }, enabled = ply < moves.size) { Icon(Icons.Default.ChevronRight, contentDescription = "下一步") }
+            IconButton(onClick = { playing = false; ply = moves.size }, enabled = ply < moves.size) { Icon(Icons.Default.SkipNext, contentDescription = "最后一步") }
+        }
+        if (ply == moves.size) {
+            AppText(game.outcome?.text ?: "这盘没有下完", color = InkSoft)
+        }
+        mate?.let { MateExplanationCard(it) }
+        Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            descriptions.forEachIndexed { i, text ->
+                val current = i + 1 == ply
+                AppText(
+                    "${i / 2 + 1}${if (i % 2 == 0) "." else "…"} $text",
+                    color = if (current) Ink else InkSoft,
+                    fontWeight = if (current) FontWeight.Bold else null,
+                    fontSize = 14.sp,
+                    modifier = Modifier.fillMaxWidth()
+                        .background(if (current) LastMoveTint else Color.Transparent, RoundedCornerShape(6.dp))
+                        .clickable { playing = false; ply = i + 1 }
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
+                )
+            }
+        }
+    }
+}
+
+
+// ---------- 做题记录 ----------
+
+private enum class PuzzleFilter(val label: String) { All("全部"), Missed("错过的"), Perfect("一次做对") }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ChessPuzzleHistoryScreen(store: ChessStore, onOpen: (chapter: String, index: Int) -> Unit, onBack: () -> Unit) {
+    val log = remember { store.puzzleLog() }
+    val format = remember { SimpleDateFormat("M月d日 HH:mm", Locale.CHINA) }
+    var filter by rememberSaveable { mutableStateOf(PuzzleFilter.All) }
+    val shown = log.filter {
+        when (filter) {
+            PuzzleFilter.All -> true
+            PuzzleFilter.Missed -> it.revealed || it.mistakes > 0
+            PuzzleFilter.Perfect -> !it.revealed && it.mistakes == 0
+        }
+    }
+    val perfect = log.count { !it.revealed && it.mistakes == 0 }
+    Column(Modifier.fillMaxSize().background(Paper)) {
+        ChessTopBar("📜 做题记录", "做过 ${log.size} 题 · 一次做对 $perfect 题", onBack)
+        Row(Modifier.padding(horizontal = 18.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            PuzzleFilter.values().forEach { f ->
+                FilterChip(selected = filter == f, onClick = { filter = f }, label = { AppText(f.label) })
+            }
+        }
+        if (shown.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                AppText(if (log.isEmpty()) "还没做过题，去「做题练战术」试试吧！" else "这里没有题目", color = InkFaint)
+            }
+        } else {
+            LazyColumn(
+                Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(start = 18.dp, end = 18.dp, bottom = 18.dp),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
+                items(shown, key = { it.puzzleId }) { attempt ->
+                    val chapter = PuzzleChapters.firstOrNull { it.key == attempt.chapter }
+                    ChessRowCard(
+                        leading = { AppText("🧩", fontSize = 28.sp) },
+                        title = "${chapter?.title ?: attempt.chapter} 第 ${attempt.index + 1} 题",
+                        subtitle = "${format.format(Date(attempt.time))} · 难度 ${attempt.rating}",
+                        trailing = attempt.label,
+                        onClick = { onOpen(attempt.chapter, attempt.index) }
+                    )
+                }
+            }
         }
     }
 }

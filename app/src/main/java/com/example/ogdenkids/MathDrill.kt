@@ -6,6 +6,12 @@ import kotlin.random.Random
 
 enum class MathOp(val zh: String) { Add("加法"), Sub("减法"), Mixed("加减混合"), MulDivAddSub("乘除加减混合") }
 
+/** 设置里「去掉纯加法、纯减法」的开关，存在 ProgressStore.mathDrillSetting 下 */
+const val HidePureAddSubKey = "hidePureAddSub"
+
+fun mathOpsFor(hidePureAddSub: Boolean): List<MathOp> =
+    if (hidePureAddSub) listOf(MathOp.Mixed, MathOp.MulDivAddSub) else MathOp.values().toList()
+
 enum class MathOperator(val sign: String, val en: String, val zh: String, val clip: String) {
     Plus("+", "plus", "加", "add"), Minus("−", "minus", "减", "sub"),
     Times("×", "times", "乘", "mul"), Divide("÷", "divided by", "除以", "div");

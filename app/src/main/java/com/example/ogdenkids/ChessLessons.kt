@@ -1,6 +1,8 @@
 package com.example.ogdenkids
 
 import android.content.Context
+import org.json.JSONArray
+import org.json.JSONObject
 import kotlin.math.abs
 
 /** 收星关：只有白子在走，落到星星格或吃掉黑子算收集一个目标；黑子不动。 */
@@ -154,6 +156,113 @@ class ChessStore(context: Context, profileId: String) {
 
     fun botWins(bot: ChessBot): Int = prefs.getInt("chess.wins.${bot.name}", 0)
     fun recordBotWin(bot: ChessBot) = prefs.edit().putInt("chess.wins.${bot.name}", botWins(bot) + 1).apply()
+
+    /** 最近的对局，新的在前 */
+    fun games(): List<SavedGame> = runCatching {
+        val arr = JSONArray(prefs.getString("chess.games", "[]"))
+        List(arr.length()) { SavedGame.fromJson(arr.getJSONObject(it)) }
+    }.getOrDefault(emptyList())
+
+    fun saveGame(game: SavedGame) {
+        val list = listOf(game) + games().filter { it.id != game.id }
+        val arr = JSONArray()
+        list.take(MaxSavedGames).forEach { arr.put(it.toJson()) }
+        prefs.edit().putString("chess.games", arr.toString()).apply()
+    }
+
+    /** 做过的题，新的在前；同一道题只留最近一次 */
+    fun puzzleLog(): List<PuzzleAttempt> = runCatching {
+        val arr = JSONArray(prefs.getString("chess.puzzleLog", "[]"))
+        List(arr.length()) { PuzzleAttempt.fromJson(arr.getJSONObject(it)) }
+    }.getOrDefault(emptyList())
+
+    fun lastAttempt(puzzleId: String): PuzzleAttempt? = puzzleLog().firstOrNull { it.puzzleId == puzzleId }
+
+    fun recordPuzzle(attempt: PuzzleAttempt) {
+        val arr = JSONArray()
+        (listOf(attempt) + puzzleLog().filter { it.puzzleId != attempt.puzzleId })
+            .take(MaxPuzzleLog).forEach { arr.put(it.toJson()) }
+        prefs.edit().putString("chess.puzzleLog", arr.toString()).apply()
+    }
+
+    private companion object {
+        const val MaxSavedGames = 50
+        const val MaxPuzzleLog = 500
+    }
+}
+
+/** 一次做题结果。[mistakes] 是答错次数；[revealed] 表示最后看了答案 */
+class PuzzleAttempt(
+    val puzzleId: String,
+    val chapter: String,
+    val index: Int,
+    val rating: Int,
+    val mistakes: Int,
+    val revealed: Boolean,
+    val time: Long
+) {
+    val label: String
+        get() = when {
+            revealed -> "👀 看了答案"
+            mistakes == 0 -> "✅ 一次做对"
+            else -> "👍 错 $mistakes 次后做对"
+        }
+
+    fun toJson(): JSONObject = JSONObject()
+        .put("id", puzzleId).put("chapter", chapter).put("index", index).put("rating", rating)
+        .put("mistakes", mistakes).put("revealed", revealed).put("time", time)
+
+    companion object {
+        fun fromJson(o: JSONObject) = PuzzleAttempt(
+            o.getString("id"), o.getString("chapter"), o.getInt("index"), o.getInt("rating"),
+            o.getInt("mistakes"), o.getBoolean("revealed"), o.getLong("time")
+        )
+    }
+}
+
+/** 一盘和 AI 的对局；[outcome] 为 null 表示没下完就离开了 */
+class SavedGame(
+    val id: Long,
+    val bot: ChessBot,
+    val playerWhite: Boolean,
+    val moves: List<String>,
+    val outcome: ChessOutcome?
+) {
+    val playerWon: Boolean get() = outcome == if (playerWhite) ChessOutcome.WhiteMates else ChessOutcome.BlackMates
+    val playerLost: Boolean get() = outcome == if (playerWhite) ChessOutcome.BlackMates else ChessOutcome.WhiteMates
+
+    fun toJson(): JSONObject = JSONObject()
+        .put("id", id)
+        .put("bot", bot.name)
+        .put("white", playerWhite)
+        .put("moves", moves.joinToString(" "))
+        .put("outcome", outcome?.name ?: "")
+
+    companion object {
+        fun fromJson(o: JSONObject) = SavedGame(
+            o.getLong("id"),
+            ChessBot.valueOf(o.getString("bot")),
+            o.getBoolean("white"),
+            o.getString("moves").split(' ').filter { it.isNotBlank() },
+            o.optString("outcome").takeIf { it.isNotBlank() }?.let { ChessOutcome.valueOf(it) }
+        )
+    }
+}
+
+/** 给孩子看的一步棋：「白 马 g1→f3」「黑 兵 e5 吃 d4」「白 王车易位」 */
+fun describeMove(pos: ChessPosition, m: ChessMove): String {
+    val piece = pos[m.from]
+    val side = if (piece > 0) "白" else "黑"
+    val name = AllPieceNames[abs(piece)]
+    val capture = pos[m.to] != 0 || (abs(piece) == Pc.PAWN && m.to == pos.ep && m.from % 8 != m.to % 8)
+    val base = when {
+        abs(piece) == Pc.KING && abs(m.to - m.from) == 2 -> "$side 王车易位"
+        capture -> "$side $name ${sqName(m.from)} 吃 ${sqName(m.to)}"
+        else -> "$side $name ${sqName(m.from)}→${sqName(m.to)}"
+    }
+    val promo = if (m.promotion != 0) "，升变为${AllPieceNames[m.promotion]}" else ""
+    val check = pos.play(m).let { if (it.inCheck()) if (it.legalMoves().isEmpty()) " 将杀！" else " 将军" else "" }
+    return base + promo + check
 }
 
 internal fun isPromotionMove(pos: ChessPosition, from: Int, to: Int): Boolean =
