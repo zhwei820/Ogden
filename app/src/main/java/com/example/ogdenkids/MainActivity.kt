@@ -1012,7 +1012,9 @@ private fun UserApp(accounts: Accounts) {
                         progressStore.toggleFavorite(current.word.word)
                         version++
                         progressStore.progress(current.word.word)
-                    }
+                    },
+                    readAlongScore = progressStore::readAlongScore,
+                    onReadAlongScored = progressStore::saveReadAlongScore
                 )
                 is Screen.Levels -> LevelSelectionScreen(
                     words = practiceWords,
@@ -2049,8 +2051,16 @@ fun WordDetailScreen(
     onBack: () -> Unit,
     onSpeak: (String) -> Unit,
     onSpeakZh: (String) -> Unit,
-    onFavorite: () -> WordProgress
+    onFavorite: () -> WordProgress,
+    readAlongScore: (String) -> Int?,
+    onReadAlongScored: (String, Int) -> Unit
 ) {
+    val services = LocalSpeechServices.current
+    var readAlong by remember(word.word) { mutableStateOf<SpeechLine?>(null) }
+    var readAlongVersion by remember { mutableStateOf(0) }
+    readAlong?.let { line ->
+        ReadAlongSheet(line, onScored = { onReadAlongScored(line.en, it); readAlongVersion++ }) { readAlong = null }
+    }
     var visibleProgress by remember(word.word, progress.favorite, progress.mastery, progress.attempts, progress.correct) {
         mutableStateOf(progress)
     }
@@ -2134,7 +2144,9 @@ fun WordDetailScreen(
                     en,
                     convertZh(exampleZh, zh),
                     word.category.tint,
-                    onSpeakZh = { onSpeakZh(exampleZh) }
+                    onSpeakZh = { onSpeakZh(exampleZh) },
+                    onReadAlong = { services.stopSpeaking(); readAlong = SpeechLine(en, exampleZh) },
+                    readAlongScore = remember(en, readAlongVersion) { readAlongScore(en) }
                 ) {
                     onSpeak(en)
                 }
@@ -5732,7 +5744,16 @@ private fun CollocationCard(c: Collocation, zh: ChineseMode, onSpeak: (String) -
 }
 
 @Composable
-fun InfoBlock(title: String, en: String, zh: String, tint: Color, onSpeakZh: (() -> Unit)? = null, onSpeak: () -> Unit) {
+fun InfoBlock(
+    title: String,
+    en: String,
+    zh: String,
+    tint: Color,
+    onSpeakZh: (() -> Unit)? = null,
+    onReadAlong: (() -> Unit)? = null,
+    readAlongScore: Int? = null,
+    onSpeak: () -> Unit
+) {
     Card(
         colors = CardDefaults.cardColors(containerColor = PaperElevated),
         shape = RoundedCornerShape(14.dp),
@@ -5741,6 +5762,17 @@ fun InfoBlock(title: String, en: String, zh: String, tint: Color, onSpeakZh: (()
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AppText(title, fontWeight = FontWeight.Bold, modifier = Modifier.weight(1f))
+                if (readAlongScore != null) {
+                    AppText(
+                        "🎤 跟读最佳 $readAlongScore",
+                        color = if (readAlongScore >= 75) Success else if (readAlongScore >= 60) tint else Error,
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                }
+                if (onReadAlong != null) {
+                    IconButton(onClick = onReadAlong) { Icon(Icons.Default.Mic, contentDescription = "跟读打分", tint = tint) }
+                }
                 IconButton(onClick = onSpeak) { Icon(Icons.Default.VolumeUp, contentDescription = "读例句", tint = tint) }
             }
             TranslatableText(AnnotatedString(en), TextStyle(fontFamily = FontFamily.Serif, fontSize = 20.sp, lineHeight = 28.sp, color = Ink), onTap = onSpeak)
