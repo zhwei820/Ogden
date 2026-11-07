@@ -1393,7 +1393,7 @@ data class SpeechFocus(val line: Int, val challenge: Boolean = false, val nonce:
 /** annalearning://speech/<课文 id>?line=<n>&from=brycezane，专项训练为 annalearning://special/<模块 key>?line=<n>&from=brycezane */
 internal const val GameFrom = "brycezane"
 internal const val GamePackage = "com.brycezane.game"
-const val GamePassScore = 80
+const val GamePassScore = 75
 
 /**
  * 把跟读成绩带回游戏：extras ogden_sentence（游戏里的句子 id「<课文 id>_<lines 下标>」，专项为「sp-<模块 key>_<sentences 下标>」）、ogden_score。
@@ -3552,6 +3552,10 @@ fun ReadAlongSheet(
                         color = InkFaint,
                         fontSize = 14.sp
                     )
+                    // 打分只能对比识别出来的文字；对照「听我的录音」能看出是没读好还是识别听错了
+                    if (s.result.recognized.isNotBlank()) {
+                        AppText("听到的是：${s.result.recognized}", color = InkFaint, fontSize = 13.sp, textAlign = TextAlign.Center)
+                    }
                     if (s.result.words.isNotEmpty()) AppText("绿色读得好，橙色一般，红色要多练，灰色是漏读", color = InkFaint, fontSize = 12.sp)
                     OutlinedButton(onClick = { playback?.release(); playback = PronunciationScorer.play(s.pcm) }) { Text("听我的录音") }
                 }

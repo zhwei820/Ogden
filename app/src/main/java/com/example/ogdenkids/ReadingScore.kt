@@ -38,6 +38,8 @@ class Homophones(private val ipa: Map<String, Set<String>>) {
  *
  * - 每个参考词：读对（含同音词、缩写去撇号、复合词被拆开/合并）100 分；读成别的词按拼写相似度打分：
  *   只差一两个字母的近似词（cat→cap、book→look，相似度 ≥ [NearMiss]）给 70~90 分，差得多的给 0~51 分；没读到算漏读 0 分。
+ * - 孩子在读这一句（至少一半的词读对或读得接近）时：读了但差得多的词保底 [Attempted] 分；
+ *   漏掉的虚词（a、the、is……孩子声音轻，识别引擎最容易丢）也给 [Attempted] 分，仍标成漏读。读的不是这一句就不保底。
  * - 准确 = 读到的词的平均分；完整 = 读到的词占比；流利 = 100 减去词间长停顿和多读词的扣分。
  * - 孩子口音重、读得慢，识别引擎常把差一点的发音"纠正"成形近词，所以近似词、停顿、重复都判得宽松。
  * - 总分 = 全部参考词平均分（漏读按 0）× 0.8 + 流利 × 0.2。
@@ -51,14 +53,20 @@ object ReadingScore {
     private const val MergePenalty = 0.05
     /** 拼写相似度达到这个值算"差一点"，给及格以上的分 */
     private const val NearMiss = 0.6
+    /** 孩子在读这一句时，开了口的词、漏掉的虚词保底给的分 */
+    private const val Attempted = 50.0
+    private val FunctionWords = setOf(
+        "a", "an", "the", "is", "am", "are", "was", "to", "of", "in", "on", "at", "it", "its", "and", "or", "for", "by", "so", "but",
+        "my", "your", "his", "her", "do", "does", "be", "i", "he", "she", "we", "you", "they", "me"
+    )
     /** 识别时间戳只标片段起点，估一个片段的时长，用来算词后停顿 */
     private const val TokenTail = 0.25f
-    private const val PauseAllowed = 0.8f
+    private const val PauseAllowed = 1.2f
     /** 句中标点后允许多停一会儿 */
-    private const val PauseAllowedAtPunct = 1.5f
+    private const val PauseAllowedAtPunct = 2.0f
     /** 超出允许停顿后每秒扣的流利分，以及单处停顿最多扣的分 */
     private const val PausePenaltyPerSec = 15.0
-    private const val PausePenaltyMax = 15.0
+    private const val PausePenaltyMax = 10.0
     /** 每个多读的词扣的流利分（孩子常重复、自我纠正） */
     private const val InsertPenalty = 4.0
 
@@ -131,10 +139,13 @@ object ReadingScore {
             j -= dj
         }
 
-        val partScores = matches.map { mt -> mt?.let { partScore(it.sim) } }
+        val onTopic = 2 * matches.count { it != null && it.sim >= NearMiss } >= n
+        val partScores = matches.map { mt -> mt?.let { partScore(it.sim, onTopic) } }
         val words = refTokens.mapIndexed { t, token ->
             val own = parts.indices.filter { parts[it].token == t }
-            if (own.all { partScores[it] == null }) WordScore(token.text, 0.0, "Omission")
+            if (own.all { partScores[it] == null }) {
+                WordScore(token.text, if (onTopic && normalize(token.text) in FunctionWords) Attempted else 0.0, "Omission")
+            }
             else {
                 val s = own.sumOf { partScores[it] ?: 0.0 } / own.size
                 WordScore(token.text, s, if (s < 60) "Mispronunciation" else "None")
@@ -165,10 +176,11 @@ object ReadingScore {
         )
     }
 
-    /** 读对 100；近似词 70~90（相似度 0.6→70，1.0→90）；差得多按 85 × 相似度（< 51） */
-    private fun partScore(sim: Double): Double = when {
+    /** 读对 100；近似词 70~90（相似度 0.6→70，1.0→90）；差得多按 85 × 相似度（< 51），孩子在读这一句时保底 [Attempted] */
+    private fun partScore(sim: Double, onTopic: Boolean): Double = when {
         sim >= 1.0 -> 100.0
         sim >= NearMiss -> 70 + 50 * (sim - NearMiss)
+        onTopic -> max(85 * sim, Attempted)
         else -> 85 * sim
     }
 

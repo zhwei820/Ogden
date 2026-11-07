@@ -35,9 +35,17 @@ sealed class AsrModelState {
 /**
  * 本地跟读评分：sherpa-onnx 离线识别（zipformer-small-en，int8，约 28MB），识别结果交给 [ReadingScore] 打分。
  * 模型不进 APK，首次跟读时下载到 filesDir，逐个文件校验 sha256。录音只在内存里用，不落盘。
+ *
+ * 模型只用成人朗读（LibriSpeech）训练过，孩子的声音容易被听成别的词或漏掉小词。所以解码用 modified_beam_search，
+ * 并把参考句里的词作为热词传给识别器：拿不准时偏向孩子该读的词。热词只加分不强制，读成别的句子照样识别成别的句子。
+ * 热词要把英文词切成模型的 BPE 片段，切分表 assets/asr/bpe.vocab 由该模型配套的 icefall lang_bpe_500/bpe.model 导出
+ * （500 个片段与模型 tokens.txt 逐个一致）。
  */
 object LocalAsr {
     private const val ModelName = "sherpa-onnx-zipformer-small-en-2023-06-26"
+    private const val BpeVocabAsset = "asr/bpe.vocab"
+    /** 热词加分：sherpa-onnx 默认 1.5；调大更容易认成参考句里的词，但读错也更可能被"听"成读对 */
+    private const val HotwordsScore = 1.5f
 
     private class ModelFile(val name: String, val size: Long, val sha256: String)
 
@@ -181,7 +189,7 @@ object LocalAsr {
                     // UnsatisfiedLinkError 等 Error 也要接住，交给调用方回退
                     throw UnsupportedOperationException("本地评分引擎不可用", e)
                 }
-                val stream = r.createStream()
+                val stream = r.createStream(hotwordsFor(reference))
                 try {
                     stream.acceptWaveform(samples, 16000)
                     r.decode(stream)
@@ -197,8 +205,19 @@ object LocalAsr {
         }
     }
 
+    /** 参考句里的词（连字符词拆开、去重、转大写，和模型词表一致），一行一个；编码失败的热词 sherpa-onnx 会跳过 */
+    internal fun hotwordsFor(reference: String): String =
+        tokenizeSpeech(reference)
+            .flatMap { it.text.split('-') }
+            .map { w -> w.uppercase().filter { it in 'A'..'Z' || it == '\'' }.trim('\'') }
+            .filter { it.isNotEmpty() }
+            .distinct()
+            .joinToString("\n")
+
     private fun create(context: Context): OfflineRecognizer {
         val d = dir(context).path
+        val bpeVocab = File(d, "bpe.vocab")
+        context.assets.open(BpeVocabAsset).use { input -> bpeVocab.outputStream().use { input.copyTo(it) } }
         return OfflineRecognizer(
             assetManager = null,
             config = OfflineRecognizerConfig(
@@ -211,8 +230,12 @@ object LocalAsr {
                     ),
                     tokens = "$d/tokens.txt",
                     modelType = "transducer",
+                    modelingUnit = "bpe",
+                    bpeVocab = bpeVocab.path,
                     numThreads = 2
-                )
+                ),
+                decodingMethod = "modified_beam_search",
+                hotwordsScore = HotwordsScore
             )
         )
     }
