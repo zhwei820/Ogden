@@ -13,3 +13,5 @@ keystore/
 dist/
 videos
 scripts/mock_packs/course-*/
+app/libs/*.aar
+app/libs/*.part

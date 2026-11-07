@@ -9,6 +9,26 @@ if (localPropsFile.exists()) {
     localPropsFile.withInputStream { localProps.load(it) }
 }
 
+// 本地跟读评分引擎 sherpa-onnx（静态链接 onnxruntime 版，约 38MB）。不进 git：首次构建时下到 app/libs 并校验 sha256
+def sherpaVersion = "2.0.1"
+def sherpaAar = file("libs/sherpa-onnx-static-link-onnxruntime-${sherpaVersion}.aar")
+def sherpaAarSha256 = "07e042d97f3a6bd5b7fe74d4eef0513dc01a714b16c15a903250095aba43a575"
+if (!sherpaAar.exists()) {
+    sherpaAar.parentFile.mkdirs()
+    def part = new File(sherpaAar.path + ".part")
+    logger.lifecycle("Downloading ${sherpaAar.name} ...")
+    new URL("https://github.com/k2-fsa/sherpa-onnx/releases/download/v${sherpaVersion}/${sherpaAar.name}")
+        .withInputStream { input -> part.withOutputStream { it << input } }
+    def digest = java.security.MessageDigest.getInstance("SHA-256")
+    part.eachByte(1 << 16) { buf, n -> digest.update(buf, 0, n) }
+    def actual = digest.digest().encodeHex().toString()
+    if (actual != sherpaAarSha256) {
+        part.delete()
+        throw new GradleException("${sherpaAar.name} sha256 不匹配：${actual}")
+    }
+    part.renameTo(sherpaAar)
+}
+
 android {
     namespace "com.example.ogdenkids"
     compileSdk 33
@@ -29,6 +49,13 @@ android {
         buildConfigField "String", "AZURE_TRANSLATOR_REGION", "\"${localProps.getProperty("azure.translator.region", "")}\""
         // 未配置时反馈入口提示不可用
         buildConfigField "String", "WECOM_FEEDBACK_WEBHOOK", "\"${localProps.getProperty("wecom.feedback.webhook", "")}\""
+        // 本地评分模型的自建下载地址（目录 URL，下面放 encoder/decoder/joiner/tokens 四个文件）；空则用 hf-mirror / Hugging Face
+        buildConfigField "String", "ASR_MODEL_BASE_URL", "\"${localProps.getProperty("asr.model.base.url", "")}\""
+
+        // sherpa-onnx 的 so 只打 ARM 两种：x86 模拟器上本地评分不可用（有 ARM 转译的除外）
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a"
+        }
     }
 
     signingConfigs {
@@ -53,6 +80,13 @@ android {
             minifyEnabled false
             signingConfig signingConfigs.release
             buildConfigField "String", "PACK_SERVER_URL", "\"${localProps.getProperty("pack.server.url", "")}\""
+        }
+    }
+
+    packagingOptions {
+        jniLibs {
+            // so 压缩进 APK（安装时解压），APK 小一些
+            useLegacyPackaging true
         }
     }
 
@@ -85,6 +119,7 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview"
     implementation "androidx.core:core-ktx:1.10.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation files(sherpaAar)
 
     debugImplementation "androidx.compose.ui:ui-tooling"
 
