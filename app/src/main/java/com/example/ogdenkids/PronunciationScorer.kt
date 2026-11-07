@@ -30,7 +30,8 @@ data class Assessment(
 )
 
 /**
- * 跟读：录 16kHz 单声道 PCM，交给 Azure 发音评估（REST 短音频接口，用语音服务的 key / region）。
+ * 跟读：录 16kHz 单声道 PCM、回放录音。评分默认走本地 [LocalAsr]；[assess] 是 Azure 发音评估
+ * （REST 短音频接口，用语音服务的 key / region），只在本机跑不了本地引擎时兜底。
  * 录音只用于这一次评分，不落盘。
  */
 object PronunciationScorer {

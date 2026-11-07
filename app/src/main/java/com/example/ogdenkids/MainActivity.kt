@@ -100,6 +100,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -2770,7 +2771,17 @@ private sealed class ReadAlongState {
     data class Failed(val message: String, val pcm: ByteArray?) : ReadAlongState()
 }
 
-/** 跟读评分：录一遍、交给 Azure 发音评估，按词标颜色并给出总分。 */
+/** 本地评分优先；本机跑不了本地引擎（如没有 ARM 转译的 x86 模拟器）且配了 Azure key 时改用 Azure 发音评估。 */
+private suspend fun assessReading(context: Context, pcm: ByteArray, reference: String): Result<Assessment> {
+    val local = LocalAsr.assess(context, pcm, reference)
+    return if (local.exceptionOrNull() is UnsupportedOperationException && BuildConfig.AZURE_SPEECH_KEY.isNotBlank()) {
+        PronunciationScorer.assess(pcm, reference)
+    } else {
+        local
+    }
+}
+
+/** 跟读评分：录一遍、在本机识别并和原句逐词对齐，按词标颜色并给出总分。首次使用先下载评分模型。 */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: () -> Unit) {
@@ -2782,6 +2793,8 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
     var level by remember { mutableStateOf(0f) }
     var playback by remember { mutableStateOf<AudioTrack?>(null) }
     DisposableEffect(Unit) { onDispose { playback?.release() } }
+    remember { LocalAsr.refresh(context) }
+    val modelState by LocalAsr.state.collectAsState()
 
     fun startRecording() {
         playback?.release()
@@ -2800,12 +2813,19 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
                 return@launch
             }
             state = ReadAlongState.Scoring
-            state = PronunciationScorer.assess(pcm, line.en).fold(
+            state = assessReading(context, pcm, line.en).fold(
                 onSuccess = {
                     onScored(it.pron.roundToInt())
                     ReadAlongState.Done(it, pcm)
                 },
-                onFailure = { ReadAlongState.Failed(if (it.message == "没有听清楚") "没有听清楚，靠近一点再读一遍" else "评分暂时不可用，请检查网络", pcm) }
+                onFailure = {
+                    val message = when {
+                        it.message == "没有听清楚" -> "没有听清楚，靠近一点再读一遍"
+                        it is UnsupportedOperationException -> "这台设备暂不支持本地评分"
+                        else -> "评分暂时不可用，请稍后再试"
+                    }
+                    ReadAlongState.Failed(message, pcm)
+                }
             )
         }
     }
@@ -2889,9 +2909,36 @@ fun ReadAlongSheet(line: SpeechLine, onScored: (Int) -> Unit = {}, onDismiss: ()
                 ReadAlongState.Idle, ReadAlongState.Recording -> Unit
             }
 
+            // 评分模型没下载时先下载，下完才出现话筒
+            val model = modelState
+            if (model != AsrModelState.Ready) {
+                if (model is AsrModelState.Downloading) {
+                    LinearProgressIndicator(
+                        progress = model.progress,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp)
+                            .clip(RoundedCornerShape(99.dp)),
+                        color = Category.Operations.tint
+                    )
+                    AppText("正在下载评分模型 ${(model.progress * 100).roundToInt()}%", color = InkSoft, fontSize = 16.sp)
+                } else {
+                    AppText(
+                        "跟读评分要先下载评分模型（约 ${LocalAsr.DownloadMb}MB），下载一次以后不联网也能评分",
+                        color = InkSoft,
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    if (model is AsrModelState.Failed) AppText(model.message, color = Error, fontSize = 15.sp, textAlign = TextAlign.Center)
+                    Button(onClick = { LocalAsr.startDownload(context) }, shape = RoundedCornerShape(14.dp)) {
+                        Text(if (model is AsrModelState.Failed) "重新下载" else "下载评分模型")
+                    }
+                }
+            }
+
             // 按住话筒录音、松开结束并评分；评完分或失败后再按住就是再读一遍
             val current = state
-            if (current != ReadAlongState.Scoring) {
+            if (model == AsrModelState.Ready && current != ReadAlongState.Scoring) {
                 val recording = current == ReadAlongState.Recording
                 HoldToTalkMic(recording, level) {
                     if (requestRecording()) {

@@ -11,3 +11,5 @@ tools/
 **/.DS_Store
 keystore/
 dist/
+app/libs/*.aar
+app/libs/*.part
