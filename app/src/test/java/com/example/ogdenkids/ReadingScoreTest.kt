@@ -60,6 +60,14 @@ class ReadingScoreTest {
     }
 
     @Test
+    fun nearMissWordsStillPass() {
+        val r = score("I have a cat.", "i have a cap")!!
+        assertEquals("None", r.words[3].errorType)
+        assertTrue(r.words[3].score in 70.0..80.0)
+        assertTrue(score("Look at the book.", "look at the look")!!.pron >= 90)
+    }
+
+    @Test
     fun extraWordDoesNotSwallowNeighbours() {
         val r = score("I like books.", "i like the books")!!
         assertEquals(listOf(100, 100, 100), r.scores())
@@ -68,8 +76,10 @@ class ReadingScoreTest {
 
     @Test
     fun longPauseLowersFluencyButPunctuationAllowsSome() {
+        val shortPause = score("I like red apples.", "i like red apples", listOf(0f, 0.3f, 1.2f, 1.5f))!!
+        assertEquals(100, shortPause.fluency.toInt())
         val pausedMidPhrase = score("I like red apples.", "i like red apples", listOf(0f, 0.3f, 2.3f, 2.6f))!!
-        assertTrue(pausedMidPhrase.fluency <= 80)
+        assertTrue(pausedMidPhrase.fluency < 90)
         val pausedAtComma = score("Hello, friends!", "hello friends", listOf(0f, 1.2f))!!
         assertEquals(100, pausedAtComma.fluency.toInt())
     }

@@ -36,8 +36,10 @@ class Homophones(private val ipa: Map<String, Set<String>>) {
 /**
  * 本地跟读打分：把识别结果和参考句按词对齐。
  *
- * - 每个参考词：读对（含同音词、缩写去撇号、复合词被拆开/合并）100 分；读成别的词按拼写相似度给 0~85 分；没读到算漏读 0 分。
+ * - 每个参考词：读对（含同音词、缩写去撇号、复合词被拆开/合并）100 分；读成别的词按拼写相似度打分：
+ *   只差一两个字母的近似词（cat→cap、book→look，相似度 ≥ [NearMiss]）给 70~90 分，差得多的给 0~51 分；没读到算漏读 0 分。
  * - 准确 = 读到的词的平均分；完整 = 读到的词占比；流利 = 100 减去词间长停顿和多读词的扣分。
+ * - 孩子口音重、读得慢，识别引擎常把差一点的发音"纠正"成形近词，所以近似词、停顿、重复都判得宽松。
  * - 总分 = 全部参考词平均分（漏读按 0）× 0.8 + 流利 × 0.2。
  *
  * 识别引擎会把读音不准的词"纠正"成它认为最像的真词，所以这里只能判断读没读对词，评不到音素细节。
@@ -47,11 +49,18 @@ class Homophones(private val ipa: Map<String, Set<String>>) {
 object ReadingScore {
     private const val MergeThreshold = 0.85
     private const val MergePenalty = 0.05
+    /** 拼写相似度达到这个值算"差一点"，给及格以上的分 */
+    private const val NearMiss = 0.6
     /** 识别时间戳只标片段起点，估一个片段的时长，用来算词后停顿 */
     private const val TokenTail = 0.25f
-    private const val PauseAllowed = 0.4f
+    private const val PauseAllowed = 0.8f
     /** 句中标点后允许多停一会儿 */
-    private const val PauseAllowedAtPunct = 1.0f
+    private const val PauseAllowedAtPunct = 1.5f
+    /** 超出允许停顿后每秒扣的流利分，以及单处停顿最多扣的分 */
+    private const val PausePenaltyPerSec = 15.0
+    private const val PausePenaltyMax = 15.0
+    /** 每个多读的词扣的流利分（孩子常重复、自我纠正） */
+    private const val InsertPenalty = 4.0
 
     private class Part(val token: Int, val text: String, val pauseAllowedAfter: Boolean)
     private class Heard(var text: String, val start: Float, var last: Float)
@@ -122,7 +131,7 @@ object ReadingScore {
             j -= dj
         }
 
-        val partScores = matches.map { mt -> mt?.let { if (it.sim >= 1.0) 100.0 else 85 * it.sim } }
+        val partScores = matches.map { mt -> mt?.let { partScore(it.sim) } }
         val words = refTokens.mapIndexed { t, token ->
             val own = parts.indices.filter { parts[it].token == t }
             if (own.all { partScores[it] == null }) WordScore(token.text, 0.0, "Omission")
@@ -135,13 +144,13 @@ object ReadingScore {
         val accuracy = if (said.isEmpty()) 0.0 else said.sumOf { it.score } / said.size
         val completeness = 100.0 * said.size / words.size
 
-        var penalty = 8.0 * inserted
+        var penalty = InsertPenalty * inserted
         val matched = matches.withIndex().filter { it.value != null }.map { it.index to it.value!! }
         matched.zipWithNext().forEach { (a, b) ->
             if (a.second.firstHeard == b.second.firstHeard) return@forEach
             val pause = heard[b.second.firstHeard].start - (heard[a.second.lastHeard].last + TokenTail)
             val allowed = if (parts[a.first].pauseAllowedAfter) PauseAllowedAtPunct else PauseAllowed
-            if (pause > allowed) penalty += min(20.0, (pause - allowed) * 25.0)
+            if (pause > allowed) penalty += min(PausePenaltyMax, (pause - allowed) * PausePenaltyPerSec)
         }
         val fluency = if (matched.isEmpty()) 0.0 else (100 - penalty).coerceAtLeast(0.0)
         val pron = 0.8 * words.sumOf { it.score } / words.size + 0.2 * fluency
@@ -154,6 +163,13 @@ object ReadingScore {
             words = words,
             recognized = heard.joinToString(" ") { it.text }.replaceFirstChar { it.uppercase() }
         )
+    }
+
+    /** 读对 100；近似词 70~90（相似度 0.6→70，1.0→90）；差得多按 85 × 相似度（< 51） */
+    private fun partScore(sim: Double): Double = when {
+        sim >= 1.0 -> 100.0
+        sim >= NearMiss -> 70 + 50 * (sim - NearMiss)
+        else -> 85 * sim
     }
 
     private fun normalize(word: String) = word.lowercase().filter { it in 'a'..'z' || it == '\'' }.trim('\'')
