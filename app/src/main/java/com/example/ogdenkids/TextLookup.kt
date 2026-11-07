@@ -45,13 +45,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 /**
- * 系统划词菜单（ACTION_PROCESS_TEXT）的入口：在别的 App 里选中英文后，浮在原 App 上弹出查词卡片，
+ * 系统划词菜单（ACTION_PROCESS_TEXT）与 annalearning://lookup?text=<英文> 的入口：在别的 App 里选中英文后，浮在原 App 上弹出查词卡片，
  * 列出词表释义和出现该词的课文；点课文才跳进本 App。
  */
 class TextLookupActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val text = intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()?.trim().orEmpty()
+        val text = (intent?.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT)?.toString()
+            ?: intent?.data?.takeIf { it.scheme == "annalearning" && it.host == "lookup" }?.getQueryParameter("text"))
+            ?.trim().orEmpty()
         if (text.isEmpty()) {
             finish()
             return

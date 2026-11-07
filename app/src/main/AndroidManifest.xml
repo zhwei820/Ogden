@@ -46,6 +46,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
+            <!-- annalearning://lookup?text=<英文>&from=brycezane：Bryce Zane 英语收藏的词汇对照表点词查词 -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="annalearning" android:host="lookup" />
+            </intent-filter>
         </activity>
         <provider
             android:name="androidx.core.content.FileProvider"
