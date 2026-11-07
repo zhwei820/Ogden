@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""把整理好的教材纯文本转成教材资源包（scripts/mock_packs/<id>/），供 mock_pack_server.py 提供下载。
+"""把整理好的教材纯文本转成 App 课文：默认直接内置进 APK（assets/textbooks/<id>.json + assets/tts/），
+加 --pack 则生成可下载的教材资源包（scripts/mock_packs/<id>/），供 mock_pack_server.py 提供下载。
 
 文本格式（# 书名 / ## 单元 / ### 小节，小节即 App 里的一课）：
     # 外研版（一年级起点）二年级上册
@@ -10,7 +11,7 @@
 
 同时用 Azure 生成美音、英音朗读（tts/<lang>/<sha1>.mp3，与 App 的 ttsKey 一致），已存在的跳过。
 key 读 local.properties 的 azure.speech.* 与 azure.translator.*。
-用法：python3 scripts/textbook_to_pack.py scripts/textbook_src/fltrp-g2a.txt --id textbook-fltrp-g2a [--version 1]
+用法：python3 scripts/textbook_to_pack.py scripts/textbook_src/fltrp-g2a.txt --id textbook-fltrp-g2a [--pack] [--version 1]
 """
 import argparse
 import json
@@ -23,6 +24,7 @@ from gen_tts_assets import VOICES, key, synthesize, write  # noqa: E402
 from gen_word_audio import SSL_CONTEXT, local_props  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent
+ASSETS = ROOT.parent / "app/src/main/assets"
 TEXTBOOK_LEVEL = 5  # 与 SpeechText.kt 的 TextbookLevel 一致
 GRADES = "一二三四五六"
 
@@ -141,7 +143,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("source")
     parser.add_argument("--id", required=True, help="资源包 id，也是 mock_packs 下的目录名")
-    parser.add_argument("--version", type=int, default=1)
+    parser.add_argument("--pack", action="store_true", help="生成可下载的教材包，而不是内置进 APK")
+    parser.add_argument("--version", type=int, default=1, help="教材包版本，只在 --pack 时有用")
     args = parser.parse_args()
 
     book = parse_textbook(Path(args.source).read_text(encoding="utf-8"))
@@ -149,15 +152,23 @@ def main():
     props = local_props()
     to_review = translate_missing(speeches, props)
 
-    out_dir = ROOT / "mock_packs" / args.id
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "speeches.json").write_text(json.dumps(speeches, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-    units = ", ".join(u["title"] for u in book["units"])
-    meta = {"type": "textbook", "title": book["title"], "description": f"{units} · 共 {len(speeches)} 课", "version": args.version}
-    (out_dir / "pack.json").write_text(json.dumps(meta, ensure_ascii=False) + "\n", encoding="utf-8")
+    data = json.dumps(speeches, ensure_ascii=False, indent=1) + "\n"
+    if args.pack:
+        out_dir = ROOT / "mock_packs" / args.id
+        out_dir.mkdir(parents=True, exist_ok=True)
+        (out_dir / "speeches.json").write_text(data, encoding="utf-8")
+        units = ", ".join(u["title"] for u in book["units"])
+        meta = {"type": "textbook", "title": book["title"], "description": f"{units} · 共 {len(speeches)} 课", "version": args.version}
+        (out_dir / "pack.json").write_text(json.dumps(meta, ensure_ascii=False) + "\n", encoding="utf-8")
+        target = out_dir
+    else:
+        out_dir = ASSETS
+        target = ASSETS / "textbooks" / f"{args.id}.json"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(data, encoding="utf-8")
     generated = synthesize_lines(speeches, out_dir, props)
 
-    print(f"{out_dir}: {len(speeches)} 课，新生成朗读 {generated} 条")
+    print(f"{target}: {len(speeches)} 课，新生成朗读 {generated} 条")
     for en in to_review:
         print(f"  待审翻译：{en}")
 

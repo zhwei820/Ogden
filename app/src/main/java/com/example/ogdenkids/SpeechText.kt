@@ -36,7 +36,7 @@ enum class SpeechTheme(val key: String, val zh: String, val en: String, val unit
 /** 课文第 4 级：按学科编排的 STEM 课文 */
 const val StemLevel = 4
 
-/** 课文第 5 级：下载的教材同步课文，只在装了教材包时显示 */
+/** 课文第 5 级：教材同步课文（APK 内置 assets/textbooks/，也可下载教材包补充），没有教材课文时不显示 */
 const val TextbookLevel = 5
 
 /** 课文包里的课文能否放进 [level] 级的 [themeKey] 主题：级别要存在，学科主题只能在 [StemLevel]。 */

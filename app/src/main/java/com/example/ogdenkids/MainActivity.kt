@@ -499,10 +499,17 @@ class OgdenRepository(private val context: Context) {
                 book = item.optString("book").ifBlank { null },
                 bookOrder = item.optInt("bookOrder")
             )
-        val builtIn = List(speeches.length()) { parse(speeches.getJSONObject(it)) }
+        val builtIn = List(speeches.length()) { parse(speeches.getJSONObject(it)) } + loadBuiltInTextbooks(::parse)
         return (builtIn + loadPackSpeeches(builtIn.map { it.id }.toSet(), ::parse))
             .sortedWith(compareBy({ it.level }, { it.bookOrder }, { it.book }, { it.unit }))
     }
+
+    /** APK 内置的教材：assets/textbooks/<教材 id>.json，格式与教材包的 speeches.json 一致（由 scripts/textbook_to_pack.py 生成） */
+    private fun loadBuiltInTextbooks(parse: (JSONObject) -> Speech): List<Speech> =
+        context.assets.list("textbooks").orEmpty().sorted().filter { it.endsWith(".json") }.flatMap { name ->
+            val items = JSONArray(readAsset("textbooks/$name"))
+            List(items.length()) { parse(items.getJSONObject(it)) }
+        }
 
     /**
      * 已下载课文包 / 教材包里的课文。学习进度、跟读成绩都按 id 记，id 和已有课文重复的整课跳过，不覆盖内置课文；
