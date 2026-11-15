@@ -80,7 +80,7 @@ def make_handler(manifest, blobs, delay, fail_ids):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--delay", type=float, default=0.05, help="每 16KB 停顿秒数，方便在 App 里看到进度")
+    parser.add_argument("--delay", type=float, default=0.0, help="每 16KB 停顿秒数，方便在 App 里看到进度")
     parser.add_argument("--corrupt", action="append", default=[], help="清单里给错该包的 sha256")
     parser.add_argument("--fail", action="append", default=[], help="下载该包时返回 HTTP 500")
     args = parser.parse_args()

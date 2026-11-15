@@ -55,6 +55,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
+import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.GridOn
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
@@ -338,7 +339,8 @@ enum class Section(val title: String, val icon: ImageVector) {
     English("英语", Icons.Default.Translate),
     Math("数学", Icons.Default.Calculate),
     Music("音乐", Icons.Default.MusicNote),
-    Chess("国际象棋", Icons.Default.GridOn)
+    Chess("国际象棋", Icons.Default.GridOn),
+    Sports("运动", Icons.Default.DirectionsRun)
 }
 
 /** 英语下的二级标签 */
@@ -395,6 +397,8 @@ sealed class Screen {
     data class ChessPlay(val bot: ChessBot, val playerWhite: Boolean) : Screen()
     object ChessHistory : Screen()
     data class ChessReplay(val gameId: Long) : Screen()
+    data class JumpRope(val mode: JumpMode) : Screen()
+    object Dodge : Screen()
     data class VideoCoursePage(val course: VideoCourse) : Screen()
     data class MusicLessonPage(val lesson: MusicLesson) : Screen()
     data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
@@ -800,6 +804,7 @@ private fun UserApp(accounts: Accounts) {
     val lemmaVocabulary = remember(words) { buildLemmaVocabulary(words) }
     val progressStore = remember { ProgressStore(context, accounts.current.id) }
     val chessStore = remember { ChessStore(context, accounts.current.id) }
+    val sportsStore = remember { SportsStore(context, accounts.current.id) }
     // 最多 MaxProfiles 个用户，所以「另一个用户」至多一个
     val peerReadAlongScore: (String) -> PeerScore? = remember(accounts.profiles) {
         val peer = accounts.profiles.firstOrNull { it.id != accounts.current.id }
@@ -982,6 +987,12 @@ private fun UserApp(accounts: Accounts) {
                             onHistory = { screen = Screen.ChessHistory },
                             onPuzzleHistory = { screen = Screen.ChessPuzzleHistory },
                             onRules = { screen = Screen.ChessRules(it) }
+                        )
+                        Section.Sports -> SportsHomeScreen(
+                            store = sportsStore,
+                            padding = padding,
+                            onJump = { screen = Screen.JumpRope(it) },
+                            onDodge = { screen = Screen.Dodge }
                         )
                         Section.Music -> MusicHomeScreen(
                             store = progressStore,
@@ -1307,6 +1318,8 @@ private fun UserApp(accounts: Accounts) {
                 is Screen.ChessPlay -> ChessPlayScreen(current.bot, current.playerWhite, chessStore, onBack = goBack)
                 Screen.ChessHistory -> ChessHistoryScreen(chessStore, onOpen = { screen = Screen.ChessReplay(it) }, onBack = goBack)
                 is Screen.ChessReplay -> ChessReplayScreen(current.gameId, chessStore, onBack = goBack)
+                is Screen.JumpRope -> JumpRopeScreen(current.mode, sportsStore, onBack = goBack)
+                Screen.Dodge -> DodgeScreen(sportsStore, onBack = goBack)
                 is Screen.MusicLessonPage -> MusicLessonScreen(
                     lesson = current.lesson,
                     onLesson = { screen = Screen.MusicLessonPage(it) },
@@ -1443,6 +1456,8 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.ChessPlay -> "chess-play-${screen.bot.name}-${screen.playerWhite}"
     Screen.ChessHistory -> "chess-history"
     is Screen.ChessReplay -> "chess-replay-${screen.gameId}"
+    is Screen.JumpRope -> "sports-jump-${screen.mode.name}"
+    Screen.Dodge -> "sports-dodge"
     is Screen.VideoCoursePage -> "video-course-${screen.course.dir.name}"
     is Screen.MusicLessonPage -> "music-lesson-${screen.lesson.name}"
     is Screen.MusicGamePage -> "music-game-${screen.game.name}"
