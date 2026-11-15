@@ -399,6 +399,7 @@ sealed class Screen {
     data class ChessReplay(val gameId: Long) : Screen()
     data class JumpRope(val mode: JumpMode) : Screen()
     object Dodge : Screen()
+    object Fruit : Screen()
     data class VideoCoursePage(val course: VideoCourse) : Screen()
     data class MusicLessonPage(val lesson: MusicLesson) : Screen()
     data class MusicGamePage(val game: MusicGame, val returnTo: Screen = Main) : Screen()
@@ -992,7 +993,8 @@ private fun UserApp(accounts: Accounts) {
                             store = sportsStore,
                             padding = padding,
                             onJump = { screen = Screen.JumpRope(it) },
-                            onDodge = { screen = Screen.Dodge }
+                            onDodge = { screen = Screen.Dodge },
+                            onFruit = { screen = Screen.Fruit }
                         )
                         Section.Music -> MusicHomeScreen(
                             store = progressStore,
@@ -1320,6 +1322,7 @@ private fun UserApp(accounts: Accounts) {
                 is Screen.ChessReplay -> ChessReplayScreen(current.gameId, chessStore, onBack = goBack)
                 is Screen.JumpRope -> JumpRopeScreen(current.mode, sportsStore, onBack = goBack)
                 Screen.Dodge -> DodgeScreen(sportsStore, onBack = goBack)
+                Screen.Fruit -> FruitScreen(sportsStore, onBack = goBack)
                 is Screen.MusicLessonPage -> MusicLessonScreen(
                     lesson = current.lesson,
                     onLesson = { screen = Screen.MusicLessonPage(it) },
@@ -1458,6 +1461,7 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.ChessReplay -> "chess-replay-${screen.gameId}"
     is Screen.JumpRope -> "sports-jump-${screen.mode.name}"
     Screen.Dodge -> "sports-dodge"
+    Screen.Fruit -> "sports-fruit"
     is Screen.VideoCoursePage -> "video-course-${screen.course.dir.name}"
     is Screen.MusicLessonPage -> "music-lesson-${screen.lesson.name}"
     is Screen.MusicGamePage -> "music-game-${screen.game.name}"

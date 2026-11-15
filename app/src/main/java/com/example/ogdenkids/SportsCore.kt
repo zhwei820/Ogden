@@ -35,6 +35,13 @@ class BodyFrame(val timeMs: Long, val aspect: Float, private val points: Array<P
     /** 跳绳要能看到脚：肩、髋、脚踝都在画面里 */
     val fullBody: Boolean get() = shoulders != null && hips != null && (this[LAnkle] != null || this[RAnkle] != null)
 
+    /** 手掌大致位置：手腕顺着小臂再往外延一点（ML Kit 的手腕点比手掌靠里） */
+    fun hand(left: Boolean): P? {
+        val w = this[if (left) LWrist else RWrist] ?: return null
+        val e = this[if (left) LElbow else RElbow] ?: return w
+        return P(w.x + (w.x - e.x) * 0.3f, w.y + (w.y - e.y) * 0.3f)
+    }
+
     /** 身体占的区域（头顶到髋），躲方块用它判断碰撞 */
     fun bodyBox(): Area? {
         val ls = this[LShoulder] ?: return null
@@ -299,6 +306,138 @@ class SportsStore(context: Context, profileId: String) {
         const val MaxRecords = 200
         const val JumpGamePrefix = "jump-"
         const val DodgeGameKey = "dodge"
+        const val FruitGameKey = "fruit"
         fun jumpKey(mode: JumpMode) = "$JumpGamePrefix${mode.name}"
+    }
+}
+
+/** 手一帧内划过的一段：[from] → [to]，用时 [seconds] */
+class Swipe(val from: P, val to: P, val seconds: Float)
+
+enum class FruitKind(val emoji: String, val juice: Long) {
+    Watermelon("🍉", 0xFFEF4444), Apple("🍎", 0xFFF87171), Orange("🍊", 0xFFFB923C), Lemon("🍋", 0xFFFDE047),
+    Peach("🍑", 0xFFFDBA74), Pineapple("🍍", 0xFFFACC15), Kiwi("🥝", 0xFF84CC16), Strawberry("🍓", 0xFFF43F5E),
+    Banana("🍌", 0xFFFEF08A), Grapes("🍇", 0xFFA855F7)
+}
+
+/** 飞在空中的水果 / 炸弹（[kind] 为 null 是炸弹）；切开后变成两半继续飞 */
+class Flying(val kind: FruitKind?, var x: Float, var y: Float, var vx: Float, var vy: Float, val radius: Float) {
+    var sliced = false
+    /** 切开后两半各自往左右分开的横向距离，和切的方向（弧度，画面里的角度） */
+    var split = 0f
+    var cutAngle = 0f
+    var spin = 0f
+}
+
+/**
+ * 切水果：水果从画面下方抛上来，手（手腕往前延一点）快速划过就切开。一局 [roundSeconds] 秒。
+ * 坐标同 [BodyFrame]；[Flying.radius] 按画面宽度算，判碰撞时把 y 换算到同一尺度（除以 [aspect]）。
+ */
+class FruitGame(private val aspect: Float, private val random: Random = Random.Default, val roundSeconds: Int = 60) {
+    val items = mutableListOf<Flying>()
+    var score = 0
+        private set
+    var sliced = 0
+        private set
+    var bombs = 0
+        private set
+    var elapsed = 0f
+        private set
+    /** 最近一次连切的个数和剩余显示秒数 */
+    var combo = 0
+        private set
+    var comboTimer = 0f
+        private set
+    var bombTimer = 0f
+        private set
+    val over get() = elapsed >= roundSeconds
+    val remaining get() = max(0, roundSeconds - elapsed.toInt())
+    private var spawnTimer = 0.6f
+
+    fun step(dt: Float, swipes: List<Swipe>): Events {
+        if (over) return Events(0, false)
+        val t = dt.coerceIn(0f, 0.1f)
+        elapsed += t
+        comboTimer = max(0f, comboTimer - t)
+        bombTimer = max(0f, bombTimer - t)
+        spawnTimer -= t
+        if (spawnTimer <= 0f) {
+            spawnWave()
+            spawnTimer = max(1.6f - elapsed * 0.012f, 0.9f) + random.nextFloat() * 0.4f
+        }
+        val fast = swipes.filter { speed(it) >= MinSwipeSpeed }
+        var cut = 0
+        var boom = false
+        items.forEach { item ->
+            item.vy += Gravity * t
+            item.x += item.vx * t
+            item.y += item.vy * t
+            item.spin += t * (if (item.vx >= 0) 2f else -2f)
+            if (item.sliced) {
+                item.split += t * 0.35f
+            } else {
+                fast.firstOrNull { hits(it, item) }?.let { s ->
+                    item.sliced = true
+                    item.cutAngle = kotlin.math.atan2((s.to.y - s.from.y) / aspect, s.to.x - s.from.x)
+                    if (item.kind == null) boom = true else cut++
+                }
+            }
+        }
+        items.removeAll { it.y - it.radius / aspect > 1.05f && it.vy > 0 }
+        if (cut > 0) {
+            sliced += cut
+            score += cut + if (cut >= 3) cut else 0
+            if (cut >= 3) {
+                combo = cut
+                comboTimer = 1.2f
+            }
+        }
+        if (boom) {
+            bombs++
+            score = max(0, score - BombPenalty)
+            bombTimer = 0.6f
+        }
+        return Events(cut, boom)
+    }
+
+    private fun speed(s: Swipe): Float {
+        if (s.seconds <= 0f) return 0f
+        return hypot(s.to.x - s.from.x, (s.to.y - s.from.y) / aspect) / s.seconds
+    }
+
+    /** 线段到圆心的最近距离小于半径（都换算成画面宽度单位） */
+    private fun hits(s: Swipe, f: Flying): Boolean {
+        val ax = s.from.x; val ay = s.from.y / aspect
+        val bx = s.to.x; val by = s.to.y / aspect
+        val cx = f.x; val cy = f.y / aspect
+        val dx = bx - ax; val dy = by - ay
+        val len2 = dx * dx + dy * dy
+        val u = if (len2 == 0f) 0f else (((cx - ax) * dx + (cy - ay) * dy) / len2).coerceIn(0f, 1f)
+        return hypot(ax + u * dx - cx, ay + u * dy - cy) <= f.radius * 1.15f
+    }
+
+    private fun spawnWave() {
+        val n = 1 + random.nextInt(if (elapsed < 15f) 2 else 3)
+        repeat(n) {
+            val bomb = elapsed > 8f && random.nextFloat() < 0.15f
+            val r = 0.075f + random.nextFloat() * 0.02f
+            val x = 0.15f + random.nextFloat() * 0.7f
+            val apex = 0.12f + random.nextFloat() * 0.25f
+            val y0 = 1f + r / aspect
+            val vy = -kotlin.math.sqrt(2 * Gravity * (y0 - apex))
+            // 往画面中间偏一点，别飞出两侧
+            val vx = (0.5f - x) * (0.25f + random.nextFloat() * 0.35f)
+            items += Flying(if (bomb) null else FruitKind.values()[random.nextInt(FruitKind.values().size)], x, y0, vx, vy, r)
+        }
+    }
+
+    data class Events(val cut: Int, val bomb: Boolean)
+
+    companion object {
+        /** 重力：每秒² 多少个画面高度 */
+        const val Gravity = 1.5f
+        /** 手划过的最低速度（每秒多少个画面宽度），慢慢伸手碰到不算切 */
+        const val MinSwipeSpeed = 0.9f
+        const val BombPenalty = 5
     }
 }

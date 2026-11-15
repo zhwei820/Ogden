@@ -61,6 +61,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -93,7 +96,8 @@ fun SportsHomeScreen(
     store: SportsStore,
     padding: PaddingValues,
     onJump: (JumpMode) -> Unit,
-    onDodge: () -> Unit
+    onDodge: () -> Unit,
+    onFruit: () -> Unit
 ) {
     val records = remember { store.records() }
     val today = remember { store.todayJumps() }
@@ -137,17 +141,35 @@ fun SportsHomeScreen(
                 onClick = onDodge
             )
         }
+        item { SportsSectionTitle("🍉 切水果", "挥手切开飞起来的水果，小心炸弹") }
+        item {
+            val best = store.best(SportsStore.FruitGameKey)
+            SportsRowCard(
+                emoji = "🍉",
+                title = "切水果",
+                subtitle = "一局 60 秒，手挥得快才切得开；碰到炸弹扣 ${FruitGame.BombPenalty} 分",
+                trailing = if (best > 0) "最高 $best 分" else "",
+                onClick = onFruit
+            )
+        }
         if (records.isNotEmpty()) {
             item { SportsSectionTitle("📜 最近记录", "最近 ${minOf(records.size, 20)} 次") }
             items(records.take(20)) { r ->
                 SportsRowCard(
-                    emoji = if (r.game == SportsStore.DodgeGameKey) "🏃" else "🪢",
+                    emoji = when (r.game) {
+                        SportsStore.DodgeGameKey -> "🏃"
+                        SportsStore.FruitGameKey -> "🍉"
+                        else -> "🪢"
+                    },
                     title = recordTitle(r),
                     subtitle = "${format.format(Date(r.time))} · ${formatSeconds(r.seconds)}",
-                    trailing = if (r.game == SportsStore.DodgeGameKey) "${r.score} 分" else "${r.score} 下",
+                    trailing = if (r.game.startsWith(SportsStore.JumpGamePrefix)) "${r.score} 下" else "${r.score} 分",
                     onClick = {
-                        if (r.game == SportsStore.DodgeGameKey) onDodge()
-                        else JumpMode.values().firstOrNull { SportsStore.jumpKey(it) == r.game }?.let(onJump)
+                        when (r.game) {
+                            SportsStore.DodgeGameKey -> onDodge()
+                            SportsStore.FruitGameKey -> onFruit()
+                            else -> JumpMode.values().firstOrNull { SportsStore.jumpKey(it) == r.game }?.let(onJump)
+                        }
                     }
                 )
             }
@@ -155,9 +177,11 @@ fun SportsHomeScreen(
     }
 }
 
-private fun recordTitle(r: SportsRecord): String =
-    if (r.game == SportsStore.DodgeGameKey) "躲避方块"
-    else "跳绳 · " + (JumpMode.values().firstOrNull { SportsStore.jumpKey(it) == r.game }?.title ?: "")
+private fun recordTitle(r: SportsRecord): String = when (r.game) {
+    SportsStore.DodgeGameKey -> "躲避方块"
+    SportsStore.FruitGameKey -> "切水果"
+    else -> "跳绳 · " + (JumpMode.values().firstOrNull { SportsStore.jumpKey(it) == r.game }?.title ?: "")
+}
 
 private fun formatSeconds(s: Int) = if (s >= 60) "${s / 60} 分 ${s % 60} 秒" else "$s 秒"
 
@@ -687,4 +711,183 @@ private fun starPath(c: Offset, r: Float): Path = Path().apply {
         if (i == 0) moveTo(x, y) else lineTo(x, y)
     }
     close()
+}
+
+// ---------- 切水果 ----------
+
+/** 两只手最近一小段轨迹，画刀光用 */
+private class HandTrail {
+    val points = ArrayDeque<Pair<P, Long>>()
+    fun add(p: P, t: Long) {
+        points.addLast(p to t)
+        while (points.size > 6 || (points.isNotEmpty() && t - points.first().second > 250)) points.removeFirst()
+    }
+}
+
+@Composable
+fun FruitScreen(store: SportsStore, onBack: () -> Unit) {
+    val beeper = rememberBeeper()
+    var phase by remember { mutableStateOf(Phase.Waiting) }
+    var frame by remember { mutableStateOf<BodyFrame?>(null) }
+    var countdown by remember { mutableStateOf(3) }
+    var game by remember { mutableStateOf<FruitGame?>(null) }
+    var tick by remember { mutableStateOf(0L) }
+    var newBest by remember { mutableStateOf(false) }
+    var round by remember { mutableStateOf(0) }
+    // 两帧姿态之间手划过的线段，攒到下一次游戏步进时一起判
+    val pending = remember { mutableListOf<Swipe>() }
+    val trails = remember { listOf(HandTrail(), HandTrail()) }
+    val emojiPaint = remember { android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply { textAlign = android.graphics.Paint.Align.CENTER } }
+
+    WaitAndCountdown(phase, frame?.bodyBox() != null, beeper, onPhase = {
+        if (it == Phase.Running) {
+            pending.clear()
+            game = FruitGame(frame?.aspect ?: 0.75f)
+        }
+        phase = it
+    }, onCount = { countdown = it })
+
+    LaunchedEffect(phase, round) {
+        if (phase == Phase.Running) {
+            var last = withFrameNanos { it }
+            while (true) {
+                val now = withFrameNanos { it }
+                val dt = (now - last) / 1e9f
+                last = now
+                val g = game
+                val f = frame
+                if (g != null && f != null && SystemClock.uptimeMillis() - f.timeMs < 500) {
+                    val ev = g.step(dt, pending.toList())
+                    if (ev.cut > 0) beeper?.startTone(ToneGenerator.TONE_PROP_ACK, 60)
+                    if (ev.bomb) beeper?.startTone(ToneGenerator.TONE_PROP_NACK, 300)
+                }
+                pending.clear()
+                tick = now
+                if (g == null || g.over) break
+            }
+            phase = Phase.Done
+        }
+    }
+    LaunchedEffect(phase) {
+        val g = game
+        if (phase == Phase.Done && g != null) {
+            newBest = g.score > 0 && store.save(SportsRecord(System.currentTimeMillis(), SportsStore.FruitGameKey, g.score, g.roundSeconds))
+        }
+    }
+
+    SportsCameraPage(title = "🍉 切水果", onBack = onBack, onFrame = { f ->
+        frame = f
+        if (f != null) {
+            listOf(true, false).forEachIndexed { i, left ->
+                val p = f.hand(left)
+                val trail = trails[i]
+                if (p != null) {
+                    trail.points.lastOrNull()?.let { (q, t) ->
+                        if (f.timeMs - t in 1..250) pending += Swipe(q, p, (f.timeMs - t) / 1000f)
+                    }
+                    trail.add(p, f.timeMs)
+                }
+            }
+        }
+    }) {
+        val f = frame
+        val g = game
+        Canvas(Modifier.fillMaxSize()) {
+            tick
+            val aspect = f?.aspect ?: 0.75f
+            val rect = fitRect(size, aspect)
+            if (f != null) drawSkeleton(f, rect, Color(0x664ADE80))
+            if (g != null && g.bombTimer > 0f) drawRect(Color(0x55EF4444), rect.topLeft, rect.size)
+            drawIntoCanvas { canvas ->
+                val nc = canvas.nativeCanvas
+                g?.items?.forEach { item ->
+                    val c = rect.map(P(item.x, item.y))
+                    val r = item.radius * rect.width
+                    emojiPaint.textSize = r * 1.9f
+                    val baseline = c.y + r * 0.65f
+                    val text = item.kind?.emoji ?: if (item.sliced) "💥" else "💣"
+                    if (!item.sliced || item.kind == null) {
+                        nc.save()
+                        nc.rotate(Math.toDegrees(item.spin.toDouble()).toFloat() * 0.3f, c.x, c.y)
+                        nc.drawText(text, c.x, baseline, emojiPaint)
+                        nc.restore()
+                    } else {
+                        // 沿切口方向劈成两半，各自往两边分开
+                        val deg = Math.toDegrees(item.cutAngle.toDouble()).toFloat()
+                        val off = item.split * rect.width
+                        listOf(-1f, 1f).forEach { side ->
+                            nc.save()
+                            nc.rotate(deg, c.x, c.y)
+                            nc.translate(0f, side * off)
+                            if (side < 0) nc.clipRect(c.x - r * 2, c.y - r * 2, c.x + r * 2, c.y)
+                            else nc.clipRect(c.x - r * 2, c.y, c.x + r * 2, c.y + r * 2)
+                            nc.rotate(-deg, c.x, c.y)
+                            nc.drawText(text, c.x, baseline, emojiPaint)
+                            nc.restore()
+                        }
+                        val juice = Color(item.kind.juice)
+                        drawCircle(juice.copy(alpha = (0.6f - item.split * 3).coerceAtLeast(0f)), r * (1f + item.split * 6), c)
+                    }
+                }
+            }
+            // 刀光
+            trails.forEach { trail ->
+                val pts = trail.points.toList()
+                pts.zipWithNext().forEachIndexed { i, (a, b) ->
+                    val w = 6f + 14f * (i + 1) / pts.size
+                    drawLine(Color.White.copy(alpha = 0.85f), rect.map(a.first), rect.map(b.first), strokeWidth = w, cap = androidx.compose.ui.graphics.StrokeCap.Round)
+                }
+                pts.lastOrNull()?.let { drawCircle(Color(0xFF38BDF8), 14f, rect.map(it.first)) }
+            }
+        }
+        when (phase) {
+            Phase.Waiting -> BottomBanner(
+                if (f?.bodyBox() == null) "站到手机前面，让摄像头看到你的上半身和两只手" else "很好，准备挥手切水果……"
+            )
+            Phase.Countdown -> CountdownNumber(countdown)
+            Phase.Running, Phase.Done -> if (g != null) {
+                Row(
+                    Modifier.fillMaxWidth().padding(top = 60.dp, start = 16.dp, end = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppText(
+                        "⏱ ${g.remaining}",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.background(Overlay, RoundedCornerShape(12.dp)).padding(horizontal = 12.dp, vertical = 4.dp)
+                    )
+                    Spacer(Modifier.weight(1f))
+                    AppText(
+                        "${g.score} 分",
+                        color = Color.White,
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.background(Overlay, RoundedCornerShape(12.dp)).padding(horizontal = 12.dp, vertical = 4.dp)
+                    )
+                }
+                if (g.comboTimer > 0f) {
+                    Box(Modifier.fillMaxSize().padding(top = 140.dp), contentAlignment = Alignment.TopCenter) {
+                        AppText("连切 ×${g.combo}！+${g.combo}", color = Color(0xFFFACC15), fontSize = 36.sp, fontWeight = FontWeight.Black)
+                    }
+                }
+                if (phase == Phase.Running && f == null) BottomBanner("看不到你啦，回到画面里（游戏暂停中）")
+            }
+        }
+        if (phase == Phase.Done && g != null) {
+            ResultCard(
+                emoji = "🍉",
+                headline = "${g.score} 分",
+                detail = "切开 ${g.sliced} 个水果" + if (g.bombs > 0) "，碰到 ${g.bombs} 个炸弹" else "，一个炸弹都没碰！",
+                newBest = newBest,
+                onAgain = {
+                    newBest = false
+                    game = null
+                    round++
+                    phase = Phase.Waiting
+                },
+                onBack = onBack
+            )
+        }
+    }
 }

@@ -102,4 +102,54 @@ class SportsTest {
         assertEquals(0, game.stars)
         assertTrue("score ${game.score}", game.score >= 59)
     }
+
+    /** 等第一个水果 / 炸弹飞到画面中部，返回它 */
+    private fun firstFlying(game: FruitGame): Flying {
+        repeat(200) {
+            game.step(0.02f, emptyList())
+            game.items.firstOrNull { it.y < 0.7f }?.let { return it }
+        }
+        error("nothing spawned")
+    }
+
+    private fun swipeThrough(f: Flying, seconds: Float) =
+        Swipe(P(f.x - 0.2f, f.y), P(f.x + 0.2f, f.y), seconds)
+
+    @Test
+    fun fastSwipeSlicesFruit() {
+        val game = FruitGame(aspect = 0.75f, random = Random(2))
+        val f = firstFlying(game)
+        assertTrue(f.kind != null)
+        val ev = game.step(0.001f, listOf(swipeThrough(f, 0.05f)))
+        assertEquals(1, ev.cut)
+        assertTrue(f.sliced)
+        assertEquals(1, game.score)
+    }
+
+    @Test
+    fun slowHandDoesNotSlice() {
+        val game = FruitGame(aspect = 0.75f, random = Random(2))
+        val f = firstFlying(game)
+        // 0.4 宽度用了 1 秒：只是慢慢伸手
+        val ev = game.step(0.001f, listOf(swipeThrough(f, 1f)))
+        assertEquals(0, ev.cut)
+        assertFalse(f.sliced)
+    }
+
+    @Test
+    fun missingSwipeDoesNotSlice() {
+        val game = FruitGame(aspect = 0.75f, random = Random(2))
+        val f = firstFlying(game)
+        val ev = game.step(0.001f, listOf(Swipe(P(f.x - 0.2f, f.y - 0.4f), P(f.x + 0.2f, f.y - 0.4f), 0.05f)))
+        assertEquals(0, ev.cut)
+    }
+
+    @Test
+    fun roundEndsAfterSixtySeconds() {
+        val game = FruitGame(aspect = 0.75f, random = Random(2))
+        repeat(60 * 20 + 5) { game.step(0.05f, emptyList()) }
+        assertTrue(game.over)
+        assertEquals(0, game.remaining)
+        assertEquals(0, game.score)
+    }
 }
