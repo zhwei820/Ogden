@@ -382,6 +382,10 @@ sealed class Screen {
     /** [focus] / [fromLink] 同 [SpeechReader]：游戏跳来的跟读挑战 */
     data class SpecialModulePage(val key: String, val focus: SpeechFocus? = null, val fromLink: Boolean = false) : Screen()
     data class ModulePractice(val key: String) : Screen()
+    object CefrHome : Screen()
+    data class CefrLevelPage(val level: CefrLevel) : Screen()
+    /** [group] 为 null 表示复习本级错词 */
+    data class CefrStudy(val level: CefrLevel, val group: Int?) : Screen()
     object SpeechWords : Screen()
     object Settings : Screen()
     object ResourcePacks : Screen()
@@ -617,6 +621,17 @@ class ProgressStore(context: Context, profileId: String) {
     fun addSpeechWord(word: String) = updateSet("speechWords", word, true)
 
     fun isSpeechLearned(id: String) = set("speechLearned").contains(id)
+
+    /** 分级背词的进度，和 Ogden 词库的掌握 / 错词分开记。 */
+    fun cefrMastered(): Set<String> = set("cefrMastered")
+
+    fun cefrMistakes(): Set<String> = set("cefrMistakes")
+
+    fun recordCefr(word: String, correct: Boolean) {
+        updateSet("cefrMastered", word, correct)
+        updateSet("cefrMistakes", word, !correct)
+        if (correct) bumpDailyStreak()
+    }
 
     fun toggleSpeechLearned(id: String) = updateSet("speechLearned", id, !isSpeechLearned(id))
 
@@ -899,6 +914,13 @@ private fun UserApp(accounts: Accounts) {
                 screen = Screen.SpecialModulePage(current.key)
             }
             Screen.ResourcePacks -> screen = Screen.Settings
+            Screen.CefrHome -> screen = Screen.Main
+            is Screen.CefrLevelPage -> screen = Screen.CefrHome
+            is Screen.CefrStudy -> {
+                azureSpeaker.stop()
+                stateHolder.removeState(screenKey(current))
+                screen = Screen.CefrLevelPage(current.level)
+            }
             is Screen.SpeechReader -> {
                 azureSpeaker.stop()
                 screen = Screen.Main
@@ -1013,6 +1035,7 @@ private fun UserApp(accounts: Accounts) {
                                 },
                                 onCategory = { category -> screen = Screen.Levels(category) },
                                 onOpenLibrary = { selectedTab = Tab.Library },
+                                onCefr = { screen = Screen.CefrHome },
                                 onCollection = { title, kind -> screen = Screen.WordCollection(title, kind) }
                             )
                             Tab.Library -> LibraryScreen(
@@ -1065,6 +1088,28 @@ private fun UserApp(accounts: Accounts) {
                     },
                     readAlongScore = progressStore::readAlongScore,
                     onReadAlongScored = progressStore::saveReadAlongScore
+                )
+                Screen.CefrHome -> CefrHomeScreen(store = progressStore, onBack = goBack, onLevel = { screen = Screen.CefrLevelPage(it) })
+                is Screen.CefrLevelPage -> CefrLevelScreen(
+                    level = current.level,
+                    store = progressStore,
+                    zh = chineseMode,
+                    onSpeak = speak,
+                    onBack = goBack,
+                    onGroup = { screen = Screen.CefrStudy(current.level, it) },
+                    onReview = { screen = Screen.CefrStudy(current.level, null) }
+                )
+                is Screen.CefrStudy -> CefrStudyScreen(
+                    level = current.level,
+                    group = current.group,
+                    store = progressStore,
+                    zh = chineseMode,
+                    onSpeak = speak,
+                    onBack = goBack,
+                    onNextGroup = {
+                        stateHolder.removeState(screenKey(current))
+                        screen = Screen.CefrStudy(current.level, it)
+                    }
                 )
                 is Screen.Levels -> LevelSelectionScreen(
                     words = practiceWords,
@@ -1445,6 +1490,9 @@ private fun screenKey(screen: Screen): String = when (screen) {
     is Screen.SpecialModulePage -> "module-${screen.key}"
     is Screen.ModulePractice -> "module-practice-${screen.key}"
     Screen.SpeechWords -> "speech-words"
+    Screen.CefrHome -> "cefr-home"
+    is Screen.CefrLevelPage -> "cefr-level-${screen.level.key}"
+    is Screen.CefrStudy -> "cefr-study-${screen.level.key}-${screen.group}"
     Screen.Settings -> "settings"
     Screen.ResourcePacks -> "resource-packs"
     Screen.Privacy -> "privacy"
@@ -1683,6 +1731,7 @@ fun ChallengeScreen(
     onContinue: () -> Unit,
     onCategory: (Category) -> Unit,
     onOpenLibrary: () -> Unit,
+    onCefr: () -> Unit,
     onCollection: (title: String, kind: String) -> Unit
 ) {
     val mastered = store.masteredCount(words)
@@ -1711,6 +1760,7 @@ fun ChallengeScreen(
                 onCollection = onCollection
             )
         }
+        item { CefrEntryCard(store, onCefr) }
         item {
             SectionTitle("分类闯关", "每 10 个词一关，先短跑，再复习")
         }
