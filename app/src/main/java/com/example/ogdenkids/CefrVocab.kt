@@ -218,6 +218,13 @@ fun CefrLevelScreen(
     val nextGroup = (0 until groups).firstOrNull { g -> groupWords(words, g).any { it.word !in mastered } }
     val mistakeCount = words.count { it.word in mistakes }
     var expanded by rememberSaveable(level) { mutableStateOf(-1) }
+    var showList by rememberSaveable(level) { mutableStateOf(false) }
+    var filter by rememberSaveable(level) { mutableStateOf(0) }
+    val listed = when (filter) {
+        1 -> words.filter { it.word !in mastered }
+        2 -> words.filter { it.word in mistakes }
+        else -> words
+    }
     Scaffold(containerColor = Paper, topBar = {
         CefrTopBar("${level.title}", "${words.size} 词 · $groups 组 · 掌握 ${words.count { it.word in mastered }}", onBack)
     }) { padding ->
@@ -251,7 +258,26 @@ fun CefrLevelScreen(
                     }
                 }
             }
-            items((0 until groups).toList()) { g ->
+            item {
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TogglePill("分组背词", !showList, { showList = false })
+                    TogglePill("单词列表", showList, { showList = true })
+                }
+            }
+            if (showList) {
+                item {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                        TogglePill("全部 ${words.size}", filter == 0, { filter = 0 })
+                        TogglePill("没掌握 ${words.count { it.word !in mastered }}", filter == 1, { filter = 1 })
+                        TogglePill("错词 $mistakeCount", filter == 2, { filter = 2 })
+                    }
+                }
+                if (listed.isEmpty()) item { EmptyCard("这里还没有单词。") }
+                items(listed, key = { it.word }) { w ->
+                    CefrWordRow(w, w.word in mastered, w.word in mistakes, zh, onSpeak)
+                }
+            }
+            if (!showList) items((0 until groups).toList()) { g ->
                 val gw = groupWords(words, g)
                 val learned = gw.count { it.word in mastered }
                 Card(
@@ -285,27 +311,30 @@ fun CefrLevelScreen(
                         }
                         ProgressBar(learned / gw.size.toFloat(), level)
                         if (expanded == g) {
-                            gw.forEach { w ->
-                                Row(
-                                    Modifier.fillMaxWidth().clickable { onSpeak(w.word) }.padding(vertical = 4.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Text(
-                                        w.word,
-                                        fontSize = 17.sp,
-                                        fontWeight = FontWeight.SemiBold,
-                                        color = if (w.word in mistakes) Error else Ink,
-                                        modifier = Modifier.width(140.dp)
-                                    )
-                                    AppText("${w.pos} ${convertZh(w.zh, zh)}", color = InkSoft, fontSize = 14.sp, modifier = Modifier.weight(1f))
-                                    if (w.word in mastered) Icon(Icons.Default.Check, contentDescription = "已掌握", tint = Success, modifier = Modifier.size(18.dp))
-                                }
-                            }
+                            gw.forEach { w -> CefrWordRow(w, w.word in mastered, w.word in mistakes, zh, onSpeak) }
                         }
                     }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun CefrWordRow(w: CefrWord, mastered: Boolean, mistake: Boolean, zh: ChineseMode, onSpeak: (String) -> Unit) {
+    Row(
+        Modifier.fillMaxWidth().clickable { onSpeak(w.word) }.padding(vertical = 6.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            w.word,
+            fontSize = 17.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = if (mistake) Error else Ink,
+            modifier = Modifier.width(140.dp)
+        )
+        AppText("${w.pos} ${convertZh(w.zh, zh)}", color = InkSoft, fontSize = 14.sp, modifier = Modifier.weight(1f))
+        if (mastered) Icon(Icons.Default.Check, contentDescription = "已掌握", tint = Success, modifier = Modifier.size(18.dp))
     }
 }
 

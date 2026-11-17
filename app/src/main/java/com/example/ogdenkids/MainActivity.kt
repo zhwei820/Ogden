@@ -1115,6 +1115,9 @@ private fun UserApp(accounts: Accounts) {
                     words = practiceWords,
                     store = progressStore,
                     category = current.category,
+                    zh = chineseMode,
+                    onSpeak = speak,
+                    onOpenWord = { screen = Screen.Detail(it, returnTo = current) },
                     onBack = goBack,
                     onStart = { level -> screen = Screen.Practice(current.category, level) }
                 )
@@ -1916,11 +1919,15 @@ fun LevelSelectionScreen(
     words: List<OgdenWord>,
     store: ProgressStore,
     category: Category,
+    zh: ChineseMode,
+    onSpeak: (String) -> Unit,
+    onOpenWord: (OgdenWord) -> Unit,
     onBack: () -> Unit,
     onStart: (Int) -> Unit
 ) {
     val categoryWords = words.filter { it.category == category }
     val levels = ceil(categoryWords.size / 10.0).toInt()
+    var expanded by rememberSaveable(category) { mutableStateOf(0) }
     Scaffold(containerColor = Paper, topBar = {
         Row(
             modifier = Modifier
@@ -1961,7 +1968,20 @@ fun LevelSelectionScreen(
                     mastered = mastered,
                     total = levelWords.size,
                     onClick = { if (unlocked) onStart(level) }
-                )
+                ) {
+                    LevelWordList(
+                        level = level,
+                        tint = category.tint,
+                        expanded = expanded == level,
+                        onToggle = { expanded = if (expanded == level) 0 else level },
+                        words = levelWords,
+                        mastered = { store.progress(it.word).mastered },
+                        mistake = { store.progress(it.word).mistake },
+                        zh = zh,
+                        onSpeak = onSpeak,
+                        onOpen = onOpenWord
+                    )
+                }
             }
         }
     }
@@ -1975,7 +1995,8 @@ fun LevelCard(
     unlocked: Boolean,
     mastered: Int,
     total: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    footer: @Composable () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -1985,6 +2006,7 @@ fun LevelCard(
         colors = CardDefaults.cardColors(containerColor = if (unlocked) PaperElevated else Color(0xFFF2EDE4)),
         shape = RoundedCornerShape(16.dp)
     ) {
+        Column {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -2031,6 +2053,54 @@ fun LevelCard(
                 color = if (unlocked) category.tint else InkFaint,
                 fontWeight = FontWeight.Bold
             )
+        }
+        footer()
+        }
+    }
+}
+
+/** 关卡卡片底部「看单词」：展开本关的词，点词进详情，点喇叭发音；锁定的关也能看。 */
+@Composable
+fun LevelWordList(
+    level: Int,
+    tint: Color,
+    expanded: Boolean,
+    onToggle: () -> Unit,
+    words: List<OgdenWord>,
+    mastered: (OgdenWord) -> Boolean,
+    mistake: (OgdenWord) -> Boolean,
+    zh: ChineseMode,
+    onSpeak: (String) -> Unit,
+    onOpen: (OgdenWord) -> Unit
+) {
+    Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 12.dp)) {
+        AppText(
+            if (expanded) "收起单词 ▴" else "看第 $level 关的单词 ▾",
+            color = tint,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.clip(RoundedCornerShape(8.dp)).clickable(onClick = onToggle).padding(vertical = 4.dp)
+        )
+        if (expanded) {
+            words.forEach { w ->
+                Row(
+                    Modifier.fillMaxWidth().clickable { onOpen(w) }.padding(vertical = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        w.word,
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = if (mistake(w)) Error else Ink,
+                        modifier = Modifier.width(130.dp)
+                    )
+                    AppText(convertZh(w.zh, zh), color = InkSoft, fontSize = 14.sp, maxLines = 1, modifier = Modifier.weight(1f))
+                    if (mastered(w)) Icon(Icons.Default.Check, contentDescription = "已掌握", tint = Success, modifier = Modifier.size(18.dp))
+                    IconButton(onClick = { onSpeak(w.word) }, modifier = Modifier.size(36.dp)) {
+                        Icon(Icons.Default.VolumeUp, contentDescription = "发音", tint = InkFaint, modifier = Modifier.size(20.dp))
+                    }
+                }
+            }
         }
     }
 }
